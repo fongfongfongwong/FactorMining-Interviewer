@@ -1,9 +1,10 @@
 """考试选择页面 — 管理员生成考试链接 / 候选人自选方向开始考试"""
 
+import streamlit as st
+st.set_page_config(page_title="考试选择", page_icon="📝", layout="wide")
+
 import json
 import time
-import streamlit as st
-
 from db.database import (
     init_db, get_all_candidates, insert_candidate_manual,
     create_exam_session, get_exam_sessions, create_invite_link,
@@ -16,7 +17,7 @@ from services.auth import is_authenticated, get_current_role
 
 init_db()
 
-st.set_page_config(page_title="考试选择", page_icon="📝", layout="wide")
+
 
 if not is_authenticated():
     st.warning("请先登录或使用邀请链接 / Please login or use an invite link")

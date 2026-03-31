@@ -1,9 +1,10 @@
 """简历筛选页面 — 批量上传简历，AI解析评分，生成考试邀请链接"""
 
-import json
 import streamlit as st
-import plotly.graph_objects as go
+st.set_page_config(page_title="简历筛选", page_icon="📋", layout="wide")
 
+import json
+import plotly.graph_objects as go
 from db.database import (
     init_db, insert_candidate, get_all_candidates, delete_candidate,
     create_invite_link, get_exam_sessions,
@@ -16,7 +17,7 @@ from services.auth import require_role, is_authenticated
 
 init_db()
 
-st.set_page_config(page_title="简历筛选", page_icon="📋", layout="wide")
+
 
 if not is_authenticated():
     st.warning("请先登录 / Please login first")

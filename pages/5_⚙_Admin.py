@@ -10,9 +10,11 @@ from db.database import init_db, get_all_candidates, get_exam_sessions
 from services.exam_engine import TRACK_LABELS, TRACK_FILES, QUESTIONS_DIR, load_track_questions, load_shared_questions, load_psychology_questions
 from services.auth import require_role, is_authenticated
 
+st.set_page_config(page_title="管理后台", page_icon="⚙", layout="wide")
+
 init_db()
 
-st.set_page_config(page_title="管理后台", page_icon="⚙", layout="wide")
+
 
 if not is_authenticated():
     st.warning("请先登录")
@@ -213,6 +215,5 @@ with tab3:
             import sqlite3
             if os.path.exists(DB_PATH):
                 os.remove(DB_PATH)
-                init_db()
                 st.success("数据已清空")
                 st.rerun()

@@ -1,11 +1,12 @@
 """成绩报告页面 — 分析、图表与导出"""
 
-import json
 import streamlit as st
+st.set_page_config(page_title="成绩报告", page_icon="📊", layout="wide")
+
+import json
 import plotly.graph_objects as go
 import plotly.express as px
 import pandas as pd
-
 from db.database import (
     init_db, get_all_candidates, get_exam_sessions, get_exam_session,
     get_answers, get_candidate,
@@ -16,7 +17,7 @@ from utils.helpers import format_score
 
 init_db()
 
-st.set_page_config(page_title="成绩报告", page_icon="📊", layout="wide")
+
 
 if not is_authenticated():
     st.warning("请先登录")

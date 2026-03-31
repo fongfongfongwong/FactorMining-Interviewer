@@ -1,6 +1,8 @@
 """用户管理 — Admin only: manage users, create invite links, view audit log."""
 
 import streamlit as st
+st.set_page_config(page_title="用户管理", page_icon="👤", layout="wide")
+
 from db.database import (
     init_db, get_all_users, create_user, deactivate_user,
     create_invite_link, get_all_invite_links, get_audit_log,
@@ -10,7 +12,7 @@ from services.exam_engine import TRACK_LABELS
 
 init_db()
 
-st.set_page_config(page_title="用户管理", page_icon="👤", layout="wide")
+
 
 if not is_authenticated():
     st.warning("请先登录")

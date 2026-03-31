@@ -8,9 +8,11 @@ from services.exam_engine import grade_question, TRACK_LABELS
 from services.auth import is_authenticated
 from utils.helpers import seconds_to_hms
 
+st.set_page_config(page_title="考试界面", page_icon="⏱", layout="wide")
+
 init_db()
 
-st.set_page_config(page_title="考试界面", page_icon="⏱", layout="wide")
+
 
 if not is_authenticated():
     st.warning("请先登录或使用邀请链接")

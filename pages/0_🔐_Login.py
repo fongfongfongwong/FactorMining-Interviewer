@@ -1,13 +1,14 @@
 """登录页面 — Admin/Operator password login, Candidate invite link entry."""
 
 import streamlit as st
+
+st.set_page_config(page_title="登录", page_icon="🔐", layout="centered")
+
 from db.database import init_db
 from services.auth import login, logout, is_authenticated, get_current_role, validate_invite, enter_candidate_mode, ensure_default_admin
 
 init_db()
 ensure_default_admin()
-
-st.set_page_config(page_title="登录", page_icon="🔐", layout="centered")
 
 # ─── Handle invite link from URL ───
 query_params = st.query_params
