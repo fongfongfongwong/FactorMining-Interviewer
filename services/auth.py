@@ -90,8 +90,9 @@ def require_role(*allowed_roles):
 
 
 def ensure_default_admin():
-    """Create default admin if no users exist."""
+    """Create default users if no users exist."""
     from db.database import get_all_users
     users = get_all_users()
     if not users:
         create_user("admin", hash_password("admin123"), "admin", "管理员")
+        create_user("sisi", hash_password("hello456"), "admin", "Sisi")

@@ -4282,3 +4282,459 @@
   hints: []
   rubric: ""
   time_limit_seconds: 90
+
+# =============================================================================
+# ADDITIONAL QR_177 - QR_200 (24 more questions to reach 200 total)
+# =============================================================================
+
+- id: QR_CS_177
+  category: cross_sectional_analysis
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在A股市场中，'壳价值效应'对小市值因子的影响是什么？\nHow does the 'shell value effect' impact the small-cap factor in A-shares?"
+  options:
+    - "A. 上市壳资源有价值使得垃圾小市值股被高估，小市值溢价部分来自壳价值而非风险补偿 / Listing shell resources have value, making junk small caps overvalued — small-cap premium partly from shell value, not risk compensation"
+    - "B. 壳价值不影响小市值因子 / Shell value doesn't affect small-cap factor"
+    - "C. 壳价值使大市值股更贵 / Shell value makes large caps more expensive"
+    - "D. 只影响港股 / Only affects HK stocks"
+  answer: "A"
+  explanation: "A股壳价值效应(Liu, Stambaugh, Yuan, 2019)：(1)A股IPO审批制下上市壳资源稀缺→壳公司(小市值、基本面差)被高估(因为可能被借壳上市)；(2)传统小市值因子(SMB)在A股的超额收益部分来自壳价值投机而非经典的Fama-French风险补偿；(3)注册制改革(2019-)正在削弱壳价值——壳公司的溢价在下降；(4)研究建议：在A股做size factor时排除壳股(如ST股、市值最小的5%的股票)以获得更纯净的size premium。"
+  code_snippet: ""
+  code_language: python
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QR_ALT_178
+  category: alternative_data
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在使用GPS手机定位数据构建另类因子时，以下哪种应用最有商业价值？\nWhich application of GPS/mobile location data has the most commercial value for alternative factor construction?"
+  options:
+    - "A. 追踪零售店铺的客流量变化预测零售公司营收 / Track retail store foot traffic changes to predict retail company revenue"
+    - "B. 预测天气 / Predict weather"
+    - "C. 追踪动物迁徙 / Track animal migration"
+    - "D. 地图导航 / Map navigation"
+  answer: "A"
+  explanation: "手机定位数据(如SafeGraph, Placer.ai)的量化应用：(1)零售客流——追踪商场、餐厅、4S店等的实时客流量→预测上市零售公司的同店销售增长(lead time 2-4周)；(2)办公楼入驻——追踪科技公司办公楼的员工到达率→推断公司的业务活跃度和裁员信号；(3)物流活动——追踪仓库/港口的卡车活动量→推断供应链状况；(4)旅游数据——景区客流→旅游股营收预测。隐私合规：数据必须是匿名和聚合的。"
+  code_snippet: ""
+  code_language: python
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QR_AML_179
+  category: advanced_ml
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在使用XGBoost进行因子合成时，以下哪种特征工程方法对提升模型性能最有效？\nWhich feature engineering method is most effective for improving XGBoost-based factor combination?"
+  options:
+    - "A. 添加因子的交互项(factor interactions)和滞后项(lagged features) / Add factor interactions and lagged features"
+    - "B. 只使用原始因子值 / Only use raw factor values"
+    - "C. 对所有因子取绝对值 / Take absolute values of all factors"
+    - "D. 随机生成特征 / Randomly generate features"
+  answer: "A"
+  explanation: "XGBoost因子合成的特征工程：(1)交互项——value×momentum(价值动量交叉信号)、size×quality(不同市值下质量因子的效果差异)；(2)滞后项——momentum_t-1, momentum_t-2(捕捉因子动量的持续性)；(3)市场状态特征——VIX水平、市场收益率(使模型能在不同市场环境下做条件预测)；(4)rank features——因子值的横截面排名比原始值更稳健(减少异常值影响)。但注意：过多特征增加过拟合风险→使用特征重要性筛选。"
+  code_snippet: ""
+  code_language: python
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QR_BAYES_180
+  category: bayesian_methods
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在使用Bayesian Optimization进行因子挖掘的超参数调优时，其相比grid search的优势是什么？\nWhat is the advantage of Bayesian Optimization over grid search for factor mining hyperparameter tuning?"
+  options:
+    - "A. 通过构建代理模型(surrogate model)智能选择下一个评估点，用更少的评估次数找到最优超参数 / Builds surrogate model to intelligently select next evaluation point, finding optimal hyperparameters with fewer evaluations"
+    - "B. 保证找到全局最优 / Guarantees global optimum"
+    - "C. 不需要定义搜索空间 / No search space needed"
+    - "D. 速度总是更快 / Always faster"
+  answer: "A"
+  explanation: "Bayesian Optimization：(1)用高斯过程(GP)作为代理模型拟合超参数→性能的映射；(2)通过acquisition function(如EI, UCB)选择最有信息量的下一个评估点(exploitation vs exploration)；(3)优势：每次因子回测(一组超参数)可能需要几分钟→grid search需要1000+次评估，BO通常50-100次即可找到近似最优；(4)在因子挖掘中：调优如lookback window、z-score截断阈值、因子合成权重等。常用库：Optuna, HyperOpt, BOTorch。"
+  code_snippet: ""
+  code_language: python
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QR_CAUS_181
+  category: causal_inference
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化研究中，Mendelian Randomization（孟德尔随机化）的类比在金融因果推断中是什么？\nWhat is the financial analogue of Mendelian Randomization in quant research causal inference?"
+  options:
+    - "A. 使用制度性/法规性变化(如指数调整、政策变化)作为准自然实验的外生变量 / Use institutional/regulatory changes (index reconstitution, policy changes) as quasi-natural experiment exogenous variables"
+    - "B. 使用基因数据 / Using genetic data"
+    - "C. 使用天气数据 / Using weather data"
+    - "D. 使用随机数 / Using random numbers"
+  answer: "A"
+  explanation: "金融因果推断的'自然实验'：(1)指数成分调整——当股票因规则(如市值排名)而非基本面变化被纳入/剔出指数时，可以研究指数效应的因果影响(Russell reconstitution)；(2)政策变化——注册制改革、融券放开等制度变化提供了exogenous variation；(3)监管阈值——特定市值/交易量阈值触发的监管要求(如信息披露、融资融券)提供了RDD设计的机会。这类似于医学中用基因变异作为IV——金融中用制度变化作为IV。"
+  code_snippet: ""
+  code_language: python
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QR_RL_182
+  category: reinforcement_learning
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在使用Inverse RL从成功交易者的行为中学习策略时，核心挑战是什么？\nWhat is the core challenge of using Inverse RL to learn strategies from successful traders' behavior?"
+  options:
+    - "A. reward function不唯一——不同的reward function可能产生相同的观察到的行为(ill-posed problem) / Reward function is not unique — different rewards may produce the same observed behavior"
+    - "B. 数据太多 / Too much data"
+    - "C. 计算太简单 / Computation too simple"
+    - "D. 不需要观察数据 / No observation data needed"
+  answer: "A"
+  explanation: "Inverse RL in finance：(1)目标：从成功交易者的交易记录(state-action pairs)中反推他们的reward function(隐含的交易目标/偏好)；(2)核心挑战：reward ambiguity——完全不同的reward function可能导致相同的最优策略(identifiability problem)；(3)需要额外假设(如maximum entropy IRL假设reward function最大化信息熵)来解决不唯一性；(4)应用：从top trader的交易模式中学习到的reward function可以用于训练new trading agent。"
+  code_snippet: ""
+  code_language: python
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: QR_NLP_183
+  category: nlp_finance
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在使用NLP分析管理层讨论与分析(MD&A)文本时，以下哪种分析维度最具预测力？\nWhich analysis dimension of MD&A text has the strongest predictive power?"
+  options:
+    - "A. 文本语气的变化(tone change)——与前期相比更积极/消极的措辞变化 / Tone change — more positive/negative language compared to previous periods"
+    - "B. 文本长度 / Text length"
+    - "C. 使用的字体 / Font used"
+    - "D. 段落数量 / Number of paragraphs"
+  answer: "A"
+  explanation: "MD&A文本分析的预测力：(1)语气变化(tone change)比绝对语气(tone level)更有预测力——市场可能已经price in了管理层的一贯乐观(如每年都说'前景良好')，但语气变化反映了新信息；(2)模糊度增加(increased ambiguity/hedging)通常预示不利信息(管理层在掩饰坏消息)；(3)具体性降低(reduced specificity)——从具体数字变成模糊描述可能意味着业绩将恶化；(4)forward-looking语句的比例变化——未来展望减少可能是负面信号。"
+  code_snippet: ""
+  code_language: python
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QR_CS_184
+  category: cross_sectional_analysis
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在因子研究中，'factor zoo'问题指的是什么？如何应对？\nWhat is the 'factor zoo' problem in factor research and how to address it?"
+  options:
+    - "A. 学术文献中发现了400+个因子，大多数可能是数据挖掘的产物——需要multiple testing correction和样本外验证 / 400+ factors discovered in literature, most likely from data mining — need multiple testing correction and OOS validation"
+    - "B. 因子太少 / Too few factors"
+    - "C. 所有因子都有效 / All factors work"
+    - "D. 因子之间完全独立 / Factors are fully independent"
+  answer: "A"
+  explanation: "Factor Zoo (Cochrane, 2011; Harvey, Liu, Zhu, 2016)：(1)问题：400+个发表的'显著'因子，但按多重假设检验校正(如t>3.0而非2.0)后，大部分不再显著；(2)原因：publication bias(只有显著结果才发表)、data mining(搜索大量因子直到找到显著的)；(3)应对：(a)更高的t-stat门槛(Harvey建议|t|>3.0)；(b)样本外验证(不同市场/不同时间段)；(c)经济学直觉(因子必须有合理的经济解释)；(d)因子降维(PCA/clustering将冗余因子归并)。"
+  code_snippet: ""
+  code_language: python
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: QR_AML_185
+  category: advanced_ml
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在金融ML中使用SHAP值(SHapley Additive exPlanations)进行因子重要性分析的优势是什么？\nWhat is the advantage of using SHAP values for factor importance analysis in financial ML?"
+  options:
+    - "A. SHAP基于博弈论的Shapley值，提供公平的、一致的特征贡献归因，可以解释每个样本的预测 / SHAP is based on game-theoretic Shapley values, providing fair and consistent feature attribution for each sample"
+    - "B. SHAP只适用于线性模型 / SHAP only works for linear models"
+    - "C. SHAP比feature importance更快 / SHAP is faster than feature importance"
+    - "D. SHAP不提供单样本解释 / SHAP doesn't provide per-sample explanations"
+  answer: "A"
+  explanation: "SHAP的优势：(1)理论基础——Shapley值是唯一满足效率性、对称性、虚拟性和可加性四个公理的归因方法(Lundberg & Lee, 2017)；(2)局部可解释——每个预测可以分解为各特征的贡献(如'这只股票被预测跑赢主要因为momentum贡献+0.3%而value贡献-0.1%')；(3)全局可解释——汇总所有样本的SHAP值得到全局特征重要性排名；(4)交互效应——SHAP interaction values可以发现因子之间的交互作用(如value在低volatility环境下更有效)。"
+  code_snippet: ""
+  code_language: python
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QR_BAYES_186
+  category: bayesian_methods
+  difficulty: expert
+  type: open_ended
+  points: 5
+  question: "请设计一个Bayesian factor model选择框架：比较包含不同因子组合的模型。要求：(1)说明如何计算各模型的边际似然(marginal likelihood)；(2)如何使用Bayes Factor比较模型；(3)如何处理模型不确定性(Bayesian Model Averaging)。\nDesign a Bayesian factor model selection framework: (1) marginal likelihood computation; (2) Bayes Factor comparison; (3) model uncertainty handling via BMA."
+  options: []
+  answer: ""
+  explanation: "框架设计：(1)边际似然计算：P(data|M) = ∫P(data|θ,M)P(θ|M)dθ。对于线性因子模型(conjugate normal-inverse-gamma prior)有解析解；对非线性模型使用：(a)Laplace approximation；(b)thermodynamic integration；(c)WAIC/LOO-CV作为近似。(2)Bayes Factor比较：BF_ij = P(data|M_i)/P(data|M_j)。比较如：M₁(3因子)vs M₂(5因子)vs M₃(5因子+交互项)。BF自动惩罚模型复杂度(Occam's razor效应——更复杂的模型先验更分散)。(3)BMA处理模型不确定性：后验模型概率P(M_k|data) ∝ P(data|M_k)P(M_k)。预测时对所有模型做加权平均：P(y_new|data) = Σ P(y_new|data,M_k)P(M_k|data)。效果：不选择单一'最优'模型，而是综合所有模型的预测(考虑模型不确定性)——在因子收益预测中BMA通常优于单一模型。"
+  code_snippet: ""
+  code_language: python
+  hints:
+    - "边际似然自动实现了Occam's razor"
+    - "BMA不需要选择单一最优模型"
+  rubric: "边际似然计算(2分)；Bayes Factor比较(1分)；BMA实现(1分)；因子研究应用(1分)"
+  time_limit_seconds: 480
+
+- id: QR_ALT_187
+  category: alternative_data
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在使用专利数据(patent data)构建创新因子时，以下哪种指标最有预测力？\nWhen building innovation factors from patent data, which metric has the strongest predictive power?"
+  options:
+    - "A. 专利引用增速(citation momentum)和专利质量得分(claim breadth, forward citations) / Patent citation momentum and patent quality score"
+    - "B. 专利数量 / Patent count"
+    - "C. 专利申请日期 / Patent filing date"
+    - "D. 专利代理人名称 / Patent attorney name"
+  answer: "A"
+  explanation: "专利数据的因子构建：(1)质量>数量——引用次数多(forward citations)、权利要求范围广(claim breadth)的专利更有价值；(2)引用增速——近期引用快速增加可能预示技术突破或商业化前景(lead indicator)；(3)在A股的应用：中国国家知识产权局(CNIPA)数据+Google Patents；(4)学术支持：Hirshleifer, Hsu, Li (2013) 发现创新效率(citations/R&D)是显著的alpha因子。"
+  code_snippet: ""
+  code_language: python
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QR_RL_188
+  category: reinforcement_learning
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在RL portfolio optimization中，action space的设计对策略表现有什么影响？\nHow does action space design affect RL portfolio optimization performance?"
+  options:
+    - "A. 连续action space(如目标权重向量)比离散action space(如买/卖/持有)更灵活但更难训练 / Continuous action space (target weights) is more flexible but harder to train than discrete (buy/sell/hold)"
+    - "B. Action space设计不影响性能 / Action space design doesn't affect performance"
+    - "C. 离散总是更好 / Discrete is always better"
+    - "D. 不需要定义action space / No need to define action space"
+  answer: "A"
+  explanation: "Action space选择：(1)连续(如输出[w_1, w_2, ..., w_N]的目标权重向量)——灵活但维度高(N只股票)，需要PPO/SAC等连续策略算法。注意添加约束(权重非负、总和为1)。(2)离散(如对每只股票buy/sell/hold)——简单但组合空间爆炸(3^N)，只适合少资产。(3)折中：参数化action(如输出alpha信号的调整因子，组合优化器负责转化为权重)——降低RL的负担。"
+  code_snippet: ""
+  code_language: python
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QR_CS_189
+  category: cross_sectional_analysis
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在因子回测中使用'purged walk-forward cross-validation'相比简单的train/test split的优势是什么？\nWhat is the advantage of purged walk-forward CV over simple train/test split in factor backtesting?"
+  options:
+    - "A. 多个时间窗口的滚动验证+purge gap防止look-ahead bias——比单次split更稳健地评估泛化能力 / Multiple rolling windows + purge gap prevents look-ahead bias — more robust generalization assessment"
+    - "B. 计算更快 / Faster computation"
+    - "C. 不需要验证集 / No validation set needed"
+    - "D. 只用一个时间段 / Uses only one time period"
+  answer: "A"
+  explanation: "Purged walk-forward CV (de Prado, 2018)：(1)将数据按时间分成K个fold——每个fold用之前的数据训练、当前fold验证(time-series split)；(2)Purge——在训练集和验证集之间留gap(如20天)防止标签泄露(因为因子信号和未来收益有时间重叠)；(3)Embargo——验证集之后的数据也不进入后续fold的训练集(防止信息从验证集间接泄露到训练集)；(4)多个fold的平均performance比单次split更稳健——减少了某个特定时间段的'幸存者偏差'。"
+  code_snippet: ""
+  code_language: python
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QR_AML_190
+  category: advanced_ml
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在使用深度学习进行因子合成时，Attention机制相比全连接层的关键优势是什么？\nWhat is the key advantage of Attention mechanism over fully-connected layers for factor combination in deep learning?"
+  options:
+    - "A. Attention动态学习不同因子在不同时间/市场条件下的重要性权重，而非固定的参数 / Attention dynamically learns different factor importance weights across time/market conditions, not fixed parameters"
+    - "B. Attention参数更少 / Attention has fewer parameters"
+    - "C. Attention不需要训练 / Attention doesn't need training"
+    - "D. Attention只适用于NLP / Attention only applies to NLP"
+  answer: "A"
+  explanation: "Attention在因子合成中的价值：(1)全连接层(FC)学习固定的因子权重(如momentum权重=0.3, value=0.2)——在所有时间和市场条件下权重相同；(2)Attention层可以根据输入(当前因子值和市场状态)动态调整权重(如在高波动时自动增加quality权重、减少momentum权重)；(3)可解释性——attention weights可以展示模型在做预测时关注了哪些因子；(4)这本质上是条件因子权重(conditional factor allocation)——学术研究表明因子溢价是时变的(time-varying)，Attention天然适合建模这种时变性。"
+  code_snippet: ""
+  code_language: python
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: QR_NLP_191
+  category: nlp_finance
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在使用Earnings Call Transcript(业绩电话会议记录)进行NLP分析时，以下哪部分信息最有alpha价值？\nWhich part of earnings call transcripts has the most alpha value for NLP analysis?"
+  options:
+    - "A. Q&A环节中管理层的回答——相比准备好的演讲稿，Q&A更能反映真实信息和管理层的不确定性 / Q&A section responses — compared to prepared remarks, Q&A better reveals true information and management uncertainty"
+    - "B. 开场白 / Opening remarks"
+    - "C. 法律免责声明 / Legal disclaimers"
+    - "D. 参会者名单 / Participant list"
+  answer: "A"
+  explanation: "Earnings call的alpha信息分布：(1)Prepared remarks(准备好的演讲)——经过法务和公关审核，信息量有限(大多是已知信息的正面包装)；(2)Q&A环节——分析师的尖锐提问迫使管理层即兴回答，更容易泄露真实信息；(3)NLP分析维度：(a)管理层回答的犹豫程度(使用填充词、停顿)；(b)回避具体数字的程度(deflection)；(c)情感语气的变化(defensive tone)；(4)研究表明Q&A部分的NLP信号对未来股价的预测力是prepared remarks的2-3倍。"
+  code_snippet: ""
+  code_language: python
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QR_CS_192
+  category: cross_sectional_analysis
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在因子有效性检验中，Spearman Rank IC和Pearson IC有什么区别？\nWhat is the difference between Spearman Rank IC and Pearson IC in factor validity testing?"
+  options:
+    - "A. Rank IC使用因子值和收益率的排名计算相关系数——对异常值更稳健；Pearson IC使用原始值——受极端值影响大 / Rank IC uses ranks — more robust to outliers; Pearson IC uses raw values — sensitive to extremes"
+    - "B. 两者完全相同 / They are identical"
+    - "C. Pearson IC更稳健 / Pearson IC is more robust"
+    - "D. Rank IC不能计算 / Rank IC can't be computed"
+  answer: "A"
+  explanation: "Rank IC vs Pearson IC：(1)Rank IC(Spearman)：先将因子值和收益率分别转为排名(rank)，再计算rank correlation。对异常值/非线性关系稳健。(2)Pearson IC：直接计算因子值和收益率的线性相关系数。受极端值影响大(如一只暴涨股票可能主导整个IC)。(3)实践中Rank IC更常用——因子研究关注的是排序能力(哪些股票跑赢/跑输)而非绝对值的线性关系。(4)两者差异大→因子与收益率的关系可能是非线性的。"
+  code_snippet: ""
+  code_language: python
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QR_AML_193
+  category: advanced_ml
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在金融ML中，class imbalance（类别不平衡）问题在因子标签设计中如何处理？\nHow to handle class imbalance in factor label design for financial ML?"
+  options:
+    - "A. 使用分位数标签(如top/bottom 20%为正/负标签)而非固定阈值——确保类别比例平衡 / Use quantile labels (e.g., top/bottom 20% as positive/negative) instead of fixed thresholds"
+    - "B. 忽略不平衡 / Ignore imbalance"
+    - "C. 只预测一个类别 / Only predict one class"
+    - "D. 删除多数类样本 / Delete majority class samples"
+  answer: "A"
+  explanation: "因子标签设计处理不平衡：(1)分位数标签——将股票收益率按横截面分位数(如top 20%=1, bottom 20%=-1, 中间=0)作为标签。保证每天正/负标签数量大致相等。(2)回归vs分类——直接预测收益率(回归)避免了分类的不平衡问题；但分类更稳健(减少异常值影响)。(3)加权损失函数——对少数类(如极端涨跌)赋予更高权重。(4)rank loss——直接优化排序而非分类/回归(如ListNet loss)——最适合因子预测(关注排序而非绝对值)。"
+  code_snippet: ""
+  code_language: python
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QR_CS_194
+  category: cross_sectional_analysis
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在多因子模型的因子风险溢价(factor risk premium)估计中，以下关于Shanken correction的说法哪个正确？\nWhich statement about Shanken correction in factor risk premium estimation is correct?"
+  options:
+    - "A. Shanken correction修正了Fama-MacBeth回归中因估计beta(generated regressors)导致的标准误低估 / Shanken correction adjusts for downward-biased standard errors due to estimated betas (generated regressors) in FM regression"
+    - "B. Shanken correction增加了t统计量 / Shanken correction increases t-statistics"
+    - "C. 不需要任何修正 / No correction needed"
+    - "D. 只在小样本中需要 / Only needed in small samples"
+  answer: "A"
+  explanation: "Shanken (1992) correction：(1)问题：Fama-MacBeth回归的第二步使用第一步估计的beta(而非真实beta)作为解释变量——这是'generated regressors'问题，导致第二步回归的标准误被低估(t统计量被高估)；(2)修正：SE_corrected = SE_FM × (1 + λ'Σ_f^{-1}λ)^{1/2}，其中λ是因子风险溢价向量，Σ_f是因子协方差矩阵；(3)效果：修正后t统计量变小，某些因子可能不再显著。在A股因子研究中这个修正很重要但常被忽略。"
+  code_snippet: ""
+  code_language: python
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: QR_ALT_195
+  category: alternative_data
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在使用内部人交易(insider trading)数据构建因子时，以下哪种信号最强？\nWhen building factors from insider trading data, which signal is strongest?"
+  options:
+    - "A. 多位高管集体净买入(cluster buying)——比单人买入信号更强 / Cluster buying by multiple insiders — stronger signal than single insider buying"
+    - "B. 单人小额买入 / Single small purchase"
+    - "C. 高管卖出 / Executive selling"
+    - "D. 不披露的交易 / Undisclosed trades"
+  answer: "A"
+  explanation: "Insider trading因子的信号强度：(1)Cluster buying(多人同期买入)最强——多位了解公司内情的人同时用自己的钱买入(而非期权行使后卖出)说明他们对公司前景很有信心；(2)卖出信号较弱——高管卖出可能是多种原因(流动性需求、分散化、税务)，不一定反映负面看法；(3)金额大的买入>金额小的(risk-bearing更大)；(4)在A股中：董监高交易需要在交易所公告(delay 2天)，可以从巨潮资讯、Choice等数据源获取。Lakonishok & Lee (2001)证实了内部人净买入的预测力。"
+  code_snippet: ""
+  code_language: python
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QR_CAUS_196
+  category: causal_inference
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在量化研究中，Bunching Analysis（聚束分析）可以用于研究什么问题？\nWhat can Bunching Analysis be used to study in quantitative research?"
+  options:
+    - "A. 分析股票价格/交易量在特定阈值处的异常聚集，推断市场参与者对阈值的行为反应 / Analyze abnormal clustering of prices/volumes at specific thresholds, infer market participants' behavioral responses"
+    - "B. 只用于税收研究 / Only for tax research"
+    - "C. 不适用于金融 / Not applicable to finance"
+    - "D. 分析数据缺失 / Analyze missing data"
+  answer: "A"
+  explanation: "Bunching Analysis在金融中的应用：(1)经典应用(Saez, 2010)：在税收kink point处观察到的taxpayer density异常聚集(bunching)→推断行为弹性。(2)金融应用：价格在整数关口(如$100、¥10)的异常聚集→推断投资者的价格锚定(anchoring)效应；交易量在指数成分调整阈值附近的异常→推断操纵/游戏行为；收益率在零附近的不连续(亏损厌恶)。这是一种利用微观数据中的非连续性推断行为参数的方法。"
+  code_snippet: ""
+  code_language: python
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: QR_AML_197
+  category: advanced_ml
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在使用Variational Autoencoder (VAE) 生成合成金融数据用于因子研究时，主要好处是什么？\nWhat is the main benefit of using VAE to generate synthetic financial data for factor research?"
+  options:
+    - "A. 生成保持统计特性(分布、相关性、厚尾)的合成数据——扩充有限的历史样本用于策略开发和压力测试 / Generate synthetic data preserving statistical properties — augment limited historical samples for strategy development and stress testing"
+    - "B. 替代所有真实数据 / Replace all real data"
+    - "C. VAE只能生成图片 / VAE can only generate images"
+    - "D. 合成数据不需要验证 / Synthetic data needs no validation"
+  answer: "A"
+  explanation: "金融数据生成(VAE/GAN)的价值：(1)历史数据有限——A股只有~30年数据(日频约7500个样本)——对于ML来说样本量太少；(2)合成数据可以：(a)扩充样本用于模型训练(data augmentation)；(b)生成'未发生但可能发生'的极端情景(stress testing)；(c)保护隐私(分享合成数据而非真实交易数据)。(3)VAE优势：隐空间(latent space)有解释性，可以控制生成数据的特征(如'生成高波动regime的数据')。关键：必须验证合成数据的统计特性与真实数据一致(marginal distributions, temporal dependencies, cross-sectional correlations)。"
+  code_snippet: ""
+  code_language: python
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QR_NLP_198
+  category: nlp_finance
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在使用RAG(Retrieval-Augmented Generation)构建金融问答系统时，以下哪种embedding策略对金融文档最有效？\nWhich embedding strategy is most effective for financial documents in a RAG-based financial QA system?"
+  options:
+    - "A. 使用金融领域微调的embedding模型(如FinBERT embedding)，对文档按语义段落分块而非固定长度 / Use finance-domain fine-tuned embeddings (e.g., FinBERT), chunk documents by semantic paragraphs not fixed length"
+    - "B. 使用通用英文embedding / Use generic English embeddings"
+    - "C. 将整个文档作为一个embedding / Embed entire document as one vector"
+    - "D. 不使用embedding直接keyword search / No embedding, just keyword search"
+  answer: "A"
+  explanation: "金融RAG的最佳实践：(1)领域embedding——FinBERT/金融BERT比通用BERT更好地理解金融术语(如'PE ratio'、'alpha decay'的语义)；(2)智能分块——按段落/章节的语义边界分块(而非固定512 token)——保持上下文完整性(一个财务分析不应该被截断)；(3)元数据增强——每个chunk附加日期、公司名、文档类型等metadata用于过滤；(4)Hybrid search——向量检索+BM25关键词检索结合(金融中精确数字匹配很重要)。"
+  code_snippet: ""
+  code_language: python
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: QR_CS_199
+  category: cross_sectional_analysis
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在因子研究中，turnover analysis（换手率分析）揭示了因子的什么特征？\nWhat does turnover analysis reveal about a factor in factor research?"
+  options:
+    - "A. 因子信号的稳定性——高换手意味着因子排名频繁变化(信号噪声大)，低换手意味着信号持续(更可交易) / Signal stability — high turnover means frequent ranking changes (noisy signal), low turnover means persistent signal (more tradeable)"
+    - "B. 因子的收益率 / Factor's return"
+    - "C. 因子的名称 / Factor's name"
+    - "D. 数据库的大小 / Database size"
+  answer: "A"
+  explanation: "因子换手率分析：(1)定义：因子portfolio每期更换的股票比例(如月度换手=本月新入组和退出组的股票数/总数)；(2)高换手因子(如短期反转)——信号变化快→需要频繁换仓→交易成本高→net alpha可能被侵蚀；(3)低换手因子(如value)——信号稳定→换仓少→交易成本低→net alpha保留更多；(4)最优因子选择需要考虑：gross alpha(信号强度)× (1-turnover×cost_per_turnover)→maximize net alpha。因此换手率分析是评估因子'可投资性'的关键维度。"
+  code_snippet: ""
+  code_language: python
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QR_CS_200
+  category: market_microstructure_research
+  difficulty: expert
+  type: open_ended
+  points: 5
+  question: "请讨论A股市场微观结构的独特特征及其对量化因子研究的影响。具体分析：(1)T+1制度；(2)涨跌停板；(3)集合竞价机制；(4)融券限制。每个特征如何影响因子的构建和回测？\nDiscuss unique A-share market microstructure features and their impact on quant factor research: (1) T+1; (2) price limits; (3) call auction; (4) short-selling restrictions."
+  options: []
+  answer: ""
+  explanation: "(1)T+1：限制了日内因子(如intraday reversal)的直接回测——需要使用'底仓T+0'模式(先卖后买)或用ETF/期货替代。回测中需要正确处理买入限制(买入后次日才能卖出)。(2)涨跌停：涨停无法买入(alpha损失)、跌停无法卖出(风险无法对冲)。回测中必须排除涨跌停股票的交易信号(否则回测结果不可实现)。跌停股票的因子值可能带有selection bias(跌停通常伴随极端负面信息)。(3)集合竞价：9:15-9:25的集合竞价价格形成机制不同于连续竞价——基于集合竞价构建的因子(如开盘涨幅)需要理解价格发现机制的差异。9:15-9:20可撤单、9:20-9:25不可撤单→信息含量不同。(4)融券限制：无法充分做空→做空型因子(如short interest)不存在、多空组合回测中空头执行困难。替代：使用相对权重(underweight而非short)或stock-index futures做空market beta。"
+  code_snippet: ""
+  code_language: python
+  hints:
+    - "每个制度特征都影响因子的可实现性(implementability)"
+    - "回测必须模拟这些限制才能得到可靠结果"
+  rubric: "各特征分析(2分)；对因子研究的影响(2分)；回测中的处理建议(1分)"
+  time_limit_seconds: 480

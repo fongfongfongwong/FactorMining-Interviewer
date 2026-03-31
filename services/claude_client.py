@@ -17,8 +17,8 @@ def get_client() -> anthropic.Anthropic:
         except Exception:
             pass
     if not api_key:
-        st.error("❌ 未找到 ANTHROPIC_API_KEY，请在 Admin > 系统设置 中配置，或设置环境变量。")
-        st.stop()
+        st.warning("⚠️ ANTHROPIC_API_KEY 未配置。简历AI解析和开放题评分不可用，选择题评分正常。请在 Streamlit Cloud > Settings > Secrets 中添加。")
+        return None
     return anthropic.Anthropic(api_key=api_key)
 
 

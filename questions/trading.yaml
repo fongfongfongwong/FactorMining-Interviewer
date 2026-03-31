@@ -2835,3 +2835,545 @@
   hints: []
   rubric: ""
   time_limit_seconds: 120
+
+# ============================================================
+# ADDITIONAL TR_169 - TR_200 (32 more questions to reach 200)
+# ============================================================
+
+- id: TR_EXEC_169
+  category: execution_algorithms
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在算法执行中，Aggressive In-The-Money (AIM) 策略的逻辑是什么？\nWhat is the logic of the Aggressive In-The-Money execution strategy?"
+  options:
+    - "A. 当实时价格优于预期均价(in-the-money)时加速执行，价格不利时减速 / Accelerate execution when real-time price is better than expected average, slow down when unfavorable"
+    - "B. 固定速度执行 / Execute at fixed speed"
+    - "C. 只在收盘时执行 / Only execute at close"
+    - "D. 随机执行 / Random execution"
+  answer: "A"
+  explanation: "AIM策略(也称adaptive/opportunistic策略)：(1)维护一个benchmark轨迹(如VWAP轨迹)和当前执行进度；(2)当市场价格有利(低于arrival price for buys)时提高执行速度(opportunistic)——抓住好价格；(3)当价格不利时放慢执行——等待价格回落；(4)约束：必须在截止时间前完成执行(不能无限等待)。本质上是在TWAP/VWAP的基础上加入价格敏感性——实证表明AIM在大多数场景下优于纯TWAP/VWAP。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_HFT_170
+  category: hft_concepts
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在HFT做市中，inventory management（库存管理）的Avellaneda-Stoikov模型的核心思想是什么？\nWhat is the core idea of the Avellaneda-Stoikov model for inventory management in HFT market making?"
+  options:
+    - "A. 根据当前库存偏移(inventory skew)动态调整bid/ask报价——库存偏多时降低ask(鼓励卖出)、提高bid(抑制买入) / Dynamically adjust bid/ask based on inventory skew — lower ask to encourage selling, raise bid to discourage buying when inventory is long"
+    - "B. 固定bid-ask spread / Fixed bid-ask spread"
+    - "C. 不管理库存 / No inventory management"
+    - "D. 只在一侧报价 / Only quote on one side"
+  answer: "A"
+  explanation: "Avellaneda-Stoikov (2008) 模型：(1)做市商的最优报价取决于：当前库存q、风险厌恶γ、剩余时间T-t、波动率σ；(2)最优中间价(reference price) = mid_price - q × γ × σ² × (T-t)——库存偏多时参考价下移(倾向出货)；(3)最优spread = 2/γ × ln(1+γ/κ) + γσ²(T-t)——风险厌恶越大/波动越大→spread越宽；(4)实际应用中κ(订单到达率参数)从historical fill data估计。这是HFT做市策略的理论基础。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: TR_CROSS_171
+  category: cross_asset_trading
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在跨资产交易中，Commodity-Equity pair trading的典型示例是什么？\nWhat is a typical example of commodity-equity pair trading in cross-asset strategies?"
+  options:
+    - "A. 原油价格上涨→做多石油股(如中石油)做空航空股(如南方航空)——利用commodity敞口差异 / Oil price up → long oil stocks, short airline stocks — exploit different commodity exposures"
+    - "B. 随机配对 / Random pairing"
+    - "C. 只做商品 / Only trade commodities"
+    - "D. 只做股票 / Only trade stocks"
+  answer: "A"
+  explanation: "Commodity-Equity pair trading：(1)逻辑：某些股票是商品价格的净受益者(生产者)，另一些是净受害者(消费者)；(2)油价上涨→石油公司利润增加(做多)+航空公司成本增加(做空)；(3)金价上涨→黄金矿业公司(做多)+珠宝零售(成本压力，做空)；(4)铜价→铜矿公司(做多)+电力公司(成本，做空)；(5)优势：比单纯的商品多空更灵活(股票有alpha来源)、可以利用股票市场的流动性(比某些商品期货流动性好)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_OPT_172
+  category: options_strategies
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Calendar Spread（日历价差）策略的盈利条件是什么？\nWhat is the profit condition for a Calendar Spread strategy?"
+  options:
+    - "A. 标的价格在行权价附近波动+时间衰减(theta)对近月卖出期权有利+隐含波动率上升 / Underlying stays near strike + theta benefits short near-month + implied volatility rises"
+    - "B. 标的大幅上涨 / Large underlying rally"
+    - "C. 波动率下降 / Volatility decrease"
+    - "D. 标的大幅下跌 / Large underlying decline"
+  answer: "A"
+  explanation: "Calendar Spread(买入远月call/put+卖出近月同行权价call/put)：(1)Theta收益：近月期权theta衰减快(对short有利)，远月衰减慢→净theta为正(近月到期前)；(2)Vega敞口：净做多vega→IV上升有利(远月vega>近月vega)；(3)最大利润：标的价格在行权价附近(近月期权到期为ATM，时间价值损失最大)；(4)风险：标的大幅偏离行权价→两个期权都变深度OTM或ITM→价差缩小。适合预期低波动+IV可能上升的场景。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_REG_173
+  category: regulatory
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在量化交易中，best execution obligation（最佳执行义务）的含义是什么？\nWhat does the best execution obligation mean in quantitative trading?"
+  options:
+    - "A. 经纪人/资产管理者有义务在综合考虑价格、成本、速度、执行概率等因素后为客户获取最优的执行结果 / Brokers/managers must obtain the best possible execution considering price, cost, speed, and likelihood of execution"
+    - "B. 必须获得最低价格 / Must get the lowest price"
+    - "C. 只需要最快速度 / Only need fastest speed"
+    - "D. 不需要考虑执行质量 / Don't need to consider execution quality"
+  answer: "A"
+  explanation: "Best Execution义务(MiFID II Article 27; SEC Rule 606)：(1)综合评估维度：价格(price improvement)、总成本(explicit+implicit costs)、执行速度、执行概率(fill rate)、结算条件；(2)量化基金的责任：选择最优执行venue(交易所/暗池/broker)、使用合适的算法(TWAP/VWAP/IS)、定期进行TCA(Transaction Cost Analysis)证明执行质量；(3)记录保存：保留所有执行决策的依据(为什么选择特定venue/算法)；(4)A股：中国基金业协会也对基金管理人有类似的交易执行管理要求。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_MACRO_174
+  category: macro_trading
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在宏观交易中，PMI(采购经理指数)作为经济领先指标的作用是什么？\nWhat is the role of PMI as a leading economic indicator in macro trading?"
+  options:
+    - "A. PMI>50表示制造业扩张，<50表示收缩——PMI的变化方向比水平更有预测力(momentum signal) / PMI>50 indicates expansion, <50 contraction — direction of change is more predictive than level"
+    - "B. PMI只反映过去 / PMI only reflects the past"
+    - "C. PMI不影响金融市场 / PMI doesn't affect markets"
+    - "D. PMI只适用于美国 / PMI only applies to the US"
+  answer: "A"
+  explanation: "PMI在宏观交易中的应用：(1)月初发布(通常每月1号)→是最早的经济活动指标(比GDP早2个月)；(2)交易信号：PMI momentum(ΔPM I)比PMI水平更有预测力——PMI从48升到49(改善)比从55降到54(恶化)对市场影响更大；(3)sub-indices更有价值：new orders(最领先)、production、employment、prices paid(通胀先行)；(4)全球PMI对比：美国ISM vs 中国财新PMI vs 欧洲PMI→判断全球经济同步性。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_QP_175
+  category: quant_portfolio
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在量化组合中使用robust optimization（鲁棒优化）的目的是什么？\nWhat is the purpose of robust optimization in quantitative portfolios?"
+  options:
+    - "A. 在输入参数(预期回报、协方差)存在估计误差的情况下，找到在最差情况下表现最好的组合 / Find portfolios that perform best in the worst case when input parameters have estimation errors"
+    - "B. 最大化预期收益 / Maximize expected return"
+    - "C. 忽略参数不确定性 / Ignore parameter uncertainty"
+    - "D. 使用固定权重 / Use fixed weights"
+  answer: "A"
+  explanation: "Robust Optimization：(1)传统MVO假设输入参数精确→但实际上预期回报和协方差有估计误差→MVO对这些误差极度敏感(garbage in, garbage out)；(2)Robust approach：定义参数的不确定性集合(uncertainty set)(如μ∈[μ̂-ε, μ̂+ε])，在最差参数实现下最大化收益(maximin)；(3)效果：权重更分散、更稳定(不会因为微小的输入变化剧烈调整)、样本外表现通常更好；(4)等价于增加了'怀疑'因子——对高估的高回报资产减少配置(类似收缩估计)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_CROSS_176
+  category: cross_asset_trading
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在跨资产risk premia harvesting策略中，以下哪种风险溢价在经济学上有最强的理论基础？\nWhich risk premium has the strongest economic rationale in cross-asset risk premia harvesting?"
+  options:
+    - "A. Equity Risk Premium——承担股票市场风险的补偿，有最长的历史数据支持(200+年) / Equity Risk Premium — compensation for bearing stock market risk, 200+ years of supporting data"
+    - "B. 彩票效应溢价 / Lottery premium"
+    - "C. 日历效应 / Calendar effect"
+    - "D. 周五效应 / Friday effect"
+  answer: "A"
+  explanation: "Cross-asset risk premia按理论基础强度排序：(1)Equity Risk Premium(~5-7%年化)——最强，经济增长的收益权、风险承担的补偿；(2)Term Premium(~1-2%)——承担利率久期风险的补偿；(3)Credit Premium(~1-3%)——承担违约风险的补偿；(4)Carry(FX/commodity, ~2-4%)——相对较强(利率差异、存储成本)；(5)Value/Momentum(~2-5%)——行为金融学解释(过度反应/反应不足)较强但非风险补偿；(6)日历效应等——理论基础最弱，可能是数据挖掘产物。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_OPT_177
+  category: options_strategies
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在使用options做Tail Risk策略时，以下关于'volatility smile dynamics'的说法哪个正确？\nWhich statement about volatility smile dynamics in tail risk option strategies is correct?"
+  options:
+    - "A. 市场下跌时smile变陡(OTM put IV相对ATM大幅上升)——做多OTM put的vega盈利超过简单的delta盈利 / During market drops, smile steepens (OTM put IV rises more than ATM) — long OTM put vega gains exceed simple delta gains"
+    - "B. Smile不随市场变化 / Smile doesn't change with market"
+    - "C. 下跌时所有IV同幅上升 / All IVs rise equally during drops"
+    - "D. Smile只在上涨时变化 / Smile only changes during rallies"
+  answer: "A"
+  explanation: "Vol smile dynamics在尾部事件中：(1)市场平静时skew(OTM put vs ATM IV差异)相对温和；(2)市场下跌时skew急剧加深——OTM put IV可能从25%升到60%而ATM IV只从20%升到35%→OTM put的IV涨幅更大(skew steepening)；(3)持有OTM put的盈利来源：(a)Delta(标的下跌→put价值增加)+(b)Vega(IV上升→put价值增加)+(c)Vanna(skew加深→OTM put的IV涨更多)。(c)在极端事件中可能是最大的盈利来源(convexity gain)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: TR_EXEC_178
+  category: execution_algorithms
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在算法交易中，'market impact decay'（市场冲击衰减）的概念是什么？\nWhat is 'market impact decay' in algorithmic trading?"
+  options:
+    - "A. 交易导致的临时性价格冲击会随时间部分恢复——永久冲击只占总冲击的一部分 / Temporary price impact from trading partially reverts over time — permanent impact is only a fraction of total impact"
+    - "B. 市场冲击不会衰减 / Market impact doesn't decay"
+    - "C. 价格永远不恢复 / Price never recovers"
+    - "D. 衰减不影响执行策略 / Decay doesn't affect execution strategy"
+  answer: "A"
+  explanation: "Market impact分解：(1)Temporary impact——由交易造成的短期供需失衡(如大额买入推高价格)——交易完成后部分恢复(如30分钟内恢复50-70%)；(2)Permanent impact——由交易传递的信息内容(知情交易)导致的永久价格变化——不会恢复；(3)总impact = temporary + permanent。(4)对执行策略的影响：(a)如果预期impact主要是temporary→放慢执行(让价格在两次交易之间恢复)；(b)如果信息敏感(怕被抢跑)→加快执行。Almgren模型中用decay kernel φ(t)建模衰减。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_MACRO_179
+  category: macro_trading
+  difficulty: senior
+  type: open_ended
+  points: 5
+  question: "请分析量化宏观策略在2020-2023年的表现和教训。具体讨论：(1)2020年3月COVID暴跌+V型反转中趋势策略的表现；(2)2022年美联储加息周期中carry策略的表现；(3)从中学到的策略设计经验。\nAnalyze quant macro strategy performance 2020-2023: (1) March 2020 crash and V-recovery impact on trend; (2) 2022 rate hike cycle impact on carry; (3) design lessons learned."
+  options: []
+  answer: ""
+  explanation: "(1)2020年3月：趋势策略初期(2月底-3月中)表现优异——做空股指+做多债券随市场暴跌获利。但V型反转(3月底-4月)造成巨大亏损——策略仍持有空头头寸时市场急剧反弹。教训：纯趋势策略无法应对V型反转，需要(a)更快的信号(如用5天趋势替代200天)；(b)明确的stop-loss限制空头持续时间；(c)配合均值回归信号(在extreme moves后减仓)。(2)2022年加息：传统FX carry(做多高息新兴市场货币)亏损——美联储加息使美元走强+新兴市场资金外流。但commodity carry(做多backwardation品种如能源)表现良好——能源价格因俄乌冲突飙升。教训：carry不是免费的午餐——需要(a)分散carry来源(不只FX)；(b)监控央行政策变化；(c)在carry拥挤时减仓。(3)设计经验：(a)策略多样化——trend+carry+value的组合在各环境中更稳健；(b)快慢信号混合——快信号捕捉转折、慢信号捕捉趋势；(c)drawdown control(如CPPI)——限制极端亏损。"
+  hints:
+    - "V型反转是趋势策略的天敌"
+    - "利率环境变化对carry策略影响巨大"
+  rubric: "2020年分析(1分)；2022年分析(1分)；教训总结(2分)；策略改进建议(1分)"
+  time_limit_seconds: 420
+
+- id: TR_CRYPTO_180
+  category: crypto_market_making
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在加密货币做市中，oracle manipulation risk对DeFi做市商的影响是什么？\nHow does oracle manipulation risk affect DeFi market makers?"
+  options:
+    - "A. 攻击者操纵价格预言机(oracle)使DeFi协议以错误价格执行交易——做市商可能被以不公平价格成交 / Attackers manipulate price oracles causing DeFi protocols to execute at wrong prices — market makers may trade at unfair prices"
+    - "B. Oracle不影响做市 / Oracle doesn't affect market making"
+    - "C. 只影响用户不影响做市商 / Only affects users, not market makers"
+    - "D. Oracle manipulation不存在 / Oracle manipulation doesn't exist"
+  answer: "A"
+  explanation: "Oracle manipulation风险：(1)DeFi协议(如Aave, GMX)依赖价格预言机(Chainlink, TWAP)获取资产价格→如果oracle被操纵(如在低流动性时段flashloan攻击TWAP)，协议以错误价格执行清算/交易；(2)做市商影响：(a)LP在AMM中以错误价格被套利(如被以低于真实价格买走资产)；(b)lending protocol中的清算可能以不公平价格执行；(3)对策：使用多源oracle(Chainlink+TWAP+band protocol)、设置价格偏差阈值(deviation circuit breaker)、监控oracle lag(延迟)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_QP_181
+  category: quant_portfolio
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化组合构建中，'sector neutrality constraint'（行业中性约束）的目的是什么？\nWhat is the purpose of a sector neutrality constraint in quantitative portfolio construction?"
+  options:
+    - "A. 确保组合的行业权重与基准相同——隔离选股alpha，消除行业配置带来的跟踪误差 / Ensure portfolio sector weights match benchmark — isolate stock selection alpha, eliminate sector allocation tracking error"
+    - "B. 只投资一个行业 / Invest in one sector only"
+    - "C. 增加行业偏离 / Increase sector deviation"
+    - "D. 不做任何行业约束 / No sector constraint"
+  answer: "A"
+  explanation: "行业中性的价值：(1)将alpha来源限制为个股选择(stock selection)——而非行业配置(sector allocation)；(2)如果因子信号(如value)自然偏向某些行业(如银行)，不做行业中性则portfolio是在做行业赌注(bet on banking)而非选股；(3)实现：在优化器中约束Σ(w_i * sector_dummy_j) = Σ(w_bench_i * sector_dummy_j)对所有行业j；(4)trade-off：行业中性会损失一些alpha(如果行业配置本身有信息)但降低了行业风险(如某行业政策突变)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_OPT_182
+  category: options_strategies
+  difficulty: expert
+  type: show_work
+  points: 5
+  question: "一个期权做市商的portfolio有以下总Greeks：Delta=+200, Gamma=-50, Vega=-30, Theta=+8。(1)解释当前portfolio的风险特征；(2)如果标的价格突然下跌3%（从100到97），估算P&L；(3)如何对冲Gamma和Vega风险？\nAn option market maker's portfolio: Delta=+200, Gamma=-50, Vega=-30, Theta=+8. (1) Explain risk profile; (2) Estimate P&L if underlying drops 3% (100→97); (3) How to hedge Gamma and Vega?"
+  options: []
+  answer: "(1) 风险特征：Delta=+200→net long方向(市场涨赚跌亏)；Gamma=-50→short gamma(大幅波动不利)；Vega=-30→short vega(波动率上升不利)；Theta=+8→赚取时间衰减。总体是卖期权(short vol)的典型profile——赚小钱(theta)但承受大波动和高IV的风险。\n\n(2) P&L估算(ΔS=-3)：ΔP ≈ Delta×ΔS + 0.5×Gamma×ΔS² + Theta×Δt(假设1天)。ΔP ≈ 200×(-3) + 0.5×(-50)×9 + 8 = -600 - 225 + 8 = -817。另外如果IV在下跌中飙升(假设Δσ=+5%)：Vega P&L = -30 × 5 = -150。总P&L ≈ -817 - 150 = -967。\n\n(3) 对冲：(a)Gamma对冲——买入ATM期权(ATM期权gamma最大)增加+50 gamma使净gamma=0；但这也增加了theta支出和可能改变vega。(b)Vega对冲——买入远月期权(远月vega大)增加+30 vega。(c)实际操作中使用optimization找到最小成本的对冲组合。"
+  explanation: "这道题测试对Greeks组合风险的理解。关键：(1)short gamma+short vega是最危险的组合——市场突然大幅下跌时delta亏损+gamma加速亏损+IV飙升的vega亏损三重打击；(2)theta是'保费'但在尾部事件中远不够补偿。这就是为什么2018年2月VIX spike中很多short vol策略爆仓。"
+  hints:
+    - "Short gamma意味着delta随价格变化加速恶化"
+    - "下跌时IV通常上升(vega也亏损)"
+  rubric: "风险特征(1分)；P&L计算(2分)；IV影响(1分)；对冲方案(1分)"
+  time_limit_seconds: 360
+
+- id: TR_HFT_183
+  category: hft_concepts
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在高频数据处理中，event time（事件时间）vs clock time（时钟时间）的选择如何影响分析？\nHow does the choice of event time vs clock time affect high-frequency data analysis?"
+  options:
+    - "A. Event time(如按成交量/交易笔数分桶)比clock time(如按秒/分钟)更能捕捉市场活跃度的变化 / Event time (volume/trade-bucketed) better captures market activity changes than clock time (second/minute-based)"
+    - "B. 两者完全相同 / They are identical"
+    - "C. Clock time总是更好 / Clock time is always better"
+    - "D. Event time不可用 / Event time is not usable"
+  answer: "A"
+  explanation: "Event time vs Clock time(Easley, Lopez de Prado, O'Hara, 2012)：(1)Clock time(如1分钟bar)——每分钟一个样本，不管该分钟内成交了多少。问题：高活跃时段(如开盘)1分钟内有1000笔成交，低活跃时段(如午休)1分钟只有10笔→同样的时间bar信息量差异巨大。(2)Event time(如每1000手成交一个bar)——每个bar包含相同的交易信息量。优势：统计特性更稳定(如收益率更接近正态分布)、对VPIN等信息指标更准确。在因子挖掘和执行算法中event time越来越受欢迎。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_MACRO_184
+  category: macro_trading
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在宏观量化中，'nowcasting'（即时预测）GDP的方法论是什么？\nWhat is the methodology of GDP 'nowcasting' in quantitative macro?"
+  options:
+    - "A. 使用高频数据(如PMI、就业、消费指标)通过因子模型实时估算当季GDP——弥补GDP滞后2个月发布的缺陷 / Use high-frequency data (PMI, employment, consumption) via factor models to estimate current-quarter GDP in real time"
+    - "B. 只用过去的GDP数据 / Only use past GDP data"
+    - "C. 等GDP发布再交易 / Wait for GDP release to trade"
+    - "D. 不需要预测GDP / No need to forecast GDP"
+  answer: "A"
+  explanation: "GDP Nowcasting (Giannone, Reichlin, Small, 2008; NY Fed Nowcast)：(1)挑战：GDP是季度数据、滞后2个月发布——对交易来说太慢；(2)方法：Dynamic Factor Model将100+个高频指标(日/周/月频)提取共同因子，实时估算当季GDP；(3)数据：PMI(月初)、就业(周)、零售(月中)、工业产出(月底)等逐步更新→nowcast随新数据到达不断修正；(4)在宏观交易中：nowcast的revision方向(上修/下修)比水平更有交易价值——surprise factor驱动资产价格变化。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: TR_QP_185
+  category: quant_portfolio
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在量化投资中，'capacity analysis'（容量分析）为什么重要？\nWhy is capacity analysis important in quantitative investing?"
+  options:
+    - "A. 确定策略在多大的AUM下alpha不会被市场冲击和拥挤效应显著侵蚀 / Determine at what AUM level alpha is not significantly eroded by market impact and crowding"
+    - "B. 容量不影响收益 / Capacity doesn't affect returns"
+    - "C. 所有策略容量无限 / All strategies have unlimited capacity"
+    - "D. 容量只影响小基金 / Capacity only affects small funds"
+  answer: "A"
+  explanation: "策略容量分析：(1)随着AUM增加→交易量增加→市场冲击增加→net alpha下降；(2)容量上限(capacity constraint)：alpha被市场冲击完全侵蚀时的AUM——small-cap momentum策略可能只有5亿，large-cap value策略可能100亿；(3)估算方法：模拟不同AUM下的执行成本(参与率×ADV×impact function)，找到net alpha归零的AUM点；(4)实际影响：很多优秀的小市值因子(如A股小盘股reversal)在实际中因容量限制无法管理大规模资金——capacity是策略可行性的核心维度。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_REG_186
+  category: regulatory
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化交易中，Pre-Trade Risk Controls（交易前风控）的最低要求包括哪些？\nWhat are the minimum pre-trade risk controls required in quantitative trading?"
+  options:
+    - "A. 价格合理性检查+订单数量上限+日净头寸限制+资金使用限制 / Price reasonability check + order size limits + daily net position limit + capital usage limit"
+    - "B. 不需要任何检查 / No checks needed"
+    - "C. 只在事后检查 / Only post-trade checks"
+    - "D. 只检查价格 / Only check price"
+  answer: "A"
+  explanation: "Pre-trade risk controls(MiFID II/SEC Rule 15c3-5要求)：(1)Price collar——订单价格偏离当前市场中间价超过X%(如5%)则拒绝；(2)Order size limit——单笔订单不超过日均交易量的X%(如5%)或绝对金额上限；(3)Position limit——单只股票/总portfolio的净头寸不超过设定限额；(4)Capital limit——保证金使用不超过可用资金的X%；(5)Kill switch——紧急情况一键取消所有未成交订单。这些检查在订单发出前(pre-trade)自动执行，延迟通常<1μs。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_CROSS_187
+  category: cross_asset_trading
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在使用A/H股价差进行跨境套利时，以下哪个因素是最大的限制？\nWhat is the biggest limitation when arbitraging the A/H share premium?"
+  options:
+    - "A. 资本管制——内地投资者不能自由投资港股(需通过互联互通额度)，且融券做空A股困难 / Capital controls — mainland investors cannot freely invest in HK (need Stock Connect quota), and shorting A-shares is difficult"
+    - "B. 价差不存在 / No spread exists"
+    - "C. 手续费太高 / Fees too high"
+    - "D. 两地监管完全相同 / Identical regulation"
+  answer: "A"
+  explanation: "A/H溢价套利的限制：(1)资本管制——A股和H股市场分割，资金不能自由流动(互联互通有每日额度)→价差可以长期存在(不会被套利消除)；(2)做空A股困难——融券标的有限、费用高、期限短→无法做空高估的A股(只能从H股端做多低估的)；(3)税收差异——内地资本利得税和股息税与香港不同；(4)投资者结构——A股以散户为主(情绪驱动溢价)，H股以机构为主。这些限制使A/H溢价虽然存在但难以直接套利→更适合作为市场情绪的指标。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_OPT_188
+  category: options_strategies
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Protective Put（保护性看跌期权）策略相比直接止损的优势是什么？\nWhat is the advantage of a Protective Put over a direct stop-loss order?"
+  options:
+    - "A. Put在gap down(跳空下跌)时仍然提供保护，而止损单可能在跳空后以远低于止损价成交 / Put protects during gap downs, while stop-loss may execute far below the stop price after a gap"
+    - "B. Put没有成本 / Put has no cost"
+    - "C. 止损总是更好 / Stop-loss is always better"
+    - "D. 两者效果完全相同 / Both have identical effect"
+  answer: "A"
+  explanation: "Protective Put vs Stop-loss：(1)Gap risk——如果坏消息在非交易时间发布(如周末),周一开盘跳空10%→stop-loss单在跳空后成交(滑点巨大)；put期权不受gap影响(payoff在到期日按实际价格计算)。(2)Whipsaw——价格短暂触及止损后反弹→被stop out后错过反弹；put不会被触发(持有到期)。(3)成本：put需要支付premium(确定的保险费)；stop-loss看似免费但有隐含成本(gap risk和whipsaw)。(4)灵活性：put可以选择保护程度(行权价)和时间(到期日)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_MACRO_189
+  category: macro_trading
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在量化宏观中，'global liquidity cycle'（全球流动性周期）对跨资产回报有什么系统性影响？\nWhat systematic impact does the global liquidity cycle have on cross-asset returns in quant macro?"
+  options:
+    - "A. 全球央行资产负债表扩张(QE)→推高所有风险资产价格(正相关性增加)；收缩(QT)→风险资产承压 / Central bank balance sheet expansion (QE) lifts all risk assets; contraction (QT) pressures risk assets"
+    - "B. 流动性不影响资产价格 / Liquidity doesn't affect prices"
+    - "C. 只影响债券 / Only affects bonds"
+    - "D. 只影响新兴市场 / Only affects emerging markets"
+  answer: "A"
+  explanation: "全球流动性周期的影响：(1)QE(量化宽松)——央行购买债券→释放流动性→降低利率→压低风险溢价→推高股票、债券、房地产、商品→资产相关性增加(所有资产同涨)；(2)QT(量化紧缩)——反向：流动性收缩→利率上升→风险溢价回升→资产价格承压→2022年'everything sell-off'；(3)衡量指标：G4(美欧日中)央行资产负债表总额、M2增速、银行信贷增速。(4)交易策略：跟踪全球流动性指标→流动性扩张时overweight risk assets, 收缩时underweight。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_EXEC_190
+  category: execution_algorithms
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在使用Smart Order Router (SOR) 跨多个交易场所执行时，最关键的路由决策因素是什么？\nWhat is the most critical routing decision factor in Smart Order Router execution across multiple venues?"
+  options:
+    - "A. 综合考虑各场所的报价深度(depth)、费用(maker/taker)和历史fill rate / Consider each venue's depth, fee structure (maker/taker), and historical fill rate"
+    - "B. 只看价格 / Only look at price"
+    - "C. 随机选择场所 / Random venue selection"
+    - "D. 始终选同一场所 / Always use the same venue"
+  answer: "A"
+  explanation: "SOR路由决策：(1)Best price——Reg NMS/MiFID II要求优先路由到最优价格的venue(Order Protection Rule)；(2)Depth——即使价格相同，depth深的venue fill probability更高；(3)Fee structure——Maker venue给rebate(适合passive limit orders)；Inverted venue给taker rebate(适合aggressive orders)；(4)Fill rate——历史数据显示某些venue对特定股票/时段fill率更高；(5)Latency——延迟低的venue更适合aggressive orders(避免被抢跑)。现代SOR使用ML模型学习最优路由策略。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_QP_191
+  category: quant_portfolio
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化组合中使用Transaction Cost Model (TCM) 的目的是什么？\nWhat is the purpose of a Transaction Cost Model in quantitative portfolios?"
+  options:
+    - "A. 在组合优化中将交易成本纳入目标函数——最大化扣除交易成本后的净alpha / Include transaction costs in the optimization objective — maximize net alpha after costs"
+    - "B. 忽略交易成本 / Ignore transaction costs"
+    - "C. 只计算手续费 / Only calculate commission"
+    - "D. 用固定成本假设 / Use fixed cost assumption"
+  answer: "A"
+  explanation: "TCM in Portfolio Optimization：(1)目标函数从max(α'w)变为max(α'w - TC(w-w_prev))；(2)TC模型通常包括：固定成本(commission+tax)+线性成本(spread)+非线性成本(market impact ∝ (trade_size/ADV)^0.5)；(3)效果：优化器会自动权衡alpha收益和交易成本——对于只有小alpha改善但需要大额交易的调仓，优化器会选择不调；(4)Almgren模型的market impact: cost = σ × (trade/ADV)^0.6是常用的非线性TCM。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_MACRO_192
+  category: macro_trading
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在CTA趋势策略中，'time series momentum'和'cross-sectional momentum'有什么区别？\nWhat is the difference between time-series momentum and cross-sectional momentum in CTA trend strategies?"
+  options:
+    - "A. Time-series: 每个资产看自身过去收益(正则做多、负则做空)；Cross-sectional: 比较不同资产的相对表现(做多表现好的、做空表现差的) / TS: each asset's own past return determines direction; CS: compare relative performance across assets"
+    - "B. 两者完全相同 / They are identical"
+    - "C. Time-series不适用于CTA / TS doesn't apply to CTA"
+    - "D. Cross-sectional不存在 / CS doesn't exist"
+  answer: "A"
+  explanation: "两种momentum的区别(Moskowitz, Ooi, Pedersen, 2012)：(1)Time-series momentum——每个资产独立：过去12个月收益>0则做多，<0则做空。CTA主要使用TS momentum(如Managed Futures)。可以是net long或net short。(2)Cross-sectional momentum——相对排名：在一组资产中做多过去表现最好的N个、做空最差的N个。总头寸通常是dollar-neutral。(3)关键区别：TS momentum可以对所有资产同时做多(如牛市中)或同时做空(如熊市)；CS momentum总是多空平衡(零敞口)。两者的alpha来源不同但有重叠。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_HFT_193
+  category: hft_concepts
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在量化交易中，'microstructure alpha'的来源主要包括哪些？\nWhat are the main sources of microstructure alpha in quantitative trading?"
+  options:
+    - "A. 订单流不平衡信号+盘口形态识别+短期价格过度反应(mean reversion)的微观结构预测 / Order flow imbalance signals + order book shape patterns + short-term overreaction (mean reversion) microstructure prediction"
+    - "B. 基本面分析 / Fundamental analysis"
+    - "C. 宏观经济指标 / Macro indicators"
+    - "D. 财报数据 / Earnings data"
+  answer: "A"
+  explanation: "微观结构alpha来源：(1)Order flow imbalance——买方主导的订单流(aggressive buying)预测短期价格上涨(信息传导)；(2)Order book shape——盘口买卖深度的不对称性预测短期价格方向(如bid depth >> ask depth→短期上涨)；(3)Short-term mean reversion——tick级别的价格过度反应(如大单推动价格偏离→几秒内部分回归)；(4)Lead-lag relationship——流动性好的asset price先动→predict流动性差的asset；(5)这些alpha的半衰期极短(秒到分钟级)，需要低延迟系统才能捕获。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_QP_194
+  category: quant_portfolio
+  difficulty: expert
+  type: open_ended
+  points: 5
+  question: "请讨论量化组合管理中'alpha叠加'(alpha stacking)的方法论。具体分析：(1)如何将不同频率(日频/周频/月频)的alpha信号组合？(2)如何处理不同信号之间的相关性？(3)如何确定每个信号的最优权重？\nDiscuss alpha stacking methodology: (1) combining signals of different frequencies; (2) handling signal correlations; (3) determining optimal signal weights."
+  options: []
+  answer: ""
+  explanation: "Alpha Stacking方法：(1)多频率信号组合——日频信号(如日内反转)半衰期短→高换手率→适合小部分组合；月频信号(如基本面)半衰期长→低换手率→适合大部分组合。组合方式：对各频率信号独立生成z-score后按'信号频率权重'加权(如月频60%、周频30%、日频10%)。(2)相关性处理——(a)信号正交化：将新信号相对已有信号做回归取残差(去除冗余)；(b)PCA：对信号相关矩阵做PCA，使用前N个主成分替代原始信号(降维去噪)；(c)information-theoretic approach：最大化信号组合的MI(mutual information)与未来收益的关系。(3)最优权重——(a)IC加权：w_i = ICIR_i / Σ(ICIR_j)——简单但不考虑信号相关性；(b)最优化：max(α'w) s.t. risk constraint——将信号权重纳入组合优化器；(c)ML方法：XGBoost/NN学习非线性信号组合(但需要purged CV防止过拟合)；(d)Bayesian shrinkage：将ML权重向IC加权收缩(折中)。"
+  hints:
+    - "不同频率的信号需要不同的处理方式"
+    - "信号正交化是防止冗余的关键"
+  rubric: "多频率组合(1分)；相关性处理(2分)；权重确定(1分)；实践考虑(1分)"
+  time_limit_seconds: 420
+
+- id: TR_CROSS_195
+  category: cross_asset_trading
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在进行跨资产相关性分析时，以下关于'tail dependence'(尾部依赖性)的说法哪个正确？\nWhich statement about tail dependence in cross-asset correlation analysis is correct?"
+  options:
+    - "A. 线性相关系数低估了尾部事件中的依赖性——使用copula模型(如Clayton copula)能更准确刻画下尾依赖 / Linear correlation underestimates tail event dependence — copula models (e.g., Clayton) better capture lower tail dependence"
+    - "B. 线性相关性足够 / Linear correlation is sufficient"
+    - "C. 尾部事件中资产完全独立 / Assets are independent in tail events"
+    - "D. Copula不适用于金融 / Copula doesn't apply to finance"
+  answer: "A"
+  explanation: "尾部依赖性(tail dependence)：(1)正常市场：股票和商品相关性可能只有0.2(看似低相关)；(2)危机时(如2008年)：几乎所有资产同时暴跌(相关性→1)——线性相关性无法捕捉这种非线性的依赖结构；(3)Copula建模：Clayton copula专门刻画下尾依赖(lower tail dependence——市场暴跌时的同步性)；Gumbel copula刻画上尾依赖；(4)对组合管理的影响：使用正态copula(忽略尾部依赖)会低估组合的尾部风险→用Clayton copula计算的CVaR通常比正态假设高30-50%。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: TR_REG_196
+  category: regulatory
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在A股量化交易中，以下关于'异常交易行为认定标准'的说法哪个正确？\nWhich statement about abnormal trading behavior standards in A-share quant trading is correct?"
+  options:
+    - "A. 交易所对频繁撤单(如撤单率>50%)、大额封单、尾盘异常交易等有明确的监控标准 / Exchanges have clear monitoring standards for frequent cancellations (e.g., cancel rate >50%), large blocking orders, and abnormal closing trades"
+    - "B. 没有任何标准 / No standards exist"
+    - "C. 只监控散户 / Only monitor retail traders"
+    - "D. 标准全球统一 / Standards are globally uniform"
+  answer: "A"
+  explanation: "A股异常交易监控(上交所/深交所业务规则)：(1)频繁申报撤销——日内大量挂单后撤单(可能构成幌骗)；(2)大额封单——在涨跌停板大量挂单影响价格(可能操纵)；(3)尾盘异常——14:57之后大额交易影响收盘价；(4)对量化的影响：需要确保策略的撤单率、挂单模式不触发监控规则→在策略设计时就内建合规检查(如限制单日撤单率<30%)；(5)2023-2024年证监会加强了对DMA策略和量化异常交易的监管力度。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_OPT_197
+  category: options_strategies
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在期权定价中，put-call parity的核心关系是什么？\nWhat is the core relationship of put-call parity in option pricing?"
+  options:
+    - "A. C - P = S - K*e^(-rT)，call和put价格之差等于标的现价减去行权价的现值 / C - P = S - K*e^(-rT), call-put price difference equals spot minus PV of strike"
+    - "B. C = P / C equals P"
+    - "C. C + P = S / C + P equals S"
+    - "D. Put-call parity不存在 / Put-call parity doesn't exist"
+  answer: "A"
+  explanation: "Put-Call Parity(European options)：C - P = S - K*e^(-rT)，等价地C + K*e^(-rT) = P + S。(1)经济直觉：买一个call+持有K的现金(到期变成K) ≡ 买一个put+持有一股标的；(2)套利应用：如果parity不成立→无风险套利机会(conversion/reversal)——买入便宜的一侧+卖出贵的一侧；(3)做市商应用：可以用put price推算call price(或反向)——减少需要直接定价的期权数量；(4)在A股50ETF期权中检查parity可以发现套利机会(考虑分红和利率)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_QP_198
+  category: quant_portfolio
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在量化指数增强策略中，以下哪种方法论框架最为标准？\nWhat is the most standard methodological framework for quantitative index enhancement strategies?"
+  options:
+    - "A. 在跟踪误差(TE)约束下最大化预期alpha——使用因子信号选股+优化器控制风险 / Maximize expected alpha under TE constraint — use factor signals for stock selection + optimizer for risk control"
+    - "B. 完全复制指数 / Fully replicate the index"
+    - "C. 随机选股 / Random stock picking"
+    - "D. 只做行业配置 / Only sector allocation"
+  answer: "A"
+  explanation: "指数增强标准框架：(1)Alpha模型：多因子合成信号(value+momentum+quality+...)给每只股票一个alpha score；(2)风险模型：Barra/Axioma风险模型估计因子协方差和个股特异风险；(3)优化器：max(α'w) s.t. TE ≤ target(如3%)、行业偏离 ≤ X%、个股偏离 ≤ Y%、换手率 ≤ Z%；(4)目标：在严格控制跟踪误差的前提下获取稳定的超额收益(年化3-8%)。核心挑战：alpha信号的样本外有效性和交易成本控制。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_HFT_199
+  category: hft_concepts
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在评价做市商表现时，'effective spread'和'realized spread'的区别是什么？\nWhat is the difference between 'effective spread' and 'realized spread' in evaluating market maker performance?"
+  options:
+    - "A. Effective spread衡量即时执行成本(trade price vs midpoint)；Realized spread衡量做市商的实际利润(扣除after-trade price movement的adverse selection成本) / Effective spread measures immediate execution cost; Realized spread measures actual MM profit after adverse selection"
+    - "B. 两者完全相同 / They are identical"
+    - "C. Realized spread总是更大 / Realized spread is always larger"
+    - "D. Effective spread包含所有成本 / Effective spread includes all costs"
+  answer: "A"
+  explanation: "Effective vs Realized Spread：(1)Effective spread = 2 × |trade_price - midpoint|——衡量投资者的即时成本(做市商的即时毛利)；(2)Realized spread = 2 × direction × (trade_price - midpoint_after_Δt)——Δt后(如5分钟)价格的变化反映了adverse selection→realized spread = effective spread - adverse selection；(3)做市商的真正利润是realized spread(扣除了知情交易者的'挑选'成本)；(4)如果realized spread < 0→做市商在亏钱(adverse selection > spread收入)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: TR_MACRO_200
+  category: macro_trading
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在宏观量化中，Taylor Rule（泰勒规则）如何用于利率预测和交易？\nHow is the Taylor Rule used for interest rate prediction and trading in quant macro?"
+  options:
+    - "A. 用Taylor Rule估算'应该的'政策利率，与实际利率的偏差可以预测央行下一步动作(加息/降息) / Estimate 'warranted' policy rate via Taylor Rule; deviation from actual rate predicts next central bank move"
+    - "B. Taylor Rule已经过时 / Taylor Rule is outdated"
+    - "C. 只适用于美国 / Only applies to US"
+    - "D. 不能用于交易 / Cannot be used for trading"
+  answer: "A"
+  explanation: "Taylor Rule in Macro Trading：(1)公式：i* = r* + π + 0.5(π-π*) + 0.5(y-y*)，其中r*=自然利率，π=通胀，π*=通胀目标，y-y*=产出缺口；(2)交易应用：计算Taylor Rule隐含的'应该利率'→如果当前利率远低于Taylor Rule(too loose)→预测加息→做空债券(利率上升→债券价格下跌)；(3)变体：各央行可能使用不同权重(如Yellen Rule更偏重就业)；(4)局限：(a)参数(r*, y*)不可直接观测需要估计；(b)央行可能因其他原因偏离Taylor Rule(如金融稳定考虑)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
