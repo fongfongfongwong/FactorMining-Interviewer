@@ -7,7 +7,7 @@ import yaml
 import pandas as pd
 
 from db.database import init_db, get_all_candidates, get_exam_sessions
-from services.exam_engine import TRACK_LABELS, TRACK_FILES, QUESTIONS_DIR, load_track_questions, load_shared_questions
+from services.exam_engine import TRACK_LABELS, TRACK_FILES, QUESTIONS_DIR, load_track_questions, load_shared_questions, load_psychology_questions
 from services.auth import require_role, is_authenticated
 
 init_db()
@@ -79,6 +79,37 @@ with tab1:
     with st.expander(f"📐 数学竞赛题 — {len(math_qs)} 道", expanded=False):
         for q in math_qs[:5]:
             st.markdown(f"- {q.get('question', '?')[:100]}...")
+
+    # Psychology + Character questions
+    psych_all = load_psychology_questions()
+    psych_qs = [q for q in psych_all if "PSY" in q.get("id", "")]
+    char_qs = [q for q in psych_all if "CHR" in q.get("id", "")]
+
+    with st.expander("🧠 心理素质测试 — {} 道".format(len(psych_qs)), expanded=False):
+        if psych_qs:
+            cats = {}
+            for q in psych_qs:
+                c = q.get("category", "unknown")
+                cats[c] = cats.get(c, 0) + 1
+            st.markdown("**类别分布**: " + " | ".join("{}: {}".format(k, v) for k, v in sorted(cats.items())))
+            st.markdown("**示例题目:**")
+            for q in psych_qs[:5]:
+                st.markdown("- {}".format(q.get("question", "?")[:120]))
+        else:
+            st.warning("心理素质题库为空")
+
+    with st.expander("💼 职业素养测试 — {} 道".format(len(char_qs)), expanded=False):
+        if char_qs:
+            cats = {}
+            for q in char_qs:
+                c = q.get("category", "unknown")
+                cats[c] = cats.get(c, 0) + 1
+            st.markdown("**类别分布**: " + " | ".join("{}: {}".format(k, v) for k, v in sorted(cats.items())))
+            st.markdown("**示例题目:**")
+            for q in char_qs[:5]:
+                st.markdown("- {}".format(q.get("question", "?")[:120]))
+        else:
+            st.warning("职业素养题库为空")
 
 # ─── Tab 2: Statistics ───
 with tab2:
