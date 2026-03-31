@@ -1,0 +1,1505 @@
+# =============================================================================
+# Character & Integrity Test Question Bank for Quantitative Finance Roles
+# =============================================================================
+# Target roles: Quant Developer, Quant Researcher, Trader, Portfolio Manager
+# Total questions: 150
+# Categories:
+#   - integrity_ethics (30)
+#   - growth_mindset (25)
+#   - accountability (25)
+#   - work_ethic (25)
+#   - cultural_fit (25)
+#   - leadership_potential (20)
+#
+# Question types: likert_scale, scenario, multiple_choice
+# Bilingual: Chinese + English
+# Reverse-scored items: ~30% of likert items (scoring_direction: reverse)
+# Social desirability detection items included
+# =============================================================================
+
+metadata:
+  version: "1.0.0"
+  total_questions: 150
+  language: "zh-CN / en"
+  assessment_framework: "Character strengths adapted for quantitative finance"
+  scoring_model: "dimensional"
+  estimated_completion_minutes: 45
+  categories:
+    integrity_ethics: 30
+    growth_mindset: 25
+    accountability: 25
+    work_ethic: 25
+    cultural_fit: 25
+    leadership_potential: 20
+
+questions:
+
+  # ===========================================================================
+  # INTEGRITY & ETHICS (30 questions)
+  # ===========================================================================
+
+  - id: CHR_INT_001
+    category: integrity_ethics
+    type: likert_scale
+    question: "即使没有人监督，我也会遵循正确的流程和规范。/ Even when no one is watching, I follow the correct processes and standards."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "评估自律性和内在道德标准。在量化交易中，许多操作是自主进行的，没有实时监督，内在诚信至关重要。/ Assesses self-discipline and internal moral standards. In quantitative trading, many operations are conducted autonomously without real-time supervision; internal integrity is crucial."
+
+  - id: CHR_INT_002
+    category: integrity_ethics
+    type: scenario
+    question: "你发现回测结果中有一个对你有利的数据错误——修正后策略的夏普比率从2.0降为1.2。下周就是向投资委员会汇报的日期。你会？/ You discover a data error in backtesting results that favors your strategy—after correction, the Sharpe ratio drops from 2.0 to 1.2. Next week is the presentation to the investment committee. What would you do?"
+    options:
+      - "A. 修正错误并如实汇报，即使时间紧迫 / Correct the error and report honestly, even though time is tight"
+      - "B. 先用原数据汇报，之后再悄悄修正 / Present with original data first, then quietly correct later"
+      - "C. 修正数据但通过调整其他参数使结果看起来差不多 / Correct the data but adjust other parameters to make results look similar"
+      - "D. 假装没发现这个错误 / Pretend you didn't find the error"
+    scoring: {"A": 4, "B": 1, "C": 1, "D": 1}
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "A是唯一正确答案。B、C、D都属于不同程度的数据造假，在量化金融中是严重的职业道德问题，可能导致巨大的投资损失。/ A is the only correct answer. B, C, D are varying degrees of data fabrication, a serious ethical issue in quantitative finance that could lead to massive investment losses."
+
+  - id: CHR_INT_003
+    category: integrity_ethics
+    type: likert_scale
+    question: "当发现自己的错误可能影响他人时，我会立即主动告知。/ When I discover my mistake might affect others, I immediately and proactively inform them."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "评估错误披露的主动性。在量化系统中，延迟报告错误可能导致级联损失。/ Assesses proactiveness in error disclosure. In quantitative systems, delayed error reporting can cause cascading losses."
+
+  - id: CHR_INT_004
+    category: integrity_ethics
+    type: scenario
+    question: "一位前同事跳槽到竞争对手后，私下向你索要你当前公司的策略参数和特征数据。他表示可以给你一份丰厚的回报。你会？/ A former colleague who moved to a competitor privately asks you for your current company's strategy parameters and feature data. They offer generous compensation. What would you do?"
+    options:
+      - "A. 断然拒绝并向公司合规部门报告此事 / Firmly refuse and report the incident to the company's compliance department"
+      - "B. 拒绝但不报告，不想惹麻烦 / Refuse but don't report, not wanting trouble"
+      - "C. 分享一些不太重要的信息作为人情 / Share some less important information as a favor"
+      - "D. 考虑对方的提议，因为回报很丰厚 / Consider the offer because the compensation is generous"
+    scoring: {"A": 4, "B": 2, "C": 1, "D": 1}
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "A最优，既保护了公司利益又履行了合规义务。B虽然拒绝了但未尽报告义务。C和D都涉及商业秘密泄露，是严重违规。/ A is optimal, protecting company interests and fulfilling compliance obligations. B refuses but doesn't meet reporting duties. C and D both involve trade secret leakage, a serious violation."
+
+  - id: CHR_INT_005
+    category: integrity_ethics
+    type: likert_scale
+    question: "我认为在竞争中使用一些'灰色地带'的手段是可以接受的。/ I believe using some 'gray area' methods in competition is acceptable."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "反向计分。评估道德底线的清晰度。在高度监管的金融行业，灰色地带操作可能演变为严重违规。/ Reverse-scored. Assesses clarity of moral boundaries. In the heavily regulated financial industry, gray-area operations may escalate into serious violations."
+
+  - id: CHR_INT_006
+    category: integrity_ethics
+    type: likert_scale
+    question: "如果一个'白色谎言'能避免团队冲突，我认为这是可以接受的。/ If a 'white lie' can avoid team conflict, I think it's acceptable."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "反向计分。评估诚实度的一致性。即使是善意的谎言也可能侵蚀团队信任，在数据驱动的环境中尤其危险。/ Reverse-scored. Assesses consistency of honesty. Even well-intentioned lies can erode team trust, especially dangerous in data-driven environments."
+
+  - id: CHR_INT_007
+    category: integrity_ethics
+    type: scenario
+    question: "你在研究中意外发现了一个可能带来巨大个人收益的内幕信息（如某上市公司即将并购）。你会？/ During your research, you accidentally discover insider information that could bring huge personal gain (e.g., an upcoming corporate merger). What would you do?"
+    options:
+      - "A. 利用这个信息在个人账户进行交易 / Use this information to trade in your personal account"
+      - "B. 告知朋友或家人让他们交易 / Tell friends or family so they can trade"
+      - "C. 立即报告给合规部门，并在公开前回避相关交易 / Immediately report to the compliance department and avoid related trades until public disclosure"
+      - "D. 不交易但也不报告，当作没看到 / Don't trade but don't report either, pretend you didn't see it"
+    scoring: {"A": 1, "B": 1, "C": 4, "D": 2}
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "C是唯一正确答案。A和B都构成内幕交易，是严重违法行为。D虽未交易但未履行报告义务，也有合规风险。/ C is the only correct answer. A and B constitute insider trading, a serious legal offense. D avoids trading but fails to meet reporting obligations, also posing compliance risk."
+
+  - id: CHR_INT_008
+    category: integrity_ethics
+    type: likert_scale
+    question: "我在面试或工作汇报中从未夸大过自己的成绩。/ I have never exaggerated my achievements in interviews or work reports."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: social_desirability_check
+    dimension: "社会期望性检测 Social Desirability Detection"
+    explanation: "社会期望性检测题。绝大多数人在某些场合都会适度美化自己的表现，绝对的'从未'不太可信。/ Social desirability check. Most people embellish their performance on some occasions; an absolute 'never' is not very credible."
+
+  - id: CHR_INT_009
+    category: integrity_ethics
+    type: likert_scale
+    question: "我会拒绝执行我认为不道德的指令，即使它来自上级。/ I would refuse to execute an instruction I consider unethical, even if it comes from a superior."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "评估对权威的道德独立性。在金融历史中，许多重大丑闻都源于下级盲目服从上级的不当指令。/ Assesses moral independence from authority. In financial history, many major scandals originated from subordinates blindly following superiors' improper instructions."
+
+  - id: CHR_INT_010
+    category: integrity_ethics
+    type: scenario
+    question: "你发现团队中一位同事在策略回报中使用了'前视偏差'（look-ahead bias），导致结果虚高。他是你的好朋友。你会？/ You discover a teammate is using look-ahead bias in strategy returns, causing inflated results. They are a good friend. What would you do?"
+    options:
+      - "A. 视而不见，因为是好朋友 / Look the other way because they're a good friend"
+      - "B. 私下告诉他这个问题，督促他自行修正并汇报 / Privately tell them about the issue and urge them to correct and report it themselves"
+      - "C. 直接向PM报告 / Report directly to the PM"
+      - "D. 在公开会议上指出这个问题 / Point out the issue in a public meeting"
+    scoring: {"A": 1, "B": 4, "C": 3, "D": 2}
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "B最优，平衡了友情和职业道德——给朋友机会自行纠正。C也可接受。A是包庇。D虽正确但方式可能不当。/ B is optimal, balancing friendship and professional ethics—giving the friend a chance to self-correct. C is also acceptable. A is covering up. D is correct but the approach may be inappropriate."
+
+  - id: CHR_INT_011
+    category: integrity_ethics
+    type: likert_scale
+    question: "我在汇报研究结果时会如实呈现所有测试，包括失败的测试。/ When reporting research results, I present all tests honestly, including failed ones."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "评估选择性报告偏差抗性。隐藏失败的测试是p-hacking的一种形式，在因子研究中极其危险。/ Assesses resistance to selective reporting bias. Hiding failed tests is a form of p-hacking, extremely dangerous in factor research."
+
+  - id: CHR_INT_012
+    category: integrity_ethics
+    type: likert_scale
+    question: "结果好的话，过程中的小违规是可以接受的。/ If the result is good, small violations in the process are acceptable."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "反向计分。评估'结果导向'vs'过程导向'的道德观。好的结果不能为不当手段正名，在量化金融中过程合规至关重要。/ Reverse-scored. Assesses 'outcome-oriented' vs 'process-oriented' ethics. Good results don't justify improper means; process compliance is crucial in quantitative finance."
+
+  - id: CHR_INT_013
+    category: integrity_ethics
+    type: scenario
+    question: "你注意到公司的风控系统有一个漏洞，可以让你的策略绕过某些限制来提升表现。这个漏洞没有被其他人发现。你会？/ You notice the company's risk control system has a loophole that could let your strategy bypass certain limits to improve performance. No one else has discovered this loophole. What would you do?"
+    options:
+      - "A. 利用这个漏洞来提升策略表现 / Exploit the loophole to improve strategy performance"
+      - "B. 报告给风控团队，帮助修复漏洞 / Report to the risk control team and help fix the loophole"
+      - "C. 不利用也不报告，与自己无关 / Don't exploit it but don't report it either; it's not your concern"
+      - "D. 和几个信任的同事分享，看他们怎么做 / Share with a few trusted colleagues and see what they do"
+    scoring: {"A": 1, "B": 4, "C": 2, "D": 2}
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "B是唯一正确的选择。A是不诚信行为。C和D都没有尽到发现风险后的报告义务。风控漏洞未修复可能导致系统性风险。/ B is the only correct choice. A is dishonest behavior. C and D fail to meet reporting obligations after discovering a risk. Unfixed risk control loopholes may lead to systemic risk."
+
+  - id: CHR_INT_014
+    category: integrity_ethics
+    type: likert_scale
+    question: "我会保守客户和公司的商业机密，即使已经离开了这家公司。/ I keep clients' and the company's trade secrets, even after leaving the company."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "评估保密意识的持续性。量化策略的核心竞争力在于知识产权，离职后的保密义务同样重要。/ Assesses persistence of confidentiality awareness. The core competitiveness of quantitative strategies lies in intellectual property; post-departure confidentiality obligations are equally important."
+
+  - id: CHR_INT_015
+    category: integrity_ethics
+    type: likert_scale
+    question: "当面临利益冲突时，我会选择对公司和客户最有利的方案。/ When facing conflicts of interest, I choose the option most beneficial to the company and clients."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "评估利益冲突处理。信托责任要求将客户利益置于个人利益之上，这是金融业的基本道德准则。/ Assesses conflict of interest handling. Fiduciary duty requires placing client interests above personal interests, a fundamental ethical principle in finance."
+
+  - id: CHR_INT_016
+    category: integrity_ethics
+    type: likert_scale
+    question: "我从未对工作中遇到的人有过负面看法。/ I have never had negative thoughts about anyone I've worked with."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: social_desirability_check
+    dimension: "社会期望性检测 Social Desirability Detection"
+    explanation: "社会期望性检测题。在工作中完全没有负面想法是不现实的，强烈同意可能表示粉饰回答。/ Social desirability check. Having absolutely no negative thoughts at work is unrealistic; strong agreement may indicate embellished responses."
+
+  - id: CHR_INT_017
+    category: integrity_ethics
+    type: scenario
+    question: "你的策略在实际运行中因为市场流动性问题表现不如回测。在季度汇报中，PM问你为什么实际表现与回测差距这么大。你会？/ Your strategy performs worse in live trading than in backtesting due to market liquidity issues. In the quarterly report, the PM asks why there's such a large gap between live and backtested performance. What would you do?"
+    options:
+      - "A. 坦诚地解释流动性影响，并展示你已经在做的改进措施 / Honestly explain the liquidity impact and show improvements you're already making"
+      - "B. 强调回测的理论正确性，淡化实际差距 / Emphasize the theoretical correctness of the backtest and downplay the actual gap"
+      - "C. 将问题归咎于市场环境异常 / Blame the issue on abnormal market conditions"
+      - "D. 承诺下季度一定能改善，但不详细解释原因 / Promise improvement next quarter without explaining the reasons in detail"
+    scoring: {"A": 4, "B": 1, "C": 2, "D": 2}
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "A最优，展示了诚实和问题解决导向。B是误导性陈述。C推卸责任。D缺乏透明度。/ A is optimal, showing honesty and problem-solving orientation. B is misleading. C deflects responsibility. D lacks transparency."
+
+  - id: CHR_INT_018
+    category: integrity_ethics
+    type: likert_scale
+    question: "我认为诚实有时会让人在职场中处于不利地位。/ I believe honesty sometimes puts you at a disadvantage in the workplace."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "反向计分。评估对诚实代价的认知。虽然这种想法有一定现实性，但强烈认同可能反映出为不诚实行为寻找合理化的倾向。/ Reverse-scored. Assesses perception of the cost of honesty. While this thought has some realism, strong agreement may reflect a tendency to rationalize dishonest behavior."
+
+  - id: CHR_INT_019
+    category: integrity_ethics
+    type: likert_scale
+    question: "我在数据处理和分析中严格遵循可复现性原则。/ I strictly follow reproducibility principles in data processing and analysis."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "评估科学诚信。可复现性是量化研究的基石，不可复现的结果无法被验证和信任。/ Assesses scientific integrity. Reproducibility is the cornerstone of quantitative research; non-reproducible results cannot be verified or trusted."
+
+  - id: CHR_INT_020
+    category: integrity_ethics
+    type: scenario
+    question: "你的朋友在另一家量化基金工作，在社交场合他随口提到了他们正在研究的一个新因子方向。你会？/ Your friend works at another quant fund. At a social event, they casually mention a new factor direction they're researching. What would you do?"
+    options:
+      - "A. 仔细记住并在自己的工作中利用这个信息 / Carefully remember and use this information in your own work"
+      - "B. 礼貌地中断话题，提醒对方注意保密义务 / Politely interrupt and remind them about confidentiality obligations"
+      - "C. 继续听但不主动追问细节 / Continue listening but don't actively ask for details"
+      - "D. 故意引导他透露更多信息 / Deliberately guide them to reveal more information"
+    scoring: {"A": 1, "B": 4, "C": 2, "D": 1}
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "B最优，展示了双向保密意识——不仅保护自己公司的秘密，也提醒对方注意保密。A和D是不道德的信息获取。/ B is optimal, showing bilateral confidentiality awareness—protecting not only your company's secrets but also reminding others about confidentiality. A and D are unethical information gathering."
+
+  - id: CHR_INT_021
+    category: integrity_ethics
+    type: likert_scale
+    question: "当我的分析结论不支持PM想要的方向时，我仍然会如实呈现。/ When my analysis conclusions don't support the direction the PM wants, I still present them honestly."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "评估对权威的诚实独立性。在压力下仍坚持数据说话而非迎合上级是量化研究者最重要的品质之一。/ Assesses honest independence from authority. Sticking to data-driven conclusions rather than catering to superiors under pressure is one of the most important qualities of a quantitative researcher."
+
+  - id: CHR_INT_022
+    category: integrity_ethics
+    type: likert_scale
+    question: "我会如实填写工作时间记录，不会虚报加班。/ I honestly fill in work time records and don't falsely claim overtime."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "评估日常工作中的诚信。小事上的诚信反映了一个人的整体道德标准。/ Assesses integrity in daily work. Integrity in small matters reflects a person's overall moral standards."
+
+  - id: CHR_INT_023
+    category: integrity_ethics
+    type: likert_scale
+    question: "我认为为了更大的目标，偶尔歪曲事实是可以接受的。/ I believe occasionally distorting facts for a greater goal is acceptable."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "反向计分。评估功利主义伦理倾向。'目的正当化手段'的思维在金融行业中已导致多次重大丑闻。/ Reverse-scored. Assesses utilitarian ethical tendency. 'The end justifies the means' thinking has led to multiple major scandals in the finance industry."
+
+  - id: CHR_INT_024
+    category: integrity_ethics
+    type: scenario
+    question: "公司的一项新合规政策大幅增加了你的策略开发周期，从2周延长到6周。你感觉这个政策过于严格。你会？/ A new company compliance policy significantly extends your strategy development cycle from 2 weeks to 6 weeks. You feel this policy is too strict. What would you do?"
+    options:
+      - "A. 找漏洞绕过合规检查以加快进度 / Find loopholes to bypass compliance checks to speed up"
+      - "B. 通过正式渠道提出建设性的改进建议 / Submit constructive improvement suggestions through formal channels"
+      - "C. 抱怨但遵守，消极对待合规要求 / Complain but comply, passively fulfilling compliance requirements"
+      - "D. 公开表达不满，影响团队士气 / Openly express dissatisfaction, affecting team morale"
+    scoring: {"A": 1, "B": 4, "C": 2, "D": 1}
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "B最优，通过建设性参与来改善流程。A是违规行为。C虽然遵守但态度消极。D破坏团队氛围。/ B is optimal, improving processes through constructive engagement. A is a violation. C complies but with a negative attitude. D damages team atmosphere."
+
+  - id: CHR_INT_025
+    category: integrity_ethics
+    type: likert_scale
+    question: "我相信长期来看，诚信的人在量化金融行业中会更成功。/ I believe that in the long run, people with integrity will be more successful in the quantitative finance industry."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "评估对诚信长期价值的信念。声誉是量化金融中最重要的资产之一，诚信是维护声誉的基础。/ Assesses belief in the long-term value of integrity. Reputation is one of the most important assets in quantitative finance; integrity is the foundation of maintaining reputation."
+
+  - id: CHR_INT_026
+    category: integrity_ethics
+    type: likert_scale
+    question: "当我不确定某个操作是否合规时，我会先咨询合规部门再行动。/ When I'm unsure whether an operation is compliant, I consult the compliance department before acting."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "评估合规意识的主动性。'宁可多问不可误犯'是金融从业者的基本态度。/ Assesses proactiveness of compliance awareness. 'Better to ask too much than to inadvertently violate' is the basic attitude of finance professionals."
+
+  - id: CHR_INT_027
+    category: integrity_ethics
+    type: likert_scale
+    question: "我认为每个人都会在适当的情况下说谎。/ I believe everyone lies under the right circumstances."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "反向计分。评估对不诚实行为的容忍度。虽然这种观点有一定的现实基础，但强烈认同可能预示着更低的道德标准。/ Reverse-scored. Assesses tolerance for dishonesty. While this view has some basis in reality, strong agreement may predict lower moral standards."
+
+  - id: CHR_INT_028
+    category: integrity_ethics
+    type: scenario
+    question: "年终评估中，你的PM让你把一些非你独立完成的研究也纳入你的成果列表，以帮助你获得更好的评级。你会？/ During the annual review, your PM asks you to include some research you didn't independently complete in your achievements list to help you get a better rating. What would you do?"
+    options:
+      - "A. 同意PM的建议 / Agree with the PM's suggestion"
+      - "B. 婉拒，坚持只列自己真正的贡献 / Politely decline and insist on listing only your genuine contributions"
+      - "C. 列入但注明是合作完成 / Include but note it was a collaborative effort"
+      - "D. 觉得这是PM在帮你，感激地接受 / Feel the PM is helping you and gratefully accept"
+    scoring: {"A": 1, "B": 4, "C": 3, "D": 1}
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "B最优，即使面对上级善意的建议也坚持诚信。C也可接受（透明的合作标注）。A和D是对功劳的不当占有。/ B is optimal, maintaining integrity even when facing well-intentioned suggestions from superiors. C is also acceptable (transparent collaboration notation). A and D are inappropriate credit claiming."
+
+  - id: CHR_INT_029
+    category: integrity_ethics
+    type: likert_scale
+    question: "我对待公司资源（如计算资源、数据订阅等）就像对待自己的财产一样谨慎。/ I treat company resources (such as computing resources, data subscriptions, etc.) as carefully as my own property."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "评估对公共资源的尊重。滥用计算资源或数据订阅虽常被忽视，但反映了基本的道德水准。/ Assesses respect for shared resources. Misuse of computing resources or data subscriptions, though often overlooked, reflects basic moral standards."
+
+  - id: CHR_INT_030
+    category: integrity_ethics
+    type: likert_scale
+    question: "即使公司不会追究，我也不会利用公司数据进行个人投资研究。/ Even if the company won't pursue it, I would not use company data for personal investment research."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "诚信正直 Integrity & Ethics"
+    explanation: "评估在无监督情况下的道德自律。利用公司数据进行个人投资研究是利益冲突的典型表现。/ Assesses moral self-discipline without supervision. Using company data for personal investment research is a classic manifestation of conflict of interest."
+
+  # ===========================================================================
+  # GROWTH MINDSET (25 questions)
+  # ===========================================================================
+
+  - id: CHR_GROW_001
+    category: growth_mindset
+    type: likert_scale
+    question: "我相信通过努力，智力和能力是可以显著提升的。/ I believe that intelligence and ability can be significantly improved through effort."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "成长型心态 Growth Mindset"
+    explanation: "直接测量Carol Dweck的成长型心态核心信念。相信能力可以发展的人更愿意面对挑战和从失败中学习。/ Directly measures Carol Dweck's core growth mindset belief. Those who believe abilities can be developed are more willing to face challenges and learn from failure."
+
+  - id: CHR_GROW_002
+    category: growth_mindset
+    type: likert_scale
+    question: "被指出错误让我感到被攻击而非获得学习机会。/ Being told I'm wrong makes me feel attacked rather than getting a learning opportunity."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "成长型心态 Growth Mindset"
+    explanation: "反向计分。评估对批评的接受度。将纠错视为攻击是固定型心态的典型表现。/ Reverse-scored. Assesses receptiveness to criticism. Viewing correction as attack is a typical manifestation of a fixed mindset."
+
+  - id: CHR_GROW_003
+    category: growth_mindset
+    type: scenario
+    question: "你申请了一个高级量化研究员的内部晋升，但被告知你的机器学习技能还不够强。你的反应是？/ You applied for an internal promotion to senior quant researcher but were told your machine learning skills aren't strong enough. Your reaction?"
+    options:
+      - "A. 感到被低估，考虑跳槽 / Feel undervalued and consider leaving"
+      - "B. 制定一个系统的机器学习学习计划，在6个月后再次申请 / Create a systematic ML learning plan and reapply in 6 months"
+      - "C. 认为自己可能确实不适合高级职位 / Think you may indeed not be suited for a senior position"
+      - "D. 争辩说机器学习对这个职位并不重要 / Argue that ML isn't important for this position"
+    scoring: {"A": 2, "B": 4, "C": 1, "D": 2}
+    dimension: "成长型心态 Growth Mindset"
+    explanation: "B最优，将反馈转化为具体的成长计划。C体现了固定型心态。A回避问题。D拒绝接受反馈。/ B is optimal, converting feedback into a concrete growth plan. C reflects a fixed mindset. A avoids the issue. D refuses to accept feedback."
+
+  - id: CHR_GROW_004
+    category: growth_mindset
+    type: likert_scale
+    question: "我定期为自己设定需要拓展舒适区的学习目标。/ I regularly set learning goals that require stretching my comfort zone."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "成长型心态 Growth Mindset"
+    explanation: "评估主动挑战自我的倾向。持续设定拓展性目标是保持竞争力的关键。/ Assesses tendency to proactively challenge oneself. Continuously setting stretch goals is key to maintaining competitiveness."
+
+  - id: CHR_GROW_005
+    category: growth_mindset
+    type: likert_scale
+    question: "与比我更优秀的人一起工作让我感到威胁而非激励。/ Working with people more talented than me makes me feel threatened rather than inspired."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "成长型心态 Growth Mindset"
+    explanation: "反向计分。评估在高能力同伴中的自我定位。在顶级量化团队中，身边总有比自己强的人，如何对待这种情况反映心态。/ Reverse-scored. Assesses self-positioning among high-ability peers. In top quant teams, there are always people stronger than you; how you handle this reflects your mindset."
+
+  - id: CHR_GROW_006
+    category: growth_mindset
+    type: likert_scale
+    question: "我积极寻求能暴露我知识盲区的挑战性项目。/ I actively seek challenging projects that expose my knowledge gaps."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "成长型心态 Growth Mindset"
+    explanation: "评估对认知不适的主动追求。在快速变化的量化领域，主动暴露盲区是避免技术落后的最佳策略。/ Assesses proactive pursuit of cognitive discomfort. In the fast-changing quant field, proactively exposing blind spots is the best strategy to avoid falling behind technically."
+
+  - id: CHR_GROW_007
+    category: growth_mindset
+    type: scenario
+    question: "你在一次编程竞赛中表现远不如团队中一位刚入职的初级研究员。这对你来说意味着什么？/ You perform far worse than a newly hired junior researcher in a coding competition. What does this mean to you?"
+    options:
+      - "A. 这让我很沮丧，质疑自己的编程能力 / This makes me very depressed and I question my coding ability"
+      - "B. 这是一个信号，说明我需要在某些技术领域投入更多学习时间 / This is a signal that I need to invest more learning time in certain technical areas"
+      - "C. 编程竞赛不代表实际工作能力，不需要在意 / Coding competitions don't represent actual work ability, no need to care"
+      - "D. 主动找这位初级研究员请教他擅长的技术 / Proactively approach the junior researcher to learn about the technology they excel at"
+    scoring: {"A": 1, "B": 3, "C": 2, "D": 4}
+    dimension: "成长型心态 Growth Mindset"
+    explanation: "D最优，体现了从任何人身上学习的谦逊和开放。B也不错，认识到了成长空间。A是固定型心态。C虽有道理但可能错失学习机会。/ D is optimal, showing humility and openness to learn from anyone. B is also good, recognizing growth space. A is a fixed mindset. C has merit but may miss learning opportunities."
+
+  - id: CHR_GROW_008
+    category: growth_mindset
+    type: likert_scale
+    question: "我会定期反思自己的工作方法并寻找改进空间。/ I regularly reflect on my work methods and look for areas of improvement."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "成长型心态 Growth Mindset"
+    explanation: "评估反思性实践习惯。持续反思和改进是kaizen（持续改善）理念的核心。/ Assesses reflective practice habits. Continuous reflection and improvement is the core of the kaizen philosophy."
+
+  - id: CHR_GROW_009
+    category: growth_mindset
+    type: likert_scale
+    question: "我认为天赋比努力更重要。/ I believe talent is more important than effort."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "成长型心态 Growth Mindset"
+    explanation: "反向计分。直接测量固定型心态信念。过度强调天赋可能导致在困难面前轻易放弃。/ Reverse-scored. Directly measures fixed mindset belief. Overemphasizing talent may lead to easily giving up in the face of difficulty."
+
+  - id: CHR_GROW_010
+    category: growth_mindset
+    type: likert_scale
+    question: "我乐于接受超出当前能力范围的任务。/ I enjoy taking on tasks beyond my current capability range."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "成长型心态 Growth Mindset"
+    explanation: "评估挑战寻求倾向。在量化金融中，不断处理超出当前能力的问题是快速成长的最有效方式。/ Assesses challenge-seeking tendency. In quant finance, continuously dealing with problems beyond current capability is the most effective way to grow rapidly."
+
+  - id: CHR_GROW_011
+    category: growth_mindset
+    type: likert_scale
+    question: "我会主动阅读学术论文来了解最新的量化金融研究进展。/ I proactively read academic papers to stay current with quantitative finance research advances."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "成长型心态 Growth Mindset"
+    explanation: "评估自驱学习行为。量化金融的前沿在学术界和工业界同步推进，持续关注最新研究是必要的。/ Assesses self-driven learning behavior. The frontier of quant finance advances simultaneously in academia and industry; staying current with the latest research is necessary."
+
+  - id: CHR_GROW_012
+    category: growth_mindset
+    type: likert_scale
+    question: "当我遇到不擅长的领域时，我倾向于回避而非学习。/ When I encounter areas I'm not good at, I tend to avoid them rather than learn."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "成长型心态 Growth Mindset"
+    explanation: "反向计分。评估弱点回避倾向。回避弱点会限制职业发展的广度和深度。/ Reverse-scored. Assesses weakness avoidance tendency. Avoiding weaknesses limits the breadth and depth of career development."
+
+  - id: CHR_GROW_013
+    category: growth_mindset
+    type: scenario
+    question: "公司引入了一套全新的研究平台，完全取代你已经非常熟练的旧系统。你需要从头学习。你的态度是？/ The company introduces an entirely new research platform, completely replacing the old system you're very proficient with. You need to learn from scratch. Your attitude?"
+    options:
+      - "A. 抱怨为什么要换系统，认为旧系统完全够用 / Complain about why the system needs to change, believing the old system was perfectly adequate"
+      - "B. 积极投入学习，将此视为提升技能的机会 / Actively invest in learning, viewing this as an opportunity to upgrade skills"
+      - "C. 消极等待同事总结出来的使用指南 / Passively wait for usage guides compiled by colleagues"
+      - "D. 尝试学习但在遇到困难时很容易想要回到旧系统 / Try to learn but easily want to return to the old system when encountering difficulties"
+    scoring: {"A": 1, "B": 4, "C": 2, "D": 2}
+    dimension: "成长型心态 Growth Mindset"
+    explanation: "B最优，展示了对变化的积极拥抱态度。A是抵制变化。C缺乏主动性。D显示了在困难面前的脆弱性。/ B is optimal, showing a positive embrace of change. A resists change. C lacks initiative. D shows fragility in the face of difficulty."
+
+  - id: CHR_GROW_014
+    category: growth_mindset
+    type: likert_scale
+    question: "我认为在量化金融中，一个人的学习速度比当前知识水平更重要。/ I believe in quantitative finance, a person's learning speed is more important than their current knowledge level."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "成长型心态 Growth Mindset"
+    explanation: "评估对学习能力的重视程度。在快速变化的量化领域，学习速度决定了长期竞争力。/ Assesses emphasis on learning ability. In the rapidly changing quant field, learning speed determines long-term competitiveness."
+
+  - id: CHR_GROW_015
+    category: growth_mindset
+    type: likert_scale
+    question: "我会主动寻求建设性的负面反馈。/ I proactively seek constructive negative feedback."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "成长型心态 Growth Mindset"
+    explanation: "评估反馈寻求的主动性。主动寻求负面反馈是最快发现改进空间的方法。/ Assesses proactiveness of feedback seeking. Proactively seeking negative feedback is the fastest way to identify areas for improvement."
+
+  - id: CHR_GROW_016
+    category: growth_mindset
+    type: likert_scale
+    question: "当别人比我进步更快时，我感到的是好奇（想知道他们的方法）而非嫉妒。/ When others progress faster than me, I feel curious (wanting to know their methods) rather than jealous."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "成长型心态 Growth Mindset"
+    explanation: "评估对他人进步的反应模式。好奇心驱动的反应比嫉妒更有建设性，能转化为自身的学习动力。/ Assesses reaction patterns to others' progress. Curiosity-driven reactions are more constructive than jealousy and can be converted into personal learning motivation."
+
+  - id: CHR_GROW_017
+    category: growth_mindset
+    type: likert_scale
+    question: "我每天都会学到新的东西。/ I learn something new every day."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: social_desirability_check
+    dimension: "社会期望性检测 Social Desirability Detection"
+    explanation: "社会期望性检测题。虽然持续学习是理想状态，但声称每天都有新学习可能过于理想化。/ Social desirability check. While continuous learning is ideal, claiming to learn something new every single day may be over-idealized."
+
+  - id: CHR_GROW_018
+    category: growth_mindset
+    type: likert_scale
+    question: "我将困难的问题视为锻炼思维的机会。/ I view difficult problems as opportunities to exercise my thinking."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "成长型心态 Growth Mindset"
+    explanation: "评估对困难的认知框架。将困难重构为机会的人在面对复杂量化问题时更有韧性。/ Assesses cognitive framing of difficulty. Those who reframe difficulty as opportunity are more resilient when facing complex quantitative problems."
+
+  - id: CHR_GROW_019
+    category: growth_mindset
+    type: likert_scale
+    question: "我害怕尝试新事物因为可能会失败。/ I'm afraid to try new things because I might fail."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "成长型心态 Growth Mindset"
+    explanation: "反向计分。评估失败恐惧对行动的抑制作用。在因子挖掘中，大多数尝试都会失败，恐惧失败会严重限制探索。/ Reverse-scored. Assesses the inhibitory effect of failure fear on action. In factor mining, most attempts fail; fear of failure severely limits exploration."
+
+  - id: CHR_GROW_020
+    category: growth_mindset
+    type: likert_scale
+    question: "我会有意识地记录自己的成长和进步。/ I consciously document my growth and progress."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "成长型心态 Growth Mindset"
+    explanation: "评估成长追踪习惯。记录进步有助于维持学习动力并识别有效的学习策略。/ Assesses growth tracking habits. Recording progress helps maintain learning motivation and identify effective learning strategies."
+
+  - id: CHR_GROW_021
+    category: growth_mindset
+    type: likert_scale
+    question: "我认为犯错的经历比顺利的经历更有教育价值。/ I believe experiences of making mistakes are more educational than smooth experiences."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "成长型心态 Growth Mindset"
+    explanation: "评估对错误教育价值的认知。将错误视为最佳学习素材是成长型心态的核心特征。/ Assesses recognition of the educational value of mistakes. Viewing mistakes as the best learning material is a core feature of the growth mindset."
+
+  - id: CHR_GROW_022
+    category: growth_mindset
+    type: likert_scale
+    question: "当面对一个我完全不了解的新主题时，我的第一反应是兴奋。/ When facing a completely unfamiliar new topic, my first reaction is excitement."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "成长型心态 Growth Mindset"
+    explanation: "评估知识探索的内在动力。对未知领域的兴奋感驱动着量化研究中的创新和发现。/ Assesses intrinsic motivation for knowledge exploration. Excitement about unknown areas drives innovation and discovery in quantitative research."
+
+  - id: CHR_GROW_023
+    category: growth_mindset
+    type: likert_scale
+    question: "我会主动指导和帮助团队中能力较弱的成员。/ I proactively mentor and help less capable team members."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "成长型心态 Growth Mindset"
+    explanation: "评估教导他人的意愿。教学相长——帮助他人不仅是利他行为，也能深化自己的理解。/ Assesses willingness to teach others. Teaching strengthens learning—helping others is not only altruistic but also deepens one's own understanding."
+
+  - id: CHR_GROW_024
+    category: growth_mindset
+    type: likert_scale
+    question: "我认为即使是行业中最资深的人也有很多需要学习的地方。/ I believe even the most senior people in the industry have a lot to learn."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "成长型心态 Growth Mindset"
+    explanation: "评估知识谦逊度。量化金融在不断进化，即使是最资深的专家也需要持续更新知识。/ Assesses intellectual humility. Quantitative finance is constantly evolving; even the most senior experts need to continuously update their knowledge."
+
+  - id: CHR_GROW_025
+    category: growth_mindset
+    type: likert_scale
+    question: "我从过去的失败中学到的比从成功中学到的更多。/ I've learned more from past failures than from successes."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "成长型心态 Growth Mindset"
+    explanation: "评估失败学习提取能力。能从失败中系统性提取教训的人在量化研究中具有显著优势。/ Assesses failure-based learning extraction ability. Those who can systematically extract lessons from failures have a significant advantage in quantitative research."
+
+  # ===========================================================================
+  # ACCOUNTABILITY (25 questions)
+  # ===========================================================================
+
+  - id: CHR_ACC_001
+    category: accountability
+    type: likert_scale
+    question: "当结果不理想时，我的第一反应是反思自己哪里可以做得更好。/ When results are unsatisfactory, my first reaction is to reflect on where I could have done better."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "责任担当 Accountability"
+    explanation: "评估内归因倾向。自我反思是改进的起点，而不是寻找外部借口。/ Assesses internal attribution tendency. Self-reflection is the starting point for improvement, rather than looking for external excuses."
+
+  - id: CHR_ACC_002
+    category: accountability
+    type: likert_scale
+    question: "当项目出现问题时，我倾向于寻找外部原因而非审视自身。/ When projects have problems, I tend to look for external causes rather than examining myself."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "责任担当 Accountability"
+    explanation: "反向计分。评估外归因倾向。总是归咎于外部因素的人难以从错误中成长。/ Reverse-scored. Assesses external attribution tendency. Those who always blame external factors have difficulty growing from mistakes."
+
+  - id: CHR_ACC_003
+    category: accountability
+    type: scenario
+    question: "你的策略因为一个你遗漏的边界条件而在某个极端市场情况下产生了意外亏损。在事后分析会上，你会？/ Your strategy produced unexpected losses in an extreme market condition due to a boundary condition you overlooked. At the postmortem meeting, what would you do?"
+    options:
+      - "A. 坦诚承认是自己的疏忽，并提出具体的预防措施 / Honestly admit it was your oversight and propose specific preventive measures"
+      - "B. 强调极端市场情况是不可预见的 / Emphasize that the extreme market condition was unforeseeable"
+      - "C. 指出代码审查流程应该捕获这个问题 / Point out that the code review process should have caught this issue"
+      - "D. 承认问题但过度自责，影响了讨论的建设性 / Acknowledge the problem but excessively self-blame, affecting the constructiveness of the discussion"
+    scoring: {"A": 4, "B": 2, "C": 2, "D": 2}
+    dimension: "责任担当 Accountability"
+    explanation: "A最优，展示了成熟的责任承担——承认错误+提出改进。B和C是推卸责任的不同形式。D虽承认但不利于团队讨论。/ A is optimal, showing mature accountability—admitting the mistake + proposing improvements. B and C are different forms of deflecting responsibility. D admits but hinders team discussion."
+
+  - id: CHR_ACC_004
+    category: accountability
+    type: likert_scale
+    question: "我会为自己的承诺负责到底，即使完成它比预期更困难。/ I follow through on my commitments, even when completing them is harder than expected."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "责任担当 Accountability"
+    explanation: "评估承诺兑现能力。在量化团队中，每个人的产出环环相扣，一个人的失信会影响整个流程。/ Assesses commitment fulfillment ability. In quant teams, everyone's output is interconnected; one person's broken commitment affects the entire pipeline."
+
+  - id: CHR_ACC_005
+    category: accountability
+    type: likert_scale
+    question: "我从未错过过任何deadline。/ I have never missed any deadline."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: social_desirability_check
+    dimension: "社会期望性检测 Social Desirability Detection"
+    explanation: "社会期望性检测题。几乎每个人在职业生涯中都错过过deadline，声称从未如此可能是不诚实的。/ Social desirability check. Almost everyone has missed a deadline in their career; claiming never to have done so may be dishonest."
+
+  - id: CHR_ACC_006
+    category: accountability
+    type: likert_scale
+    question: "当我的工作影响到团队进度时，我会主动与相关人员沟通并调整计划。/ When my work affects team progress, I proactively communicate with relevant people and adjust plans."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "责任担当 Accountability"
+    explanation: "评估主动沟通能力。在量化项目管理中，及时沟通问题比隐藏问题更能保护团队利益。/ Assesses proactive communication ability. In quant project management, timely problem communication protects team interests better than hiding problems."
+
+  - id: CHR_ACC_007
+    category: accountability
+    type: scenario
+    question: "你负责维护的策略执行系统出现了一个间歇性bug，导致偶尔出现订单延迟。这个bug很难复现。你会？/ The strategy execution system you maintain has an intermittent bug causing occasional order delays. The bug is hard to reproduce. What would you do?"
+    options:
+      - "A. 因为难以复现，暂时忽略它 / Since it's hard to reproduce, temporarily ignore it"
+      - "B. 在日志和监控中添加详细的追踪，投入时间系统性地排查直到解决 / Add detailed tracking in logs and monitoring, invest time to systematically debug until resolved"
+      - "C. 记录下来放到backlog中，等有空再处理 / Document it and put it in the backlog, handle when free"
+      - "D. 告诉PM这个问题影响不大，不值得投入时间 / Tell the PM this issue doesn't have much impact and isn't worth the time"
+    scoring: {"A": 1, "B": 4, "C": 2, "D": 1}
+    dimension: "责任担当 Accountability"
+    explanation: "B最优，展示了对系统质量的高标准和坚持不懈的态度。间歇性bug在交易系统中可能在关键时刻造成重大损失。/ B is optimal, showing high standards for system quality and persistence. Intermittent bugs in trading systems may cause major losses at critical moments."
+
+  - id: CHR_ACC_008
+    category: accountability
+    type: likert_scale
+    question: "我会在承诺之前仔细评估自己是否能够完成。/ I carefully evaluate whether I can deliver before making commitments."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "责任担当 Accountability"
+    explanation: "评估承诺前的审慎性。过度承诺是失信的前奏，审慎评估能力是可靠性的基础。/ Assesses prudence before commitment. Over-promising is the prelude to broken promises; prudent assessment ability is the foundation of reliability."
+
+  - id: CHR_ACC_009
+    category: accountability
+    type: likert_scale
+    question: "如果我发现无法按时完成任务，我会尽早告知相关方。/ If I find I can't complete a task on time, I inform relevant parties as early as possible."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "责任担当 Accountability"
+    explanation: "评估早期预警能力。在量化项目中，提前告知延迟可以让团队及时调整，减少整体影响。/ Assesses early warning ability. In quant projects, advance notice of delays allows the team to adjust promptly, reducing overall impact."
+
+  - id: CHR_ACC_010
+    category: accountability
+    type: likert_scale
+    question: "我认为一个好的借口可以抵消一次失败。/ I believe a good excuse can offset a failure."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "责任担当 Accountability"
+    explanation: "反向计分。评估借口文化倾向。在结果导向的量化金融中，借口不能弥补实际损失。/ Reverse-scored. Assesses excuse culture tendency. In results-oriented quantitative finance, excuses cannot compensate for actual losses."
+
+  - id: CHR_ACC_011
+    category: accountability
+    type: scenario
+    question: "团队的一个重要项目失败了。虽然是团队共同决策，但你担任了项目的技术负责人。在复盘会上，你会？/ An important team project has failed. Although it was a collective decision, you served as the technical lead. At the postmortem, what would you do?"
+    options:
+      - "A. 作为技术负责人承担主要责任，并主导改进计划 / As the technical lead, take primary responsibility and lead the improvement plan"
+      - "B. 公平地分析每个人的责任比例 / Fairly analyze each person's proportion of responsibility"
+      - "C. 指出是团队集体决策的结果，责任在大家 / Point out it was a collective team decision, responsibility lies with everyone"
+      - "D. 将失败归因于无法控制的外部因素 / Attribute the failure to uncontrollable external factors"
+    scoring: {"A": 4, "B": 3, "C": 2, "D": 1}
+    dimension: "责任担当 Accountability"
+    explanation: "A最优，领导者应该承担更大的责任，这展示了担当和领导力。B也可接受。C虽然公正但缺乏担当。D是推卸。/ A is optimal; leaders should take greater responsibility, demonstrating accountability and leadership. B is also acceptable. C is fair but lacks accountability. D is deflection."
+
+  - id: CHR_ACC_012
+    category: accountability
+    type: likert_scale
+    question: "我会对自己的代码质量负责，确保提交前经过充分测试。/ I take responsibility for my code quality, ensuring thorough testing before submission."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "责任担当 Accountability"
+    explanation: "评估代码质量责任感。在量化交易系统中，代码质量直接关系到资金安全。/ Assesses code quality accountability. In quantitative trading systems, code quality directly relates to capital safety."
+
+  - id: CHR_ACC_013
+    category: accountability
+    type: likert_scale
+    question: "我倾向于把失败归咎于运气不好。/ I tend to attribute failures to bad luck."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "责任担当 Accountability"
+    explanation: "反向计分。评估运气归因倾向。虽然运气在交易中确实存在，但将所有失败归咎于运气会阻碍学习和改进。/ Reverse-scored. Assesses luck attribution tendency. While luck does exist in trading, attributing all failures to luck hinders learning and improvement."
+
+  - id: CHR_ACC_014
+    category: accountability
+    type: likert_scale
+    question: "当我的错误被公开指出时，我能坦然面对而非逃避。/ When my mistakes are pointed out publicly, I can face them calmly rather than evade."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "责任担当 Accountability"
+    explanation: "评估公开场合的错误承担能力。能在团队面前坦然承认错误是真正的担当表现。/ Assesses ability to own mistakes in public settings. Being able to calmly acknowledge mistakes in front of the team demonstrates true accountability."
+
+  - id: CHR_ACC_015
+    category: accountability
+    type: likert_scale
+    question: "我会在交付成果之后主动跟踪其效果和影响。/ I proactively track the effectiveness and impact of my deliverables after delivery."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "责任担当 Accountability"
+    explanation: "评估全链路责任感。交付不是结束，持续跟踪效果体现了对成果的完整责任。/ Assesses full-chain accountability. Delivery is not the end; continuously tracking effects demonstrates complete responsibility for outcomes."
+
+  - id: CHR_ACC_016
+    category: accountability
+    type: scenario
+    question: "你发现团队使用的一个第三方数据源存在质量问题，虽然这不在你的职责范围内。你会？/ You discover a quality issue with a third-party data source used by the team, though this is not within your responsibility. What would you do?"
+    options:
+      - "A. 不管，这不是我的责任 / Ignore it, it's not my responsibility"
+      - "B. 记录问题并通知负责数据的同事 / Document the issue and notify the colleague responsible for data"
+      - "C. 主动调查问题范围并提出解决方案建议 / Proactively investigate the scope of the issue and propose solution suggestions"
+      - "D. 在团队会议上提出问题但不跟进 / Raise the issue in a team meeting but don't follow up"
+    scoring: {"A": 1, "B": 3, "C": 4, "D": 2}
+    dimension: "责任担当 Accountability"
+    explanation: "C最优，展示了超越岗位职责的主人翁意识。B也可接受。D缺乏跟进。A完全回避责任。/ C is optimal, showing an ownership mentality beyond job responsibilities. B is also acceptable. D lacks follow-through. A completely avoids responsibility."
+
+  - id: CHR_ACC_017
+    category: accountability
+    type: likert_scale
+    question: "我认为'这不是我的工作'是一个合理的理由来拒绝帮助。/ I believe 'that's not my job' is a reasonable excuse to refuse help."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "责任担当 Accountability"
+    explanation: "反向计分。评估职责边界思维。在小型量化团队中，'这不是我的工作'的心态会严重损害团队效率。/ Reverse-scored. Assesses job boundary thinking. In small quant teams, a 'that's not my job' mentality seriously damages team efficiency."
+
+  - id: CHR_ACC_018
+    category: accountability
+    type: likert_scale
+    question: "我在出错后能快速从自责转向问题解决。/ After making a mistake, I can quickly shift from self-blame to problem-solving."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "责任担当 Accountability"
+    explanation: "评估建设性责任承担。真正的责任不是自我惩罚，而是将精力转向问题解决和预防。/ Assesses constructive accountability. True accountability is not self-punishment but redirecting energy toward problem-solving and prevention."
+
+  - id: CHR_ACC_019
+    category: accountability
+    type: likert_scale
+    question: "我会维护一个清晰的任务跟踪系统来确保不遗漏任何承诺。/ I maintain a clear task tracking system to ensure no commitments are missed."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "责任担当 Accountability"
+    explanation: "评估系统化的承诺管理。在多项目并行的量化研究中，系统化管理是确保可靠性的基础。/ Assesses systematized commitment management. In parallel quantitative research projects, systematic management is the foundation for ensuring reliability."
+
+  - id: CHR_ACC_020
+    category: accountability
+    type: likert_scale
+    question: "即使在没有人检查的情况下，我也会按照最高标准完成工作。/ Even when no one is checking, I complete work to the highest standards."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "责任担当 Accountability"
+    explanation: "评估内在标准的稳定性。在远程或独立工作环境中，自我驱动的高标准是产出质量的保障。/ Assesses stability of internal standards. In remote or independent work environments, self-driven high standards guarantee output quality."
+
+  - id: CHR_ACC_021
+    category: accountability
+    type: likert_scale
+    question: "当我承诺了某事但发现做不到时，我会及时向对方诚实说明。/ When I've committed to something but find I can't do it, I promptly and honestly explain to the other party."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "责任担当 Accountability"
+    explanation: "评估承诺管理中的诚实度。及时承认困难比最后一刻才爆出问题对团队的伤害更小。/ Assesses honesty in commitment management. Admitting difficulties promptly causes less damage to the team than last-minute problem revelation."
+
+  - id: CHR_ACC_022
+    category: accountability
+    type: likert_scale
+    question: "我会主动寻找并修复我职责范围内的潜在问题，而不是等它们变成大问题。/ I proactively find and fix potential issues within my scope rather than waiting for them to become major problems."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "责任担当 Accountability"
+    explanation: "评估预防性责任感。在量化系统中，主动发现和修复潜在问题远比事后补救更有效。/ Assesses preventive accountability. In quantitative systems, proactively finding and fixing potential issues is far more effective than after-the-fact remediation."
+
+  - id: CHR_ACC_023
+    category: accountability
+    type: likert_scale
+    question: "我认为如果每个人都做好自己的部分，团队自然就会成功。/ I believe if everyone does their part well, the team will naturally succeed."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "责任担当 Accountability"
+    explanation: "反向计分。评估对集体责任的理解。真正的团队成功需要超越个人职责的协调和补位。/ Reverse-scored. Assesses understanding of collective responsibility. True team success requires coordination and backup beyond individual responsibilities."
+
+  - id: CHR_ACC_024
+    category: accountability
+    type: likert_scale
+    question: "我会记录自己的错误和教训，形成一个'经验库'供自己和团队参考。/ I document my mistakes and lessons learned, creating an 'experience database' for myself and the team."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "责任担当 Accountability"
+    explanation: "评估系统化学习和知识管理。建立错误经验库是将个人教训转化为团队资产的最佳实践。/ Assesses systematic learning and knowledge management. Building an experience database is the best practice for converting personal lessons into team assets."
+
+  - id: CHR_ACC_025
+    category: accountability
+    type: likert_scale
+    question: "我认为承担责任和承认错误需要勇气。/ I believe taking responsibility and admitting mistakes requires courage."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "责任担当 Accountability"
+    explanation: "评估对责任本质的理解。认识到担责需要勇气的人更可能在关键时刻展现担当。/ Assesses understanding of the nature of accountability. Those who recognize that taking responsibility requires courage are more likely to demonstrate accountability at critical moments."
+
+  # ===========================================================================
+  # WORK ETHIC (25 questions)
+  # ===========================================================================
+
+  - id: CHR_WORK_001
+    category: work_ethic
+    type: likert_scale
+    question: "我追求卓越，'差不多'不是我的标准。/ I pursue excellence; 'good enough' is not my standard."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "工作态度 Work Ethic"
+    explanation: "评估工作标准的高度。在量化金融中，细微的差异可能导致巨大的盈亏差异。/ Assesses the height of work standards. In quantitative finance, subtle differences can lead to massive profit and loss differences."
+
+  - id: CHR_WORK_002
+    category: work_ethic
+    type: likert_scale
+    question: "我会在细节上投入额外的精力，即使这些细节可能不被注意到。/ I invest extra effort in details, even if these details might not be noticed."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "工作态度 Work Ethic"
+    explanation: "评估对细节的专注度。在策略开发中，一个小数点的错误可能导致数百万的损失。/ Assesses attention to detail. In strategy development, a decimal point error could lead to millions in losses."
+
+  - id: CHR_WORK_003
+    category: work_ethic
+    type: scenario
+    question: "周五下午5点，你发现策略回测代码中有一个不影响当前结果但可能在未来特定条件下引发问题的潜在bug。你会？/ At 5 PM Friday, you discover a potential bug in your backtesting code that doesn't affect current results but might cause issues under specific future conditions. What would you do?"
+    options:
+      - "A. 记录下来，周一再处理 / Document it and handle it Monday"
+      - "B. 立即修复，确保代码质量 / Fix it immediately to ensure code quality"
+      - "C. 修复bug，编写相应的测试用例，并更新文档 / Fix the bug, write corresponding test cases, and update documentation"
+      - "D. 忽略它，因为目前不影响结果 / Ignore it since it doesn't affect current results"
+    scoring: {"A": 2, "B": 3, "C": 4, "D": 1}
+    dimension: "工作态度 Work Ethic"
+    explanation: "C最优，展示了全面的代码质量标准（修复+测试+文档）。B也不错但不够完整。A可接受但显示了紧迫感不足。D是忽视质量。/ C is optimal, showing comprehensive code quality standards (fix+test+docs). B is good but incomplete. A is acceptable but shows insufficient urgency. D neglects quality."
+
+  - id: CHR_WORK_004
+    category: work_ethic
+    type: likert_scale
+    question: "我会为了工作质量而牺牲完成速度。/ I would sacrifice completion speed for work quality."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "工作态度 Work Ethic"
+    explanation: "评估质量-速度权衡偏好。在量化系统中，低质量的快速交付可能带来远超延期的代价。/ Assesses quality-speed tradeoff preference. In quantitative systems, fast but low-quality delivery may cost far more than delays."
+
+  - id: CHR_WORK_005
+    category: work_ethic
+    type: likert_scale
+    question: "我有时会因为懒惰而跳过必要的测试步骤。/ I sometimes skip necessary testing steps due to laziness."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "工作态度 Work Ethic"
+    explanation: "反向计分。评估测试纪律。跳过测试是量化系统中最常见的风险来源之一。/ Reverse-scored. Assesses testing discipline. Skipping tests is one of the most common risk sources in quantitative systems."
+
+  - id: CHR_WORK_006
+    category: work_ethic
+    type: likert_scale
+    question: "当我被分配到无聊但必要的任务时，我仍然会认真完成。/ When assigned boring but necessary tasks, I still complete them seriously."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "工作态度 Work Ethic"
+    explanation: "评估对枯燥任务的态度。数据清洗、系统维护等枯燥工作是量化研究基础设施的重要组成部分。/ Assesses attitude toward boring tasks. Data cleaning, system maintenance, and other boring work are important parts of quantitative research infrastructure."
+
+  - id: CHR_WORK_007
+    category: work_ethic
+    type: likert_scale
+    question: "我习惯于做完一项工作后进行自我检查。/ I habitually self-check my work after completion."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "工作态度 Work Ethic"
+    explanation: "评估自我审查习惯。在提交代码或研究报告前的自查是防止低级错误的重要环节。/ Assesses self-review habits. Self-checking before submitting code or research reports is an important step in preventing basic errors."
+
+  - id: CHR_WORK_008
+    category: work_ethic
+    type: likert_scale
+    question: "我只需要做被明确要求的工作。/ I only need to do what is explicitly asked of me."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "工作态度 Work Ethic"
+    explanation: "反向计分。评估主动性。在量化研究中，最有价值的发现往往来自超越岗位要求的主动探索。/ Reverse-scored. Assesses initiative. In quantitative research, the most valuable discoveries often come from proactive exploration beyond job requirements."
+
+  - id: CHR_WORK_009
+    category: work_ethic
+    type: scenario
+    question: "你完成了PM分配的因子研究任务，结果不太理想。但你在过程中发现了另一个可能更有前景的研究方向。你会？/ You've completed the factor research task assigned by the PM with less-than-ideal results. But during the process, you discovered another potentially more promising research direction. What would you do?"
+    options:
+      - "A. 只汇报原始任务的结果 / Only report the results of the original task"
+      - "B. 汇报原始结果，同时主动展示你发现的新方向及初步分析 / Report original results while proactively presenting the new direction and preliminary analysis"
+      - "C. 隐藏原始的不理想结果，只展示新发现 / Hide the less-than-ideal original results and only present the new discovery"
+      - "D. 私下继续研究新方向，等有更充分的证据后再汇报 / Privately continue researching the new direction and report when you have more substantial evidence"
+    scoring: {"A": 2, "B": 4, "C": 1, "D": 2}
+    dimension: "工作态度 Work Ethic"
+    explanation: "B最优，展示了诚实+主动性的完美结合。C不诚实。D虽有远见但延误了信息共享。A缺乏主动性。/ B is optimal, showing a perfect combination of honesty + initiative. C is dishonest. D is forward-thinking but delays information sharing. A lacks initiative."
+
+  - id: CHR_WORK_010
+    category: work_ethic
+    type: likert_scale
+    question: "我对自己工作的质量标准通常高于团队或公司的最低要求。/ My quality standards for my own work are usually higher than the minimum requirements of the team or company."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "工作态度 Work Ethic"
+    explanation: "评估内在质量标准。自我要求高于外部要求的人通常产出更优质的研究和代码。/ Assesses internal quality standards. Those with self-expectations higher than external requirements typically produce higher quality research and code."
+
+  - id: CHR_WORK_011
+    category: work_ethic
+    type: likert_scale
+    question: "我会持续优化自己的工作流程以提高效率。/ I continuously optimize my workflow to improve efficiency."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "工作态度 Work Ethic"
+    explanation: "评估效率改进意识。持续优化工作流程是量化研究者的核心竞争力之一。/ Assesses efficiency improvement awareness. Continuously optimizing workflow is one of the core competencies of quantitative researchers."
+
+  - id: CHR_WORK_012
+    category: work_ethic
+    type: likert_scale
+    question: "如果没有deadline的压力，我可能会拖延工作。/ Without deadline pressure, I might procrastinate on work."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "工作态度 Work Ethic"
+    explanation: "反向计分。评估内在驱动力。需要外部压力才能推进的人在自主研究环境中可能表现不佳。/ Reverse-scored. Assesses intrinsic motivation. Those who need external pressure to make progress may perform poorly in autonomous research environments."
+
+  - id: CHR_WORK_013
+    category: work_ethic
+    type: likert_scale
+    question: "我注重代码的可读性和可维护性，不仅仅是功能正确。/ I pay attention to code readability and maintainability, not just functional correctness."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "工作态度 Work Ethic"
+    explanation: "评估代码工艺标准。可读可维护的代码是团队长期效率的基础，也体现了对同事的尊重。/ Assesses code craftsmanship standards. Readable, maintainable code is the foundation of long-term team efficiency and shows respect for colleagues."
+
+  - id: CHR_WORK_014
+    category: work_ethic
+    type: likert_scale
+    question: "我认为做到'及格'就够了，不必追求完美。/ I believe 'passing' is enough; there's no need to pursue perfection."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "工作态度 Work Ethic"
+    explanation: "反向计分。评估满足感阈值。虽然过度完美主义也有问题，但'及格就好'的态度在高要求的量化环境中不够。/ Reverse-scored. Assesses satisfaction threshold. While excessive perfectionism is also problematic, a 'good enough to pass' attitude is insufficient in demanding quant environments."
+
+  - id: CHR_WORK_015
+    category: work_ethic
+    type: likert_scale
+    question: "我会主动学习新工具和技术来提升工作效率。/ I proactively learn new tools and technologies to improve work efficiency."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "工作态度 Work Ethic"
+    explanation: "评估技术自我投资意愿。在快速进化的量化技术栈中，主动学习新工具是保持生产力的关键。/ Assesses willingness for technical self-investment. In the rapidly evolving quant tech stack, proactively learning new tools is key to maintaining productivity."
+
+  - id: CHR_WORK_016
+    category: work_ethic
+    type: likert_scale
+    question: "即使在疲惫的情况下，我也能保持工作质量。/ Even when exhausted, I can maintain work quality."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "工作态度 Work Ethic"
+    explanation: "评估疲劳状态下的质量保持能力。量化开发中的关键时期（如策略上线）可能需要在疲劳状态下保持高标准。/ Assesses quality maintenance under fatigue. Critical periods in quant development (such as strategy launch) may require maintaining high standards while fatigued."
+
+  - id: CHR_WORK_017
+    category: work_ethic
+    type: scenario
+    question: "你完成了一个研究报告的初稿，但感觉图表和排版可以更好。改进这些需要额外3小时工作，而PM说初稿就可以提交了。你会？/ You've completed a first draft of a research report, but feel the charts and formatting could be better. Improving these would take 3 extra hours, and the PM says the draft can be submitted as is. What would you do?"
+    options:
+      - "A. 按PM说的直接提交 / Submit as the PM says"
+      - "B. 花额外时间完善图表和排版，提升报告的专业度 / Spend extra time improving charts and formatting to enhance report professionalism"
+      - "C. 提交初稿但之后自己做一个更好的版本存档 / Submit the draft but make a better version for your own archives later"
+      - "D. 问PM是否可以延迟半天提交一个更好的版本 / Ask the PM if submission can be delayed half a day for a better version"
+    scoring: {"A": 2, "B": 3, "C": 2, "D": 4}
+    dimension: "工作态度 Work Ethic"
+    explanation: "D最优，在追求质量和尊重流程之间找到平衡。B展示了高标准但可能过度。A完全遵从但可能不满意自己的产出。/ D is optimal, finding balance between pursuing quality and respecting process. B shows high standards but may be excessive. A fully complies but may be unsatisfied with output."
+
+  - id: CHR_WORK_018
+    category: work_ethic
+    type: likert_scale
+    question: "我对于重复性工作也能保持一贯的准确性。/ I maintain consistent accuracy even in repetitive work."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "工作态度 Work Ethic"
+    explanation: "评估重复任务中的注意力维持。日常策略监控、数据检查等重复性工作的准确性直接影响系统可靠性。/ Assesses attention maintenance in repetitive tasks. Accuracy in repetitive work like daily strategy monitoring and data checks directly affects system reliability."
+
+  - id: CHR_WORK_019
+    category: work_ethic
+    type: likert_scale
+    question: "我每次都做到100%的努力，从不偷懒。/ I give 100% effort every time and never slack off."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: social_desirability_check
+    dimension: "社会期望性检测 Social Desirability Detection"
+    explanation: "社会期望性检测题。持续100%投入不符合人类的实际行为模式，强烈同意可能是粉饰回答。/ Social desirability check. Sustained 100% effort doesn't match actual human behavior patterns; strong agreement may be an embellished response."
+
+  - id: CHR_WORK_020
+    category: work_ethic
+    type: likert_scale
+    question: "我会花时间写清晰的commit message和代码注释。/ I take time to write clear commit messages and code comments."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "工作态度 Work Ethic"
+    explanation: "评估代码文档化习惯。清晰的commit message和注释是团队协作和代码审计的基础。/ Assesses code documentation habits. Clear commit messages and comments are the foundation of team collaboration and code auditing."
+
+  - id: CHR_WORK_021
+    category: work_ethic
+    type: likert_scale
+    question: "我会主动寻找可以自动化的重复性工作。/ I proactively look for repetitive work that can be automated."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "工作态度 Work Ethic"
+    explanation: "评估效率优化意识。量化金融的核心优势之一就是自动化，能识别自动化机会的人更有生产力。/ Assesses efficiency optimization awareness. One of the core advantages of quantitative finance is automation; those who can identify automation opportunities are more productive."
+
+  - id: CHR_WORK_022
+    category: work_ethic
+    type: likert_scale
+    question: "我在工作时很容易被社交媒体或其他干扰分散注意力。/ I am easily distracted by social media or other interruptions when working."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "工作态度 Work Ethic"
+    explanation: "反向计分。评估专注力。深度工作能力是复杂量化研究的必备条件。/ Reverse-scored. Assesses focus ability. Deep work capability is a prerequisite for complex quantitative research."
+
+  - id: CHR_WORK_023
+    category: work_ethic
+    type: likert_scale
+    question: "当我认为有更高效的方法时，我会主动向团队提议流程改进。/ When I think there's a more efficient way, I proactively suggest process improvements to the team."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "工作态度 Work Ethic"
+    explanation: "评估流程改进主动性。持续改进团队流程是高效量化团队的特征。/ Assesses process improvement initiative. Continuously improving team processes is a characteristic of efficient quant teams."
+
+  - id: CHR_WORK_024
+    category: work_ethic
+    type: likert_scale
+    question: "我会确保交接的工作足够完整，让接手的人可以顺利继续。/ I ensure work handovers are complete enough for the recipient to continue smoothly."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "工作态度 Work Ethic"
+    explanation: "评估交接质量意识。高质量的工作交接体现了对同事和团队的尊重。/ Assesses handover quality awareness. High-quality work handovers show respect for colleagues and the team."
+
+  - id: CHR_WORK_025
+    category: work_ethic
+    type: likert_scale
+    question: "我认为在量化金融中，对细节的关注可以创造巨大的价值差异。/ I believe in quantitative finance, attention to detail can create huge value differences."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "工作态度 Work Ethic"
+    explanation: "评估对细节价值的认识。在因子研究中，数据清洗的细节、回测框架的精度等都能显著影响结论的可靠性。/ Assesses recognition of detail value. In factor research, data cleaning details, backtesting framework precision, etc., can significantly affect conclusion reliability."
+
+  # ===========================================================================
+  # CULTURAL FIT (25 questions)
+  # ===========================================================================
+
+  - id: CHR_CULT_001
+    category: cultural_fit
+    type: likert_scale
+    question: "我认为在工作中保持谦逊比展示能力更重要。/ I believe maintaining humility at work is more important than showcasing ability."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "文化适配 Cultural Fit"
+    explanation: "评估谦逊程度。在量化团队中，谦逊的人更容易接受反馈、学习新知识并与他人合作。/ Assesses humility level. In quant teams, humble people are more likely to accept feedback, learn new knowledge, and collaborate with others."
+
+  - id: CHR_CULT_002
+    category: cultural_fit
+    type: likert_scale
+    question: "我认为健康的内部竞争有利于团队的整体进步。/ I believe healthy internal competition benefits the team's overall progress."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "文化适配 Cultural Fit"
+    explanation: "评估对内部竞争的态度。适度的竞争激发创新，但需要在合作和竞争之间找到平衡。/ Assesses attitude toward internal competition. Moderate competition stimulates innovation, but balance between cooperation and competition is needed."
+
+  - id: CHR_CULT_003
+    category: cultural_fit
+    type: scenario
+    question: "你加入了一个新的量化团队，发现团队的技术栈和工作方式与你之前的经验完全不同。你会？/ You join a new quant team and find that the team's tech stack and working style are completely different from your previous experience. What would you do?"
+    options:
+      - "A. 尝试说服团队采用你熟悉的方式 / Try to convince the team to adopt your familiar approach"
+      - "B. 先充分了解和适应团队的方式，然后再提出改进建议 / First fully understand and adapt to the team's approach, then propose improvement suggestions"
+      - "C. 默默适应，不发表意见 / Silently adapt without expressing opinions"
+      - "D. 抱怨新环境的不合理之处 / Complain about the unreasonable aspects of the new environment"
+    scoring: {"A": 2, "B": 4, "C": 2, "D": 1}
+    dimension: "文化适配 Cultural Fit"
+    explanation: "B最优，展示了先理解再改变的智慧。A过于强势。C缺乏主动性。D消极态度。/ B is optimal, showing the wisdom of understanding before changing. A is too assertive. C lacks initiative. D is a negative attitude."
+
+  - id: CHR_CULT_004
+    category: cultural_fit
+    type: likert_scale
+    question: "我更喜欢在高度结构化的环境中工作，而非自由松散的环境。/ I prefer working in a highly structured environment rather than a free and loose one."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "文化适配 Cultural Fit"
+    explanation: "评估对结构化环境的偏好。量化团队通常有严格的风控流程和代码规范，需要适应结构化工作方式。注意：不同团队对此的偏好可能不同。/ Assesses preference for structured environments. Quant teams typically have strict risk control processes and code standards, requiring adaptation to structured work. Note: different teams may vary in preference."
+
+  - id: CHR_CULT_005
+    category: cultural_fit
+    type: likert_scale
+    question: "我认为diversity of thought（思维多样性）对量化研究团队至关重要。/ I believe diversity of thought is crucial for quantitative research teams."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "文化适配 Cultural Fit"
+    explanation: "评估对多元性的重视。来自不同学科背景（数学、物理、CS、经济学）的思维碰撞是量化创新的源泉。/ Assesses appreciation for diversity. Collision of thinking from different disciplinary backgrounds (math, physics, CS, economics) is the source of quantitative innovation."
+
+  - id: CHR_CULT_006
+    category: cultural_fit
+    type: likert_scale
+    question: "我尊重团队中每个人的贡献，无论他们的资历深浅。/ I respect everyone's contributions in the team, regardless of their seniority."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "文化适配 Cultural Fit"
+    explanation: "评估等级意识和包容性。在好的量化团队中，最好的想法可能来自最年轻的成员。/ Assesses hierarchy consciousness and inclusiveness. In good quant teams, the best ideas may come from the youngest members."
+
+  - id: CHR_CULT_007
+    category: cultural_fit
+    type: likert_scale
+    question: "个人利益应该在团队利益之后。/ Personal interests should come after team interests."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "文化适配 Cultural Fit"
+    explanation: "评估集体主义 vs. 个人主义倾向。虽然两者都有价值，但在因子团队中过度的个人主义可能损害团队协同。/ Assesses collectivism vs. individualism tendency. While both have value, excessive individualism in factor teams may damage team synergy."
+
+  - id: CHR_CULT_008
+    category: cultural_fit
+    type: scenario
+    question: "团队决定在下一季度将研发重心转向一个你认为不太有前景的方向。你已在会上充分表达了反对意见但未被采纳。你会？/ The team decides to shift R&D focus next quarter to a direction you think is unpromising. You've fully expressed your opposition in the meeting but weren't adopted. What would you do?"
+    options:
+      - "A. 消极执行，保留精力做自己认为重要的事 / Passively execute, saving energy for what you think is important"
+      - "B. 全力投入新方向，尝试在其中找到意想不到的机会 / Fully commit to the new direction, trying to find unexpected opportunities within it"
+      - "C. 继续私下推进你认为正确的方向 / Continue privately pushing the direction you believe is correct"
+      - "D. 接受决定但保持关注，如果有新的证据支持你的观点则再次提出 / Accept the decision but stay vigilant; if new evidence supports your view, raise it again"
+    scoring: {"A": 1, "B": 3, "C": 1, "D": 4}
+    dimension: "文化适配 Cultural Fit"
+    explanation: "D最优，结合了团队忠诚和独立思考——'disagree and commit'但保持知识上的警觉。B也好，展示了积极态度。A和C缺乏团队忠诚。/ D is optimal, combining team loyalty with independent thinking—'disagree and commit' while maintaining intellectual vigilance. B is also good, showing positive attitude. A and C lack team loyalty."
+
+  - id: CHR_CULT_009
+    category: cultural_fit
+    type: likert_scale
+    question: "我喜欢与不同学科背景的人合作。/ I enjoy collaborating with people from different disciplinary backgrounds."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "文化适配 Cultural Fit"
+    explanation: "评估跨学科合作意愿。量化团队通常由数学、物理、计算机、金融等多学科人才组成。/ Assesses cross-disciplinary collaboration willingness. Quant teams typically comprise talent from math, physics, CS, finance, and other disciplines."
+
+  - id: CHR_CULT_010
+    category: cultural_fit
+    type: likert_scale
+    question: "我认为工作与生活的平衡很重要，不应该被牺牲。/ I believe work-life balance is important and should not be sacrificed."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "文化适配 Cultural Fit"
+    explanation: "评估可持续工作理念。长期高绩效需要可持续的工作节奏，过度燃烧最终会损害绩效。/ Assesses sustainable work philosophy. Long-term high performance requires a sustainable work rhythm; excessive burnout ultimately damages performance."
+
+  - id: CHR_CULT_011
+    category: cultural_fit
+    type: likert_scale
+    question: "我倾向于在公开透明的环境中工作，信息应该被充分共享。/ I prefer working in an open and transparent environment where information should be fully shared."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "文化适配 Cultural Fit"
+    explanation: "评估对透明文化的偏好。信息透明促进集体智慧和快速决策，是高效量化团队的特征。/ Assesses preference for transparent culture. Information transparency promotes collective wisdom and fast decision-making, characteristic of efficient quant teams."
+
+  - id: CHR_CULT_012
+    category: cultural_fit
+    type: likert_scale
+    question: "我很容易与所有人相处融洽。/ I get along well with everyone easily."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: social_desirability_check
+    dimension: "社会期望性检测 Social Desirability Detection"
+    explanation: "社会期望性检测题。与所有人都相处融洽是不现实的，强烈同意可能表示粉饰。/ Social desirability check. Getting along with absolutely everyone is unrealistic; strong agreement may indicate embellishment."
+
+  - id: CHR_CULT_013
+    category: cultural_fit
+    type: likert_scale
+    question: "我认为在量化金融中，合作创造的价值大于个人独立工作。/ I believe in quantitative finance, collaboration creates more value than individual independent work."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "文化适配 Cultural Fit"
+    explanation: "评估对协作价值的认知。现代量化策略越来越复杂，需要多人协作（研究+开发+运维）才能实现。/ Assesses recognition of collaboration value. Modern quantitative strategies are increasingly complex, requiring multi-person collaboration (research+development+operations) to implement."
+
+  - id: CHR_CULT_014
+    category: cultural_fit
+    type: likert_scale
+    question: "我尊重并遵守团队已建立的规范和流程。/ I respect and follow the team's established norms and processes."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "文化适配 Cultural Fit"
+    explanation: "评估规范遵循度。团队规范（如代码标准、风控流程、审批流程）是集体智慧的结晶。/ Assesses norm compliance. Team norms (such as code standards, risk control processes, approval processes) are the crystallization of collective wisdom."
+
+  - id: CHR_CULT_015
+    category: cultural_fit
+    type: likert_scale
+    question: "我认为一定程度的冲突和争论对团队是健康的。/ I believe a certain level of conflict and debate is healthy for a team."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "文化适配 Cultural Fit"
+    explanation: "评估对建设性冲突的态度。避免所有冲突的'和谐'团队往往无法产生最好的研究成果。/ Assesses attitude toward constructive conflict. 'Harmonious' teams that avoid all conflict often fail to produce the best research results."
+
+  - id: CHR_CULT_016
+    category: cultural_fit
+    type: likert_scale
+    question: "我适应能力强，能在不同风格的管理者下有效工作。/ I am adaptable and can work effectively under managers of different styles."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "文化适配 Cultural Fit"
+    explanation: "评估管理风格适应性。在职业生涯中会遇到不同风格的PM和CIO，适应能力影响长期发展。/ Assesses management style adaptability. Throughout a career, one encounters PMs and CIOs of different styles; adaptability affects long-term development."
+
+  - id: CHR_CULT_017
+    category: cultural_fit
+    type: likert_scale
+    question: "我会积极参与团队建设活动和非正式的交流。/ I actively participate in team-building activities and informal interactions."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "文化适配 Cultural Fit"
+    explanation: "评估社交参与度。非正式交流是建立信任和加深合作的重要渠道。/ Assesses social participation. Informal interactions are important channels for building trust and deepening collaboration."
+
+  - id: CHR_CULT_018
+    category: cultural_fit
+    type: likert_scale
+    question: "我认为在量化团队中，没有愚蠢的问题。/ I believe in a quant team, there are no stupid questions."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "文化适配 Cultural Fit"
+    explanation: "评估心理安全感意识。鼓励提问的文化能防止因误解导致的重大错误。/ Assesses psychological safety awareness. A culture that encourages questions prevents major errors caused by misunderstandings."
+
+  - id: CHR_CULT_019
+    category: cultural_fit
+    type: likert_scale
+    question: "我更注重团队的长远发展而非短期业绩。/ I focus more on the team's long-term development than short-term performance."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "文化适配 Cultural Fit"
+    explanation: "评估长期 vs. 短期视角。为短期业绩牺牲团队建设和系统质量是不可持续的。/ Assesses long-term vs. short-term perspective. Sacrificing team building and system quality for short-term performance is unsustainable."
+
+  - id: CHR_CULT_020
+    category: cultural_fit
+    type: likert_scale
+    question: "我能够在竞争和协作之间找到恰当的平衡。/ I can find an appropriate balance between competition and collaboration."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "文化适配 Cultural Fit"
+    explanation: "评估竞合平衡能力。量化团队既需要良性竞争来激发创新，也需要合作来实现复杂目标。/ Assesses competitive-cooperative balance ability. Quant teams need both healthy competition to stimulate innovation and cooperation to achieve complex goals."
+
+  - id: CHR_CULT_021
+    category: cultural_fit
+    type: likert_scale
+    question: "我重视团队的知识传承，愿意花时间帮助新人成长。/ I value team knowledge transfer and am willing to spend time helping new members grow."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "文化适配 Cultural Fit"
+    explanation: "评估知识传承意愿。帮助新人成长不仅是利他行为，也能通过教学深化自身理解。/ Assesses knowledge transfer willingness. Helping new members grow is not only altruistic but also deepens one's own understanding through teaching."
+
+  - id: CHR_CULT_022
+    category: cultural_fit
+    type: likert_scale
+    question: "我认为团队应该庆祝集体的成功而非只表彰个人。/ I believe the team should celebrate collective successes rather than only recognizing individuals."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "文化适配 Cultural Fit"
+    explanation: "评估对集体荣誉的重视。在因子团队中，一个策略的成功通常需要多个角色的协同贡献。/ Assesses appreciation for collective honor. In factor teams, a strategy's success typically requires collaborative contributions from multiple roles."
+
+  - id: CHR_CULT_023
+    category: cultural_fit
+    type: likert_scale
+    question: "我会积极适应公司文化的变化，而不是固守旧有习惯。/ I actively adapt to changes in company culture rather than clinging to old habits."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "文化适配 Cultural Fit"
+    explanation: "评估文化适应性。公司文化会随着发展而变化，能够适应这些变化是长期成功的关键。/ Assesses cultural adaptability. Company culture changes with development; being able to adapt to these changes is key to long-term success."
+
+  - id: CHR_CULT_024
+    category: cultural_fit
+    type: likert_scale
+    question: "我认为在工作中保持幽默感有助于团队氛围。/ I believe maintaining a sense of humor at work helps team atmosphere."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "文化适配 Cultural Fit"
+    explanation: "评估工作中的社交灵活性。适当的幽默能缓解高压环境的紧张氛围，促进团队凝聚力。/ Assesses social flexibility at work. Appropriate humor can ease tension in high-pressure environments and promote team cohesion."
+
+  - id: CHR_CULT_025
+    category: cultural_fit
+    type: likert_scale
+    question: "我能接受在工作中犯错被指出，只要方式是尊重的。/ I can accept being pointed out for mistakes at work, as long as it's done respectfully."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "文化适配 Cultural Fit"
+    explanation: "评估对反馈的接受度。在高标准的量化团队中，接受建设性批评是持续进步的前提。/ Assesses receptiveness to feedback. In high-standard quant teams, accepting constructive criticism is a prerequisite for continuous progress."
+
+  # ===========================================================================
+  # LEADERSHIP POTENTIAL (20 questions)
+  # ===========================================================================
+
+  - id: CHR_LEAD_001
+    category: leadership_potential
+    type: likert_scale
+    question: "我会在没有被要求的情况下主动承担额外的责任。/ I take on extra responsibilities without being asked."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "领导潜力 Leadership Potential"
+    explanation: "评估主动担当的倾向。领导力的起点是主动发现和承担责任，而非等待委派。/ Assesses tendency for proactive responsibility-taking. The starting point of leadership is proactively finding and taking on responsibilities, not waiting for assignments."
+
+  - id: CHR_LEAD_002
+    category: leadership_potential
+    type: likert_scale
+    question: "我能够清晰地向团队传达技术概念和策略愿景。/ I can clearly communicate technical concepts and strategic vision to the team."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "领导潜力 Leadership Potential"
+    explanation: "评估沟通领导力。在量化团队中，能清晰传达复杂概念的人自然成为团队的知识枢纽。/ Assesses communication leadership. In quant teams, those who can clearly communicate complex concepts naturally become the team's knowledge hub."
+
+  - id: CHR_LEAD_003
+    category: leadership_potential
+    type: scenario
+    question: "你被任命为一个新的因子研究小组的负责人，团队中有一位经验比你更丰富的资深成员。你会如何处理这种情况？/ You are appointed as the leader of a new factor research subgroup, and there is a more experienced senior member on the team. How would you handle this situation?"
+    options:
+      - "A. 利用你的职位权威来确立领导地位 / Use your positional authority to establish leadership"
+      - "B. 认真倾听资深成员的意见，利用其经验来辅助决策，同时明确团队目标和角色分工 / Listen carefully to the senior member's opinions, leverage their experience for decision-making, while clarifying team goals and role assignments"
+      - "C. 让资深成员实际领导团队，你只做名义上的负责人 / Let the senior member effectively lead the team while you serve as leader in name only"
+      - "D. 将资深成员视为潜在的竞争威胁 / View the senior member as a potential competitive threat"
+    scoring: {"A": 2, "B": 4, "C": 1, "D": 1}
+    dimension: "领导潜力 Leadership Potential"
+    explanation: "B最优，展示了谦逊领导力——充分利用团队最大资源同时明确方向。A过于权威，C放弃了领导职责，D是威胁感知。/ B is optimal, showing humble leadership—fully leveraging the team's best resources while setting clear direction. A is too authoritarian, C abdicates leadership, D is threat perception."
+
+  - id: CHR_LEAD_004
+    category: leadership_potential
+    type: likert_scale
+    question: "我善于识别团队成员的强项并将任务分配到最合适的人。/ I am good at identifying team members' strengths and assigning tasks to the most suitable people."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "领导潜力 Leadership Potential"
+    explanation: "评估人才识别和任务匹配能力。好的领导者能让每个人在最擅长的领域发挥最大价值。/ Assesses talent identification and task matching ability. Good leaders enable everyone to maximize their value in their strongest areas."
+
+  - id: CHR_LEAD_005
+    category: leadership_potential
+    type: likert_scale
+    question: "当出现困难决策时，我愿意承担做决定的责任。/ When difficult decisions arise, I am willing to take the responsibility of deciding."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "领导潜力 Leadership Potential"
+    explanation: "评估决策勇气。领导者的核心职责之一是在不确定性中做出决定并承担后果。/ Assesses decision-making courage. One of a leader's core responsibilities is making decisions amid uncertainty and bearing the consequences."
+
+  - id: CHR_LEAD_006
+    category: leadership_potential
+    type: likert_scale
+    question: "我能够在团队中营造心理安全的环境，让每个人都敢于发言。/ I can create a psychologically safe environment in the team where everyone dares to speak up."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "领导潜力 Leadership Potential"
+    explanation: "评估心理安全营造能力。Google的研究表明，心理安全是高效团队最重要的特征。/ Assesses ability to create psychological safety. Google's research shows psychological safety is the most important characteristic of high-performing teams."
+
+  - id: CHR_LEAD_007
+    category: leadership_potential
+    type: scenario
+    question: "你的团队成员之间因为策略资源分配问题产生了严重分歧。作为负责人，你会？/ Team members have serious disagreements about strategy resource allocation. As the leader, what would you do?"
+    options:
+      - "A. 自己做出最终决定，不再讨论 / Make the final decision yourself without further discussion"
+      - "B. 让争议双方各自用数据支持自己的方案，然后组织一次结构化的讨论来达成共识 / Have both sides support their proposals with data, then organize a structured discussion to reach consensus"
+      - "C. 平均分配资源以避免冲突 / Split resources equally to avoid conflict"
+      - "D. 把决定权上交给更高层 / Escalate the decision to higher management"
+    scoring: {"A": 2, "B": 4, "C": 1, "D": 2}
+    dimension: "领导潜力 Leadership Potential"
+    explanation: "B最优，利用数据驱动决策并促进建设性讨论。A过于独断。C回避了做出最优决策的责任。D缺乏领导担当。/ B is optimal, using data-driven decisions and promoting constructive discussion. A is too arbitrary. C avoids the responsibility of making the optimal decision. D lacks leadership accountability."
+
+  - id: CHR_LEAD_008
+    category: leadership_potential
+    type: likert_scale
+    question: "我会花时间指导和发展团队中较初级的成员。/ I spend time mentoring and developing more junior team members."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "领导潜力 Leadership Potential"
+    explanation: "评估教练式领导能力。投资于团队成员的成长是领导者最有长期回报的行为。/ Assesses coaching leadership ability. Investing in team members' growth is a leader's most long-term rewarding behavior."
+
+  - id: CHR_LEAD_009
+    category: leadership_potential
+    type: likert_scale
+    question: "我能够将复杂的长期目标分解为可执行的短期里程碑。/ I can break down complex long-term goals into executable short-term milestones."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "领导潜力 Leadership Potential"
+    explanation: "评估战略规划能力。将因子研究的宏大目标转化为可操作步骤是研究组长的核心技能。/ Assesses strategic planning ability. Converting the grand goals of factor research into actionable steps is a core skill for research group leaders."
+
+  - id: CHR_LEAD_010
+    category: leadership_potential
+    type: likert_scale
+    question: "当团队面临危机时，我能保持冷静并为团队提供方向。/ When the team faces a crisis, I can stay calm and provide direction for the team."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "领导潜力 Leadership Potential"
+    explanation: "评估危机领导力。在市场崩盘或系统故障时，团队需要一个能保持冷静并指引方向的人。/ Assesses crisis leadership. During market crashes or system failures, teams need someone who can stay calm and provide direction."
+
+  - id: CHR_LEAD_011
+    category: leadership_potential
+    type: likert_scale
+    question: "我善于在信息有限的情况下做出方向性决策。/ I am good at making directional decisions with limited information."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "领导潜力 Leadership Potential"
+    explanation: "评估在不确定性中的决策能力。研究方向的选择往往需要在数据不充分时做出判断。/ Assesses decision-making ability amid uncertainty. Choosing research directions often requires judgment when data is insufficient."
+
+  - id: CHR_LEAD_012
+    category: leadership_potential
+    type: likert_scale
+    question: "我能够接受团队成员在某些方面比我更优秀这个事实。/ I can accept the fact that team members may be better than me in certain areas."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "领导潜力 Leadership Potential"
+    explanation: "评估安全感和胸怀。优秀的领导者不需要在每个方面都是最好的，而是要善于利用团队中每个人的最佳能力。/ Assesses security and magnanimity. Excellent leaders don't need to be the best in every aspect but should be skilled at leveraging everyone's best abilities on the team."
+
+  - id: CHR_LEAD_013
+    category: leadership_potential
+    type: scenario
+    question: "你的一位直接下属犯了一个严重错误，导致策略产生了重大亏损。高层问责时，你会？/ A direct report has made a serious mistake causing significant strategy losses. When upper management holds someone accountable, what would you do?"
+    options:
+      - "A. 承担管理责任，同时在内部与该下属讨论改进方案 / Take management responsibility while internally discussing improvement plans with the subordinate"
+      - "B. 如实向高层报告是下属的错误 / Honestly report to upper management that it was the subordinate's mistake"
+      - "C. 尝试淡化问题的严重性 / Try to downplay the severity of the issue"
+      - "D. 指出流程中的系统性问题，而非个人的问题 / Point out systemic issues in the process rather than individual issues"
+    scoring: {"A": 4, "B": 2, "C": 1, "D": 3}
+    dimension: "领导潜力 Leadership Potential"
+    explanation: "A最优，展示了真正的领导担当——对上承担管理责任，对下提供支持和改进方向。D也不错（系统改进）。B将下属推出去。C缺乏诚信。/ A is optimal, showing true leadership accountability—taking management responsibility upward while providing support and improvement direction downward. D is also good (systemic improvement). B throws the subordinate under the bus. C lacks integrity."
+
+  - id: CHR_LEAD_014
+    category: leadership_potential
+    type: likert_scale
+    question: "我能够有效地向不同利益相关方（研究、开发、风控、管理层）沟通项目进展。/ I can effectively communicate project progress to different stakeholders (research, development, risk control, management)."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "领导潜力 Leadership Potential"
+    explanation: "评估利益相关方管理能力。能够针对不同受众调整沟通方式是领导力的重要组成部分。/ Assesses stakeholder management ability. Being able to adjust communication style for different audiences is an important component of leadership."
+
+  - id: CHR_LEAD_015
+    category: leadership_potential
+    type: likert_scale
+    question: "我有清晰的职业发展目标和实现路径。/ I have clear career development goals and paths to achieve them."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "领导潜力 Leadership Potential"
+    explanation: "评估自我规划能力。能规划自己发展路径的人更有可能成长为有远见的领导者。/ Assesses self-planning ability. Those who can plan their own development paths are more likely to grow into visionary leaders."
+
+  - id: CHR_LEAD_016
+    category: leadership_potential
+    type: likert_scale
+    question: "我善于激励团队成员在困难时期保持动力。/ I am good at motivating team members to maintain momentum during difficult periods."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "领导潜力 Leadership Potential"
+    explanation: "评估激励能力。在策略持续回撤的困难时期，能维持团队士气的领导者对团队生存至关重要。/ Assesses motivational ability. During difficult periods of sustained strategy drawdown, leaders who can maintain team morale are crucial to team survival."
+
+  - id: CHR_LEAD_017
+    category: leadership_potential
+    type: likert_scale
+    question: "我能够在短期利益和长期战略之间做出平衡。/ I can balance between short-term benefits and long-term strategy."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "领导潜力 Leadership Potential"
+    explanation: "评估战略平衡能力。在因子团队中，需要同时兼顾短期业绩和长期研究储备。/ Assesses strategic balance ability. In factor teams, one must simultaneously consider short-term performance and long-term research reserves."
+
+  - id: CHR_LEAD_018
+    category: leadership_potential
+    type: likert_scale
+    question: "我会主动为团队争取需要的资源和支持。/ I proactively secure needed resources and support for the team."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "领导潜力 Leadership Potential"
+    explanation: "评估资源争取能力。好的领导者为团队创造最佳工作条件，包括数据、算力、人员等资源。/ Assesses resource acquisition ability. Good leaders create optimal working conditions for the team, including data, computing power, personnel, and other resources."
+
+  - id: CHR_LEAD_019
+    category: leadership_potential
+    type: likert_scale
+    question: "我能够认识到并承认我的领导方式可能需要改进的地方。/ I can recognize and acknowledge areas where my leadership approach may need improvement."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "领导潜力 Leadership Potential"
+    explanation: "评估领导力方面的自我认知。能认识到自身领导力不足的人更有成长为优秀领导者的潜力。/ Assesses self-awareness in leadership. Those who can recognize their own leadership shortcomings have more potential to grow into excellent leaders."
+
+  - id: CHR_LEAD_020
+    category: leadership_potential
+    type: likert_scale
+    question: "我有能力将团队的研究成果有效地向高层展示，获取支持和资源。/ I have the ability to effectively present the team's research results to upper management, gaining support and resources."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "领导潜力 Leadership Potential"
+    explanation: "评估向上管理能力。能将技术成果翻译为商业价值并获取高层支持的人在推动团队发展方面有巨大优势。/ Assesses upward management ability. Those who can translate technical achievements into business value and gain upper management support have a huge advantage in advancing team development."
