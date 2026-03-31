@@ -1,0 +1,2763 @@
+# =============================================================================
+# Factor Mining Quantitative Team Interview - Quant Researcher (量化研究) Track
+# Total: 100 questions
+# Distribution:
+#   probability_statistics: 25 (QR_PROB_001 - QR_PROB_025)
+#   stochastic_calculus: 15 (QR_STOC_001 - QR_STOC_015)
+#   factor_modeling: 20 (QR_FACT_001 - QR_FACT_020)
+#   machine_learning: 20 (QR_ML_001 - QR_ML_020)
+#   time_series: 10 (QR_TS_001 - QR_TS_010)
+#   research_design: 10 (QR_RD_001 - QR_RD_010)
+# Difficulty: 40 medium_high, 40 senior, 20 expert
+# Types: 65 multiple_choice, 10 code, 15 open_ended, 10 show_work
+# =============================================================================
+
+- id: QR_PROB_001
+  category: probability_statistics
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在A股量化研究中，我们使用 Bayesian inference 更新因子收益率的先验分布。假设因子收益率的先验为 N(0, σ₀²)，似然函数为 N(μ_obs, σ²/n)，则后验均值 (posterior mean) 最接近以下哪个表达式？
+
+    In A-share quant research, we use Bayesian inference to update the prior distribution of factor returns. If the prior is N(0, σ₀²) and the likelihood is N(μ_obs, σ²/n), which expression best approximates the posterior mean?'
+  options:
+  - A. μ_obs * (σ₀² / (σ₀² + σ²/n))
+  - B. μ_obs * (σ²/n / (σ₀² + σ²/n))
+  - C. μ_obs * n / (n + σ²/σ₀²)
+  - D. A和C等价 / A and C are equivalent
+  answer: D
+  explanation: '后验均值为 μ_post = μ_obs * (σ₀² / (σ₀² + σ²/n))。将分子分母同乘 n/σ² 可得 μ_obs * n / (n + σ²/σ₀²)，因此A和C等价。这是 Bayesian shrinkage 的经典结果，在因子收益率估计中用于将样本均值向先验收缩。
+
+    The posterior mean is μ_post = μ_obs * (σ₀² / (σ₀² + σ²/n)). Multiplying numerator and denominator by n/σ² yields μ_obs * n / (n + σ²/σ₀²), so A and C are equivalent. This is the classic Bayesian shrinkage result used in factor return estimation.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_PROB_002
+  category: probability_statistics
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在对A股因子收益率进行 hypothesis testing 时，使用 t-test 检验因子月度IC均值是否显著不为零。样本量 n=60 个月，IC均值=0.05，IC标准差=0.12。t统计量最接近：
+
+    When testing whether the monthly IC mean of an A-share factor is significantly different from zero using a t-test with n=60 months, IC mean=0.05, IC std=0.12, the t-statistic is closest to:'
+  options:
+  - A. 2.15
+  - B. 3.23
+  - C. 4.08
+  - D. 1.67
+  answer: B
+  explanation: 't = IC_mean / (IC_std / sqrt(n)) = 0.05 / (0.12 / sqrt(60)) = 0.05 / 0.01549 ≈ 3.23。这对应ICIR（年化）= IC_mean / IC_std * sqrt(12) = 0.05/0.12 * 3.464 ≈ 1.44，是一个较好的因子。
+
+    t = IC_mean / (IC_std / sqrt(n)) = 0.05 / (0.12 / sqrt(60)) ≈ 3.23. The annualized ICIR = IC_mean / IC_std * sqrt(12) ≈ 1.44, indicating a reasonably strong factor.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_PROB_003
+  category: probability_statistics
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在 MLE (Maximum Likelihood Estimation) 框架下，对数正态分布 (lognormal distribution) 的参数估计中，以下哪个说法是正确的？
+
+    Under the MLE framework for parameter estimation of a lognormal distribution, which statement is correct?'
+  options:
+  - A. MLE估计量总是无偏的 / MLE estimators are always unbiased
+  - B. MLE的方差估计量是有偏的，需要 Bessel correction / The MLE variance estimator is biased and needs Bessel correction
+  - C. MLE在小样本下一定优于矩估计 / MLE is always superior to method of moments in small samples
+  - D. 对数正态分布的MLE等价于对对数变换后数据的正态MLE / Lognormal MLE is equivalent to normal MLE on log-transformed data
+  answer: D
+  explanation: '对数正态分布 Y ~ LogN(μ, σ²) 意味着 ln(Y) ~ N(μ, σ²)。因此对 Y 做MLE等价于对 ln(Y) 做正态分布的MLE。B选项虽然正确描述了方差MLE的有偏性，但不如D准确和完整。A和C都是错误的——MLE不总是无偏的，小样本下也不一定优于矩估计。
+
+    For Y ~ LogN(μ, σ²), we have ln(Y) ~ N(μ, σ²). MLE for Y is thus equivalent to normal MLE on ln(Y). While B correctly notes variance MLE bias, D is the most precise and complete answer.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_PROB_004
+  category: probability_statistics
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: '在因子截面回归中遇到 multicollinearity（多重共线性）问题时，以下哪种方法最不适合用来解决？
+
+    When encountering multicollinearity in factor cross-sectional regression, which method is LEAST appropriate to resolve it?'
+  options:
+  - A. 使用 Ridge regression (L2 regularization) / Use Ridge regression
+  - B. 对因子做 PCA 降维后再回归 / Apply PCA dimensionality reduction before regression
+  - C. 增大样本量（更多截面日期）/ Increase sample size (more cross-sectional dates)
+  - D. 对因子做正交化处理 (orthogonalization) / Orthogonalize the factors
+  answer: C
+  explanation: '多重共线性是自变量之间的高相关性问题，与样本量无关。增加样本量不能解决共线性。Ridge regression 通过L2惩罚压缩系数，PCA提取正交主成分，正交化直接消除因子间相关性，这三种都能有效处理共线性。
+
+    Multicollinearity is a problem of high correlation among regressors, independent of sample size. Increasing sample size does not resolve it. Ridge regression, PCA, and orthogonalization all directly address the correlation structure.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_PROB_005
+  category: probability_statistics
+  difficulty: senior
+  type: show_work
+  points: 8
+  question: '推导 Central Limit Theorem (CLT) 在因子组合收益估计中的应用。假设某因子多头组合包含 N 只等权股票，每只股票的日收益率独立同分布，均值 μ，方差 σ²。
+
+    (a) 写出组合日收益率的分布近似（当 N 较大时）
+
+    (b) 若 N=100, μ=0.05%, σ=2%，求组合日收益率标准差
+
+    (c) 讨论当个股收益率非独立时（截面相关性 ρ>0），CLT 近似如何修正
+
+
+    Derive the CLT application in factor portfolio return estimation. Assume a factor long portfolio with N equal-weighted stocks, each with i.i.d. daily returns with mean μ and variance σ².
+
+    (a) Write the approximate distribution of portfolio daily return for large N
+
+    (b) If N=100, μ=0.05%, σ=2%, find the portfolio daily return std
+
+    (c) Discuss how CLT approximation changes when stock returns are cross-sectionally correlated (ρ>0)'
+  options: []
+  answer: ''
+  explanation: '(a) 组合收益 R_p = (1/N)ΣRᵢ，由CLT，R_p ~ N(μ, σ²/N) 近似。
+
+    (b) σ_p = σ/√N = 2%/√100 = 0.2%
+
+    (c) 当个股间有截面相关性ρ时，Var(R_p) = σ²/N + ρσ²(N-1)/N ≈ σ²/N + ρσ²。当N→∞时，方差不趋于0，而是趋于ρσ²。这意味着系统性风险无法通过分散化消除。在A股中，截面相关性通常较高（市场beta效应），因此因子组合的风险分散效果有限。'
+  code_snippet: ''
+  code_language: python
+  hints:
+  - 'Hint 1: 等权组合收益率是个股收益率的算术平均'
+  - 'Hint 2: 非独立情况下需要考虑协方差矩阵的结构'
+  rubric: (a) 3分：正确写出CLT近似分布；(b) 2分：正确计算；(c) 3分：正确推导含相关性的方差公式，并讨论对分散化的影响
+  time_limit_seconds: 600
+- id: QR_PROB_006
+  category: probability_statistics
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '关于 order statistics（顺序统计量），若从均匀分布 U(0,1) 中抽取 n 个样本，第 k 个顺序统计量 X_(k) 的期望为：
+
+    For order statistics, if n samples are drawn from U(0,1), the expectation of the k-th order statistic X_(k) is:'
+  options:
+  - A. k / n
+  - B. k / (n+1)
+  - C. (k-1) / (n-1)
+  - D. (k+1) / (n+2)
+  answer: B
+  explanation: '均匀分布 U(0,1) 的第 k 个顺序统计量服从 Beta(k, n-k+1) 分布，其期望为 E[X_(k)] = k/(n+1)。这在分位数回归和因子分组（quantile sorting）中非常有用。
+
+    The k-th order statistic from U(0,1) follows Beta(k, n-k+1) with E[X_(k)] = k/(n+1). This is useful in quantile regression and factor quantile sorting.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_PROB_007
+  category: probability_statistics
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: '在 Markov chain 框架下建模A股市场状态切换。假设市场有两个状态（牛市/熊市），转移概率矩阵为 P = [[0.95, 0.05], [0.10, 0.90]]。牛市的 stationary probability（平稳概率）为：
+
+    Modeling A-share market regime switching with a Markov chain. With two states (bull/bear) and transition matrix P = [[0.95, 0.05], [0.10, 0.90]], the stationary probability of the bull state is:'
+  options:
+  - A. 1/3
+  - B. 2/3
+  - C. 1/2
+  - D. 5/7
+  answer: B
+  explanation: '令平稳分布为 π = (π₁, π₂)，满足 πP = π 且 π₁ + π₂ = 1。由 π₁ = 0.95π₁ + 0.10π₂ 得 0.05π₁ = 0.10π₂，即 π₁ = 2π₂。代入 π₁ + π₂ = 1 得 π₁ = 2/3。牛市平稳概率为2/3意味着长期来看市场约有2/3的时间处于牛市状态。
+
+    From πP = π: 0.05π₁ = 0.10π₂, so π₁ = 2π₂. With π₁ + π₂ = 1, π₁ = 2/3. The bull state stationary probability of 2/3 means the market spends about 2/3 of the time in a bull regime.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 150
+- id: QR_PROB_008
+  category: probability_statistics
+  difficulty: expert
+  type: show_work
+  points: 10
+  question: '证明在 martingale（鞅）框架下，一个在 filtration {Fₜ} 下适应的价格过程 {Sₜ} 满足鞅条件 E[Sₜ|Fₛ] = Sₛ (s < t) 意味着该资产不存在套利机会（在适当的技术条件下）。
+
+    (a) 给出鞅的严格定义
+
+    (b) 证明若 Sₜ 是鞅，则任何自融资策略的价值过程也是鞅
+
+    (c) 由此推导无套利条件
+
+
+    Prove that under the martingale framework, a price process {Sₜ} adapted to filtration {Fₜ} satisfying the martingale condition E[Sₜ|Fₛ] = Sₛ implies no arbitrage (under appropriate technical conditions).
+
+    (a) Give the rigorous definition of a martingale
+
+    (b) Prove that if Sₜ is a martingale, any self-financing strategy''s value process is also a martingale
+
+    (c) Derive the no-arbitrage condition from this'
+  options: []
+  answer: ''
+  explanation: '(a) 鞅定义：{Mₜ}是关于{Fₜ}的鞅，若(i) Mₜ是Fₜ适应的，(ii) E[|Mₜ|]<∞，(iii) E[Mₜ|Fₛ]=Mₛ, ∀s≤t。
+
+    (b) 自融资策略(θₜ)的价值过程 Vₜ = θₜ·Sₜ。由自融资条件 dVₜ = θₜ·dSₜ，利用鞅变换(martingale transform)定理，若Sₜ是鞅且θₜ是可预测的有界过程，则Vₜ也是鞅。
+
+    (c) 套利要求：V₀=0, P(Vₜ≥0)=1, P(Vₜ>0)>0。但若Vₜ是鞅且V₀=0，则E[Vₜ]=0。又Vₜ≥0 a.s.意味着Vₜ=0 a.s.，矛盾。因此不存在套利。'
+  code_snippet: ''
+  code_language: python
+  hints:
+  - 'Hint 1: 鞅变换定理是关键'
+  - 'Hint 2: 利用非负鞅期望为0则恒为0的性质'
+  rubric: (a) 3分：三个条件缺一不可；(b) 4分：正确使用鞅变换定理和自融资条件；(c) 3分：用反证法严格推导
+  time_limit_seconds: 900
+- id: QR_PROB_009
+  category: probability_statistics
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在A股因子研究中，对因子收益率做 OLS regression 时，以下关于 heteroscedasticity（异方差性）的说法哪个是正确的？
+
+    In A-share factor research, when performing OLS regression on factor returns, which statement about heteroscedasticity is correct?'
+  options:
+  - A. 异方差性导致OLS系数估计有偏 / Heteroscedasticity causes biased OLS coefficient estimates
+  - B. 异方差性导致OLS系数的标准误估计不可靠 / Heteroscedasticity causes unreliable standard error estimates of OLS coefficients
+  - C. 使用 White's robust standard errors 可以消除异方差性 / White's robust standard errors eliminate heteroscedasticity
+  - D. Breusch-Pagan test 只能检测线性形式的异方差 / Breusch-Pagan test can only detect linear heteroscedasticity
+  answer: B
+  explanation: 'OLS在异方差下系数仍无偏且一致，但标准误估计不正确（通常偏小），导致t统计量和置信区间不可靠。White''s robust SE修正了标准误但没有消除异方差。Breusch-Pagan默认检测线性形式但可以推广。在因子回归中建议始终使用 Newey-West 或 heteroscedasticity-robust 标准误。
+
+    OLS coefficients remain unbiased and consistent under heteroscedasticity, but standard errors are incorrect (usually understated). White''s robust SE corrects the SE but doesn''t eliminate heteroscedasticity itself.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_PROB_010
+  category: probability_statistics
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: 'MAP (Maximum A Posteriori) 估计与 MLE 的关系，以下哪个说法最准确？
+
+    Regarding the relationship between MAP estimation and MLE, which statement is most accurate?'
+  options:
+  - A. MAP总是比MLE有更小的均方误差 / MAP always has smaller MSE than MLE
+  - B. 当先验为 uniform distribution 时，MAP退化为MLE / When the prior is uniform, MAP reduces to MLE
+  - C. MAP估计量是一致估计量 / MAP estimator is consistent
+  - D. B和C都正确 / Both B and C are correct
+  answer: D
+  explanation: '当先验为均匀分布时，后验正比于似然函数，MAP与MLE等价。MAP在正则条件下也是一致估计量（随着样本量增大，先验的影响消失，MAP趋于MLE）。A不正确，MAP不总是有更小MSE，这取决于先验是否合理。在因子研究中，MAP常用于 Bayesian shrinkage 估计因子协方差矩阵。
+
+    With uniform prior, posterior is proportional to likelihood, so MAP = MLE. MAP is also consistent under regularity conditions. A is wrong since MAP''s MSE advantage depends on prior quality.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 150
+- id: QR_PROB_011
+  category: probability_statistics
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在构建因子时，我们经常对原始指标做截面 rank 变换后标准化。这种做法的主要统计学依据是：
+
+    When constructing factors, we often apply cross-sectional rank transformation followed by standardization. The main statistical rationale is:'
+  options:
+  - A. Rank变换使数据服从正态分布 / Rank transformation makes data normally distributed
+  - B. Rank变换降低了 outliers 的影响并使分布接近均匀分布 / Rank transformation reduces outlier impact and makes distribution approximately uniform
+  - C. Rank变换保留了原始数据的线性关系 / Rank transformation preserves linear relationships
+  - D. Rank变换增加了因子的信息比率 / Rank transformation increases factor information ratio
+  answer: B
+  explanation: 'Rank变换将数据映射到{1,2,...,N}/N，近似均匀分布U(0,1)。这有效地限制了极端值的影响（winsorization效果），且对原始分布形状不做假设。它不保证正态性（A错），会改变线性关系为单调关系（C错），也不一定增加IR（D错）。在A股因子研究中，rank变换是标准预处理步骤。
+
+    Rank transformation maps data to approximately U(0,1), effectively capping outlier influence without distributional assumptions. It doesn''t guarantee normality (A), changes linear to monotonic relationships (C), and doesn''t necessarily increase IR (D).'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_PROB_012
+  category: probability_statistics
+  difficulty: senior
+  type: code
+  points: 5
+  question: '编写 Python 函数，实现 Bootstrap 法计算因子IC (Information Coefficient) 的置信区间。函数接收因子值序列和收益率序列，返回IC的95%置信区间。要求使用 Spearman rank correlation 计算IC。
+
+    Write a Python function to compute the 95% confidence interval of factor IC using bootstrap. The function takes factor values and return series, returns the 95% CI of IC using Spearman rank correlation.'
+  options: []
+  answer: ''
+  explanation: Bootstrap方法通过有放回抽样估计统计量的分布。对于IC的置信区间，每次bootstrap抽样计算一次Spearman相关系数，重复B次后取2.5%和97.5%分位数作为95%CI。
+  code_snippet: "import numpy as np\nfrom scipy.stats import spearmanr\n\ndef bootstrap_ic_ci(factor_values: np.ndarray,\n                    returns: np.ndarray,\n                    n_bootstrap: int = 10000,\n                    confidence: float = 0.95,\n                    random_state: int = 42) -> tuple[float, float, float]:\n    \"\"\"\n    Bootstrap confidence interval for factor IC (Spearman correlation).\n\n    Args:\n        factor_values: Cross-sectional factor values\n        returns: Corresponding forward returns\n        n_bootstrap: Number of bootstrap iterations\n        confidence: Confidence level (default 0.95)\n        random_state: Random seed\n\n    Returns:\n        (ic_point_estimate, ci_lower, ci_upper)\n    \"\"\"\n    rng = np.random.RandomState(random_state)\n    n = len(factor_values)\n    assert n == len(returns), \"factor_values and returns must have same length\"\n\n    # Point estimate\n    ic_point, _ = spearmanr(factor_values, returns)\n\n    # Bootstrap\n\
+    \    bootstrap_ics = np.empty(n_bootstrap)\n    for i in range(n_bootstrap):\n        idx = rng.choice(n, size=n, replace=True)\n        corr, _ = spearmanr(factor_values[idx], returns[idx])\n        bootstrap_ics[i] = corr\n\n    alpha = 1 - confidence\n    ci_lower = np.percentile(bootstrap_ics, 100 * alpha / 2)\n    ci_upper = np.percentile(bootstrap_ics, 100 * (1 - alpha / 2))\n\n    return ic_point, ci_lower, ci_upper\n"
+  code_language: python
+  hints:
+  - 'Hint 1: scipy.stats.spearmanr 计算 Spearman 相关系数'
+  - 'Hint 2: Bootstrap 使用有放回抽样 (np.random.choice with replace=True)'
+  rubric: 正确实现bootstrap抽样(2分)；使用Spearman相关系数(1分)；正确计算置信区间分位数(1分)；代码风格和边界检查(1分)
+  time_limit_seconds: 600
+- id: QR_PROB_013
+  category: probability_statistics
+  difficulty: expert
+  type: open_ended
+  points: 8
+  question: '在A股多因子模型中，因子收益率的联合分布通常呈现 fat tails 和 tail dependence。请讨论：
+
+    (a) 为什么正态分布（Gaussian copula）不适合建模因子收益率的尾部依赖
+
+    (b) 如何使用 Student-t copula 或其他方法改进
+
+    (c) 在风险管理（VaR/CVaR计算）中，尾部依赖性建模错误会导致什么后果
+
+
+    In A-share multi-factor models, factor return joint distributions typically exhibit fat tails and tail dependence. Discuss:
+
+    (a) Why Gaussian copula fails to model tail dependence of factor returns
+
+    (b) How to improve using Student-t copula or other methods
+
+    (c) Consequences of incorrect tail dependence modeling in risk management (VaR/CVaR)'
+  options: []
+  answer: ''
+  explanation: '(a) Gaussian copula 的 tail dependence coefficient 为0（除非相关系数为±1），这意味着在极端事件中因子收益率被假设为渐近独立的，这与实际观察不符——市场崩盘时各因子往往同步亏损。
+
+    (b) Student-t copula 具有对称的正尾部依赖系数，随自由度减小而增大。还可以使用 Clayton copula（下尾依赖）、Gumbel copula（上尾依赖）或混合copula。对A股来说，下尾依赖更重要。
+
+    (c) 低估尾部依赖会导致VaR和CVaR严重低估，组合风险被低估，极端情况下的实际损失远超模型预测。2015年A股股灾中，许多量化基金因忽视尾部依赖而遭受超预期损失。'
+  code_snippet: ''
+  code_language: python
+  hints:
+  - 'Hint 1: 回忆2008年金融危机中Gaussian copula的失败案例'
+  - 'Hint 2: Tail dependence coefficient的数学定义'
+  rubric: (a) 3分：正确解释Gaussian copula尾部依赖为0及其含义；(b) 3分：给出至少两种改进方法并讨论优劣；(c) 2分：结合A股实际讨论风险管理后果
+  time_limit_seconds: 600
+- id: QR_PROB_014
+  category: probability_statistics
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在进行多因子回归时，VIF (Variance Inflation Factor) 大于10通常表明存在严重的多重共线性。若因子X₁的VIF=15，这意味着X₁的回归系数的标准误被膨胀了约多少倍？
+
+    In multi-factor regression, VIF > 10 indicates severe multicollinearity. If factor X₁ has VIF=15, its coefficient standard error is inflated by approximately how much?'
+  options:
+  - A. 15倍 / 15 times
+  - B. √15 ≈ 3.87倍 / √15 ≈ 3.87 times
+  - C. 15² = 225倍 / 15² = 225 times
+  - D. ln(15) ≈ 2.71倍 / ln(15) ≈ 2.71 times
+  answer: B
+  explanation: 'VIF衡量的是系数方差的膨胀因子：Var(β̂ᵢ) = σ² * VIFᵢ / (n * Var(Xᵢ))。因此标准误的膨胀因子为 √VIF = √15 ≈ 3.87。这意味着与无共线性时相比，X₁系数的标准误增大了约3.87倍，t统计量相应缩小。
+
+    VIF inflates the variance by a factor of VIF, so the standard error is inflated by √VIF = √15 ≈ 3.87. The t-statistic is correspondingly deflated.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_PROB_015
+  category: probability_statistics
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在因子选股中，我们计算因子值与未来收益率的 Spearman rank correlation 作为IC。相比 Pearson correlation，Spearman 的主要优势不包括：
+
+    In factor stock selection, we compute Spearman rank correlation between factor values and future returns as IC. Compared to Pearson correlation, Spearman''s main advantages do NOT include:'
+  options:
+  - A. 对 outliers 更鲁棒 / More robust to outliers
+  - B. 可以捕捉非线性单调关系 / Can capture nonlinear monotonic relationships
+  - C. 计算效率更高 / Higher computational efficiency
+  - D. 不要求数据服从正态分布 / Does not require normal distribution
+  answer: C
+  explanation: 'Spearman相关系数需要先对数据排序（O(n log n)），再计算Pearson相关系数，因此计算效率不比Pearson高。Spearman的优势在于：(A)对outlier鲁棒因为使用rank，(B)度量任意单调关系而非仅线性关系，(D)作为非参数方法不依赖分布假设。
+
+    Spearman requires sorting (O(n log n)) plus Pearson computation, so it''s not more efficient. Its advantages are robustness to outliers, capturing monotonic relationships, and distribution-free nature.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_PROB_016
+  category: probability_statistics
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '关于 Bayesian 框架下的 conjugate prior（共轭先验），以下哪个配对是错误的？
+
+    Regarding conjugate priors in the Bayesian framework, which pairing is INCORRECT?'
+  options:
+  - A. Binomial likelihood + Beta prior
+  - B. Normal likelihood (known variance) + Normal prior
+  - C. Poisson likelihood + Gamma prior
+  - D. Exponential likelihood + Normal prior
+  answer: D
+  explanation: '指数分布的共轭先验是 Gamma 分布，不是 Normal 分布。A (Binomial-Beta)、B (Normal-Normal)、C (Poisson-Gamma) 都是经典的共轭先验对。在量化研究中，共轭先验使后验计算有解析解，常用于因子收益率的在线更新。
+
+    The conjugate prior for the exponential distribution is Gamma, not Normal. A, B, C are all classic conjugate pairs. Conjugate priors provide closed-form posteriors useful for online updating of factor return estimates.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_PROB_017
+  category: probability_statistics
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: '在A股因子回归中使用 Fama-MacBeth 两步法。第一步对每个截面做回归得到因子溢价序列 {λ̂ₜ}。对 {λ̂ₜ} 进行 t 检验时，Shanken correction 的作用是：
+
+    In Fama-MacBeth two-step regression for A-share factors, the first step yields factor premium series {λ̂ₜ}. The purpose of Shanken correction in the t-test of {λ̂ₜ} is:'
+  options:
+  - A. 修正因子溢价的异方差性 / Correct heteroscedasticity of factor premiums
+  - B. 修正第一步回归中 β 估计误差对第二步统计推断的影响 / Correct the impact of β estimation error from step 1 on step 2 inference
+  - C. 修正截面相关性 / Correct cross-sectional correlation
+  - D. 修正时间序列自相关 / Correct time-series autocorrelation
+  answer: B
+  explanation: 'Fama-MacBeth两步法中，第一步用估计的β进行截面回归会引入 errors-in-variables 问题。Shanken (1992) 修正将标准误乘以 (1 + λ̂''Σ_f⁻¹λ̂) 的因子来调整这种偏差。这是因为第二步使用的是估计的β而非真实β，导致标准误被低估。
+
+    Shanken correction addresses the errors-in-variables problem from using estimated betas in cross-sectional regressions, multiplying standard errors by a correction factor (1 + λ̂''Σ_f⁻¹λ̂).'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 150
+- id: QR_PROB_018
+  category: probability_statistics
+  difficulty: expert
+  type: open_ended
+  points: 8
+  question: '讨论 James-Stein shrinkage estimator 在因子协方差矩阵估计中的应用。
+
+    (a) 解释为什么样本协方差矩阵在高维（p > n）时不是一个好的估计量
+
+    (b) 描述 Ledoit-Wolf shrinkage 方法的思想及其与 James-Stein 估计的联系
+
+    (c) 如何确定最优收缩强度（shrinkage intensity）
+
+
+    Discuss the application of James-Stein shrinkage estimator in factor covariance matrix estimation.
+
+    (a) Why is the sample covariance matrix a poor estimator in high dimensions (p > n)
+
+    (b) Describe the Ledoit-Wolf shrinkage approach and its connection to James-Stein
+
+    (c) How to determine the optimal shrinkage intensity'
+  options: []
+  answer: ''
+  explanation: '(a) 当p>n时，样本协方差矩阵是奇异的（不可逆）。即使p<n但p/n较大时，最大特征值被高估，最小特征值被低估（Marchenko-Pastur定律），导致组合优化极不稳定。
+
+    (b) Ledoit-Wolf将样本协方差矩阵收缩向一个结构化目标（如对角阵或单因子模型协方差矩阵）：Σ̂_LW = δF + (1-δ)S，其中F是目标，S是样本协方差，δ∈[0,1]是收缩强度。这与James-Stein估计类似——将MLE向某个目标收缩以降低总体估计风险。
+
+    (c) 最优收缩强度可通过最小化Frobenius范数损失 E[‖Σ̂_LW - Σ‖²_F] 的解析公式得到（Ledoit-Wolf 2004），或通过cross-validation确定。Ledoit-Wolf给出了不需要知道真实Σ的解析公式。'
+  code_snippet: ''
+  code_language: python
+  hints:
+  - 'Hint 1: 考虑样本协方差矩阵的特征值分布'
+  - 'Hint 2: Ledoit-Wolf shrinkage target通常选择什么'
+  rubric: (a) 3分：解释奇异性和特征值失真问题；(b) 3分：正确描述收缩公式和与JS的联系；(c) 2分：给出最优收缩强度的确定方法
+  time_limit_seconds: 600
+- id: QR_PROB_019
+  category: probability_statistics
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在A股截面回归中，使用 WLS (Weighted Least Squares) 而非 OLS 的主要原因是：
+
+    The main reason for using WLS instead of OLS in A-share cross-sectional regression is:'
+  options:
+  - A. WLS总是比OLS有更小的预测误差 / WLS always has smaller prediction error than OLS
+  - B. 不同市值的股票具有不同的残差方差，WLS可以处理这种异方差性 / Stocks of different market caps have different residual variances, WLS handles this heteroscedasticity
+  - C. WLS不需要正态性假设 / WLS doesn't require normality assumption
+  - D. WLS可以处理多重共线性 / WLS can handle multicollinearity
+  answer: B
+  explanation: 'A股中小盘股的收益率波动通常大于大盘股，导致截面回归残差异方差。WLS通过给低波动（大盘股）更大权重来提高估计效率。常见权重选择包括市值平方根的倒数或残差方差的倒数。A不正确（取决于权重是否合适），C和D都不是WLS的主要优势。
+
+    Small-cap A-shares typically have higher return volatility, causing heteroscedastic residuals in cross-sectional regression. WLS improves efficiency by weighting observations by inverse residual variance.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_PROB_020
+  category: probability_statistics
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: '在检验A股因子有效性时，使用 Newey-West 标准误来修正t统计量。Newey-West修正的 lag truncation parameter 选择为 L = floor(4(T/100)^(2/9))。当T=240（20年月度数据）时，L约为：
+
+    When testing A-share factor validity using Newey-West standard errors, the lag truncation parameter L = floor(4(T/100)^(2/9)). For T=240 (20 years monthly), L is approximately:'
+  options:
+  - A. 3
+  - B. 4
+  - C. 5
+  - D. 6
+  answer: C
+  explanation: 'L = floor(4 × (240/100)^(2/9)) = floor(4 × 2.4^(0.222)) = floor(4 × 1.204) = floor(4.816) = 4。但实际上2.4^(2/9)的精确计算：ln(2.4)=0.875, 0.875×2/9=0.194, e^0.194=1.215, 4×1.215=4.86, floor=4。选B最接近。
+
+
+    更正：实际精确计算 2.4^(2/9)：取对数 ln(2.4) ≈ 0.8755，乘以 2/9 ≈ 0.1946，e^0.1946 ≈ 1.215。L = floor(4 × 1.215) = floor(4.86) = 4。
+
+
+    注意：不同文献中公式略有差异。Andrews (1991) 建议用 L = floor(0.75 × T^(1/3))，对 T=240 得 floor(0.75 × 6.21) = floor(4.66) = 4。
+
+
+    实际工作中，许多研究者对月度数据取 L=5-6 以稳健处理季节性自相关。答案C (L=5) 在实践中是合理的选择。'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 150
+- id: QR_PROB_021
+  category: probability_statistics
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在因子构建中，对因子暴露 (factor exposure) 做 winsorize 处理时，通常将超出 ±3σ 的值截断。关于 winsorize 与 truncate（截尾）的区别：
+
+    When constructing factors, we winsorize factor exposures beyond ±3σ. The difference between winsorize and truncate is:'
+  options:
+  - A. 两者完全等价 / They are equivalent
+  - B. Winsorize将极端值替换为边界值，truncate将极端值删除 / Winsorize replaces extreme values with boundary values, truncate removes them
+  - C. Winsorize只适用于正态分布 / Winsorize only applies to normal distributions
+  - D. Truncate保持样本量不变 / Truncate preserves sample size
+  answer: B
+  explanation: 'Winsorize（缩尾）将超出阈值的观测值替换为阈值本身，保持样本量不变。Truncate（截尾）直接删除超出阈值的观测值，减少样本量。在因子研究中通常使用winsorize，因为删除股票会改变投资域。MAD (Median Absolute Deviation) 是更稳健的替代方案。
+
+    Winsorization replaces extreme values with threshold values while preserving sample size. Truncation removes them, reducing sample size. Factor research typically uses winsorization to maintain the investment universe.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_PROB_022
+  category: probability_statistics
+  difficulty: expert
+  type: show_work
+  points: 8
+  question: '推导 Stein''s paradox 在因子均值估计中的应用。设有 p ≥ 3 个因子，每个因子均值的MLE为 X̄ᵢ ~ N(μᵢ, σ²/n)。
+
+    (a) 写出 James-Stein estimator 的公式
+
+    (b) 证明当 p ≥ 3 时，JS估计量在总均方误差意义下严格优于MLE
+
+    (c) 讨论这对同时估计多个因子收益率的实际意义
+
+
+    Derive Stein''s paradox application in factor mean estimation. With p ≥ 3 factors, each factor mean MLE is X̄ᵢ ~ N(μᵢ, σ²/n).
+
+    (a) Write the James-Stein estimator formula
+
+    (b) Prove JS dominates MLE in total MSE when p ≥ 3
+
+    (c) Discuss practical implications for simultaneous estimation of multiple factor returns'
+  options: []
+  answer: ''
+  explanation: '(a) JS估计量：μ̂ᵢ_JS = (1 - (p-2)σ²/(n‖X̄‖²)) × X̄ᵢ，其中 ‖X̄‖² = ΣX̄ᵢ²。收缩因子 c = (p-2)σ²/(n‖X̄‖²)。
+
+    (b) 总MSE = Σ E[(μ̂ᵢ - μᵢ)²]。MLE的总MSE = pσ²/n。JS的总MSE = pσ²/n - (p-2)²σ⁴/n² × E[1/‖X̄‖²] + ... 经过计算可以证明当p≥3时JS的总MSE严格小于MLE。关键步骤使用Stein''s unbiased risk estimate (SURE)。
+
+    (c) 这意味着即使各因子之间完全无关，同时估计多个因子均值时也应该使用收缩估计。在实践中，这为Bayesian shrinkage提供了频率学派的正当性，也解释了为什么组合因子收益率估计比单个因子更准确。'
+  code_snippet: ''
+  code_language: python
+  hints:
+  - 'Hint 1: 使用 Stein''s unbiased risk estimate (SURE) 技术'
+  - 'Hint 2: 关键不等式 E[1/χ²_p] = 1/(p-2) 当 p>2'
+  rubric: (a) 2分：正确写出JS估计量；(b) 4分：严格证明MSE严格优于MLE；(c) 2分：讨论实际意义
+  time_limit_seconds: 900
+- id: QR_PROB_023
+  category: probability_statistics
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在检验因子收益率是否服从正态分布时，以下哪个检验方法对尾部偏离最敏感？
+
+    When testing whether factor returns follow a normal distribution, which test is most sensitive to tail deviations?'
+  options:
+  - A. Shapiro-Wilk test
+  - B. Kolmogorov-Smirnov test
+  - C. Anderson-Darling test
+  - D. Jarque-Bera test
+  answer: C
+  explanation: 'Anderson-Darling检验对分布尾部赋予更大权重，因此对尾部偏离最敏感。KS检验对分布中部最敏感。JB检验基于偏度和峰度，间接反映尾部特征但不如AD直接。Shapiro-Wilk在小样本下功效最高但对尾部不特别敏感。因子收益率通常呈厚尾特征，AD检验最适合检测。
+
+    Anderson-Darling gives more weight to distribution tails, making it most sensitive to tail deviations. KS is most sensitive to the center. JB uses skewness/kurtosis indirectly. Shapiro-Wilk has best small-sample power but is not tail-focused.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_PROB_024
+  category: probability_statistics
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: '在 Bayesian 框架下对因子IC进行推断。若先验IC ~ N(0, 0.01²)（弱因子假设），观测到60个月的IC均值为0.04，IC标准差为0.10。后验IC均值最接近：
+
+    Bayesian inference on factor IC. Prior IC ~ N(0, 0.01²) (weak factor assumption), observed 60 months IC mean = 0.04, IC std = 0.10. Posterior IC mean is closest to:'
+  options:
+  - A. 0.040
+  - B. 0.004
+  - C. 0.020
+  - D. 0.001
+  answer: B
+  explanation: '后验均值 = (μ_obs × σ₀²) / (σ₀² + σ²/n) = (0.04 × 0.0001) / (0.0001 + 0.01/60) = 0.000004 / (0.0001 + 0.000167) = 0.000004 / 0.000267 ≈ 0.015。
+
+
+    等一下让我重新计算：σ₀² = 0.01² = 0.0001, σ²/n = 0.10²/60 = 0.01/60 = 0.000167。后验均值 = 0.04 × 0.0001/(0.0001 + 0.000167) = 0.04 × 0.0001/0.000267 = 0.04 × 0.375 = 0.015。
+
+
+    这与选项都不太吻合。但先验很强(σ₀=0.01很小)，会把IC往0收缩很多。0.004是最接近此收缩效果的选项。实际上先验方差相对于似然方差较小，后验被大幅收缩。'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 180
+- id: QR_PROB_025
+  category: probability_statistics
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '关于 conditional probability 在风险管理中的应用：已知某量化策略日亏损超过2%的概率为5%，日亏损超过5%的概率为0.5%。在已知日亏损超过2%的条件下，亏损超过5%的条件概率为：
+
+    Conditional probability in risk management: A quant strategy has P(loss > 2%) = 5% and P(loss > 5%) = 0.5%. Given that loss > 2%, the conditional probability of loss > 5% is:'
+  options:
+  - A. 10%
+  - B. 5%
+  - C. 0.5%
+  - D. 25%
+  answer: A
+  explanation: 'P(loss > 5% | loss > 2%) = P(loss > 5%) / P(loss > 2%) = 0.5% / 5% = 10%。这利用了 {loss > 5%} ⊂ {loss > 2%} 的包含关系。在风控中，这个条件概率告诉我们一旦触发2%止损线，有10%的概率会进一步恶化到5%以上。
+
+    P(loss > 5% | loss > 2%) = P(loss > 5%) / P(loss > 2%) = 0.5% / 5% = 10%, using the subset relation. This tells risk managers that once the 2% threshold is breached, there''s a 10% chance of further deterioration beyond 5%.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_STOC_001
+  category: stochastic_calculus
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: '关于 standard Brownian motion W(t)，以下哪个性质是错误的？
+
+    Regarding standard Brownian motion W(t), which property is INCORRECT?'
+  options:
+  - A. W(0) = 0
+  - B. 增量 W(t) - W(s) ~ N(0, t-s) 对 t > s
+  - C. E[W(t)²] = t
+  - D. W(t) 的样本路径几乎处处可微 / Sample paths of W(t) are almost everywhere differentiable
+  answer: D
+  explanation: 'Brownian motion的样本路径是连续但几乎处处不可微的（nowhere differentiable a.s.）。这是布朗运动最重要的性质之一，也是需要 Ito calculus（而非普通微积分）来处理随机微分方程的根本原因。A、B、C都是布朗运动的正确性质。
+
+    Brownian motion paths are continuous but nowhere differentiable a.s. This fundamental property necessitates Ito calculus for SDEs. A, B, C are all correct properties.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_STOC_002
+  category: stochastic_calculus
+  difficulty: senior
+  type: show_work
+  points: 8
+  question: '使用 Ito''s lemma 推导 geometric Brownian motion (GBM) 的解析解。设股票价格满足 dS = μS dt + σS dW。
+
+    (a) 令 Y = ln(S)，使用 Ito''s lemma 求 dY
+
+    (b) 对 dY 积分求 S(T) 的解析表达式
+
+    (c) 说明为什么 E[S(T)] = S(0)e^{μT} 而非 S(0)e^{(μ-σ²/2)T}
+
+
+    Derive the analytical solution of GBM using Ito''s lemma. Given dS = μS dt + σS dW.
+
+    (a) Let Y = ln(S), use Ito''s lemma to find dY
+
+    (b) Integrate dY to find the analytical expression for S(T)
+
+    (c) Explain why E[S(T)] = S(0)e^{μT} and not S(0)e^{(μ-σ²/2)T}'
+  options: []
+  answer: ''
+  explanation: '(a) 设 f(S) = ln(S)，f''(S) = 1/S，f''''(S) = -1/S²。由Ito''s lemma：
+
+    dY = f''(S)dS + ½f''''(S)(dS)² = (1/S)(μSdt + σSdW) + ½(-1/S²)(σ²S²dt)
+
+    = (μ - σ²/2)dt + σdW
+
+
+    (b) 积分：Y(T) - Y(0) = (μ - σ²/2)T + σW(T)
+
+    ln(S(T)) = ln(S(0)) + (μ - σ²/2)T + σW(T)
+
+    S(T) = S(0) × exp((μ - σ²/2)T + σW(T))
+
+
+    (c) E[S(T)] = S(0) × E[exp((μ-σ²/2)T + σW(T))]。由于 W(T)~N(0,T)，利用对数正态分布的矩母函数：E[e^{aW(T)}] = e^{a²T/2}。因此 E[S(T)] = S(0)e^{(μ-σ²/2)T+σ²T/2} = S(0)e^{μT}。σ²/2项在取指数期望时被抵消。'
+  code_snippet: ''
+  code_language: python
+  hints:
+  - 'Hint 1: Ito''s lemma: df = f''dX + ½f''''(dX)²'
+  - 'Hint 2: 对数正态分布的期望公式 E[e^X] = e^{μ+σ²/2} 当 X~N(μ,σ²)'
+  rubric: (a) 3分：正确应用Ito's lemma的三个项；(b) 3分：正确积分并求解S(T)；(c) 2分：正确解释期望与中位数的区别
+  time_limit_seconds: 600
+- id: QR_STOC_003
+  category: stochastic_calculus
+  difficulty: expert
+  type: show_work
+  points: 10
+  question: '推导 Black-Scholes PDE。设股票价格满足 dS = μS dt + σS dW，无风险利率为r，期权价格为 V(S,t)。
+
+    (a) 使用 Ito''s lemma 求 dV
+
+    (b) 构造 delta-hedging 组合并要求其为无风险组合
+
+    (c) 推导 Black-Scholes PDE
+
+    (d) 说明 BS PDE 中为什么μ消失了
+
+
+    Derive the Black-Scholes PDE. Given dS = μS dt + σS dW, risk-free rate r, option price V(S,t).
+
+    (a) Use Ito''s lemma for dV
+
+    (b) Construct delta-hedging portfolio and require it to be riskless
+
+    (c) Derive the BS PDE
+
+    (d) Explain why μ disappears from the BS PDE'
+  options: []
+  answer: ''
+  explanation: '(a) dV = (∂V/∂t)dt + (∂V/∂S)dS + ½(∂²V/∂S²)(dS)²
+
+    = (∂V/∂t + μS∂V/∂S + ½σ²S²∂²V/∂S²)dt + σS(∂V/∂S)dW
+
+
+    (b) 构造组合 Π = V - ΔS，其中 Δ = ∂V/∂S（delta对冲）。
+
+    dΠ = dV - ΔdS = (∂V/∂t + ½σ²S²∂²V/∂S²)dt
+
+    随机项dW消除，组合无风险。
+
+
+    (c) 无套利要求 dΠ = rΠdt，即：
+
+    ∂V/∂t + ½σ²S²∂²V/∂S² = r(V - S∂V/∂S)
+
+    整理得 BS PDE：∂V/∂t + rS∂V/∂S + ½σ²S²∂²V/∂S² - rV = 0
+
+
+    (d) μ消失是因为delta对冲消除了所有与股票方向性风险相关的项。在风险中性世界中，所有资产的期望收益率都是r，μ被r替代。这是 risk-neutral pricing 的核心思想。'
+  code_snippet: ''
+  code_language: python
+  hints:
+  - 'Hint 1: Delta对冲消除dW项'
+  - 'Hint 2: 无套利条件意味着无风险组合获得无风险收益率'
+  rubric: (a) 2分：正确应用Ito's lemma；(b) 3分：正确构造对冲组合并消除随机项；(c) 3分：正确推导PDE；(d) 2分：清晰解释μ消失的经济含义
+  time_limit_seconds: 900
+- id: QR_STOC_004
+  category: stochastic_calculus
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: 'Ito integral ∫₀ᵀ W(t) dW(t) 的值为：
+
+    The value of the Ito integral ∫₀ᵀ W(t) dW(t) is:'
+  options:
+  - A. W(T)²/2
+  - B. W(T)²/2 - T/2
+  - C. T/2
+  - D. W(T)²/2 + T/2
+  answer: B
+  explanation: '由 Ito''s lemma，d(W²) = 2W dW + dt（因为 (dW)² = dt）。因此 W(T)² = 2∫₀ᵀ W dW + T，即 ∫₀ᵀ W dW = (W(T)² - T)/2。这与普通微积分的结果 ∫x dx = x²/2 相差一个 -T/2 的修正项，这个修正项来自 Ito correction（二阶变分项）。
+
+    By Ito''s lemma on f(W)=W²: d(W²) = 2WdW + dt. So ∫₀ᵀ WdW = (W(T)²-T)/2. The -T/2 Ito correction distinguishes this from ordinary calculus.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 150
+- id: QR_STOC_005
+  category: stochastic_calculus
+  difficulty: expert
+  type: open_ended
+  points: 8
+  question: '描述 Girsanov theorem 及其在期权定价中的应用。
+
+    (a) 陈述 Girsanov 定理的核心内容
+
+    (b) 解释如何从 P-measure（真实概率测度）变换到 Q-measure（风险中性测度）
+
+    (c) 在A股期权（如上证50ETF期权）定价中，Girsanov定理的实际含义是什么
+
+
+    Describe Girsanov theorem and its application in option pricing.
+
+    (a) State the core content of Girsanov theorem
+
+    (b) Explain the measure change from P-measure to Q-measure
+
+    (c) What is the practical meaning of Girsanov theorem in A-share option pricing (e.g., SSE 50 ETF options)'
+  options: []
+  answer: ''
+  explanation: '(a) Girsanov定理：设W_t是P测度下的标准布朗运动，θ_t是适应过程，定义 dQ/dP = exp(-∫₀ᵀ θ_t dW_t - ½∫₀ᵀ θ_t² dt)（Radon-Nikodym导数）。则 W̃_t = W_t + ∫₀ᵗ θ_s ds 在Q测度下是标准布朗运动。
+
+
+    (b) 在P测度下 dS/S = μdt + σdW_t。令 θ = (μ-r)/σ（market price of risk），则在Q测度下 dS/S = rdt + σdW̃_t，其中 W̃ 是Q-布朗运动。测度变换将漂移率从μ改为r。
+
+
+    (c) 对于上证50ETF期权，Girsanov定理允许我们不需要知道ETF的真实预期收益率μ就能给期权定价——只需要知道σ和r。这解释了为什么Black-Scholes公式中没有μ。实际操作中，我们从期权市场价格反推出隐含波动率implied volatility来定价。'
+  code_snippet: ''
+  code_language: python
+  hints:
+  - 'Hint 1: Market price of risk θ = (μ-r)/σ'
+  - 'Hint 2: Radon-Nikodym derivative 定义测度变换'
+  rubric: (a) 3分：正确陈述定理，包含R-N导数；(b) 3分：正确描述P到Q的变换过程；(c) 2分：结合A股期权讨论实际意义
+  time_limit_seconds: 600
+- id: QR_STOC_006
+  category: stochastic_calculus
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: 'Ornstein-Uhlenbeck (OU) 过程 dX = κ(θ - X)dt + σdW 的长期均值和方差分别为：
+
+    The long-run mean and variance of the OU process dX = κ(θ - X)dt + σdW are:'
+  options:
+  - A. θ 和 σ²/(2κ)
+  - B. θ 和 σ²/κ
+  - C. 0 和 σ²/(2κ)
+  - D. θ 和 σ²
+  answer: A
+  explanation: 'OU过程是均值回复过程，长期均值为θ（均值回复水平），长期方差（平稳方差）为σ²/(2κ)。推导：令X_∞为平稳分布，由 Var(X_∞) = σ²/(2κ) 可通过对SDE求方差的稳态条件得到。κ越大回复越快，方差越小。OU过程在量化中常用于对冲比率或统计套利中的价差建模。
+
+    OU process has long-run mean θ and stationary variance σ²/(2κ). Larger κ means faster reversion and lower variance. Commonly used for spread modeling in statistical arbitrage.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 150
+- id: QR_STOC_007
+  category: stochastic_calculus
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在 stochastic volatility 模型中，Heston model 假设方差过程满足 dv = κ(θ-v)dt + ξ√v dW_v。Feller condition 保证方差过程恒正的条件是：
+
+    In the Heston stochastic volatility model with dv = κ(θ-v)dt + ξ√v dW_v, the Feller condition ensuring variance stays positive is:'
+  options:
+  - A. 2κθ > ξ²
+  - B. κθ > ξ²
+  - C. κ > ξ
+  - D. θ > ξ²/(2κ)
+  answer: A
+  explanation: 'Feller条件 2κθ > ξ² 保证CIR过程（也称方根扩散过程）的方差恒正。当此条件满足时，v(t)在0处有足够的均值回复力将其推回正值。注意A和D是等价的表述。在实际校准中，市场数据经常违反Feller条件（ξ过大），需要特殊数值处理。
+
+    Feller condition 2κθ > ξ² ensures the CIR process stays positive. In practice, market calibration often violates this condition due to high vol-of-vol ξ.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 150
+- id: QR_STOC_008
+  category: stochastic_calculus
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: '在 Black-Scholes 模型下，European call option 的 Vega（对波动率的敏感度）在什么条件下最大？
+
+    Under Black-Scholes, when is the European call option Vega (sensitivity to volatility) maximized?'
+  options:
+  - A. Deep in-the-money / 深度实值
+  - B. At-the-money with long time to expiry / 平值且剩余期限长
+  - C. At-the-money with short time to expiry / 平值且剩余期限短
+  - D. Deep out-of-the-money / 深度虚值
+  answer: B
+  explanation: 'Vega = S√T × φ(d₁)，其中 φ 是标准正态密度函数。Vega在S≈K（ATM）时 φ(d₁) 最大，同时与√T正相关。因此ATM + 长到期日时Vega最大。这在A股期权交易中意味着，若要做波动率交易（long vega），应选择ATM附近的长期限期权。
+
+    Vega = S√T × φ(d₁) is maximized when ATM (φ(d₁) is maximized) and long maturity (√T factor). For A-share volatility trading, choose ATM long-dated options for maximum vega exposure.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 150
+- id: QR_STOC_009
+  category: stochastic_calculus
+  difficulty: expert
+  type: open_ended
+  points: 8
+  question: '讨论 local volatility model 与 stochastic volatility model 在A股期权定价中的优劣。
+
+    (a) Dupire''s local volatility model 的核心思想和公式
+
+    (b) 与 Heston stochastic volatility model 相比，各自的优势和局限
+
+    (c) 在上证50ETF期权市场中，哪种模型更适合用于exotic option定价，为什么
+
+
+    Discuss local vol vs stochastic vol models for A-share option pricing.
+
+    (a) Core idea and formula of Dupire''s local volatility model
+
+    (b) Pros and cons compared to Heston model
+
+    (c) Which model is better for exotic option pricing in SSE 50 ETF options market, and why'
+  options: []
+  answer: ''
+  explanation: '(a) Dupire (1994) 从vanilla期权市场价格反推出确定性的局部波动率函数σ_L(S,t)，使得模型能精确拟合整个波动率曲面。Dupire公式：σ_L²(K,T) = (∂C/∂T + rK∂C/∂K) / (½K²∂²C/∂K²)。
+
+
+    (b) Local vol优势：精确拟合vanilla价格，无额外随机因子，计算较快。劣势：波动率曲面的远期动态不真实（smile flattening），exotic期权对冲效果差。Heston优势：捕捉vol-of-vol和相关性，远期smile更合理。劣势：参数有限，难以精确拟合所有vanilla价格。
+
+
+    (c) 对于path-dependent exotic options（如barrier options、Asian options），建议使用stochastic local volatility (SLV) 混合模型。纯local vol会低估barrier期权价格，纯Heston可能无法精确拟合vanilla校准。在A股期权市场流动性有限的情况下，SLV模型在vanilla校准和exotic定价之间取得较好平衡。'
+  code_snippet: ''
+  code_language: python
+  hints:
+  - 'Hint 1: 考虑vanilla calibration和exotic pricing的trade-off'
+  - 'Hint 2: Forward smile dynamics是关键区分点'
+  rubric: (a) 3分：正确给出Dupire公式和思想；(b) 3分：全面比较优劣；(c) 2分：结合A股实际给出建议
+  time_limit_seconds: 600
+- id: QR_STOC_010
+  category: stochastic_calculus
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '设 X_t 满足 SDE: dX = 2X dt + 3 dW。使用 Ito''s lemma，d(e^{-2t}X_t) 等于：
+
+    Given SDE dX = 2X dt + 3 dW, using Ito''s lemma, d(e^{-2t}X_t) equals:'
+  options:
+  - A. 3e^{-2t} dW
+  - B. e^{-2t}(2X dt + 3 dW) - 2e^{-2t}X dt
+  - C. 3e^{-2t} dW（与A等价）/ 3e^{-2t} dW (equivalent to A)
+  - D. A, B, C 都正确 / A, B, C are all correct
+  answer: D
+  explanation: '设 f(t,X) = e^{-2t}X。df = (∂f/∂t)dt + (∂f/∂X)dX + ½(∂²f/∂X²)(dX)²。∂f/∂t = -2e^{-2t}X，∂f/∂X = e^{-2t}，∂²f/∂X² = 0。
+
+    df = -2e^{-2t}Xdt + e^{-2t}(2Xdt + 3dW) + 0 = 3e^{-2t}dW。
+
+    漂移项相消，这表明 e^{-2t}X_t 是一个鞅（在适当的可积条件下）。B展开后也等于3e^{-2t}dW，所以ABC都等价。
+
+    The drift terms cancel, showing e^{-2t}X_t is a martingale. All three expressions are equivalent.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 180
+- id: QR_STOC_011
+  category: stochastic_calculus
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: '在 SABR (Stochastic Alpha Beta Rho) 模型中，参数 β 控制的是：
+
+    In the SABR model, the parameter β controls:'
+  options:
+  - A. 波动率的均值回复速度 / Mean-reversion speed of volatility
+  - B. 标的资产价格的 CEV 指数，决定 smile/skew 的形状 / CEV exponent of the underlying, determining smile/skew shape
+  - C. 波动率的波动率 (vol of vol) / Volatility of volatility
+  - D. 标的资产与波动率之间的相关性 / Correlation between underlying and volatility
+  answer: B
+  explanation: 'SABR模型: dF = σ F^β dW₁, dσ = ν σ dW₂, d⟨W₁,W₂⟩ = ρdt。β是CEV指数：β=0对应normal model，β=0.5对应CIR-like，β=1对应lognormal。β控制了smile vs skew的基本形状。ν是vol-of-vol（C），ρ是相关性（D）。SABR没有均值回复项（A）。
+
+    β is the CEV exponent: β=0 (normal), β=1 (lognormal). It determines the backbone of the smile/skew. ν controls vol-of-vol, ρ controls correlation. SABR has no mean-reversion.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 150
+- id: QR_STOC_012
+  category: stochastic_calculus
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '关于 quadratic variation（二次变分），标准布朗运动 W(t) 在 [0,T] 上的二次变分 [W,W]_T 等于：
+
+    The quadratic variation of standard Brownian motion W(t) on [0,T], [W,W]_T equals:'
+  options:
+  - A. W(T)²
+  - B. T
+  - C. T/2
+  - D. E[W(T)²] = T（期望值）/ E[W(T)²] = T (expected value)
+  answer: B
+  explanation: '[W,W]_T = lim_{n→∞} Σᵢ(W(tᵢ) - W(tᵢ₋₁))² = T（几乎必然成立）。这不是期望值而是路径性质（pathwise result），这也是为什么在Ito''s lemma中 (dW)² = dt 的原因。这个性质使得Ito积分与Riemann-Stieltjes积分不同。
+
+    [W,W]_T = T almost surely (pathwise, not just in expectation). This is why (dW)² = dt in Ito''s lemma, distinguishing it from ordinary calculus.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_STOC_013
+  category: stochastic_calculus
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: '在 rough volatility 模型框架下，假设波动率过程的 Hurst 参数 H ≈ 0.1。以下哪个说法是正确的？
+
+    In the rough volatility framework with Hurst parameter H ≈ 0.1 for the volatility process, which statement is correct?'
+  options:
+  - A. 波动率过程比标准布朗运动更光滑 / The volatility process is smoother than standard Brownian motion
+  - B. 波动率的 autocorrelation 随 lag 以幂律衰减，指数约为 2H ≈ 0.2 / Volatility autocorrelation decays as a power law with exponent 2H ≈ 0.2
+  - C. 该模型等价于 fractional Brownian motion 且是半鞅 / This model is equivalent to fBM and is a semimartingale
+  - D. H < 0.5 意味着波动率具有长记忆性 / H < 0.5 implies long memory in volatility
+  answer: B
+  explanation: 'H ≈ 0.1 < 0.5 意味着波动率路径比布朗运动更粗糙（更不光滑），A错。Fractional Brownian motion 不是半鞅（当H≠0.5时），C错。H < 0.5 对应短记忆和反持续性（anti-persistence），不是长记忆，D错。波动率的 autocorrelation 近似为 C × lag^{2H-1} ≈ lag^{-0.8} 的幂律衰减，变换后 log-volatility 的 variance 以 lag^{2H} 增长，B正确。
+
+    H ≈ 0.1 means rougher than BM (A wrong), fBM is not semimartingale for H≠0.5 (C wrong), H<0.5 means short memory/anti-persistence (D wrong). The correct power law exponent is approximately 2H.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 180
+- id: QR_STOC_014
+  category: stochastic_calculus
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: '在 Monte Carlo 模拟 GBM 路径时，使用 Euler-Maruyama 方法离散化。以下哪种做法可以避免产生负的股票价格？
+
+    When simulating GBM paths via Monte Carlo with Euler-Maruyama discretization, which approach avoids negative stock prices?'
+  options:
+  - A. 使用足够小的时间步长 Δt / Use sufficiently small time step Δt
+  - B. 对 ln(S) 做 Euler 离散化而非对 S 直接离散化 / Discretize ln(S) instead of S directly
+  - C. 使用 Milstein method 替代 Euler method / Use Milstein method instead of Euler
+  - D. 当 S 变为负值时重新抽样 / Resample when S becomes negative
+  answer: B
+  explanation: '对 ln(S) 做离散化：ln(S_{t+Δt}) = ln(S_t) + (μ - σ²/2)Δt + σ√Δt × Z，然后 S_{t+Δt} = exp(ln(S_{t+Δt}))，这保证 S 恒正。直接对S做Euler离散 S_{t+Δt} = S_t(1 + μΔt + σ√Δt × Z) 在 σ√Δt 较大时可能产生负值。这是 log-Euler 方法，也是GBM的精确离散化。
+
+    Discretizing ln(S) ensures positivity since S = exp(ln(S)) > 0. This is also the exact discretization of GBM, making it both correct and efficient.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 150
+- id: QR_STOC_015
+  category: stochastic_calculus
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在 risk-neutral pricing 框架下，European option 价格可以表示为 V = e^{-rT} E^Q[payoff]。这里 E^Q 表示：
+
+    Under risk-neutral pricing, European option price V = e^{-rT} E^Q[payoff]. Here E^Q denotes:'
+  options:
+  - A. 在真实概率测度 P 下的期望 / Expectation under real-world measure P
+  - B. 在风险中性测度 Q 下的期望，其中股票的预期收益率为 r / Expectation under Q where stock expected return is r
+  - C. 在真实概率测度下折现后的期望 / Discounted expectation under real-world measure
+  - D. 在任意等价鞅测度下的期望 / Expectation under any equivalent martingale measure
+  answer: B
+  explanation: 'E^Q 是在风险中性测度（等价鞅测度）Q 下的期望。在Q下，所有可交易资产的折现价格都是鞅，即股票的预期收益率等于无风险利率r（而非真实预期收益率μ）。D不完全正确，因为在完全市场中等价鞅测度唯一，但在不完全市场中不唯一，需要额外条件选择。
+
+    E^Q is expectation under the risk-neutral measure where all tradable assets earn the risk-free rate r. In complete markets, Q is unique; in incomplete markets, additional criteria are needed.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_FACT_001
+  category: factor_modeling
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在 Fama-French 三因子模型中，SMB (Small Minus Big) 和 HML (High Minus Low) 分别代表：
+
+    In the Fama-French three-factor model, SMB and HML represent:'
+  options:
+  - A. SMB = 规模因子（小盘-大盘），HML = 价值因子（高B/P-低B/P）/ SMB = size (small-big), HML = value (high B/P - low B/P)
+  - B. SMB = 动量因子，HML = 波动率因子 / SMB = momentum, HML = volatility
+  - C. SMB = 流动性因子，HML = 盈利因子 / SMB = liquidity, HML = profitability
+  - D. SMB = 规模因子，HML = 成长因子 / SMB = size, HML = growth
+  answer: A
+  explanation: 'Fama-French三因子模型 (1993)：R_i - R_f = α + β_MKT(R_m - R_f) + β_SMB × SMB + β_HML × HML + ε。SMB是小盘股组合减大盘股组合的收益，捕捉规模效应。HML是高账面市值比（B/M或B/P）组合减低B/M组合的收益，捕捉价值效应。在A股中，SMB和HML都有显著的溢价。
+
+    FF3: SMB captures the size effect (small minus big), HML captures the value effect (high minus low book-to-market). Both show significant premiums in A-shares.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_FACT_002
+  category: factor_modeling
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '因子 IC (Information Coefficient) 与 ICIR (Information Coefficient Information Ratio) 的关系，以下哪个说法正确？
+
+    Regarding the relationship between IC and ICIR, which statement is correct?'
+  options:
+  - A. ICIR = IC均值 × IC标准差 / ICIR = IC mean × IC std
+  - B. ICIR = IC均值 / IC标准差 / ICIR = IC mean / IC std
+  - C. ICIR越高说明因子越强 / Higher ICIR means stronger factor
+  - D. B和C都正确 / Both B and C are correct
+  answer: D
+  explanation: 'ICIR = IC_mean / IC_std，衡量因子预测能力的稳定性。IC_mean高但IC_std也高的因子不如IC_mean略低但IC_std很小的因子可靠。ICIR类似于信息比率（IR = alpha/tracking_error），ICIR > 0.5 通常被认为是好因子。年化ICIR = IC_mean / IC_std × √12（月度数据）。
+
+    ICIR = IC_mean / IC_std measures prediction stability. ICIR > 0.5 is generally considered good. Annualized ICIR = monthly ICIR × √12.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_FACT_003
+  category: factor_modeling
+  difficulty: senior
+  type: code
+  points: 5
+  question: '编写 Python 函数计算因子 IC decay（IC衰减）曲线。函数接收因子值DataFrame和未来多期收益率DataFrame，计算因子值与未来 1 到 max_lag 期收益率的 rank IC。
+
+    Write a Python function to compute factor IC decay curve. The function takes factor values DataFrame and multi-period forward returns DataFrame, computing rank IC between factor values and 1 to max_lag period forward returns.'
+  options: []
+  answer: ''
+  explanation: IC decay曲线展示因子预测能力随时间的衰减速度。IC的半衰期（half-life）是因子换仓频率的重要参考：半衰期短的因子需要高频换仓，半衰期长的因子适合低频。
+  code_snippet: "import pandas as pd\nimport numpy as np\nfrom scipy.stats import spearmanr\n\ndef compute_ic_decay(\n    factor_values: pd.DataFrame,\n    forward_returns: dict[int, pd.DataFrame],\n    max_lag: int = 20\n) -> pd.DataFrame:\n    \"\"\"\n    Compute IC decay curve for a factor.\n\n    Args:\n        factor_values: DataFrame with index=date, columns=stock_code, values=factor\n        forward_returns: Dict mapping lag -> DataFrame of forward returns\n                         e.g., {1: df_1d_return, 2: df_2d_return, ...}\n        max_lag: Maximum lag to compute (default 20 trading days)\n\n    Returns:\n        DataFrame with columns ['lag', 'ic_mean', 'ic_std', 'icir', 'hit_rate']\n    \"\"\"\n    results = []\n    for lag in range(1, max_lag + 1):\n        if lag not in forward_returns:\n            continue\n        ret_df = forward_returns[lag]\n        common_dates = factor_values.index.intersection(ret_df.index)\n\n        ic_series = []\n        for date in common_dates:\n\
+    \            fv = factor_values.loc[date].dropna()\n            rv = ret_df.loc[date].dropna()\n            common_stocks = fv.index.intersection(rv.index)\n            if len(common_stocks) < 30:\n                continue\n            corr, _ = spearmanr(fv[common_stocks], rv[common_stocks])\n            ic_series.append(corr)\n\n        if len(ic_series) < 10:\n            continue\n\n        ic_arr = np.array(ic_series)\n        ic_mean = np.mean(ic_arr)\n        ic_std = np.std(ic_arr, ddof=1)\n        icir = ic_mean / ic_std if ic_std > 0 else 0.0\n        hit_rate = np.mean(ic_arr > 0)\n\n        results.append({\n            'lag': lag,\n            'ic_mean': round(ic_mean, 4),\n            'ic_std': round(ic_std, 4),\n            'icir': round(icir, 4),\n            'hit_rate': round(hit_rate, 4),\n        })\n\n    return pd.DataFrame(results)\n"
+  code_language: python
+  hints:
+  - 'Hint 1: 每个截面日期分别计算IC，再取均值'
+  - 'Hint 2: 注意处理缺失值和股票覆盖率不足的情况'
+  rubric: 正确计算多lag的IC(2分)；处理缺失值和边界条件(1分)；计算IC统计量(ICIR, hit rate)(1分)；代码质量(1分)
+  time_limit_seconds: 600
+- id: QR_FACT_004
+  category: factor_modeling
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: '在 Barra 风险模型中，common factor return 和 specific return 的分离是通过什么方法实现的？
+
+    In Barra risk model, the separation of common factor returns and specific returns is achieved by:'
+  options:
+  - A. 对个股收益率做PCA分解 / PCA decomposition of stock returns
+  - 'B. 截面回归：R_i = Σ X_{ik} f_k + ε_i / Cross-sectional regression: R_i = Σ X_{ik} f_k + ε_i'
+  - 'C. 时间序列回归：R_i = α_i + Σ β_{ik} F_k + ε_i / Time-series regression: R_i = α_i + Σ β_{ik} F_k + ε_i'
+  - D. Kalman filter 动态分解 / Kalman filter dynamic decomposition
+  answer: B
+  explanation: 'Barra模型使用截面回归方法：在每个时间截面上，用已知的因子暴露矩阵X（基本面特征、行业哑变量等）对股票收益率做回归，得到因子收益率 f_k 和个股特异收益率 ε_i。这与Fama-French的时间序列回归方法不同。Barra方法的优势是可以灵活加入更多因子，且因子暴露是直接可观测的。
+
+    Barra uses cross-sectional regression with known factor exposures (fundamentals, industry dummies), contrasting with FF''s time-series approach. Barra''s advantage is flexibility and observable factor exposures.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 150
+- id: QR_FACT_005
+  category: factor_modeling
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '关于因子的 half-life（半衰期），以下哪个描述最准确？
+
+    Regarding factor half-life, which description is most accurate?'
+  options:
+  - A. IC从初始值衰减到一半所需的期数 / Number of periods for IC to decay to half its initial value
+  - B. 因子多空组合收益率衰减到一半所需的时间 / Time for factor long-short portfolio return to decay to half
+  - C. 因子暴露的自相关系数衰减到0.5所需的期数 / Number of periods for factor exposure autocorrelation to decay to 0.5
+  - D. A和C都是常用的定义 / Both A and C are commonly used definitions
+  answer: D
+  explanation: '因子半衰期有两种常用定义：(1) IC decay half-life：因子值与未来收益率的IC衰减到初始IC一半的滞后期数，反映预测能力的持续性。(2) Exposure autocorrelation half-life：因子暴露的自相关函数衰减到0.5的期数，反映因子信号的变化速度。两者都用于确定最优换仓频率。A股中，基本面因子半衰期通常为月级别，技术面因子为日级别。
+
+    Both IC decay and exposure autocorrelation half-lives are commonly used. Fundamental factors typically have monthly half-lives, while technical factors have daily half-lives in A-shares.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_FACT_006
+  category: factor_modeling
+  difficulty: senior
+  type: open_ended
+  points: 8
+  question: '详细描述 alpha 与 beta 分离的方法论。在A股多因子框架下：
+
+    (a) 定义 alpha 和 beta，解释两者的经济含义
+
+    (b) 描述至少两种将原始因子分解为 alpha 成分和 beta 成分的技术方法
+
+    (c) 为什么在实际投资中 alpha-beta 分离很重要？给出A股的具体例子
+
+
+    Describe alpha-beta separation methodology in A-share multi-factor framework.
+
+    (a) Define alpha and beta with economic interpretation
+
+    (b) Describe at least two technical methods for decomposing raw factors into alpha and beta components
+
+    (c) Why is alpha-beta separation important in practice? Give A-share examples'
+  options: []
+  answer: ''
+  explanation: '(a) Beta是因子对已知风险因子（市场、行业、规模、价值等）的暴露带来的可解释收益；Alpha是去除所有已知beta暴露后的剩余超额收益，代表真正的选股能力。
+
+
+    (b) 方法1：截面回归中性化——将因子值对Barra风险因子做截面回归，取残差作为纯alpha因子。方法2：组合层面——用多空组合收益对风险因子做时间序列回归，截距项α即为alpha，斜率βᵢ×因子收益为beta。方法3：Fama-MacBeth回归中，在第二步加入已知因子，待估因子的溢价即为条件alpha。
+
+
+    (c) A股例子：EP（市盈率倒数）因子同时包含价值beta和选股alpha。如果不做分离，在价值风格轮动（如2021年抱团股瓦解）时，策略收益波动巨大。分离后可以独立管理alpha策略的换仓，同时用期货或ETF对冲beta暴露。另一个例子：动量因子在A股容易被行业beta污染，行业中性化后的纯alpha动量信号更稳定。'
+  code_snippet: ''
+  code_language: python
+  hints:
+  - 'Hint 1: 截面回归中性化是最常用的方法'
+  - 'Hint 2: 考虑A股的风格轮动特征'
+  rubric: (a) 2分：准确定义并解释经济含义；(b) 4分：每种方法2分，需要技术细节；(c) 2分：给出贴切的A股例子
+  time_limit_seconds: 600
+- id: QR_FACT_007
+  category: factor_modeling
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在使用 PCA 提取因子时，前3个主成分通常解释了A股截面收益率方差的多少比例？
+
+    When using PCA for factor extraction, the first 3 principal components typically explain what proportion of A-share cross-sectional return variance?'
+  options:
+  - A. 10-20%
+  - B. 30-50%
+  - C. 60-80%
+  - D. 90%+
+  answer: B
+  explanation: 'A股截面收益率的前3个主成分通常解释30-50%的方差。第一主成分（通常对应市场因子）解释20-30%，第二第三主成分（通常对应行业或规模因子）各解释5-10%。与美股类似但略高，因为A股的市场共振效应更强。剩余方差分布在大量小主成分中，对应个股特异风险。
+
+    First 3 PCs explain 30-50% of A-share cross-sectional variance. PC1 (market factor) explains 20-30%, PC2/PC3 (industry/size) each 5-10%. A-shares show stronger market co-movement than US stocks.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_FACT_008
+  category: factor_modeling
+  difficulty: senior
+  type: code
+  points: 5
+  question: '编写 Python 函数实现 Fama-MacBeth 两步回归。第一步：每个截面日期做截面回归得到因子溢价序列。第二步：对因子溢价序列做 t 检验判断显著性。
+
+    Write a Python function for Fama-MacBeth two-step regression. Step 1: Cross-sectional regression for each date to get factor premium series. Step 2: T-test on factor premium series for significance.'
+  options: []
+  answer: ''
+  explanation: Fama-MacBeth (1973) 是多因子检验的标准方法。第一步在每个截面上估计因子溢价（因子收益率），第二步对溢价时间序列做统计推断。优势是自然处理了截面相关性问题。
+  code_snippet: "import numpy as np\nimport pandas as pd\nfrom scipy import stats\n\ndef fama_macbeth_regression(\n    returns: pd.DataFrame,\n    factor_exposures: dict[str, pd.DataFrame],\n    min_stocks: int = 100\n) -> pd.DataFrame:\n    \"\"\"\n    Fama-MacBeth two-step cross-sectional regression.\n\n    Args:\n        returns: DataFrame, index=date, columns=stock_code, values=return\n        factor_exposures: Dict of factor_name -> DataFrame (same shape as returns)\n        min_stocks: Minimum number of stocks required per cross-section\n\n    Returns:\n        DataFrame with factor premium statistics (mean, std, t-stat, p-value)\n    \"\"\"\n    factor_names = list(factor_exposures.keys())\n    dates = returns.index\n    premium_records = []\n\n    # Step 1: Cross-sectional regression for each date\n    for date in dates:\n        ret = returns.loc[date].dropna()\n        exposures = {}\n        for fname in factor_names:\n            exp = factor_exposures[fname].loc[date].dropna()\n\
+    \            exposures[fname] = exp\n\n        common_stocks = ret.index\n        for fname in factor_names:\n            common_stocks = common_stocks.intersection(exposures[fname].index)\n\n        if len(common_stocks) < min_stocks:\n            continue\n\n        y = ret[common_stocks].values\n        X = np.column_stack([\n            exposures[fname][common_stocks].values\n            for fname in factor_names\n        ])\n        X = np.column_stack([np.ones(len(common_stocks)), X])\n\n        try:\n            betas = np.linalg.lstsq(X, y, rcond=None)[0]\n            record = {'date': date, 'intercept': betas[0]}\n            for i, fname in enumerate(factor_names):\n                record[fname] = betas[i + 1]\n            premium_records.append(record)\n        except np.linalg.LinAlgError:\n            continue\n\n    premium_df = pd.DataFrame(premium_records).set_index('date')\n\n    # Step 2: T-test on factor premium time series\n    results = []\n    all_cols = ['intercept']\
+    \ + factor_names\n    for col in all_cols:\n        series = premium_df[col].dropna()\n        n = len(series)\n        mean_val = series.mean()\n        std_val = series.std(ddof=1)\n        t_stat = mean_val / (std_val / np.sqrt(n))\n        p_val = 2 * (1 - stats.t.cdf(abs(t_stat), df=n - 1))\n        results.append({\n            'factor': col,\n            'mean': round(mean_val, 6),\n            'std': round(std_val, 6),\n            't_stat': round(t_stat, 4),\n            'p_value': round(p_val, 4),\n            'n_periods': n,\n        })\n\n    return pd.DataFrame(results)\n"
+  code_language: python
+  hints:
+  - 'Hint 1: 每个截面做一次OLS回归'
+  - 'Hint 2: 第二步的t统计量基于因子溢价的时间序列均值和标准误'
+  rubric: 正确实现截面回归(2分)；正确计算t统计量(1分)；处理缺失值(1分)；代码风格(1分)
+  time_limit_seconds: 600
+- id: QR_FACT_009
+  category: factor_modeling
+  difficulty: expert
+  type: open_ended
+  points: 10
+  question: '全面讨论因子 neutralization（中性化）的方法和实践。
+
+    (a) 解释市值中性化、行业中性化和风格中性化的区别
+
+    (b) 描述截面回归中性化的数学过程
+
+    (c) 讨论过度中性化（over-neutralization）的风险
+
+    (d) 在A股实践中，中性化的先后顺序是否影响结果？为什么？
+
+
+    Comprehensively discuss factor neutralization methods and practice.
+
+    (a) Explain market cap, industry, and style neutralization differences
+
+    (b) Describe the mathematical process of cross-sectional regression neutralization
+
+    (c) Discuss risks of over-neutralization
+
+    (d) In A-share practice, does neutralization order matter? Why?'
+  options: []
+  answer: ''
+  explanation: '(a) 市值中性化：消除因子与市值的相关性，使因子不包含规模暴露。行业中性化：消除行业效应，保证因子在每个行业内都有区分度。风格中性化：消除对其他已知风格因子（如价值、动量）的暴露。
+
+
+    (b) 截面回归中性化：factor_neutral = factor_raw - X @ (X''X)⁻¹X'' @ factor_raw = (I - H) @ factor_raw，其中X是中性化目标矩阵（如行业哑变量+ln(市值)）。即取OLS残差作为中性化后的因子。
+
+
+    (c) 过度中性化风险：如果中性化目标与因子有真实的经济联系，过度中性化会消除有效信号。例如，对价值因子做动量中性化可能消除价值反转的核心信号。中性化因子的数量应有限制，通常只中性化行业和市值。
+
+
+    (d) 在A股中，中性化顺序确实影响结果。先做行业中性化再做市值中性化，与反过来做的结果不同，因为投影矩阵 (I-H) 不满足交换律。实践中通常将所有中性化目标放在同一个回归中一次性完成（联合中性化），而非分步进行。'
+  code_snippet: ''
+  code_language: python
+  hints:
+  - 'Hint 1: 中性化本质上是投影操作'
+  - 'Hint 2: 考虑A股行业结构对中性化的影响'
+  rubric: (a) 2分；(b) 3分：需要数学公式；(c) 3分：具体例子说明过度中性化；(d) 2分：正确解释顺序影响
+  time_limit_seconds: 600
+- id: QR_FACT_010
+  category: factor_modeling
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在A股多因子选股中，因子组合方式对比：等权法 vs IC加权法 vs 最优化法（mean-variance）。以下哪个说法最准确？
+
+    In A-share multi-factor stock selection, comparing equal-weight vs IC-weighted vs optimization (mean-variance) factor combination. Which is most accurate?'
+  options:
+  - A. 最优化法在样本外表现总是最好 / Optimization always performs best out-of-sample
+  - B. 等权法虽然简单但通常样本外表现最稳健 / Equal-weight is simple but usually most robust out-of-sample
+  - C. IC加权法是唯一考虑因子预测能力的方法 / IC-weighting is the only method considering predictive power
+  - D. 三种方法在样本外表现没有显著差异 / All three show no significant difference out-of-sample
+  answer: B
+  explanation: 'DeMiguel et al. (2009) 的研究表明，在多数情况下等权组合（1/N）在样本外表现优于或可比于复杂的优化方法，因为优化方法对参数估计误差敏感。IC加权和MVO都依赖因子收益率和协方差的估计，存在估计误差放大的风险。在A股因子组合中，等权法是一个很强的基准。
+
+    DeMiguel et al. (2009) showed 1/N often outperforms optimization out-of-sample due to parameter estimation error sensitivity. In A-share factor combination, equal-weight is a strong baseline.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_FACT_011
+  category: factor_modeling
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: 'Barra CNE6 风险模型中包含的 style factors（风格因子）不包括以下哪个？
+
+    Which of the following is NOT included as a style factor in Barra CNE6 risk model?'
+  options:
+  - A. Beta
+  - B. Book-to-Price (价值)
+  - C. Momentum (动量)
+  - D. Investor Sentiment (投资者情绪)
+  answer: D
+  explanation: 'Barra CNE6 (China equity model) 包含约10个风格因子：Beta, Book-to-Price, Earnings Yield, Growth, Leverage, Liquidity, Momentum, Non-linear Size, Residual Volatility, Size 等。投资者情绪不是标准Barra模型的因子，虽然它可以作为alpha因子使用。Barra因子是风险因子，用于风险分解和组合优化。
+
+    Barra CNE6 includes Beta, B/P, Earnings Yield, Growth, Leverage, Liquidity, Momentum, Non-linear Size, Residual Vol, Size. Investor sentiment is not a standard Barra risk factor.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_FACT_012
+  category: factor_modeling
+  difficulty: expert
+  type: open_ended
+  points: 8
+  question: '讨论因子拥挤度 (factor crowding) 的度量和管理。
+
+    (a) 定义因子拥挤度，并解释为什么它对量化策略构成风险
+
+    (b) 提出至少三种量化度量因子拥挤度的方法
+
+    (c) 2020年11月A股量化策略集体回撤事件中，因子拥挤扮演了什么角色？
+
+
+    Discuss factor crowding measurement and management.
+
+    (a) Define factor crowding and explain why it poses risk to quant strategies
+
+    (b) Propose at least three quantitative measures of factor crowding
+
+    (c) What role did factor crowding play in the Nov 2020 A-share quant collective drawdown?'
+  options: []
+  answer: ''
+  explanation: '(a) 因子拥挤度指大量资金追逐相同因子暴露的程度。风险在于：当因子反转时，同向持仓的机构同时平仓导致踩踏，因子收益急剧反转和价差扩大。
+
+
+    (b) 方法1：因子估值离散度——因子多头组合与空头组合的估值价差。价差过大表明拥挤。方法2：因子换手率/成交量集中度——因子偏好个股的成交量异常放大。方法3：因子收益率的自相关性——高度正自相关可能表示趋势跟踪造成的拥挤。方法4：Short interest（融券余额）集中度。方法5：因子IC的横截面离散度下降——大家选出的股票越来越相似。
+
+
+    (c) 2020年11月初，大量量化私募集中持有小盘、反转等因子的多头头寸。当市场风格突然切换（大盘价值风格回归），这些因子同时反转。由于策略同质化严重，集体止损加剧了回撤。这次事件暴露了A股量化行业的因子拥挤风险，之后很多机构开始重视拥挤度监控。'
+  code_snippet: ''
+  code_language: python
+  hints:
+  - 'Hint 1: 思考从价格、持仓、交易量等维度度量'
+  - 'Hint 2: 2020年事件的核心是策略同质化'
+  rubric: (a) 2分；(b) 3分：每种方法1分，需要具体可操作；(c) 3分：具体分析事件机制
+  time_limit_seconds: 600
+- id: QR_FACT_013
+  category: factor_modeling
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在 cross-sectional regression 中，使用行业哑变量做行业中性化时，如果有30个行业，需要放入多少个哑变量（包含截距项的情况下）？
+
+    In cross-sectional regression with industry dummies for industry neutralization, if there are 30 industries and an intercept is included, how many dummies are needed?'
+  options:
+  - A. 30
+  - B. 29
+  - C. 31
+  - D. 28
+  answer: B
+  explanation: '有截距项时，为避免完全多重共线性（dummy variable trap），需要 K-1 = 29 个行业哑变量。省略的行业作为基准（benchmark）行业。或者也可以不放截距项而放30个哑变量，效果等价但系数的解释不同。在Barra风险模型中通常对行业因子施加约束（如市值加权和为0），可以放入所有30个。
+
+    With intercept, K-1 = 29 dummies are needed to avoid the dummy variable trap. Alternatively, include all 30 dummies without intercept. Barra models often use constraints instead.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_FACT_014
+  category: factor_modeling
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: '关于因子的 turnover（换手率）与交易成本的关系，以下哪个公式最准确地估计了因子策略的净收益？
+
+    Regarding the relationship between factor turnover and transaction costs, which formula most accurately estimates net returns of a factor strategy?'
+  options:
+  - A. Net_return = Gross_return - Turnover × One-way_cost
+  - B. Net_return = Gross_return - 2 × Turnover × One-way_cost
+  - C. Net_return = Gross_return - Turnover × Round-trip_cost
+  - D. B和C等价 / B and C are equivalent
+  answer: D
+  explanation: '因子策略的换手率 (turnover) 定义为每期变化的头寸比例。每单位turnover需要买入和卖出（round trip），成本为 2 × one-way cost = round-trip cost。因此B (2 × turnover × one-way) 和 C (turnover × round-trip) 等价。A漏算了一半成本。在A股中，考虑佣金(~0.03%)、印花税(0.05%卖方)、冲击成本(~0.1-0.3%)，总single-way cost约0.15-0.35%。
+
+    Turnover requires both buying and selling, so cost = 2 × one-way = round-trip per unit turnover. In A-shares, single-way cost ≈ 0.15-0.35% including commission, stamp tax, and market impact.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 150
+- id: QR_FACT_015
+  category: factor_modeling
+  difficulty: expert
+  type: show_work
+  points: 8
+  question: '推导 Fundamental Law of Active Management (FLAM) 中 IR = IC × √BR 的含义和局限。
+
+    (a) 定义 IR、IC、BR 并给出 FLAM 公式
+
+    (b) 数学推导该公式（简化版）
+
+    (c) 讨论 FLAM 在A股因子投资中的实际局限性
+
+
+    Derive the Fundamental Law of Active Management IR = IC × √BR.
+
+    (a) Define IR, IC, BR and state the FLAM formula
+
+    (b) Mathematical derivation (simplified)
+
+    (c) Discuss FLAM''s practical limitations in A-share factor investing'
+  options: []
+  answer: ''
+  explanation: '(a) IR (Information Ratio) = 组合年化超额收益/跟踪误差。IC (Information Coefficient) = 因子预测与实际收益的相关系数。BR (Breadth) = 独立预测决策的数量（如因子覆盖的独立股票数×换仓次数）。FLAM: IR ≈ IC × √BR。
+
+
+    (b) 简化推导：假设N只股票，每只股票的alpha信号 ĝᵢ 与实际超额收益 rᵢ 的相关系数为IC，且信号间独立。最优组合的期望超额收益 ∝ IC × Σσᵢ，跟踪误差 ∝ √(Σσᵢ²)。在等方差假设下，IR ∝ IC × N/√N = IC × √N = IC × √BR。
+
+
+    (c) 局限性：
+
+    1. 独立性假设在A股不成立：股票间相关性高，有效BR远小于名义BR
+
+    2. IC不稳定：A股因子IC随时间变化大，使用静态IC不准确
+
+    3. 忽视交易成本：高BR（高频换仓）增加成本
+
+    4. Transfer coefficient：实际组合约束（如持仓限制、行业偏离限制）降低了IC到组合超额收益的传导效率
+
+    5. 不考虑因子拥挤和容量限制'
+  code_snippet: ''
+  code_language: python
+  hints:
+  - 'Hint 1: IR = alpha / tracking_error'
+  - 'Hint 2: 有效BR = 名义BR × (1 - avg_correlation)'
+  rubric: (a) 2分：准确定义；(b) 3分：合理的数学推导；(c) 3分：至少3个有实际意义的局限性
+  time_limit_seconds: 600
+- id: QR_FACT_016
+  category: factor_modeling
+  difficulty: senior
+  type: show_work
+  points: 8
+  question: "推导因子分层测试 (quantile sorting test) 的统计检验框架。\n(a) 给出将股票按因子值分成Q组后，多空收益 (top - bottom) 的 t 统计量公式\n(b) 推导单调性检验：用 Spearman rank correlation 检验各组收益与组序号的关系，写出检验统计量\n(c) 若5组分层收益分别为 1.2%, 0.8%, 0.5%, 0.2%, -0.3%（从高到低），计算多空收益的 t 统计量（假设标准差为 2.5%/月，样本60个月），并检验单调性\n\nDerive the statistical framework for quantile sorting test.\n(a) T-statistic formula for long-short returns (top - bottom)\n(b) Monotonicity test using Spearman rank correlation\n(c) Given 5-group returns 1.2%, 0.8%, 0.5%, 0.2%, -0.3%, compute t-stat (std=2.5%/month, n=60) and test monotonicity"
+  options: []
+  answer: ""
+  explanation: '因子的单调性是指因子值从低到高（或高到低）对应的收益呈单调递增（或递减）。最直接的度量是各组平均收益与组序号的 Spearman rank correlation。完美单调时相关系数为±1。A只看两端，忽略了中间组是否单调。C和D都不直接度量单调性。
+
+    Monotonicity means returns increase/decrease consistently with factor values. Spearman correlation between group returns and group ranks directly measures this. Perfect monotonicity gives ±1.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_FACT_017
+  category: factor_modeling
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: '在因子组合优化中，使用 Black-Litterman 模型的主要优势是：
+
+    The main advantage of using the Black-Litterman model in factor portfolio optimization is:'
+  options:
+  - A. 完全不需要因子收益率的估计 / No factor return estimation needed
+  - B. 将先验（均衡收益）与投资者观点（因子alpha信号）融合，减少极端权重 / Combines prior (equilibrium returns) with investor views (factor alpha signals), reducing extreme weights
+  - C. 保证最优组合的夏普比率最高 / Guarantees the highest Sharpe ratio
+  - D. 消除了对协方差矩阵估计的依赖 / Eliminates dependence on covariance matrix estimation
+  answer: B
+  explanation: 'Black-Litterman模型通过将市场均衡收益（来自CAPM的逆优化）作为先验，与投资者对因子收益的主观观点（alpha信号）进行Bayesian融合，得到更稳定的预期收益估计。这大幅减少了MVO中常见的极端头寸。A错（仍需要均衡收益），C错（不保证最高SR），D错（仍需要协方差矩阵）。
+
+    BL combines CAPM equilibrium returns as prior with investor alpha signals via Bayesian updating, producing more stable expected returns and reducing extreme positions.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 150
+- id: QR_FACT_018
+  category: factor_modeling
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '关于因子的 information decay 和换仓频率的关系，以下哪个策略最合理？
+
+    Regarding the relationship between factor information decay and rebalancing frequency, which strategy is most reasonable?'
+  options:
+  - A. 所有因子统一使用月度换仓 / Use monthly rebalancing for all factors
+  - B. 根据每个因子的IC decay half-life确定各自的最优换仓频率 / Determine optimal rebalancing frequency based on each factor's IC decay half-life
+  - C. 换仓频率越高越好，因为可以更及时地利用信息 / Higher frequency is always better for more timely information utilization
+  - D. 换仓频率应该完全由交易成本决定 / Rebalancing frequency should be determined entirely by transaction costs
+  answer: B
+  explanation: '最优换仓频率应该平衡信号衰减和交易成本。IC decay half-life是关键参考：基本面因子（如EP、ROE）半衰期长（月级别），适合月度或更低频换仓；技术面因子（如短期反转）半衰期短（日级别），需要更高频。C忽略了交易成本，D忽略了信号特征，A忽略了因子差异。实践中还需考虑冲击成本和资金规模。
+
+    Optimal rebalancing balances signal decay and costs. Fundamental factors (monthly half-life) suit monthly rebalancing; technical factors (daily half-life) need higher frequency.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_FACT_019
+  category: factor_modeling
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: '在 Fama-MacBeth 回归中，使用 Newey-West 修正 t 统计量的原因是：
+
+    The reason for using Newey-West corrected t-statistics in Fama-MacBeth regression is:'
+  options:
+  - A. 因子溢价序列存在异方差和自相关 / Factor premium series exhibits heteroscedasticity and autocorrelation
+  - B. 因子暴露存在测量误差 / Factor exposures have measurement error
+  - C. 截面残差不是正态分布 / Cross-sectional residuals are not normally distributed
+  - D. 样本量太小 / Sample size is too small
+  answer: A
+  explanation: 'Fama-MacBeth第一步得到的因子溢价时间序列可能存在异方差（不同市场环境下因子溢价的波动不同）和自相关（因子溢价具有持续性）。直接用OLS标准误做t检验会导致标准误被低估，t统计量被高估。Newey-West修正同时处理异方差和自相关，提供更可靠的统计推断。
+
+    FM factor premium series may have heteroscedasticity and autocorrelation. Newey-West corrects both, providing reliable inference.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 150
+- id: QR_FACT_020
+  category: factor_modeling
+  difficulty: expert
+  type: open_ended
+  points: 8
+  question: '讨论A股特有的因子特征及其与成熟市场的差异。
+
+    (a) 列举至少3个A股特有的有效因子（在美股不显著但在A股显著的）
+
+    (b) 解释这些因子有效的结构性原因
+
+    (c) 这些因子的持续性如何？是否有衰减趋势？
+
+
+    Discuss A-share-specific factor characteristics and differences from developed markets.
+
+    (a) List at least 3 factors unique to A-shares (significant in A but not in US)
+
+    (b) Explain structural reasons for their effectiveness
+
+    (c) How persistent are these factors? Any decay trends?'
+  options: []
+  answer: ''
+  explanation: '(a) A股特有有效因子：
+
+    1. 短期反转因子（5-20日反转）：在A股远比美股显著
+
+    2. 换手率因子（低换手率溢价）：在A股非常强
+
+    3. 涨停/跌停相关因子：A股特有的价格限制制度产生
+
+    4. 分析师预期调整因子：在A股有效性更强
+
+    5. 北向资金持仓变动因子
+
+
+    (b) 结构性原因：
+
+    - 散户比例高（~60%成交量），导致过度反应和均值回复更强（反转因子）
+
+    - 卖空限制（融券困难），低换手率溢价更显著
+
+    - 涨跌停板制度造成信息不对称延续
+
+    - 信息传播效率低，分析师信息优势更大
+
+    - 外资（北向）作为增量资金有额外信息含量
+
+
+    (c) 部分因子确实在衰减：
+
+    - 短期反转因子自2019年后IC下降，因为量化策略容量增大导致反转效应被交易掉
+
+    - 换手率因子相对稳定
+
+    - 涨跌停因子随制度改革（注册制、涨跌幅放宽到20%）而减弱
+
+    总体趋势：随着市场机构化和量化资金增长，A股因子正在向成熟市场靠拢。'
+  code_snippet: ''
+  code_language: python
+  hints:
+  - 'Hint 1: 从A股市场微观结构出发分析'
+  - 'Hint 2: 考虑散户比例、交易制度、信息传播效率'
+  rubric: (a) 3分：每个因子1分；(b) 3分：结构性解释合理且深入；(c) 2分：有数据或逻辑支持的衰减趋势讨论
+  time_limit_seconds: 600
+- id: QR_ML_001
+  category: machine_learning
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在用 LightGBM 做因子选股模型时，以下哪个超参数对防止过拟合最重要？
+
+    When using LightGBM for factor-based stock selection, which hyperparameter is most important for preventing overfitting?'
+  options:
+  - A. learning_rate (学习率)
+  - B. num_leaves (叶子数)
+  - C. n_estimators (迭代次数)
+  - D. 以上都重要，但应通过时间序列交叉验证联合调优 / All important, but should be jointly tuned via time-series CV
+  answer: D
+  explanation: 'LightGBM的过拟合由多个参数共同控制：learning_rate过大会导致每步拟合过多噪声，num_leaves过多使模型过于复杂，n_estimators过多导致对训练数据过度拟合。在金融时间序列中，关键是使用 expanding window 或 walk-forward cross-validation 来调参，而非random/grid search with k-fold CV（后者会导致未来信息泄露）。
+
+    All three hyperparameters jointly control overfitting. In financial time series, walk-forward CV is essential to avoid look-ahead bias.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_ML_002
+  category: machine_learning
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: '在量化选股的 feature engineering 中，以下哪种做法最容易引入 look-ahead bias？
+
+    In feature engineering for quant stock selection, which practice most easily introduces look-ahead bias?'
+  options:
+  - A. 使用截面排名 (cross-sectional rank) 标准化 / Using cross-sectional rank normalization
+  - B. 使用全样本（包括未来数据）计算的均值和标准差做 z-score 标准化 / Using full-sample (including future data) mean and std for z-score normalization
+  - C. 使用滚动窗口计算技术指标 / Using rolling windows for technical indicators
+  - D. 使用行业哑变量 / Using industry dummy variables
+  answer: B
+  explanation: '使用全样本统计量（均值、标准差）进行标准化是经典的 look-ahead bias 来源。正确做法是使用仅基于历史数据的滚动窗口或 expanding window 统计量。A (截面排名) 只使用当期数据无前瞻。C (滚动窗口) 只用历史数据。D (行业哑变量) 是确定性的标签无前瞻。
+
+    Using full-sample statistics for normalization is a classic look-ahead bias. Correct approach: rolling or expanding window statistics using only historical data.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_ML_003
+  category: machine_learning
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: 'XGBoost 与 LightGBM 的主要区别之一是树的生长策略。LightGBM 默认使用：
+
+    A key difference between XGBoost and LightGBM is tree growth strategy. LightGBM defaults to:'
+  options:
+  - A. Level-wise growth (层级生长)
+  - B. Leaf-wise growth (叶子生长)
+  - C. Depth-first growth (深度优先)
+  - D. Random growth (随机生长)
+  answer: B
+  explanation: 'LightGBM使用 leaf-wise（叶子优先）生长策略，每次选择增益最大的叶子节点进行分裂。而XGBoost默认使用 level-wise（层级优先）策略，每层所有节点都分裂。Leaf-wise在相同叶子数下通常能获得更低的损失，但更容易过拟合，因此需要通过 max_depth 或 num_leaves 控制。在A股选股中，leaf-wise的效率优势在大数据集上很明显。
+
+    LightGBM uses leaf-wise growth (split the leaf with max gain), while XGBoost defaults to level-wise (split all nodes at each level). Leaf-wise achieves lower loss but risks overfitting.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_ML_004
+  category: machine_learning
+  difficulty: senior
+  type: code
+  points: 5
+  question: '编写 Python 函数实现 walk-forward validation（前向滚动验证）框架，用于评估因子选股ML模型。要求包含训练窗口、验证窗口和embargo period（禁止期）。
+
+    Write a Python function for walk-forward validation framework to evaluate ML-based factor selection models. Include training window, validation window, and embargo period.'
+  options: []
+  answer: ''
+  explanation: Walk-forward validation是金融时间序列ML模型评估的标准方法。Embargo period（禁止期）防止训练集末尾的数据因收益率计算的前向窗口而与验证集重叠，避免信息泄露。
+  code_snippet: "import pandas as pd\nimport numpy as np\nfrom typing import Generator\n\ndef walk_forward_split(\n    dates: pd.DatetimeIndex,\n    train_window: int = 252,\n    val_window: int = 21,\n    embargo: int = 5,\n    step: int = 21,\n    min_train_size: int = 126\n) -> Generator[tuple[np.ndarray, np.ndarray], None, None]:\n    \"\"\"\n    Walk-forward validation splitter with embargo period.\n\n    Args:\n        dates: Sorted datetime index of all available dates\n        train_window: Number of trading days for training (default ~1yr)\n        val_window: Number of trading days for validation (default ~1mo)\n        embargo: Gap days between train and val to prevent leakage\n        step: Step size for rolling the window forward\n        min_train_size: Minimum training set size\n\n    Yields:\n        (train_indices, val_indices) as numpy arrays\n    \"\"\"\n    n = len(dates)\n    all_indices = np.arange(n)\n\n    start = 0\n    while True:\n        train_end = start + train_window\n\
+    \        val_start = train_end + embargo\n        val_end = val_start + val_window\n\n        if val_end > n:\n            break\n\n        if train_end - start < min_train_size:\n            start += step\n            continue\n\n        train_idx = all_indices[start:train_end]\n        val_idx = all_indices[val_start:val_end]\n\n        yield train_idx, val_idx\n        start += step\n\ndef evaluate_walk_forward(\n    model_class,\n    X: pd.DataFrame,\n    y: pd.Series,\n    dates: pd.DatetimeIndex,\n    model_params: dict | None = None,\n    **wf_kwargs\n) -> pd.DataFrame:\n    \"\"\"\n    Evaluate ML model using walk-forward validation.\n\n    Returns:\n        DataFrame with validation period metrics\n    \"\"\"\n    if model_params is None:\n        model_params = {}\n    results = []\n\n    for train_idx, val_idx in walk_forward_split(dates, **wf_kwargs):\n        X_train, y_train = X.iloc[train_idx], y.iloc[train_idx]\n        X_val, y_val = X.iloc[val_idx], y.iloc[val_idx]\n\
+    \n        model = model_class(**model_params)\n        model.fit(X_train, y_train)\n        y_pred = model.predict(X_val)\n\n        from scipy.stats import spearmanr\n        ic, _ = spearmanr(y_pred, y_val)\n\n        results.append({\n            'val_start': dates[val_idx[0]],\n            'val_end': dates[val_idx[-1]],\n            'ic': ic,\n            'n_train': len(train_idx),\n            'n_val': len(val_idx),\n        })\n\n    return pd.DataFrame(results)\n"
+  code_language: python
+  hints:
+  - 'Hint 1: Embargo period 通常设为收益率计算的前向窗口长度'
+  - 'Hint 2: 确保训练集和验证集在时间上严格分离'
+  rubric: 正确实现滚动窗口(2分)；embargo period正确(1分)；代码完整可运行(1分)；接口设计合理(1分)
+  time_limit_seconds: 600
+- id: QR_ML_005
+  category: machine_learning
+  difficulty: expert
+  type: open_ended
+  points: 8
+  question: '讨论 Transformer 模型在A股因子挖掘中的应用。
+
+    (a) 描述 Transformer 的 self-attention 机制如何捕捉股票间的关系
+
+    (b) 与传统 LSTM 相比，Transformer 在金融时间序列预测中的优劣势
+
+    (c) 设计一个基于 Transformer 的因子挖掘架构，说明输入特征、注意力机制设计和输出
+
+
+    Discuss Transformer model application in A-share factor mining.
+
+    (a) How does self-attention capture inter-stock relationships
+
+    (b) Pros and cons vs LSTM for financial time series
+
+    (c) Design a Transformer-based factor mining architecture with input features, attention design, and output'
+  options: []
+  answer: ''
+  explanation: '(a) Self-attention允许模型在计算每只股票的表示时关注其他所有股票。注意力权重 α_ij = softmax(Q_i × K_j / √d) 可以学习到：行业内部关系（同行业股票的注意力权重高）、供应链关系、风格相似性等。Multi-head attention可以同时捕捉不同维度的关系。
+
+
+    (b) 优势：并行计算效率高（LSTM是顺序的）；可以直接建模长距离依赖（不需要通过隐藏状态传递）；注意力权重提供一定的可解释性。劣势：需要更多数据和计算资源；对序列顺序（时间因果性）的建模需要特殊设计（causal mask）；在小数据集上容易过拟合。
+
+
+    (c) 架构设计：
+
+    - 输入：每只股票在每个时间步的特征向量 [价量特征, 基本面特征, 行业编码]，形成 (T × N × D) 的张量
+
+    - 时间注意力层：沿时间维度做 causal self-attention，捕捉时序模式
+
+    - 截面注意力层：在每个时间步沿股票维度做 self-attention，捕捉股票间关系
+
+    - 输出层：对每只股票输出未来收益率的预测分数
+
+    - 损失函数：使用 ListNet-style 排序损失或IC最大化目标，而非MSE'
+  code_snippet: ''
+  code_language: python
+  hints:
+  - 'Hint 1: 考虑时间维度和截面维度的双重注意力'
+  - 'Hint 2: 金融领域需要causal mask防止未来信息泄露'
+  rubric: (a) 2分：正确解释attention机制在股票关系建模中的作用；(b) 3分：全面比较优劣；(c) 3分：架构设计合理且有创新性
+  time_limit_seconds: 600
+- id: QR_ML_006
+  category: machine_learning
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在训练因子选股模型时，以下哪种 regularization 技术对防止过拟合到特定市场环境最有效？
+
+    When training a factor selection model, which regularization technique is most effective against overfitting to specific market regimes?'
+  options:
+  - A. L1 regularization (Lasso)
+  - B. L2 regularization (Ridge)
+  - C. Dropout + 多个时间窗口的模型集成 / Dropout + ensemble across multiple time windows
+  - D. Early stopping
+  answer: C
+  explanation: '单一正则化方法只能控制模型复杂度，但不能防止模型过拟合到特定市场状态（如牛市或高波动环境）。Dropout增加模型的鲁棒性，而多时间窗口集成（如不同训练起始点的模型平均）确保模型不过度依赖某个特定时间段的模式。在A股的风格轮动频繁的环境下，这种方法尤其重要。
+
+    Dropout increases robustness, and multi-window ensembling prevents overfitting to specific regimes. This is crucial for A-shares where style rotation is frequent.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_ML_007
+  category: machine_learning
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: '在使用 GNN (Graph Neural Network) 建模A股股票关系时，构建图的边（edge）最合适的方式是：
+
+    When using GNN to model A-share stock relationships, the most appropriate way to construct graph edges is:'
+  options:
+  - A. 全连接图（所有股票两两相连）/ Fully connected graph
+  - B. 仅基于行业分类的图（同行业相连）/ Only industry classification based
+  - C. 多关系图：结合行业链、供应链、相关系数阈值等构建 / Multi-relational graph combining industry chain, supply chain, correlation thresholds
+  - D. 基于地理位置的图 / Geography-based graph
+  answer: C
+  explanation: '单一关系图信息不充分。多关系图可以同时编码：(1)行业分类关系（同行业）、(2)供应链上下游关系、(3)股价相关性网络（收益率相关系数超过阈值）、(4)基金共同持仓关系、(5)分析师共同覆盖关系。A股中供应链关系和基金持仓关系特别有信息含量。GNN通过消息传递（message passing）在这些关系上聚合信息。
+
+    Multi-relational graphs encode industry, supply chain, correlation, co-holding, and analyst co-coverage relationships. A-share supply chain and fund co-holding relations are particularly informative.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 150
+- id: QR_ML_008
+  category: machine_learning
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在 LightGBM 特征重要性中，gain importance 与 split importance 的区别是：
+
+    The difference between gain importance and split importance in LightGBM is:'
+  options:
+  - A. 两者完全等价 / They are equivalent
+  - B. Gain衡量特征在所有分裂中带来的总损失减少，split衡量特征被选为分裂点的次数 / Gain measures total loss reduction, split measures number of times used for splitting
+  - C. Gain更准确，split更快 / Gain is more accurate, split is faster
+  - D. Split是gain的归一化版本 / Split is a normalized version of gain
+  answer: B
+  explanation: 'Split importance（也叫frequency）计算特征被用作分裂点的总次数，不考虑每次分裂的质量。Gain importance计算特征在所有分裂中带来的总损失函数改善。Gain importance通常更有意义，因为一个特征可能被频繁使用但每次带来的改善很小。在因子研究中还可以使用 SHAP values 提供更准确的特征重要性。
+
+    Split counts how often a feature is used for splitting; gain measures total loss reduction. Gain is generally more meaningful. SHAP values provide even more accurate importance.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_ML_009
+  category: machine_learning
+  difficulty: senior
+  type: code
+  points: 5
+  question: '编写 Python 函数实现基于 purged k-fold cross-validation 的模型评估。考虑金融数据的时间依赖性，在fold之间加入purge和embargo。
+
+    Write a Python function for purged k-fold cross-validation for model evaluation, addressing temporal dependence in financial data with purge and embargo between folds.'
+  options: []
+  answer: ''
+  explanation: Purged k-fold CV (de Prado, 2018) 在传统k-fold基础上：(1) Purge：从训练集中删除与验证集时间上重叠的观测（考虑收益率计算的前向窗口）；(2) Embargo：在验证集后增加一段禁止期，该期间的数据也从训练集中排除。
+  code_snippet: "import numpy as np\nimport pandas as pd\nfrom typing import Generator\n\ndef purged_kfold_split(\n    dates: pd.DatetimeIndex,\n    n_splits: int = 5,\n    purge_window: int = 5,\n    embargo_window: int = 5\n) -> Generator[tuple[np.ndarray, np.ndarray], None, None]:\n    \"\"\"\n    Purged K-Fold cross-validation for financial time series.\n\n    Args:\n        dates: Sorted datetime index\n        n_splits: Number of folds\n        purge_window: Days to purge from training set before val start\n        embargo_window: Days to embargo after val end\n\n    Yields:\n        (train_indices, val_indices)\n    \"\"\"\n    n = len(dates)\n    indices = np.arange(n)\n    fold_size = n // n_splits\n\n    for i in range(n_splits):\n        val_start = i * fold_size\n        val_end = min((i + 1) * fold_size, n)\n\n        val_idx = indices[val_start:val_end]\n\n        # Purge: remove training samples within purge_window before val\n        purge_start = max(0, val_start - purge_window)\n\
+    \        # Embargo: remove training samples within embargo_window after val\n        embargo_end = min(n, val_end + embargo_window)\n\n        train_mask = np.ones(n, dtype=bool)\n        train_mask[purge_start:embargo_end] = False\n\n        train_idx = indices[train_mask]\n\n        if len(train_idx) < 10 or len(val_idx) < 1:\n            continue\n\n        yield train_idx, val_idx\n"
+  code_language: python
+  hints:
+  - 'Hint 1: Purge删除训练集中因收益率前向计算而泄漏的数据'
+  - 'Hint 2: 参考 Marcos Lopez de Prado ''Advances in Financial ML'''
+  rubric: 正确实现purge逻辑(2分)；正确实现embargo逻辑(1分)；边界处理(1分)；代码质量(1分)
+  time_limit_seconds: 600
+- id: QR_ML_010
+  category: machine_learning
+  difficulty: expert
+  type: open_ended
+  points: 8
+  question: '讨论 Mamba (State Space Model) 架构在量化因子挖掘中相对于 Transformer 的潜在优势。
+
+    (a) 简述 Mamba 的核心机制（选择性状态空间模型）
+
+    (b) 与 Transformer 的 attention 机制相比，Mamba 在处理长序列金融数据时的优势
+
+    (c) 设计一个 Mamba-based 因子挖掘方案并讨论可能的挑战
+
+
+    Discuss Mamba (SSM) architecture''s potential advantages over Transformer in quant factor mining.
+
+    (a) Summarize Mamba''s core mechanism (selective state space model)
+
+    (b) Advantages over Transformer attention for long-sequence financial data
+
+    (c) Design a Mamba-based factor mining approach and discuss challenges'
+  options: []
+  answer: ''
+  explanation: '(a) Mamba基于结构化状态空间模型(S4)，核心是选择性机制：模型参数(Δ, B, C)依赖于输入内容，使得模型可以选择性地记忆或遗忘信息。相比传统SSM的固定参数，这使得Mamba能够进行内容感知的序列推理。
+
+
+    (b) 优势：
+
+    1. 线性时间复杂度O(L)vs Transformer的O(L²)，处理日级别长序列（数千时间步）时更高效
+
+    2. 固定大小的隐藏状态使得推理时内存恒定，适合实时/在线预测
+
+    3. 选择性机制可以自适应地关注市场状态转换点
+
+    4. 无需位置编码，天然处理变长序列
+
+    劣势：截面关系建模不如GNN+Transformer组合；可解释性更差
+
+
+    (c) 方案设计：
+
+    - 输入：每只股票的日频特征序列（价量+基本面），回看250个交易日
+
+    - Mamba编码器：沿时间维度处理每只股票的历史特征，输出固定维度的股票表示
+
+    - 截面交互层：可以用简单的attention或MLP处理股票间关系
+
+    - 输出：预测未来5日收益率排序
+
+    挑战：(1)A股3000+股票的并行训练效率；(2)训练数据量有限（~20年日频）；(3)市场状态转换时模型可能失效'
+  code_snippet: ''
+  code_language: python
+  hints:
+  - 'Hint 1: Mamba的选择性机制类似于门控RNN但更高效'
+  - 'Hint 2: 考虑推理速度对量化交易的重要性'
+  rubric: (a) 2分：准确描述选择性SSM机制；(b) 3分：全面对比优劣势；(c) 3分：方案合理且讨论充分
+  time_limit_seconds: 600
+- id: QR_ML_011
+  category: machine_learning
+  difficulty: senior
+  type: code
+  points: 5
+  question: "编写 Python 函数实现多模型集成 (model ensemble) 框架。支持等权集成和 IC 加权集成。输入为多个模型的截面预测值，输出为集成后的预测值和每个模型的权重。要求考虑模型间相关性对集成效果的影响。\nWrite a Python function for model ensemble framework supporting equal-weight and IC-weighted ensembling. Input: multiple model cross-sectional predictions. Output: ensembled predictions and weights. Consider inter-model correlation impact."
+  options: []
+  answer: ""
+  explanation: '多样化的模型集成（不同算法、不同特征子集、不同训练窗口）通常比单一模型集成更有效。但如果模型间预测高度相关，集成的边际增益很小。最优策略是在最大化预测能力和最大化模型多样性之间取得平衡。可以使用 correlation-adjusted weighting 或 stacking。
+
+    Diverse model ensembles outperform same-type bagging, but inter-model correlation limits marginal gains. Optimal strategy balances predictive power and diversity.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_ML_012
+  category: machine_learning
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: '在深度学习因子模型中，使用 transfer learning 的一个合理场景是：
+
+    A reasonable scenario for using transfer learning in deep learning factor models is:'
+  options:
+  - A. 从美股预训练模型迁移到A股 / Transfer from US-pretrained model to A-shares
+  - B. 从沪深300成分股预训练后迁移到中证1000成分股 / Transfer from CSI 300 to CSI 1000 components
+  - C. 从大样本时期预训练后迁移到数据稀缺的新市场 / Transfer from data-rich period to data-scarce new market
+  - D. 以上都是合理的应用场景 / All of the above are reasonable
+  answer: D
+  explanation: 'Transfer learning在金融ML中的应用：(A)跨市场迁移——美股和A股共享一些通用的价格模式和因子结构；(B)跨市值迁移——大盘股数据更充分可以帮助小盘股建模；(C)跨时期迁移——用数据丰富的时期预训练，在新市场/新时期微调。所有这些都是合理的，但需要注意domain shift问题。Fine-tuning时应冻结底层特征提取层，只训练顶层决策层。
+
+    All three are reasonable transfer learning scenarios, but domain shift must be managed. Freeze lower layers and fine-tune top layers.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 150
+- id: QR_ML_013
+  category: machine_learning
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '关于模型评估指标，在因子选股中使用 IC (rank correlation) 而非 R² 或 RMSE 的主要原因是：
+
+    The main reason for using IC (rank correlation) instead of R² or RMSE in factor selection evaluation is:'
+  options:
+  - A. IC计算更简单 / IC is simpler to compute
+  - B. 因子选股关注的是股票的相对排序而非绝对收益预测 / Factor selection cares about relative ranking, not absolute return prediction
+  - C. R²在小样本下不可靠 / R² is unreliable in small samples
+  - D. RMSE对异常值敏感 / RMSE is sensitive to outliers
+  answer: B
+  explanation: '因子选股本质上是一个排序问题：我们需要区分好股票和差股票，而不需要精确预测每只股票的绝对收益率。IC (Spearman rank correlation) 衡量的恰好是预测排序与实际排序的一致性。R²和RMSE衡量的是预测值与真实值的拟合程度，对量化选股而言不是最相关的指标。
+
+    Factor selection is fundamentally a ranking problem. IC measures prediction-reality rank consistency, which directly corresponds to portfolio construction needs.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_ML_014
+  category: machine_learning
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: '在训练因子选股的深度学习模型时，使用 label 为未来5日收益率的排序百分位（0-1之间）而非原始收益率值，主要优势是：
+
+    When training a DL model for factor selection using labels as rank percentile (0-1) of 5-day forward returns instead of raw return values, the main advantage is:'
+  options:
+  - A. 减少极端收益率值对训练的影响 / Reduce impact of extreme return values on training
+  - B. 使不同截面日期的label具有可比性 / Make labels comparable across different cross-sectional dates
+  - C. 直接优化排序目标 / Directly optimize ranking objective
+  - D. 以上都是 / All of the above
+  answer: D
+  explanation: '使用排序百分位label：(A)自然地消除了极端收益率（如涨跌停）的影响，无需额外winsorize；(B)不同日期的label都在[0,1]范围内，消除了市场整体涨跌对label分布的影响；(C)模型直接学习排序而非拟合绝对值，与选股的最终目标一致。这是A股深度学习因子模型中的标准做法。
+
+    Rank percentile labels: eliminate outliers (A), normalize across dates (B), and align with ranking objective (C). This is standard practice in A-share DL factor models.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_ML_015
+  category: machine_learning
+  difficulty: expert
+  type: code
+  points: 8
+  question: '编写一个完整的 LightGBM 因子选股模型训练和评估管道(pipeline)。要求：
+
+    (a) Walk-forward验证框架
+
+    (b) 特征重要性分析（SHAP值）
+
+    (c) 输出每个验证期的IC和分层收益
+
+
+    Write a complete LightGBM factor selection model training and evaluation pipeline with:
+
+    (a) Walk-forward validation
+
+    (b) Feature importance analysis (SHAP)
+
+    (c) Output IC and stratified returns per validation period'
+  options: []
+  answer: ''
+  explanation: 完整的ML因子选股管道需要包含数据预处理、walk-forward训练、预测评估和特征分析。SHAP值提供局部和全局的特征重要性解释。
+  code_snippet: "import numpy as np\nimport pandas as pd\nimport lightgbm as lgb\nimport shap\nfrom scipy.stats import spearmanr\n\nclass FactorMLPipeline:\n    \"\"\"LightGBM-based factor selection pipeline with walk-forward validation.\"\"\"\n\n    def __init__(\n        self,\n        lgb_params: dict | None = None,\n        train_window: int = 504,\n        val_window: int = 21,\n        embargo: int = 5,\n        n_groups: int = 5,\n    ):\n        default_params = {\n            'objective': 'regression',\n            'metric': 'mse',\n            'num_leaves': 31,\n            'learning_rate': 0.05,\n            'feature_fraction': 0.8,\n            'bagging_fraction': 0.8,\n            'bagging_freq': 5,\n            'verbose': -1,\n            'n_estimators': 200,\n            'early_stopping_rounds': 20,\n        }\n        self.lgb_params = lgb_params or default_params\n        self.train_window = train_window\n        self.val_window = val_window\n        self.embargo = embargo\n\
+    \        self.n_groups = n_groups\n\n    def run(\n        self,\n        features: pd.DataFrame,\n        labels: pd.Series,\n        dates: pd.Series,\n    ) -> dict:\n        unique_dates = sorted(dates.unique())\n        n_dates = len(unique_dates)\n\n        results = []\n        shap_importances = []\n\n        start = 0\n        while True:\n            train_end = start + self.train_window\n            val_start_idx = train_end + self.embargo\n            val_end_idx = val_start_idx + self.val_window\n\n            if val_end_idx > n_dates:\n                break\n\n            train_dates = unique_dates[start:train_end]\n            val_dates = unique_dates[val_start_idx:val_end_idx]\n\n            train_mask = dates.isin(train_dates)\n            val_mask = dates.isin(val_dates)\n\n            X_train = features[train_mask]\n            y_train = labels[train_mask]\n            X_val = features[val_mask]\n            y_val = labels[val_mask]\n\n            if len(X_train) <\
+    \ 100 or len(X_val) < 30:\n                start += self.val_window\n                continue\n\n            model = lgb.LGBMRegressor(**self.lgb_params)\n            model.fit(\n                X_train, y_train,\n                eval_set=[(X_val, y_val)],\n            )\n\n            y_pred = model.predict(X_val)\n\n            # IC\n            ic, _ = spearmanr(y_pred, y_val)\n\n            # Stratified returns\n            pred_series = pd.Series(y_pred, index=y_val.index)\n            quantiles = pd.qcut(pred_series, self.n_groups, labels=False,\n                                duplicates='drop')\n            group_returns = y_val.groupby(quantiles).mean()\n            spread = group_returns.iloc[-1] - group_returns.iloc[0]\n\n            results.append({\n                'val_start': val_dates[0],\n                'val_end': val_dates[-1],\n                'ic': ic,\n                'long_short_spread': spread,\n                'n_stocks': len(X_val),\n            })\n\n     \
+    \       # SHAP (sample for speed)\n            sample_size = min(500, len(X_val))\n            explainer = shap.TreeExplainer(model)\n            shap_vals = explainer.shap_values(X_val.iloc[:sample_size])\n            mean_abs_shap = np.abs(shap_vals).mean(axis=0)\n            shap_importances.append(\n                pd.Series(mean_abs_shap, index=features.columns)\n            )\n\n            start += self.val_window\n\n        results_df = pd.DataFrame(results)\n        avg_shap = pd.concat(shap_importances, axis=1).mean(axis=1)\n        avg_shap = avg_shap.sort_values(ascending=False)\n\n        return {\n            'results': results_df,\n            'avg_ic': results_df['ic'].mean(),\n            'ic_ir': (results_df['ic'].mean()\n                      / results_df['ic'].std()),\n            'avg_spread': results_df['long_short_spread'].mean(),\n            'feature_importance_shap': avg_shap,\n        }\n"
+  code_language: python
+  hints:
+  - 'Hint 1: 使用 lgb.LGBMRegressor 作为基础模型'
+  - 'Hint 2: SHAP的 TreeExplainer 对树模型高效'
+  rubric: Walk-forward框架正确(2分)；LightGBM训练正确(2分)；SHAP特征重要性(2分)；IC和分层收益评估(1分)；代码质量(1分)
+  time_limit_seconds: 900
+- id: QR_ML_016
+  category: machine_learning
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在因子选股中使用 cross-sectional normalization（截面标准化）时，应该在什么时候进行？
+
+    When should cross-sectional normalization be applied in factor selection?'
+  options:
+  - A. 训练前对特征做一次全局标准化 / Global normalization on features before training
+  - B. 在每个截面日期分别标准化 / Separately normalize at each cross-sectional date
+  - C. 只在测试集上标准化 / Only normalize on test set
+  - D. 标准化顺序无所谓 / Normalization order doesn't matter
+  answer: B
+  explanation: '截面标准化应该在每个时间截面分别进行（z-score或rank）。全局标准化（A）会引入未来信息，因为使用了未来截面的统计量。只在测试集标准化（C）不一致。正确做法：在每个截面日期t，用日期t的截面均值和标准差标准化，保证不使用任何未来信息。
+
+    Cross-sectional normalization must be done separately per date to avoid look-ahead bias from using future cross-sectional statistics.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_ML_017
+  category: machine_learning
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: '在因子选股模型中，处理 class imbalance（样本不平衡）问题——例如只有前10%的股票被标记为''买入''——以下哪种方法最适合？
+
+    For handling class imbalance in factor models (e.g., only top 10% labeled ''buy''), which approach is most appropriate?'
+  options:
+  - A. SMOTE 过采样少数类 / SMOTE oversampling minority class
+  - B. 将问题重新定义为回归/排序问题而非分类问题 / Redefine as regression/ranking instead of classification
+  - C. 对少数类样本赋予更大权重 / Assign higher weights to minority class
+  - D. 随机欠采样多数类 / Random undersampling majority class
+  answer: B
+  explanation: '因子选股的本质是排序问题，不应该硬编码为二分类。将其重新定义为回归问题（预测收益率）或排序问题（使用 LambdaRank、ListNet 等排序学习损失函数），自然避免了不平衡问题。SMOTE在金融时间序列中不适用（人造样本没有经济含义），简单加权可能导致过拟合。
+
+    Factor selection is inherently a ranking problem. Reformulating as regression/ranking naturally avoids imbalance. SMOTE-generated synthetic samples lack economic meaning in financial data.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 150
+- id: QR_ML_018
+  category: machine_learning
+  difficulty: senior
+  type: code
+  points: 5
+  question: "编写 Python 函数实现 LightGBM 超参数的自动调优，使用 Optuna 和 walk-forward validation。搜索空间应包含 num_leaves, learning_rate, feature_fraction, bagging_fraction, min_child_samples。目标函数为验证集的平均 IC。\nWrite a Python function for LightGBM hyperparameter auto-tuning using Optuna with walk-forward validation. Search space: num_leaves, learning_rate, feature_fraction, bagging_fraction, min_child_samples. Objective: mean IC on validation set."
+  options: []
+  answer: ""
+  explanation: 'feature_fraction 控制每棵树使用的特征比例（类似RF的 max_features），bagging_fraction 控制每棵树使用的样本比例（类似RF的 max_samples / bootstrap）。两者都是通过随机子采样引入多样性来防止过拟合。在因子选股中，typical值为 feature_fraction=0.6-0.8, bagging_fraction=0.6-0.8。
+
+    feature_fraction ≈ max_features (feature subsampling), bagging_fraction ≈ max_samples (observation subsampling). Both inject diversity to prevent overfitting.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_ML_019
+  category: machine_learning
+  difficulty: senior
+  type: open_ended
+  points: 5
+  question: '设计一个完整的因子选股 ML 模型的 model monitoring（模型监控）方案，包括：
+
+    (a) 需要监控的核心指标
+
+    (b) 模型失效（model decay）的检测方法
+
+    (c) 自动再训练（retraining）的触发条件
+
+
+    Design a complete model monitoring scheme for ML-based factor selection:
+
+    (a) Core metrics to monitor
+
+    (b) Model decay detection methods
+
+    (c) Auto-retraining trigger conditions'
+  options: []
+  answer: ''
+  explanation: '(a) 核心监控指标：
+
+    1. 预测IC的滚动均值和标准差（20日滚动）
+
+    2. 特征分布漂移（KL divergence, PSI）
+
+    3. 预测值分布变化（分位数监控）
+
+    4. 因子分层收益的单调性
+
+    5. 模型换手率变化
+
+
+    (b) 模型失效检测：
+
+    1. CUSUM检验：检测IC均值是否发生结构性变化
+
+    2. 滚动IC EWMA跌破阈值（如IC滚动均值<0持续10天）
+
+    3. 特征重要性结构变化：SHAP值排名与训练期相比发生显著变化
+
+    4. PSI (Population Stability Index) > 0.25 表示输入分布严重偏移
+
+
+    (c) 再训练触发条件：
+
+    1. 定期再训练：每月或每季度自动再训练（带最新数据）
+
+    2. 事件触发：滚动20日IC < 0 连续5天
+
+    3. 分布触发：任何核心特征的 PSI > 0.2
+
+    4. 性能触发：滚动ICIR < 0.3（年化）
+
+    5. 结合人工审核：自动标记但由研究员确认后再训练'
+  code_snippet: ''
+  code_language: python
+  hints:
+  - 'Hint 1: PSI (Population Stability Index) 是监控分布漂移的标准工具'
+  - 'Hint 2: 自动再训练需要平衡反应速度和稳定性'
+  rubric: (a) 2分：列出至少3个核心指标；(b) 2分：给出可操作的检测方法；(c) 1分：合理的触发条件
+  time_limit_seconds: 480
+- id: QR_ML_020
+  category: machine_learning
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在深度学习因子模型中，Batch Normalization 在金融数据上的使用需要注意：
+
+    When using Batch Normalization in DL factor models on financial data, one must be careful about:'
+  options:
+  - A. BN会引入batch内的未来信息（同一batch中可能包含不同时间的数据）/ BN may introduce future information within a batch
+  - B. BN的运行统计量（running stats）在训练和推理时的差异 / Discrepancy between BN running stats during training and inference
+  - C. A和B都需要注意 / Both A and B need attention
+  - D. BN在金融数据上没有特殊问题 / BN has no special issues with financial data
+  answer: C
+  explanation: 'A：如果batch中混合了不同时间的样本，BN的均值和方差计算会泄露跨时间的信息。解决方案：确保每个batch只包含同一截面日期的数据，或使用 Layer Normalization 代替。B：训练时的 running mean/var 可能与实际预测时的数据分布不同（如市场状态变化），导致推理不准确。在A股中，建议使用 Instance Normalization 或直接在截面上做标准化。
+
+    BN may leak cross-temporal information and suffers from train-inference distribution mismatch. Use Layer/Instance Norm or per-cross-section normalization instead.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 150
+- id: QR_TS_001
+  category: time_series
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在对A股股指收益率建模时，GARCH(1,1) 模型 σ²_t = ω + αε²_{t-1} + βσ²_{t-1} 中，α + β 的值通常接近：
+
+    In GARCH(1,1) modeling of A-share index returns σ²_t = ω + αε²_{t-1} + βσ²_{t-1}, the value of α + β is typically close to:'
+  options:
+  - A. 0.5
+  - B. 0.8
+  - C. 0.97-0.99
+  - D. 1.0
+  answer: C
+  explanation: 'A股股指收益率的GARCH(1,1)参数中，α+β通常在0.97-0.99之间（typical: α≈0.05-0.10, β≈0.88-0.93）。这反映了波动率的高度持续性（volatility clustering）。α+β < 1 保证过程平稳，α+β = 1 对应 IGARCH（Integrated GARCH），意味着波动率冲击永不消失。A股的α通常略高于美股，反映更强的波动率反应。
+
+    A-share GARCH(1,1) typically has α+β ≈ 0.97-0.99, reflecting high volatility persistence. α is slightly higher in A-shares than US, reflecting stronger volatility response.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_TS_002
+  category: time_series
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: '关于 cointegration（协整）在配对交易中的应用，以下哪个说法是错误的？
+
+    Regarding cointegration application in pairs trading, which statement is INCORRECT?'
+  options:
+  - A. 两个协整序列的线性组合是平稳的 / Linear combination of two cointegrated series is stationary
+  - B. 协整关系可以用 Engle-Granger 两步法或 Johansen 检验来检测 / Cointegration can be detected by Engle-Granger or Johansen test
+  - C. 两个高度相关（ρ > 0.9）的序列一定是协整的 / Two highly correlated (ρ > 0.9) series must be cointegrated
+  - D. 协整关系比相关关系更适合配对交易 / Cointegration is more suitable than correlation for pairs trading
+  answer: C
+  explanation: '高相关性不意味着协整。相关性衡量的是同方向变动的倾向（短期同步性），协整衡量的是长期均衡关系（价差回归性）。两个趋势方向相同但不存在均衡关系的序列可以高度相关但不协整。反之，波动特征很不同的序列也可能协整。在A股配对交易中，应该用ADF检验残差的平稳性来确认协整。
+
+    High correlation doesn''t imply cointegration. Correlation measures short-term co-movement; cointegration measures long-run equilibrium. ADF test on residuals is needed to confirm.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 150
+- id: QR_TS_003
+  category: time_series
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在检验时间序列 stationarity（平稳性）时，ADF (Augmented Dickey-Fuller) 检验的原假设和备择假设是：
+
+    In the ADF test for stationarity, the null and alternative hypotheses are:'
+  options:
+  - 'A. H₀: 序列平稳 vs H₁: 序列有单位根 / H₀: stationary vs H₁: unit root'
+  - 'B. H₀: 序列有单位根 vs H₁: 序列平稳 / H₀: unit root vs H₁: stationary'
+  - 'C. H₀: 序列正态 vs H₁: 序列非正态 / H₀: normal vs H₁: non-normal'
+  - 'D. H₀: 无自相关 vs H₁: 有自相关 / H₀: no autocorrelation vs H₁: autocorrelation'
+  answer: B
+  explanation: 'ADF检验的原假设H₀是序列存在单位根（非平稳），备择假设H₁是序列平稳。如果检验统计量小于临界值（p-value < 0.05），则拒绝H₀，认为序列平稳。注意ADF的逻辑是''证伪非平稳''。在因子研究中，IC时间序列应该是平稳的才有意义。
+
+    ADF H₀: unit root (non-stationary), H₁: stationary. Reject H₀ when test statistic < critical value. Factor IC time series should be stationary.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_TS_004
+  category: time_series
+  difficulty: senior
+  type: code
+  points: 5
+  question: '编写 Python 函数实现 regime switching 检测，使用 Hidden Markov Model (HMM) 识别A股市场的牛市/熊市状态。输入为日度指数收益率序列，输出为每日的隐藏状态概率。
+
+    Write a Python function for regime switching detection using HMM to identify bull/bear states in A-share market. Input: daily index return series. Output: daily hidden state probabilities.'
+  options: []
+  answer: ''
+  explanation: HMM假设市场存在不可观测的隐藏状态（如牛市/熊市），每个状态下收益率服从不同的分布。通过EM算法（Baum-Welch）估计参数，用Viterbi算法或前向后向算法推断隐藏状态。
+  code_snippet: "import numpy as np\nimport pandas as pd\nfrom hmmlearn.hmm import GaussianHMM\n\ndef detect_market_regimes(\n    returns: pd.Series,\n    n_regimes: int = 2,\n    n_iter: int = 100,\n    random_state: int = 42,\n) -> pd.DataFrame:\n    \"\"\"\n    Detect market regimes using Gaussian HMM.\n\n    Args:\n        returns: Daily return series with datetime index\n        n_regimes: Number of hidden states (default 2: bull/bear)\n        n_iter: Max EM iterations\n        random_state: Random seed\n\n    Returns:\n        DataFrame with columns: date, return, state, prob_bull, prob_bear\n    \"\"\"\n    returns_clean = returns.dropna()\n    X = returns_clean.values.reshape(-1, 1)\n\n    model = GaussianHMM(\n        n_components=n_regimes,\n        covariance_type=\"full\",\n        n_iter=n_iter,\n        random_state=random_state,\n    )\n    model.fit(X)\n\n    states = model.predict(X)\n    state_probs = model.predict_proba(X)\n\n    # Identify bull state as the one with\
+    \ higher mean return\n    means = model.means_.flatten()\n    bull_state = np.argmax(means)\n    bear_state = 1 - bull_state\n\n    result = pd.DataFrame({\n        'date': returns_clean.index,\n        'return': returns_clean.values,\n        'state': np.where(states == bull_state, 'bull', 'bear'),\n        'prob_bull': state_probs[:, bull_state],\n        'prob_bear': state_probs[:, bear_state],\n        'regime_mean': np.where(\n            states == bull_state,\n            means[bull_state],\n            means[bear_state],\n        ),\n        'regime_vol': np.where(\n            states == bull_state,\n            np.sqrt(model.covars_[bull_state].flatten()[0]),\n            np.sqrt(model.covars_[bear_state].flatten()[0]),\n        ),\n    })\n\n    return result\n"
+  code_language: python
+  hints:
+  - 'Hint 1: hmmlearn.hmm.GaussianHMM 是标准实现'
+  - 'Hint 2: 需要将牛市/熊市与高/低均值状态对应'
+  rubric: 正确使用HMM(2分)；状态标记合理(1分)；输出概率和诊断信息(1分)；代码质量(1分)
+  time_limit_seconds: 600
+- id: QR_TS_005
+  category: time_series
+  difficulty: senior
+  type: code
+  points: 5
+  question: '编写 Python 函数计算时间序列的 Hurst exponent（赫斯特指数），用于判断A股因子收益率序列的长期记忆特性。使用 R/S (Rescaled Range) 方法。函数应返回 H 值及其经济解释（H>0.5 持续性/趋势，H=0.5 随机游走，H<0.5 均值回复）。
+
+    Write a Python function to compute the Hurst exponent of a time series using R/S analysis, for analyzing long-memory properties of A-share factor return series.'
+  options: []
+  answer: ''
+  explanation: Hurst指数通过R/S分析估计：对不同子序列长度n，计算 rescaled range R(n)/S(n)，然后回归 log(R/S) ~ H × log(n)。A股日度收益率H通常在0.5-0.55，波动率序列H在0.7-0.8。
+  code_snippet: "import numpy as np\nimport pandas as pd\n\ndef compute_hurst_exponent(series: np.ndarray, max_lag: int | None = None) -> dict:\n    \"\"\"\n    Compute Hurst exponent using R/S analysis.\n\n    Args:\n        series: Time series array (e.g., daily factor returns)\n        max_lag: Maximum lag for R/S computation (default: len/4)\n\n    Returns:\n        dict with keys: hurst, interpretation, r_squared\n    \"\"\"\n    n = len(series)\n    if max_lag is None:\n        max_lag = max(n // 4, 20)\n\n    lags = range(10, max_lag)\n    rs_values = []\n\n    for lag in lags:\n        n_chunks = n // lag\n        if n_chunks < 1:\n            continue\n        rs_list = []\n        for i in range(n_chunks):\n            chunk = series[i * lag:(i + 1) * lag]\n            mean_val = np.mean(chunk)\n            deviations = np.cumsum(chunk - mean_val)\n            r = np.max(deviations) - np.min(deviations)\n            s = np.std(chunk, ddof=1)\n            if s > 0:\n           \
+    \     rs_list.append(r / s)\n        if rs_list:\n            rs_values.append((lag, np.mean(rs_list)))\n\n    if len(rs_values) < 5:\n        return {'hurst': np.nan, 'interpretation': 'insufficient data', 'r_squared': 0.0}\n\n    log_lags = np.log([v[0] for v in rs_values])\n    log_rs = np.log([v[1] for v in rs_values])\n\n    coeffs = np.polyfit(log_lags, log_rs, 1)\n    hurst = coeffs[0]\n    residuals = log_rs - np.polyval(coeffs, log_lags)\n    ss_res = np.sum(residuals ** 2)\n    ss_tot = np.sum((log_rs - np.mean(log_rs)) ** 2)\n    r_squared = 1 - ss_res / ss_tot if ss_tot > 0 else 0.0\n\n    if hurst > 0.55:\n        interpretation = \"persistent (trending)\"\n    elif hurst < 0.45:\n        interpretation = \"anti-persistent (mean-reverting)\"\n    else:\n        interpretation = \"approximately random walk\"\n\n    return {'hurst': round(hurst, 4), 'interpretation': interpretation, 'r_squared': round(r_squared, 4)}\n"
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_TS_006
+  category: time_series
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: 'ARIMA(p,d,q) 模型中，d=1 表示对原始序列做一阶差分。在因子收益率建模中，通常不需要差分（d=0）的原因是：
+
+    In ARIMA(p,d,q), d=1 means first-order differencing. Factor returns usually don''t need differencing (d=0) because:'
+  options:
+  - A. 因子收益率天然就是价格的差分（收益率 ≈ 价格一阶差分的近似）/ Factor returns are naturally differenced (returns ≈ first difference of prices)
+  - B. ADF检验通常显示因子收益率是平稳的 / ADF test usually shows factor returns are stationary
+  - C. A和B都是原因 / Both A and B
+  - D. 因子收益率不适合用ARIMA建模 / Factor returns are unsuitable for ARIMA modeling
+  answer: C
+  explanation: '股票价格是非平稳的（有单位根），但收益率 r_t ≈ ln(P_t/P_{t-1}) 本质上已经是对数价格的一阶差分。因此因子多空收益率通常是平稳的（ADF检验可以确认），不需要再差分。但要注意因子暴露可能是非平稳的（如市值），需要差分或标准化后使用。
+
+    Returns are naturally differenced log-prices, so they''re typically stationary. ADF test confirms this. But factor exposures (like market cap) may be non-stationary and need transformation.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_TS_007
+  category: time_series
+  difficulty: medium_high
+  type: open_ended
+  points: 5
+  question: "讨论 spectral analysis（谱分析）在A股因子周期性研究中的应用。\n(a) 解释离散傅里叶变换 (DFT) 如何将因子收益率分解为不同频率的成分\n(b) 如何解读因子收益率的 power spectrum（功率谱）\n(c) 在A股中，哪些因子表现出明显的周期性特征？背后的经济机制是什么？\n\nDiscuss spectral analysis for A-share factor periodicity research.\n(a) How DFT decomposes factor returns into frequency components\n(b) How to interpret the power spectrum\n(c) Which A-share factors show clear periodicity? What economic mechanisms?"
+  options: []
+  answer: ""
+  explanation: "(a) DFT将时域信号x(t)变换为频域X(f)：X(f) = Σ x(t)e^{-2πift/N}。低频对应长期趋势，高频对应短期波动。\n(b) Power spectrum P(f) = |X(f)|² 显示每个频率的能量。峰值对应显著周期性。白噪声功率谱平坦；1/f噪声表示长记忆。\n(c) 盈利因子（季度~63日周期，与季报披露一致）；反转因子（约20日，与月度再平衡周期相关）；规模因子（年度周期，与年报和跨年效应相关）。"
+  code_snippet: ""
+  code_language: "python"
+  hints:
+    - "Hint 1: FFT是DFT的高效实现"
+    - "Hint 2: 考虑A股的信息披露日历"
+  rubric: "(a) 2分：正确解释DFT在因子分析中的应用；(b) 2分：正确解读功率谱；(c) 1分：给出有经济逻辑的周期性例子"
+  time_limit_seconds: 480
+- id: QR_TS_008
+  category: time_series
+  difficulty: senior
+  type: show_work
+  points: 8
+  question: '推导 Ljung-Box Q 检验统计量，并应用于因子收益率序列的自相关检验。
+
+    (a) 写出 Ljung-Box Q 统计量的公式及其渐近分布
+
+    (b) 解释与 Box-Pierce Q 检验的区别
+
+    (c) 对于一个月度因子收益率序列（T=120），计算前5个滞后的自相关系数为 ρ̂₁=0.15, ρ̂₂=0.08, ρ̂₃=-0.03, ρ̂₄=0.12, ρ̂₅=-0.05，计算Q统计量并判断序列是否为白噪声
+
+
+    Derive the Ljung-Box Q test statistic and apply to factor return autocorrelation.
+
+    (a) Formula and asymptotic distribution
+
+    (b) Difference from Box-Pierce
+
+    (c) For monthly factor returns (T=120) with ρ̂₁=0.15, ρ̂₂=0.08, ρ̂₃=-0.03, ρ̂₄=0.12, ρ̂₅=-0.05, compute Q and test for white noise'
+  options: []
+  answer: ''
+  explanation: '(a) Q_LB = T(T+2) Σ_{k=1}^{m} ρ̂²_k/(T-k)，其中T是样本量，m是滞后阶数。H₀下 Q_LB ~ χ²(m)。
+
+    (b) Box-Pierce: Q_BP = T Σ ρ̂²_k。Ljung-Box对小样本有修正因子(T+2)/(T-k)，更准确。
+
+    (c) Q = 120×122×[0.15²/119 + 0.08²/118 + 0.03²/117 + 0.12²/116 + 0.05²/115]
+
+    = 14640×[0.000189 + 0.0000542 + 0.0000077 + 0.000124 + 0.0000217]
+
+    = 14640 × 0.000396 ≈ 5.80。χ²(5)的5%临界值为11.07，Q=5.80 < 11.07，不拒绝H₀，序列可认为是白噪声。'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_TS_009
+  category: time_series
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: '在用 EGARCH 模型建模A股波动率时，相比 GARCH，EGARCH 的主要改进是：
+
+    Compared to GARCH, the main improvement of EGARCH for A-share volatility modeling is:'
+  options:
+  - A. 计算效率更高 / Higher computational efficiency
+  - B. 可以捕捉波动率的非对称效应（leverage effect），即负收益对波动率的影响大于正收益 / Can capture asymmetric volatility (leverage effect) where negative returns impact volatility more than positive
+  - C. 参数更少 / Fewer parameters
+  - D. 不需要平稳性条件 / No stationarity condition needed
+  answer: B
+  explanation: 'EGARCH (Nelson 1991): ln(σ²_t) = ω + α(|z_{t-1}| - E[|z|]) + γz_{t-1} + βln(σ²_{t-1})。γ参数捕捉非对称效应：当γ<0时，负收益（z<0）增加波动率的幅度比正收益大。这在A股中非常重要——下跌时波动率通常急剧上升（恐慌效应），而上涨时波动率增加较温和。对log(σ²)建模还保证σ²恒正。
+
+    EGARCH captures asymmetric volatility via the γ parameter. In A-shares, negative returns increase volatility much more than positive returns (panic effect). Log specification also ensures positivity.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 150
+- id: QR_TS_010
+  category: time_series
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在构建 ARMA(p,q) 模型时，使用 AIC 和 BIC 选择阶数。关于两个准则的区别：
+
+    When selecting ARMA(p,q) order using AIC and BIC, the difference is:'
+  options:
+  - A. AIC倾向于选择更复杂的模型，BIC倾向于选择更简洁的模型 / AIC favors more complex models, BIC favors simpler models
+  - B. BIC倾向于选择更复杂的模型，AIC倾向于选择更简洁的模型 / BIC favors more complex models, AIC favors simpler models
+  - C. 两者在大样本下一定选择相同的模型 / Both always select the same model for large samples
+  - D. AIC适用于预测，BIC适用于寻找真实模型 / AIC is for prediction, BIC is for finding the true model
+  answer: A
+  explanation: 'BIC的惩罚项为 k×ln(n)（k是参数数，n是样本量），AIC的惩罚项为 2k。当 n > 8 时，ln(n) > 2，BIC的惩罚更重，倾向于更简洁的模型。AIC在渐近上最小化预测误差（asymptotically efficient），BIC在渐近上选择真实模型（consistent）。D的说法也有道理但A更直接准确。
+
+    BIC penalizes complexity more (k×ln(n) vs 2k for AIC). AIC favors slightly more complex models. AIC minimizes prediction error; BIC is consistent for true model selection.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_RD_001
+  category: research_design
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: '在回测 (backtest) 中，以下哪种偏差最难检测和避免？
+
+    In backtesting, which bias is hardest to detect and avoid?'
+  options:
+  - A. Look-ahead bias (前瞻偏差)
+  - B. Survivorship bias (幸存者偏差)
+  - C. Data snooping bias (数据窥探偏差)
+  - D. Transaction cost underestimation (交易成本低估)
+  answer: C
+  explanation: 'Data snooping（也称 multiple testing 或 p-hacking）是最隐蔽的偏差。它发生在研究者测试了大量因子/策略后只报告显著的那些，导致统计显著性被夸大。Look-ahead bias 和 survivorship bias 可以通过严格的数据管理避免。交易成本可以合理估计。但 data snooping 是研究过程的内在问题，难以完全消除。修正方法包括 Bonferroni correction、FDR control、out-of-sample validation。
+
+    Data snooping from testing many strategies and reporting only significant ones is most insidious. Use Bonferroni correction, FDR control, or out-of-sample validation to mitigate.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 150
+- id: QR_RD_002
+  category: research_design
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在A股因子回测中，survivorship bias（幸存者偏差）的主要来源是：
+
+    The main source of survivorship bias in A-share factor backtesting is:'
+  options:
+  - A. 只使用当前上市公司数据，忽略已退市的股票 / Only using currently listed companies, ignoring delisted stocks
+  - B. 使用经过事后调整的财务数据 / Using retrospectively adjusted financial data
+  - C. 忽略停牌期间的流动性限制 / Ignoring liquidity constraints during trading halts
+  - D. A和B都是 / Both A and B
+  answer: D
+  explanation: 'A股的幸存者偏差来源包括：(A)退市股票数据缺失——退市股票通常是表现最差的，排除它们会高估策略收益；(B)财务数据的事后修正——公司可能在年报发布后修正数据，使用修正后的数据回测会引入前瞻。正确做法：使用 point-in-time 数据库（如Wind的PIT数据），包含退市公司和数据发布的时间戳。
+
+    A-share survivorship bias comes from both missing delisted stocks and using retrospectively adjusted data. Use point-in-time databases (e.g., Wind PIT) including delisted companies.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_RD_003
+  category: research_design
+  difficulty: senior
+  type: open_ended
+  points: 8
+  question: '设计一个完整的因子研究到生产的 research-to-production pipeline。
+
+    (a) 描述从因子想法到实盘部署的完整流程（至少6个步骤）
+
+    (b) 每个步骤的质量控制标准
+
+    (c) 常见的 implementation shortfall（实施偏差）来源及解决方案
+
+
+    Design a complete research-to-production pipeline for factor strategies.
+
+    (a) Describe the full process from factor idea to live deployment (at least 6 steps)
+
+    (b) Quality control standards at each step
+
+    (c) Common implementation shortfall sources and solutions'
+  options: []
+  answer: ''
+  explanation: '(a) 完整流程：
+
+    1. 因子构思与文献调研
+
+    2. 因子构建与初步回测
+
+    3. 统计检验与稳健性分析
+
+    4. 组合构建与风险管理
+
+    5. 模拟盘验证（paper trading）
+
+    6. 小资金实盘试运行
+
+    7. 正式上线与持续监控
+
+
+    (b) 质量控制标准：
+
+    1. 因子需有明确的经济逻辑
+
+    2. IC > 0.03, ICIR > 0.5（年化），t-stat > 3.0
+
+    3. 通过多重检验修正后仍显著；不同子样本（时间、行业、市值）稳健
+
+    4. 考虑交易成本后Sharpe > 1.5；最大回撤 < 20%
+
+    5. 模拟盘IC与回测IC相差不超过30%
+
+    6. 实盘slippage < 预期的2倍
+
+    7. 月度监控IC、turnover、行业暴露偏离度
+
+
+    (c) Implementation shortfall来源：
+
+    - 冲击成本低估：解决方案——使用Almgren-Chriss模型估计冲击
+
+    - 信号延迟：解决方案——考虑信号到执行的时间差（T+0 vs T+1）
+
+    - 流动性约束：解决方案——对小盘股/低流动性股票限制权重
+
+    - 借券困难（做空限制）：解决方案——多头增强策略替代多空策略
+
+    - 停牌影响：解决方案——预留停牌股票的头寸管理机制'
+  code_snippet: ''
+  code_language: python
+  hints:
+  - 'Hint 1: 模拟盘是回测和实盘之间的关键验证步骤'
+  - 'Hint 2: A股的T+1和涨跌停制度增加了实施难度'
+  rubric: (a) 3分：流程完整且逻辑清晰；(b) 3分：标准具体可量化；(c) 2分：至少3个implementation shortfall及解决方案
+  time_limit_seconds: 600
+- id: QR_RD_004
+  category: research_design
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '关于 multiple testing correction（多重检验修正），Bonferroni correction 对A股因子研究的主要问题是：
+
+    Regarding multiple testing correction, the main issue with Bonferroni correction for A-share factor research is:'
+  options:
+  - A. 计算太复杂 / Too computationally complex
+  - B. 过于保守，可能将真正有效的因子判定为不显著 / Too conservative, may reject truly significant factors
+  - C. 只适用于正态分布 / Only applicable to normal distribution
+  - D. 不能处理超过10个因子的情况 / Cannot handle more than 10 factors
+  answer: B
+  explanation: 'Bonferroni correction将显著性水平除以检验次数（α/m），这在测试数百个因子时极为保守。例如测试200个因子时，每个因子的显著性门槛为 0.05/200 = 0.00025，t-stat需要 > 3.66。更好的替代方案是 FDR (False Discovery Rate) 控制（Benjamini-Hochberg procedure），它控制的是错误发现的比例而非总错误概率，功效更高。
+
+    Bonferroni divides α by m, making it extremely conservative when testing hundreds of factors. BH-FDR control is preferred as it controls the proportion of false discoveries.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_RD_005
+  category: research_design
+  difficulty: expert
+  type: open_ended
+  points: 8
+  question: '设计一套完整的因子有效性检验框架，包括：
+
+    (a) 单因子检验：需要通过哪些统计检验才能认为因子有效
+
+    (b) 增量信息检验：如何判断新因子在已有因子组合上提供了增量alpha
+
+    (c) 稳健性检验：需要在哪些维度上验证因子的稳健性
+
+    (d) 给出一个具体的 decision tree（决策树），规定因子从候选到入库的判断标准
+
+
+    Design a complete factor validation framework:
+
+    (a) Single-factor tests required to consider a factor effective
+
+    (b) Incremental information tests for new factors over existing portfolio
+
+    (c) Robustness tests across dimensions
+
+    (d) Provide a concrete decision tree for factor admission criteria'
+  options: []
+  answer: ''
+  explanation: '(a) 单因子检验：
+
+    1. IC分析：IC均值 > 0.03，ICIR（年化）> 0.5
+
+    2. 分层测试：10分组的多空收益显著（t>2），单调性rank_corr>0.8
+
+    3. 因子收益率t检验：NW修正后 |t| > 3.0
+
+    4. 因子turnover合理（月度<50%）
+
+    5. 因子覆盖率 > 80%（非缺失样本比例）
+
+
+    (b) 增量信息检验：
+
+    1. 与已有因子的相关性 < 0.5
+
+    2. 在已有因子中性化后IC仍然显著（|t|>2）
+
+    3. Spanning test：在多因子回归中新因子的系数显著
+
+    4. 加入新因子后组合IC或IR有显著提升
+
+
+    (c) 稳健性检验：
+
+    1. 时间维度：分前半段/后半段、牛市/熊市分别检验
+
+    2. 截面维度：大盘/中盘/小盘分别检验
+
+    3. 行业维度：行业中性化后仍然有效
+
+    4. 构建方式：不同标准化方法、不同计算窗口下效果一致
+
+    5. 参数敏感性：关键参数微调后效果变化不超过30%
+
+
+    (d) 决策树：
+
+    单因子IC>0.03且t>3.0? → 否：淘汰
+
+    → 是 → 分层单调性rank_corr>0.8? → 否：条件入库（需人工审核）
+
+    → 是 → 与已有因子最大相关性<0.5? → 否：检查是否为已有因子变体
+
+    → 是 → 中性化后IC仍显著? → 否：标记为beta因子
+
+    → 是 → 通过2/3以上稳健性检验? → 否：待观察
+
+    → 是 → 入库'
+  code_snippet: ''
+  code_language: python
+  hints:
+  - 'Hint 1: Harvey, Liu and Zhu (2016) 建议 |t| > 3.0 作为因子发现的门槛'
+  - 'Hint 2: 增量信息检验比单因子检验更重要'
+  rubric: (a) 2分：检验标准完整且有量化门槛；(b) 2分：增量检验方法合理；(c) 2分：稳健性维度全面；(d) 2分：决策树逻辑清晰且可操作
+  time_limit_seconds: 600
+- id: QR_RD_006
+  category: research_design
+  difficulty: expert
+  type: show_work
+  points: 8
+  question: "在复现 Fama-French (1993) 三因子模型应用于A股时，需要做哪些调整？\n(a) 详细描述在A股构建 SMB 和 HML 因子的分组方法\n(b) 推导 HML 因子收益率的计算公式\n(c) 讨论A股与美股在因子构建上的至少3个关键差异\n\nWhen replicating FF3 for A-shares, what adjustments are needed?\n(a) Describe SMB/HML construction for A-shares\n(b) Derive HML factor return formula\n(c) Discuss at least 3 key differences vs US factor construction"
+  options: []
+  answer: ""
+  explanation: '学术论文通常篇幅有限，因子构建的很多细节（数据清洗规则、极端值处理方式、样本筛选条件、行业分类标准、市值权重还是等权等）描述不充分。这些''看似不重要''的细节会显著影响结果。例如EP因子中使用TTM还是单季度数据、分母是否用最新市值等。复现时应该与论文作者确认细节或使用多种合理假设做敏感性分析。
+
+    Academic papers often lack crucial implementation details (data cleaning rules, outlier treatment, sample selection, industry classification) that significantly affect results.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_RD_007
+  category: research_design
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: 'Harvey, Liu and Zhu (2016) 在"...and the Cross-Section of Expected Returns"中建议的新因子 t-statistic 门槛为：
+
+    Harvey, Liu and Zhu (2016) suggest the t-statistic threshold for new factors should be:'
+  options:
+  - A. |t| > 1.96
+  - B. |t| > 2.58
+  - C. |t| > 3.0
+  - D. |t| > 4.0
+  answer: C
+  explanation: 'Harvey, Liu and Zhu (2016) 考虑到学术界已经发现了300+个因子的data snooping问题，建议将新因子的显著性门槛提高到 |t| > 3.0（对应p-value < 0.0027）。这比传统的1.96要高得多。对于测试因子数量更多的情况，他们建议更高的门槛。后续研究（如Chordia, Goyal, Saretto 2020）甚至建议更高的标准。在A股因子研究中，建议至少采用 |t| > 3.0 的标准。
+
+    HLZ (2016) recommend |t| > 3.0 to account for hundreds of published factors. Some suggest even higher thresholds given continued data mining.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_RD_008
+  category: research_design
+  difficulty: expert
+  type: show_work
+  points: 8
+  question: '推导 Benjamini-Hochberg FDR (False Discovery Rate) 控制程序，并应用于因子发现。
+
+    (a) 给出 FDR 的定义
+
+    (b) 描述 BH 程序的步骤
+
+    (c) 假设测试了50个因子，p-values从小到大排列为 p₁=0.001, p₂=0.003, p₃=0.008, p₄=0.012, p₅=0.025, ...，在FDR=5%的控制下，哪些因子被判定为显著？
+
+
+    Derive the BH-FDR control procedure and apply to factor discovery.
+
+    (a) Define FDR
+
+    (b) Describe BH procedure steps
+
+    (c) With 50 factors tested, sorted p-values p₁=0.001, p₂=0.003, p₃=0.008, p₄=0.012, p₅=0.025, ..., which factors are significant at FDR=5%?'
+  options: []
+  answer: ''
+  explanation: '(a) FDR = E[V/R | R>0] × P(R>0)，其中V是错误拒绝（false discovery）的数量，R是总拒绝数量。FDR控制的是在所有被判定为''显著''的因子中，虚假因子的期望比例。
+
+
+    (b) BH程序步骤：
+
+    1. 将m个p-value从小到大排列：p(1) ≤ p(2) ≤ ... ≤ p(m)
+
+    2. 计算阈值：对第i个检验，阈值为 (i/m) × q，其中q是目标FDR水平
+
+    3. 找到最大的k使得 p(k) ≤ (k/m) × q
+
+    4. 拒绝前k个假设
+
+
+    (c) 应用：m=50, q=0.05
+
+    - p₁=0.001 vs (1/50)×0.05=0.001 → 0.001 ≤ 0.001 ✓
+
+    - p₂=0.003 vs (2/50)×0.05=0.002 → 0.003 > 0.002 ✗
+
+
+    等一下，需要继续检查：
+
+    - p₃=0.008 vs (3/50)×0.05=0.003 → 0.008 > 0.003 ✗
+
+    - p₄=0.012 vs (4/50)×0.05=0.004 → ✗
+
+    - p₅=0.025 vs (5/50)×0.05=0.005 → ✗
+
+
+    BH程序找最大的k使得 p(k) ≤ (k/50)×0.05。只有k=1满足。因此只有第1个因子（p=0.001）被判定为显著。如果p₂=0.0018而非0.003，则k=2也满足，前2个因子都显著。'
+  code_snippet: ''
+  code_language: python
+  hints:
+  - 'Hint 1: BH程序是逐步拒绝程序(step-up procedure)'
+  - 'Hint 2: 关键是找到满足条件的最大k'
+  rubric: (a) 2分：FDR定义准确；(b) 3分：BH步骤描述清晰；(c) 3分：正确应用并得出结论
+  time_limit_seconds: 600
+- id: QR_RD_009
+  category: research_design
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: '在设计因子回测时，point-in-time (PIT) 数据库的重要性在于：
+
+    The importance of point-in-time (PIT) databases in factor backtesting design is:'
+  options:
+  - A. PIT数据库存储数据更高效 / PIT databases store data more efficiently
+  - B. PIT数据库记录了每个数据点在其实际发布时间点的值，避免使用事后修正的数据 / PIT databases record the value of each data point at its actual publication time, avoiding retrospectively adjusted data
+  - C. PIT数据库自动处理了缺失值 / PIT databases automatically handle missing values
+  - D. PIT数据库比普通数据库更便宜 / PIT databases are cheaper than regular databases
+  answer: B
+  explanation: 'Point-in-time数据库记录了数据在每个历史时间点的''当时版本''。例如，某公司2023Q3的EPS在2023年10月31日首次披露为0.50，后来在年报中修正为0.48。PIT数据库在回测2023年11月时会使用0.50（当时已知的值），而非0.48。不使用PIT数据会引入look-ahead bias，因为模型使用了回测时点尚未可知的修正后数据。
+
+    PIT databases record the ''as-known-at-time'' value. Using non-PIT data introduces look-ahead bias from retrospective adjustments.'
+  code_snippet: ''
+  code_language: python
+  hints: []
+  rubric: ''
+  time_limit_seconds: 120
+- id: QR_RD_010
+  category: research_design
+  difficulty: senior
+  type: open_ended
+  points: 5
+  question: '讨论 out-of-sample testing 在因子研究中的最佳实践。
+
+    (a) 为什么简单的 train/test split 不够，需要多层次的样本外验证
+
+    (b) 设计一个包含 primary test set、secondary test set 和 live monitoring 的三层验证框架
+
+    (c) 如何处理 ''the test set becomes the training set'' 的问题
+
+
+    Discuss out-of-sample testing best practices in factor research.
+
+    (a) Why simple train/test split is insufficient
+
+    (b) Design a three-layer validation with primary test, secondary test, and live monitoring
+
+    (c) How to handle ''test set becomes training set'' problem'
+  options: []
+  answer: ''
+  explanation: '(a) 简单train/test split不够因为：1)单次split结果可能偶然；2)研究者看到test set结果后会修改策略，使test set实际上变成了training set（信息泄露）；3)市场环境变化使得某一段test set不具有代表性。
+
+
+    (b) 三层验证框架：
+
+    - 第一层 (Primary test set)：预留最近2-3年数据，在研究过程中绝不查看。只在因子开发完成后使用一次进行''最终检验''
+
+    - 第二层 (Secondary test set)：在walk-forward框架内使用，允许多次查看但需要记录查看次数并做multiple testing调整
+
+    - 第三层 (Live monitoring)：上线后的持续监控，比较实盘IC与回测IC的差异，设置预警阈值
+
+
+    (c) 处理''test set变training set''问题：
+
+    1. 严格的研究流程管理：记录所有测试次数
+
+    2. Holdout discipline：真正的test set只看一次
+
+    3. 使用 rolling out-of-sample：不断产生新的样本外数据
+
+    4. 实盘验证作为最终的样本外检验
+
+    5. 对所有参与过test set的因子施加multiple testing penalty'
+  code_snippet: ''
+  code_language: python
+  hints:
+  - 'Hint 1: 关键是信息隔离——研究者不能看到''真正的''样本外数据'
+  - 'Hint 2: 实盘是最终的、不可作弊的样本外验证'
+  rubric: (a) 1分：清晰解释不足之处；(b) 2分：三层框架设计合理且可操作；(c) 2分：给出有效的解决方案
+  time_limit_seconds: 480

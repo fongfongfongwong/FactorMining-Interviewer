@@ -1,0 +1,4361 @@
+# ============================================================================
+# Quant Developer (量化开发) Interview Question Bank
+# Factor Mining Quantitative Team
+# Total: 100 questions
+# Distribution:
+#   algorithms: 25, system_design: 20, python_cpp: 20,
+#   concurrency: 15, data_pipeline: 10, factor_domain: 10
+# Difficulty: 40 medium_high, 40 senior, 20 expert
+# Type: 70 multiple_choice, 15 code, 10 open_ended, 5 show_work
+# ============================================================================
+
+# ============================================================================
+# ALGORITHMS (25 questions)
+# ============================================================================
+
+- id: QD_ALGO_001
+  category: algorithms
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在处理A股逐笔成交(tick data)时，需要按时间戳排序后计算VWAP。若数据量为N条tick，以下哪种排序算法在近乎有序的tick数据上表现最优？\nWhen processing A-share tick data that is nearly sorted by timestamp for VWAP calculation, which sorting algorithm performs best?"
+  options:
+    - "A. QuickSort — 平均O(NlogN)，partition策略优"
+    - "B. TimSort — 对近乎有序数据接近O(N)"
+    - "C. HeapSort — 保证worst-case O(NlogN)"
+    - "D. MergeSort — 稳定排序，适合外部排序"
+  answer: "B"
+  explanation: "TimSort（Python内置sort）专为近乎有序数据设计，利用natural runs，在数据已基本有序时接近O(N)。交易所推送的tick数据通常按时间戳基本有序，仅有少量乱序，TimSort性能最优。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_ALGO_002
+  category: algorithms
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "使用sliding window计算过去20个tick的移动平均成交量(moving average volume)，当新tick到来时更新窗口的时间复杂度是？\nWhat is the time complexity of updating a sliding window moving average volume when a new tick arrives?"
+  options:
+    - "A. O(1) — 维护窗口总和，加新减旧"
+    - "B. O(K) — 每次需要遍历窗口K个元素"
+    - "C. O(logK) — 需要在有序结构中插入"
+    - "D. O(N) — 需要重新扫描全部历史数据"
+  answer: "A"
+  explanation: "经典sliding window技巧：维护一个running sum，新元素进入时加上新值、减去窗口最旧值，更新均值只需O(1)。这是实时行情处理中的基本优化。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_ALGO_003
+  category: algorithms
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Order book维护买卖盘口时，需要频繁进行插入、删除和查询最优价格操作。以下哪种数据结构最适合？\nWhich data structure is most suitable for maintaining an order book with frequent insert, delete, and best-price query?"
+  options:
+    - "A. std::map (红黑树Red-Black Tree) — 有序，O(logN)操作"
+    - "B. std::unordered_map (Hash Map) — O(1)查找但无序"
+    - "C. std::priority_queue (Heap) — O(1)查最优但删除困难"
+    - "D. std::vector + 二分查找 — 缓存友好但插入O(N)"
+  answer: "A"
+  explanation: "Order book需要按价格有序排列并支持高效的插入、删除和最优价查询。std::map（红黑树）提供O(logN)的插入/删除/查找，且begin()/rbegin()可O(1)获取最优价。实际生产中也常用skip list或自定义平衡树。Heap虽然查最优O(1)但任意删除需O(N)查找。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_ALGO_004
+  category: algorithms
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "计算因子值的横截面(cross-sectional) rank时，对4000只A股的因子值排序，以下说法正确的是？\nWhen computing cross-sectional factor rank for ~4000 A-share stocks, which statement is correct?"
+  options:
+    - "A. 使用partial_sort只找Top/Bottom N更高效"
+    - "B. 必须使用stable_sort保证相同值的排名一致"
+    - "C. N=4000规模下，排序算法选择对性能无显著影响"
+    - "D. 应使用Counting Sort因为因子值是整数"
+  answer: "C"
+  explanation: "N=4000规模极小，NlogN约48000次比较，任何O(NlogN)排序在现代CPU上都能在微秒级完成。瓶颈不在排序算法选择而在IO和内存访问。实际中用NumPy的argsort即可。当然，如果在循环中每天调用则用partial_sort有边际收益（选项A也有道理），但题目问的是'正确'说法，C最准确。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_ALGO_005
+  category: algorithms
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在tick数据流中实时检测大单(large order)，定义为在5秒滑动窗口内累计成交额超过阈值。最适合的算法/数据结构组合是？\nFor real-time large order detection in tick stream (cumulative volume exceeding threshold in a 5s sliding window), the best approach is:"
+  options:
+    - "A. Monotonic deque + prefix sum"
+    - "B. Segment tree with lazy propagation"
+    - "C. Deque维护时间窗口 + running sum"
+    - "D. Fenwick tree (BIT) + binary search"
+  answer: "C"
+  explanation: "经典时间窗口问题：用deque维护窗口内的tick记录，front弹出过期tick（时间超出5s），back追加新tick，同时用running sum维护窗口内累计成交额。每个tick进出各一次，均摊O(1)。Segment tree和BIT过于复杂且不必要。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_ALGO_006
+  category: algorithms
+  difficulty: senior
+  type: code
+  points: 8
+  question: "实现一个函数，给定一组股票的日收益率序列(2D array: stocks x days)，计算每只股票的最大回撤(Maximum Drawdown)。要求向量化实现，不使用显式循环。\nImplement a vectorized function to compute maximum drawdown for each stock given a 2D return array (stocks x days). No explicit loops."
+  options: []
+  answer: ""
+  explanation: "利用NumPy的cummax和向量化操作：先计算累计收益曲线(cumprod)，再用np.maximum.accumulate计算running peak，drawdown = (peak - value) / peak，最后取max。"
+  code_snippet: |
+    import numpy as np
+
+    def max_drawdown_vectorized(returns: np.ndarray) -> np.ndarray:
+        """
+        Args:
+            returns: shape (n_stocks, n_days), daily returns (e.g., 0.01 = 1%)
+        Returns:
+            mdd: shape (n_stocks,), maximum drawdown for each stock (positive value)
+        """
+        # Your implementation here
+        pass
+
+    # Example:
+    # returns = np.array([[0.01, -0.02, 0.03, -0.05, 0.02],
+    #                      [-0.01, 0.04, -0.03, 0.01, -0.02]])
+    # Expected: each stock's max drawdown as a positive fraction
+  code_language: "python"
+  hints:
+    - "先用 np.cumprod(1 + returns, axis=1) 得到净值曲线"
+    - "np.maximum.accumulate(nav, axis=1) 可得到 running peak"
+    - "drawdown = 1 - nav / running_peak，取 axis=1 的 max"
+  rubric: "正确使用cumprod(3分)；正确使用maximum.accumulate(2分)；无显式循环(2分)；边界处理如全负收益(1分)"
+  time_limit_seconds: 480
+
+- id: QD_ALGO_007
+  category: algorithms
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在处理Level-2行情数据时，需要快速查找某价格档位是否存在挂单。已知价格为整数(单位:分)，范围在[1, 100000]。最优的查找方案是？\nFor fast price level lookup in L2 order book where prices are integers (in cents) ranging [1, 100000], the best approach is:"
+  options:
+    - "A. Hash map — O(1)查找"
+    - "B. 直接数组索引 — price作为下标，O(1)且cache-friendly"
+    - "C. Binary search tree — O(logN)有序遍历"
+    - "D. Bloom filter — 概率性查找，空间效率高"
+  answer: "B"
+  explanation: "价格范围有限(100000)，直接用数组索引是最优方案：O(1)查找，零hash冲突，极佳的cache locality。100K个int64仅需800KB内存，完全可接受。这是HFT系统中常见的空间换时间优化。Hash map虽然也是O(1)但有额外的hash计算和指针跳转开销。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_ALGO_008
+  category: algorithms
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "构建因子DAG(Directed Acyclic Graph)来管理因子依赖关系，需要按拓扑序计算。如果DAG有V个因子节点和E条依赖边，且需要支持动态添加新因子和依赖，以下方案最优？\nFor a factor dependency DAG with V nodes and E edges supporting dynamic addition, the best approach for topological computation is:"
+  options:
+    - "A. 每次修改后重新执行Kahn's Algorithm — O(V+E)"
+    - "B. 增量式拓扑排序(incremental topological sort) — 仅更新受影响子图"
+    - "C. DFS后序遍历 + memoization — O(V+E)但不易增量化"
+    - "D. 使用优先队列按因子优先级排序 — O(VlogV)"
+  answer: "B"
+  explanation: "当DAG支持动态修改时，增量式拓扑排序(如Marchetti-Spaccamela等人的算法)仅需重新排序受新边影响的节点子集，平均复杂度远低于O(V+E)的全量重建。在大规模因子库(V>1000)中，每次新增因子只影响其下游，增量更新效率显著优于方案A。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_ALGO_009
+  category: algorithms
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "需要在时间序列数据中查找与给定pattern最相似的子序列(subsequence similarity search)。数据长度N=1M，pattern长度M=240(一天的分钟线)。最高效的算法是？\nFor subsequence similarity search in time series (N=1M, pattern M=240), the most efficient algorithm is:"
+  options:
+    - "A. 暴力滑动窗口 — O(NM)"
+    - "B. MASS (Mueen's Algorithm for Similarity Search) — O(NlogN) 基于FFT"
+    - "C. DTW (Dynamic Time Warping) — O(NM)但支持弹性匹配"
+    - "D. KMP字符串匹配 — O(N+M)"
+  answer: "B"
+  explanation: "MASS利用FFT将所有子序列的Euclidean distance计算转化为频域操作，整体O(NlogN)，比暴力法快数百倍。对于固定长度pattern的精确距离搜索，MASS是最优选择。DTW虽然灵活但复杂度更高。KMP用于字符串精确匹配，不适用于浮点数相似性搜索。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_ALGO_010
+  category: algorithms
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在因子挖掘中需要频繁计算rolling Pearson correlation(窗口大小K)。对于N个时间点，以下哪种实现方式最优？\nFor frequent rolling Pearson correlation computation (window K, N time points), the optimal approach is:"
+  options:
+    - "A. 每个窗口独立计算 — O(NK)"
+    - "B. 维护running sum of x, y, x², y², xy — O(N)"
+    - "C. 使用FFT加速 — O(NlogN)"
+    - "D. Welford's online algorithm — O(N)"
+  answer: "B"
+  explanation: "维护5个running sum（Σx, Σy, Σx², Σy², Σxy），每步O(1)更新（加新值减旧值），再用公式 r = (NΣxy - ΣxΣy) / sqrt((NΣx²-(Σx)²)(NΣy²-(Σy)²)) 计算。总复杂度O(N)，且常数极小。Welford's算法是在线方差估计，不直接适用于相关系数。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_ALGO_011
+  category: algorithms
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "HashMap用于存储股票代码到最新报价的映射。A股约5000只股票，以下哪种hash策略最合适？\nFor a HashMap storing stock code -> latest quote (5000 A-share stocks), which hash strategy is best?"
+  options:
+    - "A. 链式hash(chaining) — 处理冲突简单"
+    - "B. 开放寻址(open addressing)with linear probing — cache-friendly"
+    - "C. Perfect hashing — 预计算无冲突hash函数"
+    - "D. Cuckoo hashing — O(1) worst-case lookup"
+  answer: "C"
+  explanation: "A股代码集合固定且已知(约5000只)，可以离线构建perfect hash function实现零冲突O(1)查找。这是静态集合映射的最优解。若集合动态变化，则Cuckoo hashing(D)或Robin Hood hashing是更好选择。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_ALGO_012
+  category: algorithms
+  difficulty: senior
+  type: code
+  points: 8
+  question: "实现一个高效的数据结构，支持以下操作用于实时盘口监控：\n1. update(stock_id, price, volume) — 更新某股票某价位的挂单量\n2. best_bid(stock_id) — 查询最高买价\n3. total_volume(stock_id, price_low, price_high) — 查询某价格区间的总挂单量\nImplement a data structure for real-time order book monitoring supporting update, best_bid, and range volume query."
+  options: []
+  answer: ""
+  explanation: "使用SortedDict(平衡BST)存储每个stock的price->volume映射。best_bid用最大key，range query用irange。或用Fenwick Tree做区间求和。"
+  code_snippet: |
+    from sortedcontainers import SortedDict
+    from typing import Dict
+
+    class OrderBookMonitor:
+        def __init__(self):
+            # stock_id -> SortedDict{price: volume}
+            self.books: Dict[str, SortedDict] = {}
+
+        def update(self, stock_id: str, price: int, volume: int) -> None:
+            """Update volume at given price level. Remove level if volume=0."""
+            # Your implementation here
+            pass
+
+        def best_bid(self, stock_id: str) -> int:
+            """Return highest bid price, or -1 if empty."""
+            # Your implementation here
+            pass
+
+        def total_volume(self, stock_id: str, price_low: int, price_high: int) -> int:
+            """Return total volume in [price_low, price_high] range."""
+            # Your implementation here
+            pass
+  code_language: "python"
+  hints:
+    - "SortedDict支持O(logN)插入和irange区间查询"
+    - "best_bid可用SortedDict.keys()[-1]获取最大key"
+    - "range query用irange(price_low, price_high)遍历区间"
+  rubric: "update正确处理增删(3分)；best_bid O(logN)(2分)；range query正确(2分)；edge case处理(1分)"
+  time_limit_seconds: 600
+
+- id: QD_ALGO_013
+  category: algorithms
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在构建因子表达式树(expression tree)进行遗传规划(genetic programming)因子挖掘时，需要检测两棵表达式树是否语义等价。这个问题的计算复杂度是？\nWhen checking semantic equivalence of two factor expression trees in GP-based factor mining, the computational complexity is:"
+  options:
+    - "A. O(N) — 结构比较即可"
+    - "B. NP-hard — 等价于程序等价性问题"
+    - "C. 不可判定(undecidable) — 等价于停机问题"
+    - "D. O(N²) — 需要比较所有子树对"
+  answer: "C"
+  explanation: "通用程序语义等价性是不可判定问题(Rice's theorem)。即使限制在算术表达式上，包含条件和递归的完整表达式树等价性仍然不可判定。实践中使用近似方法：随机采样输入比较输出(random testing)、规范化简化(canonical simplification)、或hash fingerprinting。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_ALGO_014
+  category: algorithms
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "使用动态规划(DP)求解'给定N天的收益率序列，最多进行K次交易，求最大累计收益'。状态转移的时间复杂度是？\nUsing DP to solve 'given N-day returns, at most K transactions, maximize total profit'. Time complexity of the state transition is:"
+  options:
+    - "A. O(NK) — 二维DP"
+    - "B. O(NK²) — 需要枚举交易对"
+    - "C. O(N²K) — 需要枚举买入卖出点"
+    - "D. O(NKlogN) — 使用单调栈优化"
+  answer: "A"
+  explanation: "经典股票买卖问题：定义dp[i][j][0/1]为第i天完成至多j次交易持有/不持有的最大收益。状态转移只依赖前一天，每个状态O(1)转移，总共O(NK)个状态，故时间复杂度O(NK)。空间可用滚动数组优化到O(K)。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_ALGO_015
+  category: algorithms
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在A股日频数据中检测结构性断点(structural break)，常用CUSUM算法。该算法的核心数据结构是？\nFor structural break detection in A-share daily data using CUSUM, the core data structure is:"
+  options:
+    - "A. Cumulative sum array + 双指针"
+    - "B. Segment tree with range max query"
+    - "C. Running cumulative sum + threshold比较"
+    - "D. Suffix array + LCP array"
+  answer: "C"
+  explanation: "CUSUM(Cumulative Sum Control Chart)的核心是维护一个running cumulative sum S_t = max(0, S_{t-1} + (x_t - μ - k))，当S_t超过阈值h时触发断点信号。本质是在线算法，只需O(1)空间维护当前累积和，O(N)时间扫描。不需要复杂数据结构。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_ALGO_016
+  category: algorithms
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "构建股票关联图(stock correlation graph)后，使用社区发现(community detection)算法将股票分组。若图有V=4000节点、E=50000边，以下哪种算法效率最高？\nFor community detection on a stock correlation graph (V=4000, E=50000), the most efficient algorithm is:"
+  options:
+    - "A. Girvan-Newman — O(V·E²)，基于边介数"
+    - "B. Louvain — O(E)，贪心模块度优化"
+    - "C. Spectral Clustering — O(V³)，特征值分解"
+    - "D. Label Propagation — O(E)，但结果不稳定"
+  answer: "B"
+  explanation: "Louvain算法是社区发现的工业标准，时间复杂度近似O(E)（实际为O(NlogN)），在V=4000规模上毫秒级完成，且模块度优化的结果质量优于Label Propagation。Girvan-Newman的O(V·E²)在此规模下太慢，Spectral Clustering的O(V³)也不必要。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_ALGO_017
+  category: algorithms
+  difficulty: expert
+  type: show_work
+  points: 8
+  question: "设计一个算法，在实时tick数据流中检测'冰山订单(iceberg order)'模式：某价位反复出现固定小量挂单，被吃掉后立即补充，累计成交量远超单次显示量。要求时间复杂度O(1) per tick，空间复杂度O(P)其中P为活跃价位数。\nDesign an O(1)-per-tick algorithm to detect iceberg orders: a price level repeatedly shows small fixed quantities that are immediately replenished after being filled."
+  options: []
+  answer: ""
+  explanation: "为每个活跃价位维护状态机：{last_qty, fill_count, refill_count, total_filled, pattern_start_time}。当某价位被成交(fill)后在短时间内以相近数量重新出现(refill)，增加refill_count。当refill_count超过阈值且total_filled/last_qty比值高，触发冰山订单告警。"
+  code_snippet: ""
+  code_language: ""
+  hints:
+    - "每个价位维护一个状态机(state machine)"
+    - "跟踪fill-refill pattern: 成交后短时间内重新挂单"
+    - "用hash map: price -> IcebergState，空间O(P)"
+  rubric: "状态机设计合理(3分)；O(1) per tick论证(2分)；pattern匹配条件(阈值设定)(2分)；误报控制讨论(1分)"
+  time_limit_seconds: 600
+
+- id: QD_ALGO_018
+  category: algorithms
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "需要在4000只股票中快速找到因子值Top 50的股票(用于构建多头组合)。最优算法是？\nTo quickly find the top 50 stocks by factor value from 4000 stocks (for long portfolio), the optimal algorithm is:"
+  options:
+    - "A. 完全排序 — O(NlogN)"
+    - "B. std::partial_sort — O(NlogK)"
+    - "C. std::nth_element — O(N)平均"
+    - "D. 最小堆(min-heap)大小K — O(NlogK)"
+  answer: "C"
+  explanation: "std::nth_element (introselect) 平均O(N)找到第K大元素，同时将数组划分为前K大和其余。对于N=4000, K=50，O(N)=4000次比较，远优于完全排序的O(NlogN)≈48000。如果需要Top K有序，再对K个元素排序即O(KlogK)=282，总体仍是O(N)级别。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_ALGO_019
+  category: algorithms
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在tick数据的timestamp索引上需要支持区间查询(range query)，如'查询10:00-10:05之间的所有成交'。若使用B+Tree索引，叶节点链表遍历的I/O复杂度是？\nFor range query on B+Tree indexed tick timestamps (e.g., all trades between 10:00-10:05), the I/O complexity of leaf traversal is:"
+  options:
+    - "A. O(logₘN + K/B) — K为结果数，B为块大小"
+    - "B. O(logₘN + K)"
+    - "C. O(logₘN · K)"
+    - "D. O(K)"
+  answer: "A"
+  explanation: "B+Tree的range query分两步：1) 二分查找起始位置O(logₘN) I/O次；2) 沿叶节点链表顺序扫描，每个磁盘块包含B条记录，需要O(K/B) I/O次。总计O(logₘN + K/B)，这也是B+Tree用于数据库索引的核心优势——顺序I/O。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_ALGO_020
+  category: algorithms
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "使用Trie(前缀树)存储A股股票代码(如600000, 000001)以支持前缀搜索功能。约5000个6位数字代码，Trie的空间复杂度是？\nUsing a Trie to store A-share stock codes (6-digit numbers, ~5000 codes) for prefix search. The space complexity is:"
+  options:
+    - "A. O(N·L) — N=5000, L=6，即O(30000)节点"
+    - "B. O(10^L) — 所有可能的6位数"
+    - "C. O(N) — 压缩Trie(Patricia Trie)可将公共前缀合并"
+    - "D. O(N·L·10) — 每个节点10个子指针"
+  answer: "A"
+  explanation: "标准Trie中每个代码贡献最多L=6个节点（减去与已有代码共享的前缀），总节点数上界O(N·L)=30000。实际由于前缀共享（如60xxxx开头的约1000只股票共享前缀），实际节点数远小于上界。每个节点的10个子指针是常数，不影响Big-O。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_ALGO_021
+  category: algorithms
+  difficulty: senior
+  type: code
+  points: 8
+  question: "实现一个LRU Cache用于缓存因子计算结果。要求支持get(key)和put(key, value)操作，均为O(1)时间复杂度。当缓存满时淘汰最近最少使用的因子。\nImplement an LRU Cache for caching factor computation results. Both get and put must be O(1)."
+  options: []
+  answer: ""
+  explanation: "使用OrderedDict或手写双向链表+HashMap。OrderedDict的move_to_end和popitem提供O(1)操作。"
+  code_snippet: |
+    from collections import OrderedDict
+    from typing import Any, Optional
+
+    class FactorLRUCache:
+        def __init__(self, capacity: int):
+            """Initialize cache with given capacity."""
+            # Your implementation here
+            pass
+
+        def get(self, key: str) -> Optional[Any]:
+            """Return cached factor value, or None if not found. Mark as recently used."""
+            # Your implementation here
+            pass
+
+        def put(self, key: str, value: Any) -> None:
+            """Cache factor value. Evict LRU item if at capacity."""
+            # Your implementation here
+            pass
+
+    # Example:
+    # cache = FactorLRUCache(2)
+    # cache.put("alpha_001_20240101", 0.05)
+    # cache.put("alpha_002_20240101", -0.03)
+    # cache.get("alpha_001_20240101")  # returns 0.05, marks as recently used
+    # cache.put("alpha_003_20240101", 0.07)  # evicts alpha_002
+  code_language: "python"
+  hints:
+    - "OrderedDict的move_to_end(key)将key移到末尾"
+    - "popitem(last=False)弹出最旧的item"
+  rubric: "get O(1)正确(3分)；put O(1)正确含淘汰(3分)；线程安全讨论(bonus 1分)；edge case(1分)"
+  time_limit_seconds: 480
+
+- id: QD_ALGO_022
+  category: algorithms
+  difficulty: expert
+  type: open_ended
+  points: 10
+  question: "设计一个在线算法(online algorithm)，在流式tick数据中实时维护过去N个tick的中位数(median)。要求插入和查询中位数均为O(logN)。讨论在极端行情（如涨停板）下的性能退化问题。\nDesign an online algorithm for maintaining the rolling median of the last N ticks. Insert and median query should be O(logN). Discuss performance degradation in extreme market conditions (e.g., limit-up)."
+  options: []
+  answer: ""
+  explanation: "经典双堆(max-heap + min-heap)方案：维护两个堆使得max-heap存较小的一半，min-heap存较大的一半。到期的tick需要lazy deletion。涨停板时所有价格相同，可退化为计数即可。"
+  code_snippet: ""
+  code_language: ""
+  hints:
+    - "双堆(max-heap + min-heap)是经典在线中位数算法"
+    - "滑动窗口需要处理到期元素的删除——考虑lazy deletion"
+    - "涨停板导致所有价格相同，讨论此时的退化情况"
+  rubric: "双堆方案正确(3分)；滑动窗口删除处理(3分)；极端行情分析(2分)；复杂度论证(2分)"
+  time_limit_seconds: 600
+
+- id: QD_ALGO_023
+  category: algorithms
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "使用Union-Find(并查集)检测股票之间的协整(cointegration)关系并形成交易组合。N=4000只股票，两两检验后有M对协整关系，查询两只股票是否在同一协整组的时间复杂度是？\nUsing Union-Find to group cointegrated stock pairs. With N=4000 stocks and M cointegrated pairs, query time complexity for same-group check is:"
+  options:
+    - "A. O(1)"
+    - "B. O(logN)"
+    - "C. O(α(N)) — 反Ackermann函数，近似O(1)"
+    - "D. O(N)"
+  answer: "C"
+  explanation: "Union-Find with path compression + union by rank的查询复杂度为O(α(N))，其中α是反Ackermann函数，对于任何实际的N值α(N)≤4，可视为常数。建立M对关系的总时间为O(M·α(N))。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_ALGO_024
+  category: algorithms
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在因子回测中需要按日期快速定位数据行。时间跨度10年(约2500个交易日)，每天4000只股票。使用二分查找定位日期，但相邻交易日之间可能存在节假日间隔。以下哪种改进最有效？\nFor binary search on trading dates (2500 days, 4000 stocks/day) with holiday gaps, the most effective improvement is:"
+  options:
+    - "A. Interpolation search — 利用日期近似均匀分布"
+    - "B. 建立日期到行号的hash map — O(1)查找"
+    - "C. Exponential search — 先指数跳跃再二分"
+    - "D. 标准binary search已是最优 — O(log2500)≈12次"
+  answer: "B"
+  explanation: "2500个交易日的hash map仅需~20KB内存，提供O(1)精确定位。标准binary search虽然只需12次比较，但每次比较需要一次random access(可能cache miss)。Hash map一次hash计算+一次内存访问。实际生产中，交易日历是离线构建的静态映射，hash map是标准做法。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_ALGO_025
+  category: algorithms
+  difficulty: expert
+  type: show_work
+  points: 8
+  question: "设计一个空间高效的数据结构，用于存储A股全市场(4000只股票×2500交易日×50个因子)的因子矩阵，支持：1) 按日期切片 2) 按股票切片 3) 按因子切片。分析不同存储布局(row-major vs column-major vs block)对各查询模式的cache性能。\nDesign a space-efficient structure for a factor matrix (4000 stocks × 2500 days × 50 factors) supporting date/stock/factor slicing. Analyze cache performance of different storage layouts."
+  options: []
+  answer: ""
+  explanation: "三维数组选择存储顺序对性能影响巨大。按日期切片(截面分析)适合layout [date][stock][factor]；按股票切片(时序分析)适合layout [stock][date][factor]；按因子切片适合layout [factor][date][stock]。最佳方案是分块存储(tiled/blocked layout)或使用columnar format如Arrow/Parquet。"
+  code_snippet: ""
+  code_language: ""
+  hints:
+    - "总数据量: 4000×2500×50×8bytes = 4GB"
+    - "考虑L1/L2/L3 cache line size (64 bytes = 8个double)"
+    - "横截面分析: date维度优先; 时序分析: stock维度优先"
+  rubric: "三种查询模式的cache分析(3分)；推荐存储方案及理由(2分)；数据量计算(1分)；生产中实际方案(如Parquet/HDF5)(2分)"
+  time_limit_seconds: 600
+
+# ============================================================================
+# SYSTEM DESIGN (20 questions)
+# ============================================================================
+
+- id: QD_SYS_001
+  category: system_design
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "设计低延迟行情分发系统(market data feed)，从交易所接收UDP multicast行情后分发给多个策略进程。以下哪种IPC机制延迟最低？\nFor a low-latency market data feed distributing UDP multicast data to multiple strategy processes, which IPC has lowest latency?"
+  options:
+    - "A. TCP socket — 可靠传输"
+    - "B. Shared memory + lock-free ring buffer"
+    - "C. Unix domain socket — 无网络栈开销"
+    - "D. Named pipe (FIFO) — 简单易用"
+  answer: "B"
+  explanation: "Shared memory + lock-free ring buffer是IPC延迟最低的方案（纳秒级），因为数据直接在内存中传递，无内核态切换(zero-copy, zero-syscall)。LMAX Disruptor是这一模式的经典实现。Unix domain socket虽然绕过TCP/IP栈但仍需系统调用。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_SYS_002
+  category: system_design
+  difficulty: senior
+  type: open_ended
+  points: 10
+  question: "设计一个撮合引擎(order matching engine)的核心架构，要求：\n1. 支持限价单(limit order)和市价单(market order)\n2. 撮合延迟<10μs\n3. 吞吐量>100K orders/sec\n4. 支持价格优先、时间优先(price-time priority)\n请描述核心数据结构、撮合流程、以及如何保证确定性(determinism)。\nDesign the core architecture of an order matching engine with <10μs latency and >100K orders/sec throughput."
+  options: []
+  answer: ""
+  explanation: "核心：每个标的一个OrderBook对象，买卖各用std::map<Price, OrderQueue>（或自定义红黑树）。OrderQueue用FIFO双向链表保证时间优先。撮合流程：新单到来→与对手方最优价比较→匹配则生成成交→更新盘口。确定性：单线程event loop处理所有订单（避免并发不确定性），时间戳用hardware counter。"
+  code_snippet: ""
+  code_language: ""
+  hints:
+    - "单线程确定性处理是关键——避免多线程带来的不确定性"
+    - "内存预分配+对象池避免GC/malloc延迟"
+    - "考虑FPGA offload用于ultra-low latency场景"
+  rubric: "数据结构设计(3分)；撮合流程(2分)；延迟优化(2分)；确定性保证(2分)；吞吐量分析(1分)"
+  time_limit_seconds: 900
+
+- id: QD_SYS_003
+  category: system_design
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "分布式因子计算系统中，4000只股票×200个因子的日频计算任务如何分配？以下哪种分片(sharding)策略最优？\nFor distributed daily factor computation (4000 stocks × 200 factors), which sharding strategy is optimal?"
+  options:
+    - "A. 按股票分片 — 每个worker计算一部分股票的所有因子"
+    - "B. 按因子分片 — 每个worker计算一个因子的所有股票"
+    - "C. 混合分片 — 按因子类型分组，组内按股票分片"
+    - "D. 随机分片 — 均匀分配计算任务"
+  answer: "B"
+  explanation: "按因子分片(factor-level parallelism)最优，原因：1) 截面因子(如rank、zscore)需要所有股票数据，按股票分片会产生大量shuffle；2) 因子间通常独立，天然并行；3) 因子计算时间差异大，但每个因子内部是批量向量化操作，负载更均匀。混合方案(C)在因子有依赖关系时是次优选择。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_SYS_004
+  category: system_design
+  difficulty: expert
+  type: open_ended
+  points: 10
+  question: "设计一个实时风控系统(real-time risk system)，要求：\n1. 每笔委托前进行风控检查，延迟<1ms\n2. 支持多维度风控：单票持仓上限、行业暴露、总仓位、日内交易次数\n3. 在极端行情下（如千股跌停）保证系统可用性\n4. 支持风控参数热更新(hot reload)\n描述系统架构和关键设计决策。\nDesign a real-time pre-trade risk system with <1ms latency supporting multi-dimensional risk checks."
+  options: []
+  answer: ""
+  explanation: "架构：1) 风控状态全内存化——持仓、暴露度、计数器全在进程内存中以lock-free结构维护；2) Pipeline化检查——将多维度检查编排为pipeline，early rejection（最可能拒绝的检查放前面）；3) 热更新——参数存储在atomic变量中，更新线程CAS替换；4) 降级策略——极端行情下切换到简化检查模式。"
+  code_snippet: ""
+  code_language: ""
+  hints:
+    - "内存化是关键——不能有任何磁盘IO或网络IO在关键路径上"
+    - "检查顺序优化：最可能拒绝的放前面(early rejection)"
+    - "极端行情降级策略：从精确检查降级到粗粒度检查"
+  rubric: "架构设计(3分)；延迟分析(2分)；热更新方案(2分)；极端行情降级(2分)；状态一致性(1分)"
+  time_limit_seconds: 900
+
+- id: QD_SYS_005
+  category: system_design
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "设计因子存储系统时，选择存储引擎。因子数据特点：写入频率低(日频)、读取频率高(回测时大量扫描)、按日期和股票双维度查询。最适合的存储方案是？\nFor factor storage (low write frequency, high read/scan frequency, date and stock dual-dimension query), the best storage is:"
+  options:
+    - "A. MySQL — 成熟可靠的RDBMS"
+    - "B. Columnar store (如Parquet/HDF5) — 列式存储适合分析"
+    - "C. Redis — 内存KV，读取快"
+    - "D. MongoDB — 灵活的文档存储"
+  answer: "B"
+  explanation: "因子数据是典型的分析型负载(OLAP)：写少读多，批量扫描，按列查询(某日所有股票的某因子值)。Columnar store（Parquet/HDF5/Arrow）提供列式压缩、向量化读取、谓词下推(predicate pushdown)，扫描性能比行式存储(MySQL/MongoDB)高一个数量级。Redis虽快但4000×2500×200的数据量放内存成本过高。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_SYS_006
+  category: system_design
+  difficulty: senior
+  type: open_ended
+  points: 8
+  question: "在高频交易系统中，需要将策略信号到委托下单的端到端延迟控制在50μs以内。分析各环节的延迟组成(策略计算、序列化、系统调用、网络传输)，并说明如何通过kernel bypass、busy-polling、core pinning等技术优化。\nAnalyze the latency breakdown in an HFT system targeting <50μs signal-to-order latency. Describe optimization techniques."
+  options: []
+  answer: ""
+  explanation: "延迟分解：策略计算~100ns，序列化~200ns，系统调用~1-5μs(最大瓶颈)，网络<1μs(内网)。优化：kernel bypass(DPDK/RDMA)消除syscall，busy-polling代替中断避免唤醒延迟，core pinning避免上下文切换，用户态网络栈(如Solarflare OpenOnload)。"
+  code_snippet: ""
+  code_language: ""
+  hints:
+    - "每次syscall约1-5μs，上下文切换约5-15μs"
+    - "kernel bypass (DPDK/RDMA)是消除syscall的关键技术"
+    - "core pinning + isolcpus避免OS调度干扰"
+  rubric: "延迟分解分析(3分)；kernel bypass说明(2分)；busy-polling vs interrupt(2分)；综合优化方案(1分)"
+  time_limit_seconds: 600
+
+- id: QD_SYS_007
+  category: system_design
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "设计A股回测系统(backtesting framework)的事件引擎，以下哪种架构模式最合适？\nFor the event engine of an A-share backtesting framework, which architecture pattern is most suitable?"
+  options:
+    - "A. 回调模式(callback-based) — 注册事件处理函数"
+    - "B. 事件队列(event queue) — 单线程事件循环消费队列"
+    - "C. Actor模型 — 每个组件是独立actor"
+    - "D. 发布-订阅(pub-sub) — 松耦合消息分发"
+  answer: "B"
+  explanation: "回测系统的核心要求是确定性(determinism)——相同输入必须产生完全相同的输出。单线程事件队列保证事件按严格时间顺序处理，消除并发不确定性。这也是zipline、vnpy等开源回测框架的标准架构。Callback模式缺乏事件排序保证，Actor模型引入不必要的并发复杂性。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_SYS_008
+  category: system_design
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "实时因子计算引擎需要在收盘后30分钟内完成200个因子×4000只股票的计算。因子间存在依赖关系(DAG)。以下哪种调度策略最优？\nFor computing 200 factors × 4000 stocks within 30min after market close with factor dependencies (DAG), the optimal scheduling strategy is:"
+  options:
+    - "A. 单线程拓扑排序后顺序执行"
+    - "B. 多线程 + 拓扑排序 + critical path优先调度"
+    - "C. MapReduce — 分布式批处理"
+    - "D. 按因子类别分批次执行"
+  answer: "B"
+  explanation: "DAG任务调度的最优策略是：1) 拓扑排序确定依赖顺序；2) 识别critical path(最长路径)优先调度；3) 多线程并行执行无依赖的因子。这样可以最大化并行度同时尊重依赖关系。单线程(A)浪费CPU；MapReduce(C)过重且有调度开销；按类别(D)粒度太粗。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_SYS_009
+  category: system_design
+  difficulty: expert
+  type: open_ended
+  points: 10
+  question: "设计一个多策略组合管理系统(multi-strategy portfolio management system)，要求：\n1. 支持10+策略同时运行，各策略独立发出交易信号\n2. 统一风控和order management\n3. 策略间资金分配和再平衡\n4. 实时P&L和归因分析\n5. 策略的热部署(hot deploy)和优雅退出(graceful shutdown)\n描述核心架构、模块划分和关键接口。\nDesign a multi-strategy portfolio management system supporting 10+ concurrent strategies."
+  options: []
+  answer: ""
+  explanation: "分层架构：Strategy Layer(各策略独立进程/容器) → Signal Aggregator(信号汇总、冲突消解) → Risk Layer(统一风控) → Execution Layer(智能拆单、算法交易) → OMS(订单管理)。策略通过标准接口(gRPC/protobuf)发送TargetPosition信号，Aggregator负责net-off和优先级排序。热部署通过容器化+graceful drain实现。"
+  code_snippet: ""
+  code_language: ""
+  hints:
+    - "分层：Strategy → Signal Aggregation → Risk → Execution → OMS"
+    - "策略间冲突消解(conflict resolution)：同一标的不同方向如何处理"
+    - "热部署：先暂停信号、等pending orders完成、切换版本、恢复信号"
+  rubric: "架构分层设计(3分)；策略接口定义(2分)；冲突消解方案(2分)；热部署流程(2分)；P&L归因(1分)"
+  time_limit_seconds: 900
+
+- id: QD_SYS_010
+  category: system_design
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "量化系统日志收集和监控架构中，对于交易日志(含委托回报)应采用哪种可靠性级别？\nFor trade execution logs (including order fills) in a quant system, which reliability level should be used?"
+  options:
+    - "A. At-most-once — 允许丢失，UDP推送即可"
+    - "B. At-least-once — 允许重复，异步ACK"
+    - "C. Exactly-once — 严格不丢不重"
+    - "D. Best-effort — 不保证任何级别"
+  answer: "C"
+  explanation: "交易日志是审计和对账的关键依据，监管要求完整保留。Exactly-once语义通过WAL(Write-Ahead Log) + 唯一ID去重实现。具体：每笔委托/回报先写本地WAL(fsync)，再异步发送到日志系统，日志系统用order_id去重保证exactly-once。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_SYS_011
+  category: system_design
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "设计行情回放系统(market replay)用于策略回测，需要精确重放历史tick数据的时间间隔。以下哪种时间控制机制最精确？\nFor market replay with precise tick timing, which timing mechanism is most accurate?"
+  options:
+    - "A. sleep(interval) — 简单但受调度器影响"
+    - "B. busy-wait using RDTSC — CPU cycle级精度"
+    - "C. timerfd + epoll — 内核定时器"
+    - "D. 不模拟真实时间，以最快速度回放 + 逻辑时钟"
+  answer: "D"
+  explanation: "回测中模拟真实时间间隔既不必要也不准确（真实行情的时间间隔本身就不均匀）。最佳实践是以最快速度回放，使用逻辑时钟(logical clock)——策略代码通过get_current_time()获取模拟时间而非wall clock。这样回测速度可达实盘的1000倍+，且结果完全可复现。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_SYS_012
+  category: system_design
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在跨机房(cross-datacenter)部署的交易系统中，主备切换(failover)时如何保证不产生重复委托？\nIn a cross-datacenter trading system, how to prevent duplicate orders during failover?"
+  options:
+    - "A. 使用分布式锁(distributed lock)保证只有一个活跃节点"
+    - "B. Fencing token + order ID幂等性检查"
+    - "C. 2PC(两阶段提交)保证原子切换"
+    - "D. Raft共识算法选举新leader"
+  answer: "B"
+  explanation: "Fencing token方案：每次leader切换分配递增的epoch号，委托中携带epoch。交易所/柜台系统检查epoch——低epoch的委托被拒绝(fenced off)。同时用全局唯一order ID保证幂等——相同ID的重复委托被自动去重。分布式锁(A)在网络分区时不安全(脑裂)，2PC(C)延迟太高，Raft(D)是选举机制但不直接解决重复委托。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: QD_SYS_013
+  category: system_design
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "因子回测中的'未来函数(look-ahead bias)'是系统设计层面需要防范的关键问题。以下哪种架构设计能最有效地防止look-ahead bias？\nWhich architectural design most effectively prevents look-ahead bias in factor backtesting?"
+  options:
+    - "A. 在因子计算函数中添加assert检查时间戳"
+    - "B. Point-in-Time (PIT) 数据库 + 严格的时间隔离API"
+    - "C. 代码审查(code review)人工检查"
+    - "D. 将回测和实盘使用相同代码(single codebase)"
+  answer: "B"
+  explanation: "PIT数据库从架构层面保证：任何数据查询只能获取到查询时间点之前已发布的数据。API层面强制传入as_of_date参数，数据层自动过滤。这是系统层面的防范，比依赖开发者自觉(A/C)或代码复用(D)更可靠。财报数据的PIT尤为重要——实际发布日期可能远晚于报告期。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_SYS_014
+  category: system_design
+  difficulty: senior
+  type: code
+  points: 5
+  question: "实现一个简化版的因子计算资源调度器，支持按资源类型(CPU-bound vs IO-bound)分离的线程池。CPU池大小=CPU核数，IO池可更大。因子任务通过resource_type属性自动路由到对应池。\nImplement a factor computation scheduler with segregated thread pools for CPU-bound and IO-bound factors."
+  options: []
+  answer: ""
+  explanation: "分离线程池(segregated thread pools / bulkhead pattern)避免IO密集型任务阻塞CPU密集型任务。CPU池大小=os.cpu_count()，IO池=cpu_count*4。任务通过resource_type路由。"
+  code_snippet: |
+    import os
+    from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor, Future
+    from typing import Callable, Any
+    from enum import Enum
+
+    class ResourceType(Enum):
+        CPU_BOUND = "cpu"
+        IO_BOUND = "io"
+
+    class FactorScheduler:
+        def __init__(self):
+            # TODO: Initialize CPU pool (ProcessPoolExecutor) and IO pool (ThreadPoolExecutor)
+            pass
+
+        def submit(self, fn: Callable, resource_type: ResourceType, *args, **kwargs) -> Future:
+            """Submit a factor task to the appropriate pool based on resource type."""
+            # TODO: Route to correct pool
+            pass
+
+        def shutdown(self, wait: bool = True) -> None:
+            """Gracefully shutdown all pools."""
+            # TODO: Implement
+            pass
+  code_language: "python"
+  hints:
+    - "CPU池用ProcessPoolExecutor(max_workers=os.cpu_count())"
+    - "IO池用ThreadPoolExecutor(max_workers=os.cpu_count()*4)"
+    - "实现__enter__/__exit__支持context manager"
+  rubric: "双池初始化正确(2分)；路由逻辑(1分)；shutdown处理(1分)；context manager(1分)"
+  time_limit_seconds: 480
+
+- id: QD_SYS_015
+  category: system_design
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "量化交易系统的配置管理(configuration management)中，策略参数应如何管理？\nFor configuration management of strategy parameters in a quant trading system, the best approach is:"
+  options:
+    - "A. 硬编码在策略代码中"
+    - "B. 配置文件(YAML/JSON) + Git版本控制"
+    - "C. 数据库存储 + Admin UI + 审计日志"
+    - "D. 环境变量"
+  answer: "C"
+  explanation: "策略参数(如仓位上限、止损阈值)需要：1) 运行时可修改(不重启)——环境变量和配置文件都需要重启；2) 审计追踪——谁在什么时间改了什么参数；3) 权限控制——不是所有人都能修改生产参数；4) 版本回滚。数据库+Admin UI+审计日志满足所有需求。配置文件+Git(B)适合不频繁变更的系统级参数。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_SYS_016
+  category: system_design
+  difficulty: senior
+  type: open_ended
+  points: 8
+  question: "设计一个因子监控告警系统(factor monitoring & alerting)，用于检测生产环境中因子值的异常。需要监控的指标包括：因子值分布偏移、缺失率突增、因子IC突变、计算延迟超时。请描述系统架构和告警规则设计。\nDesign a factor monitoring and alerting system for production factor anomaly detection."
+  options: []
+  answer: ""
+  explanation: "架构：Factor Computation → Metrics Collector → Time Series DB (InfluxDB/Prometheus) → Alert Engine → Notification (DingTalk/Email/PagerDuty)。监控维度：1) 统计检测——KS检验检测分布漂移；2) 阈值告警——缺失率>5%、IC<阈值；3) 趋势检测——连续N天IC下降；4) SLA监控——计算未在T+0 18:00前完成。"
+  code_snippet: ""
+  code_language: ""
+  hints:
+    - "时序数据库(如Prometheus/InfluxDB)存储历史指标"
+    - "多级告警：INFO/WARNING/CRITICAL对应不同通知渠道"
+    - "自动降级：因子异常时自动降低该因子在组合中的权重"
+  rubric: "架构完整性(2分)；告警规则合理性(2分)；误报控制(2分)；自动化响应(2分)"
+  time_limit_seconds: 600
+
+- id: QD_SYS_017
+  category: system_design
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在量化系统中实现策略的A/B测试(shadow trading)，新策略在生产环境中跟踪信号但不实际下单。以下哪种实现方式最安全？\nFor A/B testing (shadow trading) of strategies in production, which implementation is safest?"
+  options:
+    - "A. 新策略接入相同行情，但下单接口替换为mock"
+    - "B. 新策略在独立进程中运行，通过read-only API获取行情和持仓"
+    - "C. 在交易网关层面过滤新策略的委托"
+    - "D. 使用feature flag控制新策略是否实际下单"
+  answer: "B"
+  explanation: "独立进程+read-only API提供最强的隔离(process-level isolation)：即使新策略有bug也无法影响生产交易。Mock接口(A)存在误调用真实接口的风险；网关过滤(C)仍然经过完整下单流程，存在风控影响；Feature flag(D)最脆弱——一个配置错误就可能导致新策略真实下单。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_SYS_018
+  category: system_design
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "设计EOD(End of Day)数据处理pipeline，从收盘到因子更新完成的SLA是2小时。Pipeline包含：数据下载(30min)→清洗(15min)→因子计算(45min)→入库(15min)。如果某步骤失败，最佳重试策略是？\nFor an EOD pipeline with 2hr SLA, if a step fails, the best retry strategy is:"
+  options:
+    - "A. 从头重跑整个pipeline"
+    - "B. 从失败步骤重跑(checkpoint-based restart)"
+    - "C. 重试失败步骤3次，仍失败则告警人工介入"
+    - "D. 跳过失败步骤，使用前一天数据填充"
+  answer: "B"
+  explanation: "Checkpoint-based restart：每个步骤完成后写checkpoint(中间结果持久化)，失败时从最近checkpoint恢复。这避免了重复执行已成功步骤的浪费(如30min的数据下载)。结合指数退避重试(步骤级)和超时告警(pipeline级)。跳过失败步骤(D)会导致数据质量问题，仅作为最后降级手段。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_SYS_019
+  category: system_design
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "量化系统需要同时处理多个交易所的行情(上交所、深交所、中金所)，各交易所协议不同。以下哪种架构模式最合适？\nFor handling market data from multiple exchanges (SSE, SZSE, CFFEX) with different protocols, the best architecture is:"
+  options:
+    - "A. 统一适配器模式(Adapter Pattern) — 各交易所实现统一接口"
+    - "B. 每个交易所独立子系统，通过消息队列汇总"
+    - "C. 插件架构(Plugin Architecture) — 交易所协议作为可插拔插件"
+    - "D. 直接在策略层处理不同协议"
+  answer: "C"
+  explanation: "Plugin Architecture最优：1) 每个交易所协议封装为独立插件(独立编译/部署)；2) 插件实现统一的MarketDataPlugin接口；3) 新交易所只需添加插件，无需修改核心系统；4) 插件可独立版本管理和热加载。Adapter Pattern(A)在静态场景下可行但不支持热加载。消息队列方案(B)增加不必要的延迟。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_SYS_020
+  category: system_design
+  difficulty: expert
+  type: show_work
+  points: 10
+  question: "估算一个A股全市场Level-2行情系统的资源需求：\n1. 网络带宽：上交所+深交所Level-2行情的峰值数据量\n2. CPU：解码和分发的计算量\n3. 内存：维护全市场order book的内存占用\n4. 存储：一天tick数据的落盘大小\n给出具体数字和计算过程。\nEstimate resource requirements for a full A-share L2 market data system. Show calculations."
+  options: []
+  answer: ""
+  explanation: "参考估算：1) 网络：沪深各约5000只标的，峰值约50万条/秒，每条~200bytes，约100MB/s≈800Mbps，双交易所约1.6Gbps；2) CPU：解码+分发50万条/秒，单核约10万条/秒，需5-8核；3) 内存：5000只×20档×2方向×(价格8B+量8B)=3.2MB per side，加上订单队列约1-2GB；4) 存储：日均约5亿条×200bytes=100GB原始数据，压缩后约20-30GB。"
+  code_snippet: ""
+  code_language: ""
+  hints:
+    - "A股约5000只活跃标的，Level-2推送十档行情+逐笔成交"
+    - "峰值在开盘和收盘前，约为均值的5-10倍"
+    - "每条行情消息约100-300 bytes (含header)"
+  rubric: "网络带宽估算(3分)；CPU估算(2分)；内存估算(2分)；存储估算(2分)；峰值考虑(1分)"
+  time_limit_seconds: 600
+
+# ============================================================================
+# PYTHON & C++ (20 questions)
+# ============================================================================
+
+- id: QD_PY_001
+  category: python_cpp
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Python GIL (Global Interpreter Lock) 对量化系统的影响，以下说法正确的是？\nWhich statement about Python GIL's impact on quant systems is correct?"
+  options:
+    - "A. GIL使得Python多线程完全无法并行，应始终用多进程"
+    - "B. GIL只影响CPU-bound任务，IO-bound任务（如行情接收）不受影响"
+    - "C. NumPy的C扩展操作会释放GIL，可以真正并行"
+    - "D. asyncio可以绕过GIL实现真正的并行计算"
+  answer: "C"
+  explanation: "NumPy/Pandas的底层C/Fortran操作在执行时会释放GIL(Py_BEGIN_ALLOW_THREADS)，因此多线程环境下NumPy的矩阵运算可以真正并行。B不完全正确——IO-bound虽然影响小但GIL仍在线程切换时有开销。asyncio是单线程协程，不涉及并行。A过于绝对。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_PY_002
+  category: python_cpp
+  difficulty: senior
+  type: code
+  points: 8
+  question: "以下Pandas代码用于计算因子IC(Information Coefficient)，但存在严重的性能问题。请优化它，使其在4000只股票×2500天的数据上运行时间从分钟级降低到秒级。\nOptimize this Pandas IC calculation code from minutes to seconds for 4000 stocks × 2500 days."
+  options: []
+  answer: ""
+  explanation: "主要优化点：1) 消除逐行groupby.apply，改用向量化groupby.corr()；2) 避免在循环中创建临时DataFrame；3) 使用rank的method='average'避免手动排名。"
+  code_snippet: |
+    import pandas as pd
+    import numpy as np
+
+    # SLOW version - 需要优化
+    def calc_ic_slow(factor_df: pd.DataFrame, return_df: pd.DataFrame) -> pd.Series:
+        """
+        factor_df: index=date, columns=stock_code, values=factor_value
+        return_df: index=date, columns=stock_code, values=next_period_return
+        Returns: Series indexed by date with IC values
+        """
+        ic_series = pd.Series(index=factor_df.index, dtype=float)
+        for date in factor_df.index:
+            f = factor_df.loc[date].dropna()
+            r = return_df.loc[date].dropna()
+            common = f.index.intersection(r.index)
+            if len(common) > 10:
+                ic_series[date] = f[common].corr(r[common])
+        return ic_series
+
+    # TODO: Write optimized version calc_ic_fast
+    # Hint: 使用 DataFrame.corrwith 或 groupby + rank correlation
+  code_language: "python"
+  hints:
+    - "消除Python层面的for循环是关键"
+    - "pd.DataFrame.corrwith可以按行计算两个DataFrame的相关系数"
+    - "stack后用groupby('date').corr()也是一种思路"
+  rubric: "消除显式for循环(3分)；正确处理NaN(2分)；性能提升至少10x(2分)；结果正确性验证(1分)"
+  time_limit_seconds: 600
+
+- id: QD_PY_003
+  category: python_cpp
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "C++中RAII (Resource Acquisition Is Initialization) 在量化系统中的典型应用场景是？\nWhich is a typical RAII application in quant systems?"
+  options:
+    - "A. 用unique_ptr管理Order对象的生命周期"
+    - "B. 用lock_guard管理互斥锁的获取和释放"
+    - "C. 用RAII封装socket连接的建立和关闭"
+    - "D. 以上全部"
+  answer: "D"
+  explanation: "RAII是C++资源管理的核心理念，在量化系统中广泛应用：1) unique_ptr/shared_ptr管理堆上对象(Order, Position)；2) lock_guard/unique_lock管理mutex避免死锁；3) socket/file的RAII wrapper确保异常时资源正确释放。所有需要配对的acquire/release操作都应用RAII封装。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_PY_004
+  category: python_cpp
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "C++ move semantics在量化系统中的关键应用。以下代码中，哪个场景move语义提升最显著？\nIn which scenario does C++ move semantics provide the most significant improvement in quant systems?"
+  options:
+    - "A. 返回局部构造的std::vector<double>(大型因子向量)"
+    - "B. 移动一个int类型的价格变量"
+    - "C. 移动一个包含3个double的struct(OHLC数据)"
+    - "D. 通过const引用传递std::string"
+  answer: "A"
+  explanation: "Move semantics对拥有堆内存的大型容器提升最显著。返回std::vector<double>(如4000只股票的因子值)时，move只需转移指针(O(1))而非深拷贝O(N)。小型POD struct(B/C)的move和copy开销相同(直接memcpy)。const引用(D)本身就不涉及拷贝。C++17的NRVO(Named Return Value Optimization)可能直接消除move。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_PY_005
+  category: python_cpp
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Python generator在处理大型因子数据时的优势。以下代码对比中，generator版本的内存优势最明显的场景是？\nIn which scenario does a Python generator show the most memory advantage for factor data processing?"
+  options:
+    - "A. 逐行读取10GB的CSV因子文件并计算统计量"
+    - "B. 对一个内存中的小list做map操作"
+    - "C. 调用外部API获取实时行情"
+    - "D. 生成斐波那契数列的前100个数"
+  answer: "A"
+  explanation: "Generator的核心优势是lazy evaluation——逐条产生数据而非全部加载。10GB CSV文件如果一次性读入内存会导致OOM，但generator逐行读取只需O(1)内存。小list(B)已在内存中无优势，API调用(C)的瓶颈在网络延迟而非内存，100个数(D)规模太小。"
+  code_snippet: |
+    # List版本 - 内存O(N)
+    def read_all(filepath):
+        return [process(line) for line in open(filepath)]
+
+    # Generator版本 - 内存O(1)
+    def read_lazy(filepath):
+        for line in open(filepath):
+            yield process(line)
+  code_language: "python"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_PY_006
+  category: python_cpp
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "C++ template metaprogramming在量化系统中的应用：使用CRTP (Curiously Recurring Template Pattern)实现静态多态的策略框架。相比虚函数(virtual dispatch)，CRTP的性能优势来自？\nThe performance advantage of CRTP over virtual dispatch in a quant strategy framework comes from:"
+  options:
+    - "A. 消除vtable查找——编译器内联(inline)静态分派的调用"
+    - "B. 减少内存使用——不需要vptr"
+    - "C. 支持更多策略类型——模板可以生成任意多特化"
+    - "D. 运行时类型检查更安全"
+  answer: "A"
+  explanation: "CRTP实现静态多态，编译器在编译期即可确定调用目标函数，从而内联(inline)该函数，消除了virtual dispatch的vtable间接跳转和分支预测失败。在热路径上(如tick处理函数每秒调用百万次)，消除间接调用的收益显著。vptr大小(B)是次要因素。"
+  code_snippet: |
+    // CRTP静态多态
+    template<typename Derived>
+    struct StrategyBase {
+        void on_tick(const Tick& t) {
+            static_cast<Derived*>(this)->on_tick_impl(t);  // 编译期解析，可内联
+        }
+    };
+    struct MyStrategy : StrategyBase<MyStrategy> {
+        void on_tick_impl(const Tick& t) { /* ... */ }
+    };
+  code_language: "cpp"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_PY_007
+  category: python_cpp
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "使用NumPy优化因子计算时，以下哪种操作会触发不必要的内存拷贝，应该避免？\nWhich NumPy operation triggers unnecessary memory copy and should be avoided in factor computation?"
+  options:
+    - "A. arr[::2] — 步长切片(stride slicing)"
+    - "B. arr.reshape(-1, 4000) — reshape操作"
+    - "C. np.ascontiguousarray(arr[::2]) — 强制连续化"
+    - "D. arr + 1 — 广播加法"
+  answer: "C"
+  explanation: "arr[::2]是view(不拷贝)，reshape在内存连续时也是view。但np.ascontiguousarray会强制将非连续数组(如步长切片结果)拷贝为连续内存布局。在热循环中不必要的连续化会显著影响性能。arr+1创建新数组但这是不可避免的(immutable操作)。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_PY_008
+  category: python_cpp
+  difficulty: senior
+  type: code
+  points: 8
+  question: "编写一个Python metaclass，实现因子注册器(Factor Registry)。要求所有继承BaseFactor的因子类在定义时自动注册到全局注册表中，支持通过名称查找因子类。\nWrite a Python metaclass implementing a Factor Registry. All BaseFactor subclasses auto-register on definition."
+  options: []
+  answer: ""
+  explanation: "使用__init_subclass__或metaclass的__new__方法在类创建时注册。__init_subclass__是Python 3.6+的更简洁方案。"
+  code_snippet: |
+    # 请实现以下代码
+    # Implement the following:
+
+    class FactorRegistry:
+        """Global registry for factor classes."""
+        _registry = {}
+
+        @classmethod
+        def get(cls, name: str):
+            return cls._registry.get(name)
+
+        @classmethod
+        def list_all(cls):
+            return list(cls._registry.keys())
+
+    class BaseFactor:
+        """Base class for all factors. Subclasses auto-register."""
+        # TODO: Implement auto-registration mechanism
+        pass
+
+    # Usage example (should work after implementation):
+    # class MomentumFactor(BaseFactor):
+    #     factor_name = "momentum_20d"
+    #     def compute(self, data): ...
+    #
+    # FactorRegistry.get("momentum_20d")  # returns MomentumFactor class
+    # FactorRegistry.list_all()  # returns ["momentum_20d", ...]
+  code_language: "python"
+  hints:
+    - "__init_subclass__是Python 3.6+的推荐方式"
+    - "也可以用metaclass的__new__方法"
+    - "需要处理BaseFactor自身不被注册的edge case"
+  rubric: "自动注册机制正确(3分)；通过名称查找(2分)；BaseFactor自身不注册(1分)；错误处理(重复名称)(2分)"
+  time_limit_seconds: 480
+
+- id: QD_PY_009
+  category: python_cpp
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "C++ STL容器在量化系统热路径中的选择。存储和遍历最近1000个tick的成交价用于计算指标，以下哪个容器最优？\nFor storing and iterating the last 1000 tick prices for indicator calculation on the hot path, the best STL container is:"
+  options:
+    - "A. std::vector<double> — 连续内存，cache-friendly"
+    - "B. std::deque<double> — 头尾O(1)操作"
+    - "C. std::list<double> — 任意位置O(1)插入"
+    - "D. boost::circular_buffer<double> — 固定大小环形缓冲"
+  answer: "D"
+  explanation: "circular_buffer完美匹配场景需求：1) 固定大小1000——新元素自动覆盖最旧元素，无需手动管理；2) 连续内存——遍历时cache-friendly；3) push_back O(1)——无内存分配。vector(A)需要手动实现环形逻辑(erase front是O(N))。deque(B)内存不完全连续。list(C)cache不友好。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_PY_010
+  category: python_cpp
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Python中Pandas DataFrame.apply() vs 向量化操作的性能对比。对4000行×250列的因子矩阵执行zscore标准化，以下哪种方式最快？\nFor zscore normalization on a 4000×250 factor matrix, which approach is fastest?"
+  options:
+    - "A. df.apply(lambda col: (col - col.mean()) / col.std())"
+    - "B. (df - df.mean()) / df.std()"
+    - "C. scipy.stats.zscore(df, axis=0)"
+    - "D. 三者性能差异可忽略"
+  answer: "B"
+  explanation: "纯向量化操作(B)利用NumPy底层C实现和SIMD指令，比apply(A)快10-100倍（apply有Python函数调用开销和循环）。scipy.stats.zscore(C)内部也是向量化但多了一层函数调用和参数检查的overhead。对于4000×250的矩阵，B和C差异较小，但都显著优于A。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_PY_011
+  category: python_cpp
+  difficulty: expert
+  type: show_work
+  points: 8
+  question: "C++中lock-free编程使用std::atomic。以下代码用于无锁更新最新报价(包含price, volume, timestamp三个字段)。分析不同memory order组合(seq_cst, acquire/release, relaxed)的正确性和性能差异，写出最优方案并论证其正确性。\nAnalyze memory ordering options for lock-free quote updates with three fields. Show the optimal solution with correctness proof."
+  options: []
+  answer: ""
+  explanation: "Release-Acquire语义保证：store(release)之前的所有写入对load(acquire)之后的读取可见。这是单生产者(行情线程)单消费者(策略线程)场景的最优选择——比seq_cst(A)少一次内存屏障。Relaxed不保证可见性顺序，可能读到不一致数据(price更新了但volume还是旧的)。"
+  code_snippet: |
+    struct Quote {
+        std::atomic<double> price;
+        std::atomic<int64_t> volume;
+        std::atomic<int64_t> timestamp;
+    };
+    // Writer thread (market data)
+    quote.price.store(new_price, ???);
+    // Reader thread (strategy)
+    double p = quote.price.load(???);
+  code_language: "cpp"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: QD_PY_012
+  category: python_cpp
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Python内存管理中，以下哪种情况最可能导致因子计算进程的内存泄漏(memory leak)？\nWhich scenario most likely causes memory leak in a factor computation process?"
+  options:
+    - "A. 大量临时NumPy数组创建——GC会自动回收"
+    - "B. 循环引用(circular reference)的自定义对象"
+    - "C. 全局字典缓存因子结果但从不清理"
+    - "D. 使用weakref引用过期对象"
+  answer: "C"
+  explanation: "Python的GC可以处理循环引用(B)，weakref(D)不阻止回收，临时数组(A)引用计数归零即回收。最常见的Python内存泄漏是C选项——全局容器(dict/list)持续累积数据但从不清理。典型场景：每天的因子计算结果缓存在全局dict中，长期运行后内存爆炸。解决：设置max_size或使用LRU cache。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_PY_013
+  category: python_cpp
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "C++ template特化(template specialization)在量化系统中的应用。为不同精度的价格类型提供优化实现，以下代码的行为是？\nWhat is the behavior of this C++ template specialization for different price types?"
+  options:
+    - "A. PriceCalc<float>::multiply使用SIMD加速，PriceCalc<int>::multiply使用整数乘法"
+    - "B. 编译错误——不能对基本类型做模板特化"
+    - "C. 运行时根据类型动态分派"
+    - "D. 所有类型都使用通用模板版本"
+  answer: "A"
+  explanation: "模板全特化在编译期确定：PriceCalc<float>使用特化版本(可利用SSE/AVX SIMD指令)，PriceCalc<int>使用另一个特化版本(整数运算，适合以分为单位的价格)。这是零开销抽象(zero-cost abstraction)——编译期完成所有分派，运行时没有额外开销。"
+  code_snippet: |
+    template<typename T>
+    struct PriceCalc {
+        static T multiply(T price, T qty) { return price * qty; }
+    };
+
+    template<>
+    struct PriceCalc<float> {
+        static float multiply(float price, float qty) {
+            // SIMD optimized path
+            return price * qty;
+        }
+    };
+
+    template<>
+    struct PriceCalc<int> {
+        static int multiply(int price_cents, int qty) {
+            return price_cents * qty;  // 整数运算，无浮点误差
+        }
+    };
+  code_language: "cpp"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_PY_014
+  category: python_cpp
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Pandas中merge操作的性能优化。合并因子数据和收益率数据(各4000行×2500列)，以下哪种方式最快？\nFor merging factor data with return data (both 4000 rows × 2500 cols), the fastest approach is:"
+  options:
+    - "A. pd.merge(factor_df, return_df, on='stock_code')"
+    - "B. factor_df.join(return_df) — 利用相同index"
+    - "C. 确保两个DataFrame的index对齐后直接concat或算术运算"
+    - "D. 使用SQL JOIN通过SQLite中间层"
+  answer: "C"
+  explanation: "如果两个DataFrame已经有相同的index和columns（在因子系统中通常如此——都是date×stock_code的矩阵），直接对齐操作(如factor_df.corrwith(return_df))避免了任何join操作的开销。merge/join(A/B)需要额外的hash表构建和查找。确保数据在入库时就统一index是最佳实践。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_PY_015
+  category: python_cpp
+  difficulty: senior
+  type: code
+  points: 5
+  question: "编写一个C++ RAII类封装DMA(Direct Memory Access)映射的共享内存区域，用于策略进程间共享行情数据。要求实现构造函数(映射)和析构函数(解映射)，禁止拷贝，允许移动。\nWrite a C++ RAII class for shared memory mapping used to share market data between strategy processes. No copy, allow move."
+  options: []
+  answer: ""
+  explanation: "使用mmap/munmap的RAII封装。删除拷贝构造/赋值，实现移动构造/赋值(转移指针所有权)。析构函数中munmap。"
+  code_snippet: |
+    #include <sys/mman.h>
+    #include <fcntl.h>
+    #include <unistd.h>
+    #include <cstddef>
+    #include <stdexcept>
+    #include <utility>
+
+    class SharedMemoryRegion {
+    public:
+        // Constructor: open and mmap shared memory
+        SharedMemoryRegion(const char* name, size_t size);
+
+        // Destructor: munmap and close
+        ~SharedMemoryRegion();
+
+        // Delete copy
+        SharedMemoryRegion(const SharedMemoryRegion&) = delete;
+        SharedMemoryRegion& operator=(const SharedMemoryRegion&) = delete;
+
+        // Implement move
+        SharedMemoryRegion(SharedMemoryRegion&& other) noexcept;
+        SharedMemoryRegion& operator=(SharedMemoryRegion&& other) noexcept;
+
+        void* data() const { return ptr_; }
+        size_t size() const { return size_; }
+
+    private:
+        void* ptr_ = MAP_FAILED;
+        size_t size_ = 0;
+        int fd_ = -1;
+    };
+
+    // TODO: Implement all member functions
+  code_language: "cpp"
+  hints:
+    - "构造函数: shm_open → ftruncate → mmap"
+    - "移动构造: 转移ptr_/size_/fd_，源对象置空"
+    - "析构函数: munmap(ptr_, size_) then close(fd_)"
+  rubric: "构造函数正确(2分)；析构函数正确(1分)；移动语义正确(1分)；异常安全(1分)"
+  time_limit_seconds: 480
+
+- id: QD_PY_016
+  category: python_cpp
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "Python中使用__slots__优化大量小对象的内存。在存储4000只股票的实时行情对象时，__slots__相比普通class的内存节省约是？\nMemory savings of __slots__ vs regular class for 4000 real-time quote objects?"
+  options:
+    - "A. 约10% — __slots__只省了__dict__的少量开销"
+    - "B. 约40-50% — 省去了每个实例的__dict__ (约200+ bytes)"
+    - "C. 约90% — __slots__用C struct存储"
+    - "D. 无节省 — CPython已经自动优化"
+  answer: "B"
+  explanation: "Python普通实例的__dict__是一个dict对象，在CPython 3.x中最少占232 bytes(空dict) + key sharing后约100-200 bytes。__slots__将属性存储在固定大小的C数组中，每个属性仅占一个指针(8 bytes)。对于有5-10个属性的Quote对象，内存从~400bytes降到~150bytes，节省约40-50%。4000个对象节省约1MB。"
+  code_snippet: |
+    # Without __slots__: ~400 bytes per instance
+    class Quote:
+        def __init__(self, code, price, volume, bid, ask):
+            self.code = code
+            self.price = price
+            self.volume = volume
+            self.bid = bid
+            self.ask = ask
+
+    # With __slots__: ~150 bytes per instance
+    class QuoteSlots:
+        __slots__ = ('code', 'price', 'volume', 'bid', 'ask')
+        def __init__(self, code, price, volume, bid, ask):
+            self.code = code
+            self.price = price
+            self.volume = volume
+            self.bid = bid
+            self.ask = ask
+  code_language: "python"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_PY_017
+  category: python_cpp
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Pandas DataFrame的内存布局。以下操作中，哪个会导致DataFrame从column-major(按列连续)变为row-major(按行连续)？\nWhich operation changes a Pandas DataFrame from column-major to row-major memory layout?"
+  options:
+    - "A. df.T — 转置操作"
+    - "B. df.values — 获取底层NumPy数组"
+    - "C. df.to_numpy(copy=True) — 强制拷贝"
+    - "D. Pandas DataFrame始终是column-major，无法改变"
+  answer: "B"
+  explanation: "Pandas DataFrame内部按列存储(每列是一个独立的NumPy数组/Block)。调用df.values时，Pandas需要将多个列合并为一个2D NumPy数组——如果dtype混合则产生拷贝。但注意，df.values返回的数组是C-contiguous (row-major)。df.T只是改变了列的排列，底层存储方式不变。实际上D的说法最接近——DataFrame的底层Block始终按列组织。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_PY_018
+  category: python_cpp
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "C++中std::string_view在量化系统中的性能优势。解析FIX协议消息(如'35=D|49=CLIENT|')时，使用string_view代替string substr的优势是？\nThe performance advantage of std::string_view over string substr when parsing FIX protocol messages is:"
+  options:
+    - "A. string_view是零拷贝(zero-copy)——只是指针+长度，不分配内存"
+    - "B. string_view支持更多字符串操作"
+    - "C. string_view自动管理内存生命周期"
+    - "D. string_view可以修改原字符串"
+  answer: "A"
+  explanation: "string_view只是一个{const char* data, size_t size}的轻量级视图，不拥有内存、不分配堆空间。解析FIX消息时，每个字段提取只需O(1)设置指针和长度，而string::substr需要O(K)的内存分配和拷贝。高频解析(每秒数十万条消息)时，消除内存分配的收益巨大。注意string_view不管理生命周期(C错误)，原字符串被释放后view失效(dangling)。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_PY_019
+  category: python_cpp
+  difficulty: expert
+  type: code
+  points: 8
+  question: "编写一个高性能的Python扩展函数(使用Cython或ctypes)，实现rolling weighted average。权重为指数衰减(exponential decay)。要求比纯NumPy实现至少快3倍。\nWrite a high-performance rolling exponential weighted average using Cython or NumPy optimization. Must be 3x faster than naive NumPy."
+  options: []
+  answer: ""
+  explanation: "关键优化：1) 利用EMA的递推公式 ema[t] = alpha * x[t] + (1-alpha) * ema[t-1] 避免窗口遍历；2) 使用numba.jit或cython进行循环编译优化；3) 避免创建中间数组。"
+  code_snippet: |
+    import numpy as np
+    from numba import njit
+
+    # Naive version - O(N*K) where K is window
+    def ewma_naive(arr: np.ndarray, span: int) -> np.ndarray:
+        alpha = 2.0 / (span + 1)
+        result = np.empty_like(arr)
+        for i in range(len(arr)):
+            if i == 0:
+                result[i] = arr[i]
+            else:
+                result[i] = alpha * arr[i] + (1 - alpha) * result[i-1]
+        return result
+
+    # TODO: Implement optimized version using numba or other technique
+    # Requirements:
+    # 1. Same output as ewma_naive (within floating point tolerance)
+    # 2. At least 3x faster on array of 1M elements
+    # 3. Handle NaN values (skip NaN, don't propagate)
+
+    # @njit  # hint: numba JIT compilation
+    def ewma_fast(arr: np.ndarray, span: int) -> np.ndarray:
+        pass
+  code_language: "python"
+  hints:
+    - "numba @njit可以将Python循环编译为机器码"
+    - "EMA的递推公式是O(N)——关键是消除Python解释器开销"
+    - "处理NaN: if isnan(arr[i]): result[i] = result[i-1]"
+  rubric: "numba/cython正确使用(3分)；NaN处理(2分)；性能达标3x+(2分)；数值精度(1分)"
+  time_limit_seconds: 600
+
+- id: QD_PY_020
+  category: python_cpp
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Python中使用multiprocessing进行并行因子计算时，进程间传递大型NumPy数组的最高效方式是？\nThe most efficient way to pass large NumPy arrays between processes in multiprocessing-based factor computation is:"
+  options:
+    - "A. pickle序列化通过Queue传递"
+    - "B. 使用multiprocessing.shared_memory共享内存"
+    - "C. 写入临时文件，读取文件路径"
+    - "D. 使用Manager().list()共享列表"
+  answer: "B"
+  explanation: "shared_memory (Python 3.8+) 创建共享内存段，多个进程可以直接访问同一块物理内存中的NumPy数组，零拷贝。pickle(A)需要序列化+反序列化+IPC传输，对大数组(如4000×250的float64矩阵=8MB)开销显著。Manager(D)基于代理对象，每次访问都是IPC调用。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+# ============================================================================
+# CONCURRENCY (15 questions)
+# ============================================================================
+
+- id: QD_CONC_001
+  category: concurrency
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在行情接收和策略计算的Producer-Consumer模型中，以下哪种队列实现延迟最低？\nIn a market data producer - strategy consumer model, which queue implementation has the lowest latency?"
+  options:
+    - "A. std::queue + mutex + condition_variable"
+    - "B. Lock-free SPSC (Single Producer Single Consumer) ring buffer"
+    - "C. Boost lockfree::spsc_queue"
+    - "D. B和C等价，都是lock-free SPSC"
+  answer: "D"
+  explanation: "Lock-free SPSC ring buffer是单生产者单消费者场景的最优方案：无锁、无系统调用、无上下文切换。Boost的spsc_queue就是这种实现。延迟可以做到纳秒级。mutex+cv(A)有内核态切换开销(微秒级)。B和C本质相同——都是基于原子变量的SPSC ring buffer。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_CONC_002
+  category: concurrency
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "Python asyncio在量化系统中的正确应用场景。以下哪个场景最适合使用asyncio？\nWhich scenario in a quant system is most suitable for Python asyncio?"
+  options:
+    - "A. 并行计算200个CPU密集型因子"
+    - "B. 同时从多个数据源(Wind, Bloomberg, 交易所)异步获取行情"
+    - "C. NumPy矩阵运算的并行化"
+    - "D. 多策略同时运行的隔离"
+  answer: "B"
+  explanation: "asyncio是IO-bound并发的最佳方案。同时连接多个数据源获取行情(网络IO)时，asyncio可以在等待网络响应时切换到处理其他连接，避免线程的内存和切换开销。CPU密集型任务(A/C)应使用multiprocessing或NumPy的BLAS并行。多策略隔离(D)应使用多进程保证稳定性。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_CONC_003
+  category: concurrency
+  difficulty: senior
+  type: code
+  points: 5
+  question: "以下C++代码存在data race。找出问题并提供修复方案，要求使用std::atomic以最小性能开销修复。\nThis C++ code has a data race. Find the issue and fix it using std::atomic with minimal performance overhead."
+  options: []
+  answer: ""
+  explanation: "position变量被风控线程修改(position -= filled_qty)和策略线程读取(check_risk(position))，两者没有任何同步机制。这是典型的data race——undefined behavior。修复：将position改为std::atomic<int>，使用memory_order_relaxed(读和写都是单个变量，不需要happens-before关系)或acquire/release。"
+  code_snippet: |
+    // Shared state
+    int position = 0;  // 当前持仓
+
+    // Thread 1: 风控线程 - 更新持仓
+    void on_fill(int filled_qty) {
+        position -= filled_qty;
+    }
+
+    // Thread 2: 策略线程 - 读取持仓做决策
+    void on_signal(Signal sig) {
+        if (check_risk(position)) {  // 读取position
+            send_order(new_order(sig));
+        }
+    }
+  code_language: "cpp"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_CONC_004
+  category: concurrency
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "设计线程池(thread pool)用于并行因子计算。有200个因子任务，16个CPU核心。线程池大小应设为？\nFor parallel factor computation with 200 tasks and 16 CPU cores, thread pool size should be:"
+  options:
+    - "A. 200 — 每个因子一个线程"
+    - "B. 16 — 等于CPU核心数"
+    - "C. 32 — 2倍CPU核心数，考虑超线程"
+    - "D. 取决于因子是CPU-bound还是IO-bound"
+  answer: "D"
+  explanation: "最优线程池大小取决于任务类型：CPU-bound因子(技术因子)设为CPU核数(16)以最大化CPU利用率且避免过多上下文切换；IO-bound因子(需要读取数据库的基本面因子)可设为核数×(1+等待时间/计算时间)。混合场景应使用分离的线程池(参考system_design中的bulkhead pattern)。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_CONC_005
+  category: concurrency
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "C++中实现lock-free的MPSC(Multi-Producer Single-Consumer)队列，用于多个行情源向策略引擎推送数据。以下实现方案中，哪个是正确的？\nFor a lock-free MPSC queue where multiple market data sources push to a strategy engine, which implementation is correct?"
+  options:
+    - "A. 使用CAS(compare_exchange_weak)操作链表头指针实现push，pop无需原子操作"
+    - "B. 使用fetch_add在环形缓冲区上分配slot，单消费者顺序读取"
+    - "C. 每个Producer一个SPSC队列，Consumer轮询所有队列"
+    - "D. A和C都是正确的lock-free MPSC实现"
+  answer: "D"
+  explanation: "方案A(Treiber stack变体)：多个producer通过CAS竞争push链表头，consumer是唯一reader所以pop不需CAS。方案C(多SPSC组合)：每个producer有独立SPSC队列连接consumer，consumer按优先级或round-robin轮询。两者都是正确的lock-free实现。方案B的fetch_add在环形缓冲区上有ABA问题和consumer读取到未写入slot的风险。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: QD_CONC_006
+  category: concurrency
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Python多线程编程中，以下哪种同步原语最适合'多个策略线程读取行情，一个线程写入行情'的场景？\nFor 'multiple strategy threads reading quotes, one thread writing quotes' in Python, the best synchronization primitive is:"
+  options:
+    - "A. threading.Lock — 互斥锁"
+    - "B. threading.RLock — 可重入锁"
+    - "C. threading.RWLock — 读写锁(需要第三方库)"
+    - "D. 由于GIL，不需要显式同步"
+  answer: "C"
+  explanation: "读多写少场景的最优同步原语是RWLock(读写锁)：多个读线程可以同时持有读锁(共享)，写线程独占写锁。Python标准库没有RWLock但可用readerwriterlock库。注意：虽然GIL保证了解释器级别的原子性，但复合操作（如读取多个字段）仍需要应用级锁保证一致性(D错误)。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_CONC_007
+  category: concurrency
+  difficulty: senior
+  type: code
+  points: 8
+  question: "实现一个线程安全的因子缓存(thread-safe factor cache)，支持并发读取和单线程更新。使用Python的threading模块，要求读操作不阻塞其他读操作。\nImplement a thread-safe factor cache with concurrent reads and single-writer updates using Python threading."
+  options: []
+  answer: ""
+  explanation: "使用RWLock或copy-on-write模式。Copy-on-write：writer创建新dict副本，修改后原子替换引用，reader始终读取不可变的旧版本。这是最高效的读多写少方案。"
+  code_snippet: |
+    import threading
+    from typing import Dict, Optional, Any
+
+    class ThreadSafeFactorCache:
+        """
+        Thread-safe cache for factor values.
+        Supports concurrent reads without blocking.
+        Single writer updates atomically.
+        """
+        def __init__(self):
+            # TODO: Initialize
+            pass
+
+        def get(self, factor_name: str, date: str) -> Optional[float]:
+            """Thread-safe read. Must not block other reads."""
+            # TODO: Implement
+            pass
+
+        def batch_update(self, updates: Dict[str, Dict[str, float]]) -> None:
+            """
+            Atomically update multiple factor values.
+            updates: {factor_name: {date: value}}
+            Must not block concurrent reads during update preparation.
+            """
+            # TODO: Implement
+            pass
+
+    # Usage:
+    # cache = ThreadSafeFactorCache()
+    # Thread 1 (writer): cache.batch_update({"momentum": {"2024-01-01": 0.05}})
+    # Thread 2 (reader): cache.get("momentum", "2024-01-01") -> 0.05
+    # Thread 3 (reader): cache.get("momentum", "2024-01-01") -> 0.05 (concurrent)
+  code_language: "python"
+  hints:
+    - "Copy-on-write模式：writer在副本上修改，完成后原子替换引用"
+    - "Python的dict赋值(self._data = new_data)在GIL下是原子的"
+    - "也可以使用RWLock实现"
+  rubric: "并发读不阻塞(3分)；写入原子性(3分)；正确性(无data race)(1分)；性能讨论(1分)"
+  time_limit_seconds: 480
+
+- id: QD_CONC_008
+  category: concurrency
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "C++ memory ordering中，以下哪种场景需要使用memory_order_seq_cst而不能降级为acquire/release？\nWhich scenario requires memory_order_seq_cst and cannot be downgraded to acquire/release?"
+  options:
+    - "A. 单生产者单消费者的数据传递"
+    - "B. 多个线程需要观察到一致的全局操作顺序(total order)"
+    - "C. 原子计数器的递增"
+    - "D. 一次性初始化(once flag)"
+  answer: "B"
+  explanation: "seq_cst提供全局全序(total order)——所有线程观察到相同的操作顺序。典型场景：多个风控线程需要按一致顺序看到持仓变化（否则可能出现一个线程看到order A先于B，另一个看到B先于A，导致风控不一致）。SPSC(A)和计数器(C)用acquire/release即可。once flag(D)用call_once。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: QD_CONC_009
+  category: concurrency
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Python concurrent.futures模块中，ProcessPoolExecutor和ThreadPoolExecutor在因子计算场景中的选择依据是？\nCriteria for choosing ProcessPoolExecutor vs ThreadPoolExecutor for factor computation:"
+  options:
+    - "A. 始终用ProcessPool——Python多线程因为GIL完全无用"
+    - "B. CPU密集型因子用ProcessPool，IO密集型因子用ThreadPool"
+    - "C. 始终用ThreadPool——进程创建开销太大"
+    - "D. 根据因子数量决定——少于CPU核数用Thread，否则用Process"
+  answer: "B"
+  explanation: "CPU-bound因子(如技术指标计算)受GIL限制，必须用ProcessPool获得真正的并行。IO-bound因子(如从数据库/API读取基本面数据)受网络/磁盘延迟限制，ThreadPool即可有效并发(GIL在IO等待时释放)且避免了进程间数据序列化的开销。A错误——GIL在IO等待和C扩展时释放。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_CONC_010
+  category: concurrency
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在低延迟交易系统中使用busy-wait(自旋等待)代替blocking wait。以下关于CPU cache对busy-wait性能影响的说法，正确的是？\nRegarding CPU cache effects on busy-wait in low-latency trading systems, which statement is correct?"
+  options:
+    - "A. busy-wait总是比blocking wait快"
+    - "B. 自旋读取的变量应在独立的cache line上(避免false sharing)"
+    - "C. busy-wait不消耗CPU资源"
+    - "D. x86架构上busy-wait不需要memory fence"
+  answer: "B"
+  explanation: "False sharing是busy-wait的关键性能陷阱：如果自旋读取的flag变量与其他频繁修改的变量共享同一cache line(64 bytes)，会导致cache line不断在核间弹跳(cache thrashing)，延迟剧增。解决方法：alignas(64)或padding确保flag独占cache line。A错误——busy-wait在无数据时浪费CPU(C也错)。D错误——x86虽然提供较强的内存模型(TSO)但compiler barrier仍然需要。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: QD_CONC_011
+  category: concurrency
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "以下代码实现了一个简单的double-checked locking模式用于策略对象的延迟初始化。在C++11中，这段代码是否正确？\nIs this double-checked locking pattern correct in C++11 for lazy initialization of strategy objects?"
+  options:
+    - "A. 正确——std::atomic的load/store保证了正确的内存顺序"
+    - "B. 错误——应使用std::call_once代替"
+    - "C. 错误——instance.load()需要memory_order_acquire"
+    - "D. A和B都正确，但B是更推荐的方式"
+  answer: "D"
+  explanation: "代码使用seq_cst是正确的（比必要的更强但正确）。std::call_once是C++标准推荐的线程安全延迟初始化方式，内部使用platform-specific优化(如pthread_once)，代码更简洁且不需要手动管理atomic和mutex。C++11的函数内静态变量也是线程安全的：static Strategy* inst = new Strategy();——编译器保证只初始化一次。"
+  code_snippet: |
+    class StrategyFactory {
+        std::atomic<Strategy*> instance{nullptr};
+        std::mutex mtx;
+
+        Strategy* get() {
+            Strategy* p = instance.load();
+            if (!p) {
+                std::lock_guard<std::mutex> lock(mtx);
+                p = instance.load();
+                if (!p) {
+                    p = new Strategy();
+                    instance.store(p);
+                }
+            }
+            return p;
+        }
+    };
+  code_language: "cpp"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: QD_CONC_012
+  category: concurrency
+  difficulty: medium_high
+  type: code
+  points: 5
+  question: "使用Python asyncio实现一个行情WebSocket连接池，同时连接3个数据源(Wind, Bloomberg, 交易所)，任一数据源返回数据后立即处理。要求正确使用asyncio.gather和错误处理。\nImplement an asyncio WebSocket connection pool connecting to 3 data sources concurrently with proper error handling."
+  options: []
+  answer: ""
+  explanation: "使用asyncio.gather()并发连接，return_exceptions=True处理单个连接失败不影响其他连接。每个连接封装为async函数，内部用asyncio.sleep()而非time.sleep()。"
+  code_snippet: |
+    import asyncio
+    from typing import List, Dict, Any
+
+    async def connect_source(name: str, url: str) -> None:
+        """Connect to a single data source and process messages."""
+        # TODO: Implement WebSocket connection with reconnection logic
+        # Use asyncio.sleep() for delays, NOT time.sleep()
+        pass
+
+    async def run_market_data_pool(sources: Dict[str, str]) -> None:
+        """
+        Connect to all data sources concurrently.
+        sources: {"wind": "ws://...", "bloomberg": "ws://...", "exchange": "ws://..."}
+        Requirements:
+        - All connections run concurrently
+        - One source failing should not crash others
+        - Auto-reconnect on disconnect
+        """
+        # TODO: Implement using asyncio.gather with error handling
+        pass
+  code_language: "python"
+  hints:
+    - "asyncio.gather(*tasks, return_exceptions=True)处理单个失败"
+    - "绝不使用time.sleep()——会阻塞整个事件循环"
+    - "使用asyncio.Lock()而非threading.Lock()保护共享状态"
+  rubric: "正确使用gather(2分)；错误处理(1分)；重连逻辑(1分)；无阻塞调用(1分)"
+  time_limit_seconds: 480
+
+- id: QD_CONC_013
+  category: concurrency
+  difficulty: expert
+  type: open_ended
+  points: 10
+  question: "设计一个无锁(lock-free)的实时行情聚合器：多个行情源线程并发推送tick数据，一个消费者线程按时间戳排序后输出。要求：\n1. 行情源线程之间无锁竞争\n2. 聚合延迟<1μs\n3. 处理行情源之间的时间戳乱序\n讨论你的设计方案、正确性论证和性能分析。\nDesign a lock-free real-time market data aggregator with multiple source threads and one consumer."
+  options: []
+  answer: ""
+  explanation: "方案：每个source一个SPSC ring buffer连接到consumer。Consumer用N-way merge（小顶堆或tournament tree）按timestamp合并。时间戳乱序通过watermark机制处理——每个source定期发送heartbeat标记最小未来时间戳，consumer据此确定何时可以安全输出。延迟=max(source delay)+merge overhead。"
+  code_snippet: ""
+  code_language: ""
+  hints:
+    - "每个source独立SPSC队列避免锁竞争"
+    - "Consumer端用heap做N-way merge"
+    - "Watermark机制处理时间戳乱序——类似Flink的event time processing"
+  rubric: "SPSC per source设计(3分)；N-way merge方案(2分)；乱序处理(watermark)(3分)；延迟分析(2分)"
+  time_limit_seconds: 900
+
+- id: QD_CONC_014
+  category: concurrency
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在Python中实现生产者-消费者模式处理因子计算任务队列。以下哪种方式能最好地处理'消费者处理速度跟不上生产者'的backpressure问题？\nFor producer-consumer factor computation, which approach best handles backpressure?"
+  options:
+    - "A. 使用无限大小的queue.Queue"
+    - "B. 使用有限大小的queue.Queue(maxsize=N)，put时阻塞"
+    - "C. 使用asyncio.Queue with maxsize + 丢弃旧数据策略"
+    - "D. 不处理——生产者应该总是比消费者快"
+  answer: "B"
+  explanation: "有限大小Queue(maxsize=N)是最安全的backpressure方案：当队列满时，生产者阻塞，自然减速（flow control）。无限Queue(A)在持续过载时内存会爆炸。丢弃旧数据(C)可能适用于行情但不适用于因子计算任务（不能丢失）。不处理(D)是设计缺陷。maxsize的值应根据内存预算和延迟容忍度设定。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_CONC_015
+  category: concurrency
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "C++中std::future和std::async用于异步因子计算。以下代码的问题是？\nWhat is the issue with this C++ async factor computation code?"
+  options:
+    - "A. std::async可能使用deferred执行(不并行)——应指定std::launch::async"
+    - "B. future.get()会抛出异常但没有try-catch"
+    - "C. 返回的vector可能被拷贝而非移动"
+    - "D. 没有问题——代码正确"
+  answer: "A"
+  explanation: "std::async的默认启动策略是std::launch::async|std::launch::deferred，编译器可以选择延迟执行(在调用get()时才同步执行)，完全不并行！应显式指定std::launch::async确保立即在新线程执行。这是std::async的常见陷阱。"
+  code_snippet: |
+    std::vector<double> compute_factor(const std::string& name) {
+        // 耗时因子计算...
+        return result;
+    }
+
+    void compute_all() {
+        auto f1 = std::async(compute_factor, "momentum");  // 可能不并行!
+        auto f2 = std::async(compute_factor, "reversal");
+        auto r1 = f1.get();
+        auto r2 = f2.get();
+    }
+  code_language: "cpp"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+# ============================================================================
+# DATA PIPELINE (10 questions)
+# ============================================================================
+
+- id: QD_PIPE_001
+  category: data_pipeline
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在Airflow DAG中编排因子计算pipeline，以下哪种task依赖模式最佳？\nFor orchestrating factor computation in an Airflow DAG, which task dependency pattern is best?"
+  options:
+    - "A. 线性链式：download >> clean >> compute_all_factors >> store"
+    - "B. 扇出扇入：download >> clean >> [factor_1, factor_2, ..., factor_n] >> store"
+    - "C. 动态生成：根据配置文件动态生成factor task"
+    - "D. B和C结合——动态扇出+统一汇总"
+  answer: "D"
+  explanation: "最佳方案结合B和C：1) 从配置文件(factor_registry.yaml)动态生成factor计算task——新增因子无需修改DAG代码；2) 扇出并行执行独立因子；3) 有依赖关系的因子通过DAG edge表达。线性(A)无法并行，太慢。纯静态扇出(B)不灵活。Airflow的Dynamic Task Mapping(2.3+)直接支持这种模式。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_PIPE_002
+  category: data_pipeline
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "DolphinDB在因子存储中的优势。相比传统关系数据库(如MySQL)，DolphinDB处理'按日期取4000只股票的横截面因子值'查询的性能优势主要来自？\nDolphinDB's performance advantage over MySQL for cross-sectional factor queries mainly comes from:"
+  options:
+    - "A. 内置的向量化计算引擎——查询即计算"
+    - "B. 列式存储(columnar storage)——只读取需要的列"
+    - "C. 分布式计算——自动并行化"
+    - "D. 以上全部"
+  answer: "D"
+  explanation: "DolphinDB的核心优势是三者结合：1) 列式存储使横截面查询只需扫描factor_value列而非整行；2) 内置向量化引擎可以在数据库层面直接执行zscore、rank等因子操作，避免数据传输到Python再计算；3) 分区表(partition by date)支持分布式并行查询。MySQL是行式存储+通用SQL引擎，在OLAP场景下全面劣势。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_PIPE_003
+  category: data_pipeline
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "数据质量校验(data quality validation)在因子pipeline中应在哪个环节执行？以下哪种策略最完善？\nAt which stage should data quality validation run in a factor pipeline? Which strategy is most thorough?"
+  options:
+    - "A. 只在数据源头(ingestion时)校验"
+    - "B. 只在因子计算前校验"
+    - "C. 每个环节都有校验：ingestion → cleaning → computation → storage"
+    - "D. 只在最终入库前校验"
+  answer: "C"
+  explanation: "Defense in depth——每个环节的校验侧重点不同：1) Ingestion：数据完整性(行数、时间范围、schema)；2) Cleaning后：缺失率、异常值比例、分布统计量；3) Computation后：因子值范围、相关性检查、与历史一致性；4) Storage前：幂等性检查、版本一致性。单点校验(A/B/D)无法捕获pipeline中间引入的数据质量问题。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_PIPE_004
+  category: data_pipeline
+  difficulty: senior
+  type: open_ended
+  points: 8
+  question: "设计Point-in-Time (PIT) 数据存储方案，用于存储A股财务报表数据。要求：\n1. 支持查询'在某个历史时间点能看到的最新财报数据'\n2. 处理财报修正(amendment)——同一期报表可能发布多个版本\n3. 支持高效的批量回溯查询(backfill)\n描述表结构设计和查询逻辑。\nDesign a PIT storage scheme for A-share financial statements supporting historical point-in-time queries."
+  options: []
+  answer: ""
+  explanation: "核心表设计：fact_financials(stock_code, report_period, announce_date, version, field_name, field_value)。PIT查询: SELECT * WHERE announce_date <= as_of_date ORDER BY version DESC LIMIT 1 per (stock_code, report_period, field)。修正处理：每次修正新增一行，version递增。批量回溯：预计算PIT快照表(materialized view)按月/日粒度。"
+  code_snippet: ""
+  code_language: ""
+  hints:
+    - "关键字段：report_period(报告期)和announce_date(实际公告日)区分"
+    - "同一report_period可能有多次announce(初始+修正)"
+    - "预计算PIT快照可以大幅加速批量回溯查询"
+  rubric: "表结构设计(3分)；PIT查询逻辑(2分)；修正处理(2分)；性能优化(1分)"
+  time_limit_seconds: 600
+
+- id: QD_PIPE_005
+  category: data_pipeline
+  difficulty: medium_high
+  type: code
+  points: 5
+  question: "实现一个增量更新(incremental refresh)框架，判断因子是否支持增量更新，并分别实现增量和全量刷新逻辑。要求：动量因子增量更新，横截面排名因子全量刷新。\nImplement an incremental refresh framework that determines whether a factor supports incremental updates."
+  options: []
+  answer: ""
+  explanation: "动量因子只需最新N天数据即可增量计算，横截面排名需要当日全市场数据必须全量重算。通过is_incremental属性标记因子类型。"
+  code_snippet: |
+    import pandas as pd
+    from abc import ABC, abstractmethod
+
+    class BaseFactor(ABC):
+        @property
+        @abstractmethod
+        def is_incremental(self) -> bool:
+            """Whether this factor supports incremental refresh."""
+            pass
+
+        @abstractmethod
+        def compute_full(self, data: pd.DataFrame) -> pd.Series:
+            """Full refresh: compute from all data."""
+            pass
+
+        @abstractmethod
+        def compute_incremental(self, new_data: pd.DataFrame, prev_result: pd.Series) -> pd.Series:
+            """Incremental refresh: update from new data only. Raise if not supported."""
+            pass
+
+    # TODO: Implement MomentumFactor (incremental) and RankFactor (full refresh only)
+  code_language: "python"
+  hints:
+    - "动量因子增量：只需shift(20)的新值即可计算最新一期"
+    - "排名因子：任何一只股票变化影响所有排名，必须全量"
+    - "compute_incremental在不支持时应抛出NotImplementedError"
+  rubric: "is_incremental正确标记(1分)；动量增量实现(2分)；排名全量实现(1分)；错误处理(1分)"
+  time_limit_seconds: 480
+
+- id: QD_PIPE_006
+  category: data_pipeline
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "选择因子数据的文件存储格式。数据特点：float64为主，4000行×200列，需要频繁按列读取，需要跨语言(Python/C++)访问。最佳格式是？\nFor factor data (float64, 4000×200, frequent column reads, Python/C++ cross-language), the best file format is:"
+  options:
+    - "A. CSV — 通用兼容"
+    - "B. HDF5 — 高性能科学计算格式"
+    - "C. Apache Arrow (Feather v2 / IPC) — 零拷贝跨语言"
+    - "D. Pickle — Python原生序列化"
+  answer: "C"
+  explanation: "Apache Arrow/Feather满足所有需求：1) 列式存储——按列读取高效；2) 零拷贝(zero-copy)读取——mmap文件直接作为内存中的Arrow数组；3) 跨语言——Python(pyarrow)和C++(arrow-cpp)原生支持；4) 类型保持——float64精确保存。HDF5(B)也可以但跨语言不如Arrow方便。CSV(A)解析慢且精度丢失。Pickle(D)Python-only。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_PIPE_007
+  category: data_pipeline
+  difficulty: expert
+  type: open_ended
+  points: 8
+  question: "设计一个处理A股除权除息(corporate actions: ex-dividend, stock split)的数据pipeline。要求：\n1. 自动检测并获取最新除权除息信息\n2. 前复权(forward adjustment)和后复权(backward adjustment)价格计算\n3. 保证因子计算使用正确的复权方式\n4. 处理复权因子(adjustment factor)变更时的级联更新\n描述pipeline设计和关键处理逻辑。\nDesign a pipeline for handling A-share corporate actions (dividends, splits) with price adjustment."
+  options: []
+  answer: ""
+  explanation: "Pipeline：1) 每日从交易所/数据源获取除权除息公告→解析为标准化事件(分红比例、送转比例、配股信息)；2) 计算复权因子：adj_factor = adj_factor_prev × (1 + bonus_ratio + allot_ratio) / (1 + allot_ratio + cash_div/ex_price)；3) 前复权=原始价格×adj_factor/latest_adj_factor；后复权=原始价格×adj_factor；4) 复权因子变更时，触发受影响因子的重算(因子依赖图中标记dirty)。"
+  code_snippet: ""
+  code_language: ""
+  hints:
+    - "前复权vs后复权：前复权修改历史价格使之与最新可比，后复权保持历史价格不变"
+    - "复权因子是累积的——每次除权事件更新复权因子序列"
+    - "某些因子(如动量)必须使用复权价格，否则除权日会产生虚假信号"
+  rubric: "除权除息事件解析(2分)；复权因子计算(2分)；前后复权区别和使用场景(2分)；级联更新(2分)"
+  time_limit_seconds: 600
+
+- id: QD_PIPE_008
+  category: data_pipeline
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在因子数据pipeline中处理缺失值(missing values)的策略。以下哪种做法在量化因子计算中最合理？\nThe most appropriate missing value handling strategy in factor computation pipeline is:"
+  options:
+    - "A. 全部用0填充(fillna(0))"
+    - "B. 用前值填充(forward fill)"
+    - "C. 根据因子语义选择不同的填充策略，或保留NaN"
+    - "D. 删除所有包含NaN的行"
+  answer: "C"
+  explanation: "不同因子的缺失语义不同：1) 日频收益率缺失→停牌，应标记为NaN并排除出排序(不是0)；2) 基本面因子缺失→财报未发布，可forward fill(用上期值)；3) 技术因子窗口期不足→保留NaN表示无有效值。通用的fillna(0)(A)或dropna(D)都会扭曲因子分布和排名。正确策略取决于因子语义。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_PIPE_009
+  category: data_pipeline
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "使用Apache Airflow调度因子pipeline时，如何处理'昨天的因子计算任务失败，今天的任务依赖昨天的结果'的情况？\nIn Airflow, how to handle 'yesterday's factor task failed, today's task depends on its result'?"
+  options:
+    - "A. 设置depends_on_past=True，今天的任务自动等待昨天成功"
+    - "B. 使用Airflow Sensor检测昨天的数据是否存在"
+    - "C. catchup=True + depends_on_past=True，手动trigger backfill"
+    - "D. 忽略依赖，使用default值运行今天的任务"
+  answer: "C"
+  explanation: "depends_on_past=True保证DAG run的执行顺序——今天的task只在昨天同名task成功后才运行。结合catchup=True，Airflow会自动回填(backfill)缺失的DAG runs。正确的恢复流程：1) 修复根因；2) clear昨天的失败task；3) Airflow自动重跑昨天→今天。Sensor(B)只检查数据存在性，不保证完整的DAG执行顺序。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_PIPE_010
+  category: data_pipeline
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "设计数据pipeline的幂等性(idempotency)。因子计算任务重跑时应保证结果一致。以下哪种策略确保幂等性？\nWhich strategy ensures idempotency when re-running factor computation tasks?"
+  options:
+    - "A. 每次运行前先删除目标表中该日期的数据，再插入新数据"
+    - "B. 使用INSERT ... ON DUPLICATE KEY UPDATE (upsert)"
+    - "C. 只使用INSERT IGNORE忽略重复"
+    - "D. A和B都能保证幂等性"
+  answer: "D"
+  explanation: "A(delete-then-insert)和B(upsert)都保证幂等——多次执行结果相同。A更适合批量操作(先清除再批量插入)，性能更好且语义清晰。B适合逐行更新场景。C(INSERT IGNORE)不是幂等的——如果因子值更新了（如修复bug后重算），IGNORE会保留旧值。实际生产中A(delete+insert in transaction)是因子数据的标准做法。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+# ============================================================================
+# FACTOR DOMAIN (10 questions)
+# ============================================================================
+
+- id: QD_FAC_001
+  category: factor_domain
+  difficulty: senior
+  type: code
+  points: 8
+  question: "以下因子计算代码存在多个问题(look-ahead bias、计算效率、数值稳定性)。请找出所有问题并修复。\nThis factor computation code has multiple issues (look-ahead bias, efficiency, numerical stability). Find and fix all issues."
+  options: []
+  answer: ""
+  explanation: "问题：1) look-ahead bias：用当天收盘价计算因子后直接与当天收益对齐，应该与次日收益对齐；2) 效率：使用了apply+lambda逐行操作，应向量化；3) 数值稳定性：std可能为0导致除零。"
+  code_snippet: |
+    import pandas as pd
+    import numpy as np
+
+    def compute_momentum_factor(price_df: pd.DataFrame) -> pd.DataFrame:
+        """
+        计算20日动量因子并与收益率对齐
+        price_df: index=date, columns=stock_code, values=close_price
+        """
+        # 问题代码 - 找出所有bug
+        returns = price_df.pct_change()
+
+        # 20日动量
+        momentum = price_df / price_df.shift(20) - 1
+
+        # 标准化
+        factor = momentum.apply(lambda row: (row - row.mean()) / row.std(), axis=1)
+
+        # 计算IC
+        ic = factor.corrwith(returns, axis=1)  # BUG: look-ahead!
+
+        return factor, ic
+
+    # TODO: Write corrected version compute_momentum_factor_fixed
+    # Fix ALL issues: look-ahead bias, efficiency, numerical stability
+  code_language: "python"
+  hints:
+    - "look-ahead: factor应该与shift(-1)的未来收益对齐"
+    - "效率: apply(axis=1)在大矩阵上很慢，用向量化替代"
+    - "数值: std()可能为0，需要处理除零"
+  rubric: "发现look-ahead bias(3分)；修复效率问题(2分)；处理数值稳定性(2分)；代码正确可运行(1分)"
+  time_limit_seconds: 600
+
+- id: QD_FAC_002
+  category: factor_domain
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "计算因子IC (Information Coefficient) 时，Rank IC相比普通Pearson IC的优势是？\nThe advantage of Rank IC over Pearson IC in factor evaluation is:"
+  options:
+    - "A. Rank IC计算速度更快"
+    - "B. Rank IC对outliers更鲁棒，不假设线性关系"
+    - "C. Rank IC的值域更大，区分度更好"
+    - "D. Rank IC不需要处理缺失值"
+  answer: "B"
+  explanation: "Rank IC(Spearman correlation)先对因子值和收益率分别排名再计算相关系数。优势：1) 对outliers鲁棒——极端值排名后影响有限；2) 捕捉非线性单调关系——不假设因子值和收益率是线性关系；3) 分布无关——不要求正态分布。Pearson IC在因子值或收益有极端outlier时会被严重扭曲。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_FAC_003
+  category: factor_domain
+  difficulty: expert
+  type: open_ended
+  points: 10
+  question: "设计因子Alpha Decay检测和管理系统。要求：\n1. 定义Alpha Decay的量化指标\n2. 区分短期波动和真正的衰减趋势\n3. 设计自动化的因子退役(retirement)流程\n4. 讨论在A股市场中因子衰减的典型原因\n请给出完整的检测方案和管理策略。\nDesign an alpha decay detection and management system for factors."
+  options: []
+  answer: ""
+  explanation: "量化指标：1) IC/ICIR的滚动窗口(如60日)趋势——用线性回归斜率检测下降趋势；2) 因子收益的累积曲线——曲线走平或下行表示衰减；3) 因子换手率变化——过高换手可能表示过拟合。区分波动vs衰减：使用Page-Hinkley检测或CUSUM检测结构性变化。退役流程：WARNING(连续30天ICIR<0.5) → PROBATION(降低权重至50%) → RETIREMENT(移除出组合)。A股衰减原因：政策变化、市场微结构改变、拥挤交易(crowding)、数据源变更。"
+  code_snippet: ""
+  code_language: ""
+  hints:
+    - "ICIR = mean(IC) / std(IC)，滚动窗口计算观察趋势"
+    - "因子拥挤度(factor crowding)是A股因子衰减的重要原因"
+    - "考虑regime change——不同市场环境因子表现差异大"
+  rubric: "量化指标定义(3分)；波动vs衰减区分(2分)；退役流程设计(3分)；A股市场特殊性(2分)"
+  time_limit_seconds: 900
+
+- id: QD_FAC_004
+  category: factor_domain
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "因子回测中，turnover(换手率)过高通常意味着什么？以下说法最准确的是？\nIn factor backtesting, excessively high turnover usually indicates:"
+  options:
+    - "A. 因子信号频繁翻转——可能是噪声而非真正的alpha信号"
+    - "B. 因子效果好——频繁调仓说明预测能力强"
+    - "C. 数据有问题——缺失值导致排名剧烈变化"
+    - "D. A和C都可能"
+  answer: "D"
+  explanation: "高turnover的两个常见原因：1) 因子信号不稳定(A)——因子值在边界附近微小变化导致排名大幅跳动，产生大量无意义的交易，交易成本侵蚀收益；2) 数据质量问题(C)——停牌数据缺失导致因子值异常→恢复后排名巨变。排查方法：先检查数据质量，再评估因子值的自相关性(autocorrelation)。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_FAC_005
+  category: factor_domain
+  difficulty: senior
+  type: code
+  points: 8
+  question: "实现因子ICIR (Information Coefficient Information Ratio)的计算函数，要求支持不同的rolling window和统计检验(t-test)。\nImplement ICIR calculation with rolling window support and t-test significance testing."
+  options: []
+  answer: ""
+  explanation: "ICIR = mean(IC) / std(IC)。滚动窗口计算后还需做t检验判断IC是否显著不为0：t = IC_mean * sqrt(N) / IC_std，自由度N-1。"
+  code_snippet: |
+    import numpy as np
+    import pandas as pd
+    from scipy import stats
+    from typing import Tuple
+
+    def compute_icir(
+        factor_df: pd.DataFrame,
+        return_df: pd.DataFrame,
+        window: int = 60,
+        method: str = "rank"
+    ) -> Tuple[pd.Series, pd.Series, pd.Series]:
+        """
+        Compute rolling ICIR with statistical significance.
+
+        Args:
+            factor_df: index=date, columns=stock, values=factor_value
+            return_df: index=date, columns=stock, values=next_period_return
+            window: rolling window for ICIR computation
+            method: "rank" for Rank IC or "pearson" for Pearson IC
+
+        Returns:
+            ic_series: daily IC values
+            icir_series: rolling ICIR values
+            pvalue_series: p-values from t-test (H0: IC=0)
+        """
+        # TODO: Implement
+        # 1. Compute daily IC (Rank or Pearson)
+        # 2. Compute rolling ICIR = rolling_mean(IC) / rolling_std(IC)
+        # 3. Compute t-statistic and p-value for each rolling window
+        pass
+  code_language: "python"
+  hints:
+    - "Rank IC: 对factor和return分别rank后计算Pearson correlation"
+    - "t-stat = ICIR * sqrt(window)"
+    - "p-value = 2 * (1 - t_dist.cdf(abs(t_stat), df=window-1))"
+  rubric: "IC计算正确(3分)；ICIR rolling计算(2分)；t检验实现(2分)；NaN处理(1分)"
+  time_limit_seconds: 480
+
+- id: QD_FAC_006
+  category: factor_domain
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "因子中性化(factor neutralization)的目的和方法。对市值因子做行业中性化时，以下哪种方法正确？\nFor industry-neutralizing a market cap factor, which method is correct?"
+  options:
+    - "A. 对每个行业内的市值因子做zscore标准化"
+    - "B. 用OLS回归：factor ~ industry_dummies，取残差"
+    - "C. 减去行业均值：factor_neutralized = factor - group_mean(factor, industry)"
+    - "D. 以上方法都正确，A和C等价"
+  answer: "D"
+  explanation: "行业中性化的本质是消除因子在不同行业间的系统性差异。A(行业内zscore)使每个行业的因子分布标准化，B(回归取残差)和C(减去行业均值)在只有行业虚拟变量时等价——OLS对category变量的残差就是减去组均值。如果A只做减均值除标准差，则A和C的减均值部分等价。三种方法在实践中都被广泛使用。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_FAC_007
+  category: factor_domain
+  difficulty: expert
+  type: show_work
+  points: 10
+  question: "设计一个因子从研发到生产上线的完整SOP(Standard Operating Procedure)。要求覆盖：\n1. 因子研发和回测标准\n2. 样本外测试(out-of-sample testing)\n3. 纸上交易(paper trading)验证\n4. 灰度发布(canary deployment)流程\n5. 生产监控和退出机制\n画出完整流程图并说明每个环节的准入/退出标准。\nDesign a complete SOP for factor research to production deployment."
+  options: []
+  answer: ""
+  explanation: "SOP流程：1) 研发：ICIR>0.5, Rank IC>0.03, turnover<30%月, 回测夏普>1.5, 回测最大回撤<10%；2) 样本外：留出最近6个月数据，样本外ICIR衰减<30%；3) Paper Trading：至少20个交易日，实际IC与回测IC偏差<20%；4) 灰度：初始权重=目标的10%，逐步提升至100%，观察实际P&L；5) 生产监控：每日检查IC/turnover/P&L，触发退出条件时执行退役流程。"
+  code_snippet: ""
+  code_language: ""
+  hints:
+    - "样本内过拟合是最大风险——样本外测试是核心环节"
+    - "Paper trading检验实盘可行性——滑点、成交量限制、限价单成交率"
+    - "灰度发布降低新因子上线的风险——逐步加大权重"
+  rubric: "每个环节准入标准(3分)；量化指标合理(2分)；流程完整性(2分)；风险控制(2分)；A股特殊性(如涨跌停、T+1)(1分)"
+  time_limit_seconds: 900
+
+- id: QD_FAC_008
+  category: factor_domain
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在因子组合优化(factor portfolio optimization)中，以下哪种方法处理因子间多重共线性(multicollinearity)最有效？\nWhich method most effectively handles factor multicollinearity in portfolio optimization?"
+  options:
+    - "A. 主成分分析(PCA)降维——提取正交因子"
+    - "B. L1正则化(LASSO)——自动因子选择"
+    - "C. VIF(方差膨胀因子)检验后人工剔除"
+    - "D. 使用Rank IC加权而非回归"
+  answer: "B"
+  explanation: "LASSO回归(L1正则化)在优化过程中自动将冗余因子的系数压缩为0，同时保留最有信息量的因子子集。PCA(A)虽然消除共线性但因子失去可解释性。VIF(C)是诊断工具但人工剔除缺乏最优性保证。Rank IC加权(D)不直接处理共线性——高度相关的因子仍然会产生集中暴露。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_FAC_009
+  category: factor_domain
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在A股因子回测中使用分层回测(quantile backtest)，将股票按因子值分为5组。以下哪个检查是验证因子有效性的最关键指标？\nIn quantile backtesting (5 groups), which check is most critical for validating factor effectiveness?"
+  options:
+    - "A. Top组的绝对收益是否为正"
+    - "B. Top组和Bottom组的收益差(Long-Short return)是否显著"
+    - "C. 各组收益是否呈单调递增/递减排列"
+    - "D. Top组的夏普比率(Sharpe Ratio)是否>1"
+  answer: "C"
+  explanation: "单调性(monotonicity)是因子有效性的最强证据：如果因子值从低到高(Q1→Q5)对应的平均收益呈单调递增(或递减)，说明因子对收益有稳定的线性排序能力。只看Top vs Bottom(B)可能忽略中间组的非单调性(如U型关系)。绝对收益(A)和夏普(D)受市场环境影响，不是因子本身的特征。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_FAC_010
+  category: factor_domain
+  difficulty: senior
+  type: code
+  points: 5
+  question: "实现因子的Fama-MacBeth回归(cross-sectional regression)，用于检验因子对收益率的解释力。要求输出因子的风险溢价(risk premium)和t统计量。\nImplement Fama-MacBeth cross-sectional regression to test factor explanatory power. Output risk premium and t-statistic."
+  options: []
+  answer: ""
+  explanation: "Fama-MacBeth两步法：1) 每个截面(日期)做cross-sectional回归 return_i = alpha + beta * factor_i + epsilon_i，得到每期的gamma(因子溢价)；2) 对所有gamma取时间序列均值，用t检验判断是否显著不为0。t = mean(gamma) / (std(gamma) / sqrt(T))。"
+  code_snippet: |
+    import numpy as np
+    import pandas as pd
+    from scipy import stats as sp_stats
+
+    def fama_macbeth(
+        factor_df: pd.DataFrame,
+        return_df: pd.DataFrame
+    ) -> dict:
+        """
+        Fama-MacBeth cross-sectional regression.
+
+        Args:
+            factor_df: index=date, columns=stock, values=factor
+            return_df: index=date, columns=stock, values=next_day_return
+
+        Returns:
+            dict with keys:
+                'risk_premium': float, average factor risk premium
+                't_stat': float, t-statistic
+                'p_value': float, p-value
+                'gamma_series': pd.Series, daily gamma values
+        """
+        # TODO: Implement
+        # Step 1: For each date, run cross-sectional OLS: return ~ factor
+        # Step 2: Collect gamma (slope) for each date
+        # Step 3: Test if mean(gamma) is significantly different from 0
+        pass
+  code_language: "python"
+  hints:
+    - "每日回归可以用np.polyfit(factor, return, 1)快速计算"
+    - "Newey-West修正可以处理gamma序列的自相关(bonus)"
+    - "注意处理NaN——每天可能有不同数量的有效股票"
+  rubric: "逐日回归正确(2分)；t统计量计算(1分)；NaN处理(1分)；结果格式正确(1分)"
+  time_limit_seconds: 480
+
+# ============================================================================
+# ADDITIONAL QUESTIONS QD_101 - QD_200 (100 questions)
+# Topics: distributed_systems, gpu_programming, cloud_infrastructure,
+#         cicd, advanced_python, advanced_cpp, database_internals, network_programming
+# Difficulty: 40 medium_high, 40 senior, 20 expert
+# Type: 70 multiple_choice, 15 code/open_ended, 15 show_work
+# ============================================================================
+
+# ============================================================================
+# DISTRIBUTED SYSTEMS (13 questions)
+# ============================================================================
+
+- id: QD_DIST_101
+  category: distributed_systems
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化交易系统中使用Kafka传输行情数据时，以下关于partition策略的说法哪个最合理？\nWhen using Kafka to transmit market data in a quant trading system, which partition strategy is most reasonable?"
+  options:
+    - "A. 按股票代码hash分区，保证同一股票的消息顺序 / Hash by ticker to guarantee per-stock ordering"
+    - "B. 使用round-robin分区以实现最大吞吐 / Round-robin for max throughput"
+    - "C. 所有消息发往同一个partition / All messages to a single partition"
+    - "D. 按消息大小分区 / Partition by message size"
+  answer: "A"
+  explanation: "Kafka只保证同一partition内的消息有序。对行情数据，需要保证同一股票的tick按时间顺序消费，因此按股票代码hash到固定partition是最佳策略。Round-robin虽然吞吐高但无法保证顺序；单partition无法利用并行消费的优势。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_DIST_102
+  category: distributed_systems
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在分布式因子计算系统中，使用消息队列实现任务分发。当某个worker节点宕机时，以下哪种机制能保证任务不丢失？\nIn a distributed factor computation system using message queues for task dispatch, which mechanism ensures no task loss when a worker crashes?"
+  options:
+    - "A. 使用消息确认机制(ack)，未确认的消息重新入队 / Use message acknowledgment; unacked messages re-enqueue"
+    - "B. 增加更多worker节点 / Add more worker nodes"
+    - "C. 使用更大的消息缓冲区 / Use larger message buffers"
+    - "D. 将消息复制到本地文件 / Copy messages to local files"
+  answer: "A"
+  explanation: "消息确认机制(acknowledgment)是保证at-least-once delivery的标准做法。Worker处理完任务后发送ack；若worker宕机未发ack，broker会在超时后将消息重新分发给其他worker。RabbitMQ的basic.ack和Kafka的commit offset都是这一机制的实现。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_DIST_103
+  category: distributed_systems
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在微服务架构的量化平台中，因子计算服务和回测服务之间需要通信。以下哪种通信模式最适合实时因子值推送？\nIn a microservices quant platform, which communication pattern best suits real-time factor value push between factor computation and backtesting services?"
+  options:
+    - "A. 同步REST API调用 / Synchronous REST API calls"
+    - "B. 基于Kafka的事件流 / Kafka-based event streaming"
+    - "C. 共享数据库轮询 / Shared database polling"
+    - "D. FTP文件传输 / FTP file transfer"
+  answer: "B"
+  explanation: "Kafka事件流适合实时数据推送场景：(1)解耦生产者和消费者；(2)支持多消费者组同时消费同一数据流；(3)消息持久化可重播；(4)高吞吐低延迟。REST适合请求-响应场景但不适合持续推送；数据库轮询延迟高且浪费资源；FTP仅适合批量传输。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_DIST_104
+  category: distributed_systems
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在分布式系统中实现exactly-once语义处理交易信号时，以下哪种方案最可靠？\nWhen implementing exactly-once semantics for trade signal processing in distributed systems, which approach is most reliable?"
+  options:
+    - "A. 幂等性设计 + at-least-once delivery / Idempotent design + at-least-once delivery"
+    - "B. 仅依赖TCP的可靠传输 / Rely solely on TCP reliable transport"
+    - "C. 在应用层实现两阶段提交(2PC) / Application-level two-phase commit"
+    - "D. 使用UDP减少重复 / Use UDP to reduce duplicates"
+  answer: "A"
+  explanation: "真正的exactly-once在分布式系统中很难实现。最实用的方案是：at-least-once delivery（保证消息不丢）+ 幂等性处理（重复消息不产生副作用）。每个交易信号带唯一ID，消费端维护已处理ID集合，重复信号直接忽略。2PC虽然理论上可行但性能差且实现复杂。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_DIST_105
+  category: distributed_systems
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "使用Redis作为因子缓存层时，以下关于缓存一致性的策略哪个最适合因子数据场景？\nWhen using Redis as a factor cache layer, which cache consistency strategy best fits factor data scenarios?"
+  options:
+    - "A. Cache-Aside: 读时查缓存，miss时从DB加载并写入缓存 / Read-through with lazy load"
+    - "B. Write-Through: 每次写入同时更新缓存和DB / Update cache and DB simultaneously"
+    - "C. Write-Behind: 先写缓存，异步刷入DB / Write cache first, async flush to DB"
+    - "D. 不使用缓存直接查DB / No cache, query DB directly"
+  answer: "A"
+  explanation: "因子数据通常是读多写少的场景（因子值每日计算一次，但查询频率很高），Cache-Aside模式最适合：(1)读请求先查Redis，命中则直接返回；(2)未命中则从数据库加载，写入Redis并设置TTL；(3)因子更新时先更新DB再删除缓存（而非更新缓存，避免并发写导致不一致）。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_DIST_106
+  category: distributed_systems
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在设计跨地域部署的量化交易系统时（如上海+香港双活），CAP定理约束下最合理的选择是？\nWhen designing a cross-region quant trading system (e.g., Shanghai + Hong Kong active-active), what is the most reasonable CAP trade-off?"
+  options:
+    - "A. 选择CP——牺牲可用性，保证数据一致性 / Choose CP — sacrifice availability for consistency"
+    - "B. 选择AP——牺牲一致性，保证可用性 / Choose AP — sacrifice consistency for availability"
+    - "C. 交易核心系统选CP，非关键系统选AP / CP for trading core, AP for non-critical systems"
+    - "D. 忽略CAP定理，同时保证三者 / Ignore CAP and guarantee all three"
+  answer: "C"
+  explanation: "CAP定理表明网络分区时只能选CP或AP。对量化交易系统：(1)交易核心（订单管理、风控）必须选CP——宁可暂时不可用也不能出现不一致（如重复下单）；(2)非关键系统（行情展示、历史回测）可选AP——允许短暂不一致但保证可用。这是实际分布式交易系统的常见设计。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_DIST_107
+  category: distributed_systems
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "使用gRPC在量化系统的微服务之间通信，相比REST的主要优势不包括？\nWhich is NOT a primary advantage of gRPC over REST for quant system microservice communication?"
+  options:
+    - "A. Protobuf序列化比JSON更紧凑高效 / Protobuf serialization is more compact than JSON"
+    - "B. 支持双向流式通信 / Supports bidirectional streaming"
+    - "C. 浏览器可以直接调用 / Browsers can call directly"
+    - "D. 强类型接口定义 / Strongly-typed interface definitions"
+  answer: "C"
+  explanation: "gRPC基于HTTP/2和Protobuf，优势包括：高效序列化、双向流、强类型IDL。但浏览器不能直接调用gRPC（需要gRPC-Web代理），这是REST的优势。在量化系统内部服务通信中，gRPC的性能优势和流式传输能力非常适合实时数据推送。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_DIST_108
+  category: distributed_systems
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在分布式因子计算系统中，需要对4000只A股并行计算100个因子。以下哪种任务分片策略最优？\nIn a distributed factor system computing 100 factors for 4000 A-shares in parallel, which sharding strategy is optimal?"
+  options:
+    - "A. 按股票分片：每个worker负责一批股票的所有因子 / Shard by stock: each worker computes all factors for a batch"
+    - "B. 按因子分片：每个worker负责一个因子的所有股票 / Shard by factor: each worker computes one factor for all stocks"
+    - "C. 按日期分片 / Shard by date"
+    - "D. 随机分配 / Random assignment"
+  answer: "B"
+  explanation: "按因子分片更优：(1)每个因子的计算逻辑不同，按因子分片可独立部署和扩展；(2)同一因子对所有股票的计算通常可向量化，数据局部性好；(3)不同因子的计算时间差异大，按股票分片会导致负载不均；(4)因子之间可能有依赖关系，按因子分片更容易管理DAG。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_DIST_109
+  category: distributed_systems
+  difficulty: expert
+  type: open_ended
+  points: 5
+  question: "设计一个分布式实时因子计算引擎的架构，要求：(1)支持4000只A股的实时因子计算；(2)因子更新延迟<100ms；(3)支持因子热更新（不停机添加新因子）；(4)高可用（单点故障不影响服务）。请描述核心组件和数据流。\nDesign a distributed real-time factor computation engine: (1) 4000 A-share stocks; (2) <100ms latency; (3) hot-deploy new factors without downtime; (4) high availability. Describe core components and data flow."
+  options: []
+  answer: ""
+  explanation: "参考架构：(1)行情接入层：多路行情源通过Kafka分发，按股票hash到partition；(2)计算层：Flink/自研流计算框架，每个TaskManager运行因子计算任务，State存储中间状态；(3)因子热更新：使用classloader动态加载因子jar/so，通过ZooKeeper通知所有节点；(4)输出层：计算结果写入Redis（实时查询）和时序数据库（持久化）；(5)高可用：Kafka多副本、Flink checkpoint、Redis Sentinel。数据流：行情源→Kafka→Flink计算→Redis/TSDB→下游消费者。"
+  code_snippet: ""
+  code_language: ""
+  hints:
+    - "考虑使用流计算框架如Flink"
+    - "热更新可以用动态类加载或插件机制"
+  rubric: "架构完整性(2分)；延迟优化方案(1分)；热更新机制(1分)；高可用设计(1分)"
+  time_limit_seconds: 480
+
+- id: QD_DIST_110
+  category: distributed_systems
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在使用ZooKeeper进行分布式协调时，以下哪个场景最适合使用临时节点(ephemeral node)？\nWhen using ZooKeeper for distributed coordination, which scenario best fits ephemeral nodes?"
+  options:
+    - "A. 服务发现——worker注册自己，宕机时自动注销 / Service discovery — workers register, auto-deregister on crash"
+    - "B. 持久化配置存储 / Persistent config storage"
+    - "C. 因子计算结果存储 / Factor computation result storage"
+    - "D. 审计日志记录 / Audit log recording"
+  answer: "A"
+  explanation: "ZooKeeper临时节点在创建它的session断开时自动删除。这非常适合服务发现：worker启动时创建临时节点注册自己，宕机后session超时节点自动删除，其他节点通过watcher感知变化。持久化数据应使用persistent node。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_DIST_111
+  category: distributed_systems
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在量化交易系统的事件溯源(Event Sourcing)架构中，以下哪个说法是正确的？\nIn an Event Sourcing architecture for a quant trading system, which statement is correct?"
+  options:
+    - "A. 状态通过重放事件序列恢复，而非直接存储最终状态 / State is recovered by replaying event sequences, not storing final state"
+    - "B. 事件一旦写入可以修改 / Events can be modified after writing"
+    - "C. 事件存储不需要持久化 / Event store doesn't need persistence"
+    - "D. 事件溯源不支持时间回溯 / Event sourcing doesn't support temporal queries"
+  answer: "A"
+  explanation: "Event Sourcing的核心：(1)所有状态变更以不可变事件存储；(2)当前状态通过重放事件序列得到；(3)天然支持审计追踪和时间旅行（可回到任意历史时刻的状态）。在交易系统中，所有订单事件(下单、成交、撤单)都作为事件记录，系统状态可通过重放完全恢复。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_DIST_112
+  category: distributed_systems
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在分布式交易系统中需要实现全局有序的交易日志，以下哪种方案在性能和一致性之间取得最佳平衡？\nTo implement a globally ordered trade log in a distributed system, which approach best balances performance and consistency?"
+  options:
+    - "A. 单节点Raft日志+异步复制 / Single Raft log + async replication"
+    - "B. 多分区有序日志+因果序(Lamport clock) / Multi-partition ordered log + causal ordering via Lamport clocks"
+    - "C. 全局锁序列化所有写入 / Global lock serializing all writes"
+    - "D. 使用NTP同步时钟作为全局序 / NTP-synced clocks as global order"
+  answer: "B"
+  explanation: "全局锁性能瓶颈严重；NTP精度不够（毫秒级）；单Raft节点是单点瓶颈。多分区有序日志+Lamport clock：(1)每个分区内严格有序(Kafka partition)；(2)跨分区使用Lamport clock或向量时钟保证因果序；(3)不需要全局同步时钟。这是Kafka+流处理引擎的常见模式。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: QD_DIST_113
+  category: distributed_systems
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在使用消息队列处理因子计算任务时，Dead Letter Queue (DLQ) 的主要用途是？\nWhat is the primary purpose of a Dead Letter Queue (DLQ) in factor computation task processing?"
+  options:
+    - "A. 存储处理失败超过重试次数的消息，防止毒消息阻塞队列 / Store messages that exceed retry limits to prevent poison messages from blocking"
+    - "B. 存储已成功处理的消息备份 / Store backups of successfully processed messages"
+    - "C. 作为高优先级消息的快速通道 / Fast lane for high-priority messages"
+    - "D. 存储过期的消息 / Store expired messages only"
+  answer: "A"
+  explanation: "DLQ用于隔离处理失败的消息：当某条消息反复处理失败（如因子计算代码bug导致某只股票的数据解析异常），超过最大重试次数后移入DLQ，避免阻塞其他正常消息。开发人员可以检查DLQ中的消息进行诊断和修复。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+# ============================================================================
+# GPU PROGRAMMING (12 questions)
+# ============================================================================
+
+- id: QD_GPU_114
+  category: gpu_programming
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在使用CUDA进行矩阵运算加速因子计算时，GPU相比CPU的核心优势是？\nWhat is the core advantage of GPU over CPU when using CUDA to accelerate factor matrix computations?"
+  options:
+    - "A. 单线程性能更强 / Stronger single-thread performance"
+    - "B. 大规模并行计算能力，适合SIMT架构 / Massive parallelism with SIMT architecture"
+    - "C. 内存容量更大 / Larger memory capacity"
+    - "D. 更低的时钟频率 / Lower clock frequency"
+  answer: "B"
+  explanation: "GPU拥有数千个计算核心(CUDA cores)，采用SIMT(Single Instruction Multiple Threads)架构，适合对大量数据执行相同操作。因子计算中的矩阵运算（如协方差矩阵计算、因子正交化）天然适合GPU并行。CPU单线程性能更强但核心数少。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_GPU_115
+  category: gpu_programming
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在CUDA编程中，以下关于GPU内存层次的说法哪个是错误的？\nWhich statement about GPU memory hierarchy in CUDA programming is INCORRECT?"
+  options:
+    - "A. Global Memory容量最大但延迟最高 / Global Memory has largest capacity but highest latency"
+    - "B. Shared Memory在同一Block的线程间共享，延迟低 / Shared Memory is shared within a block, low latency"
+    - "C. Register是每个线程私有的最快存储 / Registers are per-thread fastest storage"
+    - "D. Shared Memory可以跨不同Block共享 / Shared Memory can be shared across blocks"
+  answer: "D"
+  explanation: "CUDA内存层次：Register(最快，线程私有) > Shared Memory(低延迟，Block内共享) > L1/L2 Cache > Global Memory(高延迟，所有线程可见)。Shared Memory只能在同一Block内的线程间共享，不能跨Block。跨Block通信需要通过Global Memory。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_GPU_116
+  category: gpu_programming
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "使用cuBLAS加速因子协方差矩阵计算时，以下哪个优化策略对性能影响最大？\nWhen using cuBLAS to accelerate factor covariance matrix computation, which optimization has the greatest performance impact?"
+  options:
+    - "A. 确保矩阵以列优先(column-major)存储以匹配cuBLAS默认布局 / Ensure column-major layout matching cuBLAS default"
+    - "B. 使用最小的数据类型 / Use the smallest data type"
+    - "C. 减少kernel数量 / Reduce number of kernels"
+    - "D. 增加线程数量 / Increase thread count"
+  answer: "A"
+  explanation: "cuBLAS默认使用column-major(Fortran)布局。如果数据以row-major(C)布局传入而不做转换，会导致严重的内存访问模式不匹配，性能可能下降10倍以上。确保数据布局匹配是使用cuBLAS最重要的优化。也可以使用cublas<t>gemm的转置参数来适配。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_GPU_117
+  category: gpu_programming
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在GPU上批量计算4000只股票的技术因子时，以下关于数据传输优化的说法哪个最重要？\nWhen batch-computing technical factors for 4000 stocks on GPU, which data transfer optimization is most important?"
+  options:
+    - "A. 使用pinned memory减少Host-Device传输延迟 / Use pinned memory to reduce H2D transfer latency"
+    - "B. 每计算一只股票传输一次数据 / Transfer data per stock"
+    - "C. 使用CPU做预处理再传输到GPU / Preprocess on CPU then transfer to GPU"
+    - "D. 将结果存在GPU不传回 / Keep results on GPU without transferring back"
+  answer: "A"
+  explanation: "GPU计算中数据传输(H2D/D2H)常是瓶颈。使用pinned(page-locked) memory可以：(1)避免OS对内存的page swap；(2)使DMA直接传输，带宽提升2-3倍；(3)支持异步传输与计算重叠(overlap)。此外应批量传输所有股票数据，而不是逐只传输。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_GPU_118
+  category: gpu_programming
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在使用PyTorch/CuPy实现因子挖掘的遗传算法时，以下关于GPU上张量操作的说法哪个是正确的？\nWhen implementing genetic algorithm-based factor mining with PyTorch/CuPy, which statement about GPU tensor operations is correct?"
+  options:
+    - "A. 应避免频繁的小tensor操作，合并为批量操作减少kernel launch开销 / Avoid frequent small tensor ops; batch them to reduce kernel launch overhead"
+    - "B. GPU上的条件分支(if-else)与CPU效率相同 / Conditional branching on GPU is as efficient as on CPU"
+    - "C. 动态shape的tensor不影响GPU性能 / Dynamic tensor shapes don't affect GPU performance"
+    - "D. GPU上的随机数生成比CPU慢 / Random number generation is slower on GPU"
+  answer: "A"
+  explanation: "GPU kernel launch有固定开销(~10μs)，大量小操作会导致launch overhead主导运行时间。在因子挖掘遗传算法中，应将种群中所有个体的因子评估合并为一个大的批量矩阵运算。GPU上的条件分支会导致warp divergence严重降低效率；动态shape需要重新分配内存也有开销。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: QD_GPU_119
+  category: gpu_programming
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "以下哪个Python库最适合快速将NumPy代码迁移到GPU而不重写大量代码？\nWhich Python library is best for quickly porting NumPy code to GPU with minimal code changes?"
+  options:
+    - "A. CuPy — 提供NumPy兼容的GPU接口 / CuPy — NumPy-compatible GPU interface"
+    - "B. PyCUDA — 需要手写CUDA kernel / PyCUDA — requires hand-written CUDA kernels"
+    - "C. Numba — 仅支持CPU JIT / Numba — CPU JIT only"
+    - "D. ctypes — C扩展接口 / ctypes — C extension interface"
+  answer: "A"
+  explanation: "CuPy提供与NumPy几乎完全兼容的API，只需将import numpy替换为import cupy即可将大部分代码迁移到GPU。它底层调用cuBLAS/cuDNN等优化库。PyCUDA需要手写kernel；Numba虽然也支持GPU(@cuda.jit)但API差异较大；ctypes不直接支持GPU。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_GPU_120
+  category: gpu_programming
+  difficulty: senior
+  type: code
+  points: 5
+  question: "使用CuPy实现一个GPU加速的因子横截面标准化函数：输入为(date, stock)的因子矩阵，对每个日期做z-score标准化（去均值除以标准差）。要求处理NaN值。\nImplement a GPU-accelerated cross-sectional z-score normalization using CuPy. Input: (date, stock) factor matrix. Normalize per date. Handle NaN values."
+  options: []
+  answer: ""
+  explanation: "核心实现：使用cupy.nanmean和cupy.nanstd沿axis=1计算每行的均值和标准差，然后广播减均值除标准差。注意：(1)使用nanmean/nanstd忽略NaN；(2)标准差为0的行（所有值相同）结果设为0；(3)keepdims=True保持广播维度。"
+  code_snippet: |
+    import cupy as cp
+
+    def cross_sectional_zscore_gpu(factor_matrix: cp.ndarray) -> cp.ndarray:
+        """
+        GPU-accelerated cross-sectional z-score normalization.
+
+        Args:
+            factor_matrix: shape (n_dates, n_stocks), may contain NaN
+
+        Returns:
+            z-score normalized matrix, same shape
+        """
+        # TODO: Implement
+        # Step 1: Compute per-row mean ignoring NaN
+        # Step 2: Compute per-row std ignoring NaN
+        # Step 3: Z-score = (x - mean) / std, handle std=0
+        pass
+  code_language: "python"
+  hints:
+    - "cp.nanmean和cp.nanstd可以忽略NaN"
+    - "注意广播时使用keepdims=True"
+  rubric: "正确使用nanmean/nanstd(2分)；广播正确(1分)；处理std=0(1分)；NaN保持(1分)"
+  time_limit_seconds: 360
+
+- id: QD_GPU_121
+  category: gpu_programming
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在多GPU环境下并行训练因子挖掘模型时，以下关于NCCL通信库的说法哪个是正确的？\nWhen training factor mining models on multi-GPU with NCCL, which statement is correct?"
+  options:
+    - "A. NCCL的AllReduce操作可利用NVLink实现GPU直接通信 / NCCL AllReduce can use NVLink for direct GPU-to-GPU communication"
+    - "B. NCCL只支持同一台机器内的GPU通信 / NCCL only supports intra-node GPU communication"
+    - "C. NCCL不支持FP16通信 / NCCL doesn't support FP16 communication"
+    - "D. NCCL性能不如MPI / NCCL performance is worse than MPI"
+  answer: "A"
+  explanation: "NCCL(NVIDIA Collective Communications Library)专为GPU集群通信优化：(1)支持NVLink/NVSwitch直接GPU-GPU传输，带宽可达600GB/s；(2)支持跨节点通信(通过InfiniBand)；(3)支持FP16/BF16混合精度通信；(4)在GPU通信场景下性能远优于MPI。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_GPU_122
+  category: gpu_programming
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在GPU上进行矩阵乘法时，Tensor Core相比普通CUDA Core的优势是？\nWhat is the advantage of Tensor Cores over regular CUDA Cores for matrix multiplication on GPU?"
+  options:
+    - "A. Tensor Core可以在一个时钟周期内完成4x4矩阵的FMA运算 / Tensor Cores perform 4x4 matrix FMA in one clock cycle"
+    - "B. Tensor Core内存带宽更高 / Tensor Cores have higher memory bandwidth"
+    - "C. Tensor Core支持更多数据类型 / Tensor Cores support more data types"
+    - "D. Tensor Core功耗更低 / Tensor Cores have lower power consumption"
+  answer: "A"
+  explanation: "Tensor Core是NVIDIA Volta及后续架构中的专用硬件单元，可以在一个时钟周期内完成D=A*B+C的混合精度矩阵FMA(Fused Multiply-Add)运算(4x4矩阵)。这使得矩阵运算的理论吞吐量比普通CUDA Core高一个数量级。在量化中，大规模协方差矩阵计算可显著受益。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_GPU_123
+  category: gpu_programming
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "使用RAPIDS cuDF替代Pandas处理大规模因子数据时，以下哪个场景收益最大？\nWhen replacing Pandas with RAPIDS cuDF for large-scale factor data, which scenario benefits most?"
+  options:
+    - "A. 对千万行级数据做groupby聚合 / GroupBy aggregation on tens of millions of rows"
+    - "B. 读取小CSV文件 / Reading small CSV files"
+    - "C. 单行数据的条件查询 / Single-row conditional query"
+    - "D. 字符串处理操作 / String processing operations"
+  answer: "A"
+  explanation: "cuDF的GPU加速在大规模数据的并行操作中优势最大：groupby、join、sort等操作在千万行级数据上可比Pandas快10-100倍。小数据集的GPU启动开销可能超过计算时间；单行查询无法利用并行优势；字符串操作的GPU加速相对有限。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_GPU_124
+  category: gpu_programming
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在GPU编程中，warp divergence导致性能下降的原因是？\nWhy does warp divergence cause performance degradation in GPU programming?"
+  options:
+    - "A. 同一warp内的线程遇到分支时必须串行执行不同路径 / Threads in the same warp must serialize when encountering divergent branches"
+    - "B. warp divergence会导致内存泄漏 / Warp divergence causes memory leaks"
+    - "C. GPU会自动将divergent线程迁移到其他warp / GPU auto-migrates divergent threads"
+    - "D. warp divergence只影响double精度运算 / Only affects double precision"
+  answer: "A"
+  explanation: "GPU以warp(32线程)为单位执行指令。当warp内线程遇到if-else分支走不同路径时，GPU必须串行执行两条路径——先执行if路径(部分线程活跃)，再执行else路径(另一部分线程活跃)，总时间为两条路径之和。在因子计算中应尽量用数学运算替代条件分支。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_GPU_125
+  category: gpu_programming
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在设计GPU加速的回测引擎时，以下哪种memory access pattern对性能最关键？\nWhen designing a GPU-accelerated backtesting engine, which memory access pattern is most critical for performance?"
+  options:
+    - "A. Coalesced memory access — 相邻线程访问连续内存地址 / Adjacent threads access contiguous memory addresses"
+    - "B. Random access — 随机内存访问 / Random memory access"
+    - "C. Sequential access by single thread / 单线程顺序访问"
+    - "D. 通过指针链表遍历 / Linked list traversal via pointers"
+  answer: "A"
+  explanation: "GPU的Global Memory以128字节为单位读取(一个cache line)。当同一warp的32个线程访问连续的32个float(恰好128字节)时，只需一次内存事务。如果访问不连续(uncoalesced)，可能需要32次事务，带宽利用率下降32倍。回测引擎中应以SoA(Struct of Arrays)替代AoS(Array of Structs)。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+# ============================================================================
+# CLOUD INFRASTRUCTURE (12 questions)
+# ============================================================================
+
+- id: QD_CLOUD_126
+  category: cloud_infrastructure
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在AWS上部署量化研究平台时，以下哪种EC2实例类型最适合大规模因子回测？\nWhich EC2 instance type is most suitable for large-scale factor backtesting on AWS?"
+  options:
+    - "A. c5.4xlarge — 计算优化型 / Compute-optimized"
+    - "B. r5.4xlarge — 内存优化型 / Memory-optimized"
+    - "C. t3.micro — 通用型突发 / General purpose burstable"
+    - "D. p3.2xlarge — GPU实例 / GPU instance"
+  answer: "B"
+  explanation: "因子回测通常需要加载大量历史数据到内存(4000只股票×多年日频/分钟频数据)，内存是主要瓶颈。r5实例提供高内存CPU比(8GB/vCPU)，适合数据密集型计算。如果回测涉及复杂ML模型训练则需要GPU实例；纯计算密集(无大数据)选c5；t3不适合持续高负载。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_CLOUD_127
+  category: cloud_infrastructure
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "使用AWS S3存储历史行情数据时，以下哪种数据组织方式最适合因子研究的访问模式？\nWhen storing historical market data on S3, which organization best fits factor research access patterns?"
+  options:
+    - "A. 按日期分区: s3://bucket/date=20230101/stock=000001.parquet / Partition by date"
+    - "B. 按股票分区: s3://bucket/stock=000001/date=20230101.parquet / Partition by stock"
+    - "C. 单个大文件存储所有数据 / Single large file for all data"
+    - "D. 按文件大小分块 / Partition by file size"
+  answer: "A"
+  explanation: "因子研究通常是按日期访问横截面数据（某天所有股票的数据）。按日期分区：(1)查询某天数据只需扫描一个分区；(2)配合Parquet列式格式，可高效读取特定列；(3)增量更新简单（每天新增一个分区）。按股票分区适合时间序列分析但横截面查询需扫描所有分区。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_CLOUD_128
+  category: cloud_infrastructure
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在云环境中部署量化交易系统时，以下关于网络延迟优化的措施哪个最有效？\nWhen deploying quant trading in the cloud, which network latency optimization is most effective?"
+  options:
+    - "A. 将交易服务器部署在交易所co-location机房 / Deploy trading servers in exchange co-location facility"
+    - "B. 使用CDN加速 / Use CDN acceleration"
+    - "C. 增加服务器带宽 / Increase server bandwidth"
+    - "D. 使用HTTP/2协议 / Use HTTP/2 protocol"
+  answer: "A"
+  explanation: "对交易系统而言，物理距离决定了延迟下限(光速~5μs/km)。Co-location将服务器放在交易所同一机房，网络延迟可低至<1μs。CDN用于内容分发无关交易延迟；增加带宽不减延迟只增吞吐；HTTP/2的改善相比物理距离微不足道。这也是为什么真正的HFT很少完全依赖公有云。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_CLOUD_129
+  category: cloud_infrastructure
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "使用Kubernetes管理量化计算集群时，以下哪种资源调度策略最适合因子计算的batch job？\nWhen managing a quant compute cluster with K8s, which scheduling strategy best fits factor computation batch jobs?"
+  options:
+    - "A. 使用Job/CronJob资源，配合资源请求(request)和限制(limit) / Use Job/CronJob with resource requests and limits"
+    - "B. 使用Deployment保持常驻Pod / Use Deployment for always-on Pods"
+    - "C. 使用DaemonSet在每个节点运行 / Use DaemonSet on every node"
+    - "D. 不设置资源限制以获得最大性能 / No resource limits for max performance"
+  answer: "A"
+  explanation: "因子计算通常是batch job（每日定时运行）：(1)Job保证任务完成后Pod自动清理，不浪费资源；(2)CronJob实现定时调度(如每日收盘后)；(3)resource request保证调度时有足够资源，limit防止单个任务占用过多资源；(4)可配合Cluster Autoscaler按需扩缩节点。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_CLOUD_130
+  category: cloud_infrastructure
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化研究环境中使用AWS的Spot Instance时，以下哪种策略最能降低被中断的影响？\nWhen using AWS Spot Instances for quant research, which strategy best mitigates interruption impact?"
+  options:
+    - "A. 使用checkpoint机制定期保存计算进度 / Use checkpointing to save progress periodically"
+    - "B. 只使用On-Demand实例 / Only use On-Demand instances"
+    - "C. 不做任何处理 / No mitigation"
+    - "D. 使用最便宜的实例类型 / Use cheapest instance type"
+  answer: "A"
+  explanation: "Spot Instance价格比On-Demand低60-90%，非常适合可中断的研究计算。checkpoint策略：(1)计算过程中定期保存中间状态到S3；(2)监听Spot中断通知(提前2分钟)，收到通知时立即保存；(3)新实例启动时从最近checkpoint恢复。因子回测天然适合checkpoint——按日期分段保存。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_CLOUD_131
+  category: cloud_infrastructure
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在GCP上构建因子数据仓库时，BigQuery相比自建ClickHouse集群的主要优势是？\nOn GCP, what is BigQuery's main advantage over self-managed ClickHouse for a factor data warehouse?"
+  options:
+    - "A. 无服务器架构，无需管理基础设施 / Serverless, no infrastructure management"
+    - "B. 单条查询延迟更低 / Lower per-query latency"
+    - "C. 支持更多数据类型 / More data types supported"
+    - "D. 价格始终更便宜 / Always cheaper"
+  answer: "A"
+  explanation: "BigQuery的核心优势是serverless：(1)无需管理集群节点、存储扩容、版本升级；(2)自动弹性扩展，PB级数据也能快速查询；(3)按查询扫描量付费。ClickHouse单查询延迟可能更低（毫秒级vs秒级），但需要团队维护集群。对量化研究团队（非运维团队），serverless减少运维负担。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_CLOUD_132
+  category: cloud_infrastructure
+  difficulty: expert
+  type: open_ended
+  points: 5
+  question: "设计一个基于云的量化研究平台架构，要求：(1)支持100+研究员同时使用Jupyter Notebook；(2)共享因子数据库；(3)回测任务隔离且可扩展；(4)成本可控。请描述架构和关键技术选型。\nDesign a cloud-based quant research platform: (1) 100+ researchers with Jupyter; (2) shared factor database; (3) isolated, scalable backtesting; (4) cost-efficient. Describe architecture and key technology choices."
+  options: []
+  answer: ""
+  explanation: "推荐架构：(1)JupyterHub on K8s(EKS/GKE)：每个研究员一个Pod，按需启停，配合Spot节点降成本；(2)因子数据库：Parquet on S3 + Athena/BigQuery做ad-hoc查询 + Redis缓存热数据；(3)回测引擎：K8s Job，每个回测独立Pod，资源隔离，Cluster Autoscaler按需扩缩；(4)成本控制：Spot Instance回测、Reserved Instance常驻服务、S3 Intelligent-Tiering数据分层；(5)安全：VPC隔离、IAM权限、Secret Manager管理API Key。"
+  code_snippet: ""
+  code_language: ""
+  hints:
+    - "JupyterHub on Kubernetes是常见方案"
+    - "考虑数据共享和隔离的平衡"
+  rubric: "Notebook服务设计(1分)；数据存储方案(1分)；回测隔离(1分)；成本控制(1分)；安全设计(1分)"
+  time_limit_seconds: 480
+
+- id: QD_CLOUD_133
+  category: cloud_infrastructure
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "使用Terraform管理量化系统的云基础设施时，Infrastructure as Code的主要好处不包括？\nWhich is NOT a main benefit of Infrastructure as Code (Terraform) for quant system cloud infrastructure?"
+  options:
+    - "A. 基础设施变更可版本控制和代码审查 / Infrastructure changes are version-controlled and reviewable"
+    - "B. 环境可快速复制（dev/staging/prod）/ Environments can be quickly replicated"
+    - "C. 保证零宕机部署 / Guarantees zero-downtime deployment"
+    - "D. 基础设施可回滚到之前的状态 / Infrastructure can be rolled back to previous state"
+  answer: "C"
+  explanation: "IaC(Terraform)的好处：版本控制、环境复制、状态回滚、自动化、审计追踪。但IaC本身不保证零宕机——零宕机需要额外的蓝绿部署或滚动更新策略。Terraform apply可能导致资源重建(destroy+create)从而产生宕机。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_CLOUD_134
+  category: cloud_infrastructure
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在云上存储敏感的交易策略代码和参数时，以下哪种安全实践最关键？\nWhen storing sensitive trading strategy code and parameters in the cloud, which security practice is most critical?"
+  options:
+    - "A. 使用KMS加密存储 + IAM最小权限 + VPC网络隔离 / KMS encryption + least-privilege IAM + VPC isolation"
+    - "B. 仅使用SSH密钥登录 / SSH key login only"
+    - "C. 将代码放在公网可访问的Git仓库 / Public Git repository"
+    - "D. 使用默认安全组 / Use default security groups"
+  answer: "A"
+  explanation: "交易策略是量化公司的核心资产，需要多层安全：(1)KMS管理的加密密钥，对S3/EBS数据静态加密；(2)IAM最小权限原则，每个角色只能访问必要的资源；(3)VPC私有子网隔离，策略服务器不暴露公网；(4)还需要审计日志(CloudTrail)、Secret Manager管理参数。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_CLOUD_135
+  category: cloud_infrastructure
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化系统中使用AWS Lambda(无服务器函数)最适合以下哪个场景？\nWhich scenario is best suited for AWS Lambda (serverless functions) in a quant system?"
+  options:
+    - "A. 事件触发的轻量级任务（如新数据到达时触发ETL）/ Event-triggered lightweight tasks (e.g., trigger ETL on new data)"
+    - "B. 持续运行的行情接收服务 / Continuously running market data receiver"
+    - "C. 需要GPU的模型训练 / GPU-requiring model training"
+    - "D. 需要大量内存的回测 / Memory-intensive backtesting"
+  answer: "A"
+  explanation: "Lambda适合事件驱动的短时任务：(1)S3新文件触发数据处理；(2)API Gateway触发的信号查询；(3)定时触发的监控告警。Lambda有执行时间限制(15分钟)、内存限制(10GB)、冷启动延迟，不适合持续运行、GPU需求或大规模计算场景。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_CLOUD_136
+  category: cloud_infrastructure
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在多云(multi-cloud)策略下部署量化系统的容灾架构时，以下哪个考虑最重要？\nWhen deploying disaster recovery for quant systems in a multi-cloud setup, which consideration is most important?"
+  options:
+    - "A. 数据同步一致性和RPO/RTO目标 / Data sync consistency and RPO/RTO targets"
+    - "B. 使用相同的编程语言 / Using the same programming language"
+    - "C. 选择最便宜的云提供商 / Choosing the cheapest provider"
+    - "D. 使用相同的操作系统 / Using the same OS"
+  answer: "A"
+  explanation: "多云容灾的核心挑战：(1)RPO(Recovery Point Objective)——允许丢失多少数据？交易系统通常要求RPO≈0；(2)RTO(Recovery Time Objective)——多久恢复服务？关键系统<5分钟；(3)跨云数据同步的一致性保证（异步复制有数据丢失风险，同步复制增加延迟）；(4)DNS切换和客户端重连策略。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: QD_CLOUD_137
+  category: cloud_infrastructure
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "使用Docker容器化量化策略时，以下哪个最佳实践最重要？\nWhat is the most important best practice when containerizing quant strategies with Docker?"
+  options:
+    - "A. 将策略代码和依赖固定版本打包，确保环境一致性 / Pin all dependency versions for environment consistency"
+    - "B. 使用latest标签 / Use the latest tag"
+    - "C. 在容器中安装所有可能的库 / Install all possible libraries"
+    - "D. 以root用户运行容器 / Run container as root"
+  answer: "A"
+  explanation: "量化策略的可复现性至关重要：(1)固定Python/C++版本、所有依赖的精确版本(pip freeze)；(2)使用多阶段构建减小镜像体积；(3)不用latest标签(不可复现)；(4)非root用户运行(安全)；(5)只安装必要依赖(减小攻击面)。这保证了回测结果和实盘环境完全一致。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+# ============================================================================
+# CI/CD FOR TRADING SYSTEMS (12 questions)
+# ============================================================================
+
+- id: QD_CICD_138
+  category: cicd
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化交易系统的CI/CD流水线中，以下哪个阶段对交易系统最为关键且特殊？\nIn a quant trading CI/CD pipeline, which stage is most critical and unique to trading systems?"
+  options:
+    - "A. 回测验证阶段——确保策略修改后回测结果一致 / Backtest verification — ensure consistent results after code changes"
+    - "B. 代码风格检查 / Code style checking"
+    - "C. 文档生成 / Documentation generation"
+    - "D. UI测试 / UI testing"
+  answer: "A"
+  explanation: "交易系统CI/CD的独特需求：(1)回测回归测试——代码修改后跑标准回测，确保结果与基线一致(防止意外引入bug改变策略行为)；(2)PnL归因验证——确保PnL计算逻辑不变；(3)风控规则测试——确保限仓、止损等规则正确。代码风格等在任何系统中都是标准实践。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_CICD_139
+  category: cicd
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在量化策略的持续部署中，以下哪种发布策略最适合新策略上线？\nWhich release strategy best suits deploying a new quant strategy to production?"
+  options:
+    - "A. 金丝雀发布——先用小仓位运行新策略，逐步增加 / Canary release — start with small position, gradually increase"
+    - "B. 一次性全量部署 / All-at-once deployment"
+    - "C. 蓝绿部署——瞬间切换 / Blue-green — instant switch"
+    - "D. 只在模拟环境运行 / Run only in simulation"
+  answer: "A"
+  explanation: "新策略上线应逐步放量：(1)模拟盘验证(paper trading)——确保信号和预期一致；(2)小仓位实盘(如1%资金)——验证执行、滑点、市场冲击；(3)逐步增加仓位——观察capacity和alpha衰减；(4)全量部署。每个阶段设置明确的准入准出标准。一次性全量风险过大；蓝绿不适合渐进式验证。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_CICD_140
+  category: cicd
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在CI流水线中进行量化代码的单元测试时，以下哪种mock策略最合理？\nWhen unit testing quant code in CI, which mocking strategy is most reasonable?"
+  options:
+    - "A. Mock外部数据源（行情API、数据库），使用固定的测试数据集 / Mock external data sources, use fixed test datasets"
+    - "B. 在测试中直接连接生产数据库 / Connect to production DB in tests"
+    - "C. 不进行单元测试只做回测 / Skip unit tests, only backtest"
+    - "D. 使用随机数据 / Use random data"
+  answer: "A"
+  explanation: "量化代码单元测试：(1)Mock行情API返回固定数据(确保测试确定性)；(2)使用预先准备的测试数据集(覆盖正常、异常、边界情况)；(3)因子计算结果与预期值对比(数值精度容差)。不应连生产库(不稳定)、不应跳过单测(只靠回测覆盖率低)、不应用随机数据(不可复现)。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_CICD_141
+  category: cicd
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "量化系统的CI/CD中，以下关于数据库schema迁移的最佳实践哪个是正确的？\nWhich is the best practice for database schema migration in quant system CI/CD?"
+  options:
+    - "A. 使用版本化迁移脚本(如Alembic/Flyway)，前向兼容 / Use versioned migration scripts, forward-compatible"
+    - "B. 直接修改生产数据库schema / Directly modify production schema"
+    - "C. 每次部署重建数据库 / Rebuild database on each deploy"
+    - "D. 不使用迁移，手动修改 / No migration, manual changes"
+  answer: "A"
+  explanation: "数据库迁移最佳实践：(1)使用Alembic(Python)/Flyway(Java)等工具管理版本化迁移脚本；(2)迁移脚本前向兼容——新代码能使用旧schema（支持回滚）；(3)添加列用ALTER TABLE ADD COLUMN，不删除旧列（延迟清理）；(4)CI中在测试库执行迁移验证；(5)迁移脚本纳入代码版本控制。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_CICD_142
+  category: cicd
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化项目中使用Git分支管理策略，以下哪种最适合策略研发团队？\nWhich Git branching strategy best suits a quant strategy R&D team?"
+  options:
+    - "A. GitFlow: develop分支做研究，release分支上线 / GitFlow: develop for research, release for production"
+    - "B. 所有人直接commit到main / Everyone commits directly to main"
+    - "C. 每人一个永久分支 / One permanent branch per person"
+    - "D. 只用main分支，不做分支 / Only main branch, no branching"
+  answer: "A"
+  explanation: "GitFlow适合量化团队：(1)feature/分支——每个新因子/策略独立开发；(2)develop分支——集成和回测验证；(3)release分支——生产部署前的最终验证；(4)hotfix分支——紧急修复生产问题。这保证了研发和生产的隔离，同时支持并行开发多个策略。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_CICD_143
+  category: cicd
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在交易系统的CI中，以下哪种测试类型对防止生产事故最有效？\nIn trading system CI, which test type is most effective at preventing production incidents?"
+  options:
+    - "A. 集成测试——覆盖从信号生成到订单执行的完整链路 / Integration tests — cover full chain from signal to order execution"
+    - "B. 仅代码覆盖率检查 / Code coverage check only"
+    - "C. 仅语法检查 / Syntax check only"
+    - "D. 仅性能基准测试 / Performance benchmarks only"
+  answer: "A"
+  explanation: "交易系统最危险的bug通常出在模块间的集成处（如信号格式变更导致下单逻辑异常）。集成测试覆盖：(1)信号生成→风控检查→订单生成→执行反馈的完整链路；(2)使用模拟交易所测试订单生命周期；(3)验证PnL计算的端到端正确性。单纯的覆盖率或语法检查无法发现集成问题。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_CICD_144
+  category: cicd
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "设计量化系统的回滚机制时，以下哪种方案能在最短时间内恢复到上一个稳定版本？\nWhen designing rollback for a quant system, which approach achieves fastest recovery to the last stable version?"
+  options:
+    - "A. Docker镜像版本回退+数据库迁移回滚脚本 / Docker image rollback + DB migration rollback scripts"
+    - "B. 从Git重新checkout和构建 / Git checkout and rebuild"
+    - "C. 手动替换二进制文件 / Manually replace binaries"
+    - "D. 恢复整个服务器的快照 / Restore full server snapshot"
+  answer: "A"
+  explanation: "最快回滚方案：(1)Docker镜像tag对应每个版本，回滚只需更换镜像tag，K8s几秒内完成Pod替换；(2)数据库迁移脚本配对(up/down)，回滚时执行down脚本；(3)配置也版本化(ConfigMap)可一起回滚。Git重建需要编译时间；手动操作易出错；服务器快照粒度太粗(影响其他服务)。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: QD_CICD_145
+  category: cicd
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化系统CI中，构建artifacts的版本命名最佳实践是？\nWhat is the best practice for naming build artifact versions in quant system CI?"
+  options:
+    - "A. 语义化版本号+Git commit hash (如v2.3.1-abc1234) / Semantic version + Git hash (e.g., v2.3.1-abc1234)"
+    - "B. 使用日期时间戳 / Use datetime stamp"
+    - "C. 使用递增数字 / Use incrementing numbers"
+    - "D. 使用latest标签 / Use latest tag"
+  answer: "A"
+  explanation: "语义化版本+commit hash：(1)major.minor.patch传达变更级别(策略逻辑变更用major，因子更新用minor，bug修复用patch)；(2)commit hash精确关联到代码，方便追溯问题；(3)可自动化生成(CI从Git tag获取)。latest不可追溯；日期时间戳不反映变更性质；纯数字缺少语义信息。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_CICD_146
+  category: cicd
+  difficulty: senior
+  type: open_ended
+  points: 5
+  question: "请设计一个量化交易系统从代码提交到生产部署的完整CI/CD流水线，包括：(1)代码质量检查；(2)回测验证；(3)审批流程；(4)灰度发布。\nDesign a complete CI/CD pipeline for a quant trading system from code commit to production, covering: (1) code quality checks; (2) backtest verification; (3) approval process; (4) canary release."
+  options: []
+  answer: ""
+  explanation: "完整流水线：(1)代码提交触发——lint(flake8/clang-tidy)+类型检查(mypy)+安全扫描(bandit)；(2)单元测试——mock外部依赖，覆盖率>80%；(3)集成测试——端到端信号→订单链路；(4)回测验证——跑标准回测，与基线对比(PnL差异<0.01%)；(5)人工审核——策略负责人和风控审批(PR Review)；(6)预发布环境——模拟盘运行1-3天；(7)金丝雀发布——1%资金实盘；(8)全量发布+监控告警。每个阶段设置gate条件。"
+  code_snippet: ""
+  code_language: ""
+  hints:
+    - "考虑交易系统特有的验证环节"
+    - "风控审批是必要的人工环节"
+  rubric: "代码质量阶段(1分)；回测验证(1分)；审批流程(1分)；灰度发布(1分)；监控告警(1分)"
+  time_limit_seconds: 480
+
+- id: QD_CICD_147
+  category: cicd
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在CI/CD中使用Feature Flag管理量化策略的开关，以下哪种场景最适合？\nWhich scenario best suits Feature Flags for quant strategy management in CI/CD?"
+  options:
+    - "A. 在不重新部署的情况下启停特定策略或因子 / Enable/disable specific strategies or factors without redeployment"
+    - "B. 管理代码版本 / Managing code versions"
+    - "C. 替代单元测试 / Replacing unit tests"
+    - "D. 加密配置文件 / Encrypting config files"
+  answer: "A"
+  explanation: "Feature Flag在量化系统中的应用：(1)策略开关——发现新策略异常时一键关闭，无需回滚部署；(2)因子启停——快速上下线因子不影响其他因子；(3)A/B测试——小比例流量测试新逻辑；(4)渐进式发布——配合金丝雀发布逐步开放。Feature Flag是运行时配置，与代码版本管理和测试无关。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_CICD_148
+  category: cicd
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在量化系统的监控告警中，以下哪个指标对策略异常检测最重要？\nIn quant system monitoring and alerting, which metric is most important for strategy anomaly detection?"
+  options:
+    - "A. 实时PnL偏离预期范围的程度(与历史模拟的偏差) / Real-time PnL deviation from expected range"
+    - "B. CPU使用率 / CPU utilization"
+    - "C. 网络带宽 / Network bandwidth"
+    - "D. 磁盘IO / Disk IO"
+  answer: "A"
+  explanation: "策略异常检测的核心指标：(1)PnL偏离——实时PnL与回测预期的偏差超过N个标准差时告警；(2)信号异常——因子值分布与历史显著偏离；(3)执行质量——滑点异常增大；(4)持仓集中度——超过限制。CPU/内存/磁盘等基础设施指标也重要但不能直接反映策略问题。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_CICD_149
+  category: cicd
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在量化系统的日志管理中，以下哪种结构化日志格式最利于后续分析？\nWhich structured logging format is most beneficial for post-analysis in quant systems?"
+  options:
+    - "A. JSON格式，包含timestamp、level、service、trade_id等结构化字段 / JSON with timestamp, level, service, trade_id fields"
+    - "B. 纯文本格式 / Plain text format"
+    - "C. CSV格式 / CSV format"
+    - "D. XML格式 / XML format"
+  answer: "A"
+  explanation: "结构化JSON日志的优势：(1)方便ELK(Elasticsearch+Logstash+Kibana)或Splunk解析和检索；(2)支持按trade_id关联整个交易链路的日志；(3)机器可读，支持自动化告警规则；(4)可扩展字段不影响解析。交易系统日志应包含：timestamp、level、service、trade_id、order_id、symbol、strategy等字段。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+# ============================================================================
+# ADVANCED PYTHON (13 questions)
+# ============================================================================
+
+- id: QD_PYAD_150
+  category: advanced_python
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在Python asyncio中，以下关于事件循环(event loop)的说法哪个是正确的？\nWhich statement about Python asyncio's event loop is correct?"
+  options:
+    - "A. 事件循环在单线程中调度协程，通过非阻塞IO实现并发 / Event loop schedules coroutines in a single thread via non-blocking IO"
+    - "B. asyncio自动使用多线程并行 / asyncio automatically uses multi-threading"
+    - "C. 每个协程运行在独立线程中 / Each coroutine runs in a separate thread"
+    - "D. asyncio不支持网络IO / asyncio doesn't support network IO"
+  answer: "A"
+  explanation: "asyncio是单线程并发框架：事件循环在一个线程中运行，当协程遇到IO操作(await)时挂起，调度其他就绪的协程执行。这是协作式多任务(cooperative multitasking)。适合IO密集型场景（如同时请求多个行情API），但不适合CPU密集型计算。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_PYAD_151
+  category: advanced_python
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "使用asyncio实现并发行情数据抓取时，以下哪种模式最高效？\nWhen using asyncio for concurrent market data fetching, which pattern is most efficient?"
+  options:
+    - "A. asyncio.gather()并发启动所有数据源请求 / asyncio.gather() to launch all source requests concurrently"
+    - "B. 顺序await每个数据源 / Sequentially await each source"
+    - "C. 为每个数据源创建新线程 / Create a new thread per source"
+    - "D. 使用time.sleep()间隔请求 / Use time.sleep() between requests"
+  answer: "A"
+  explanation: "asyncio.gather()同时启动多个协程，等待所有完成。如果有5个数据源每个耗时1秒，gather()只需~1秒（并发），而顺序await需要5秒。注意：(1)使用asyncio.Semaphore限制并发数避免过多连接；(2)设置单个请求timeout防止阻塞；(3)处理部分失败(return_exceptions=True)。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_PYAD_152
+  category: advanced_python
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Python的multiprocessing模块相比threading模块在量化计算中的核心优势是？\nWhat is the core advantage of Python multiprocessing over threading for quant computation?"
+  options:
+    - "A. 绕过GIL，实现真正的CPU并行计算 / Bypasses GIL for true CPU parallelism"
+    - "B. 内存共享更方便 / Easier memory sharing"
+    - "C. 进程切换开销更低 / Lower process switch overhead"
+    - "D. 不需要序列化数据 / No data serialization needed"
+  answer: "A"
+  explanation: "Python的GIL(Global Interpreter Lock)限制了多线程只能单核执行Python字节码。multiprocessing创建独立进程，每个进程有自己的GIL，可以真正利用多核CPU。在因子计算中，多进程可将4000只股票分成N组并行计算。代价是进程间通信需要序列化(pickle)，内存不共享。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_PYAD_153
+  category: advanced_python
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "使用Cython加速Python因子计算代码时，以下哪种做法性能提升最大？\nWhen using Cython to accelerate factor computation, which approach yields the largest performance gain?"
+  options:
+    - "A. 声明静态类型(cdef)并关闭边界检查(@boundscheck(False)) / Declare static types (cdef) and disable bounds checking"
+    - "B. 仅改文件后缀为.pyx / Just rename to .pyx"
+    - "C. 在Cython中调用Python对象方法 / Call Python object methods in Cython"
+    - "D. 使用Cython的print语句调试 / Debug with Cython print"
+  answer: "A"
+  explanation: "Cython性能优化关键：(1)cdef声明C类型变量(int, double)避免Python对象开销；(2)cdef声明函数为C函数(cpdef或cdef)减少Python调用开销；(3)@boundscheck(False)关闭数组边界检查；(4)@wraparound(False)关闭负索引检查；(5)使用typed memoryview访问NumPy数组。仅改后缀不会有显著提升。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_PYAD_154
+  category: advanced_python
+  difficulty: expert
+  type: code
+  points: 5
+  question: "使用Python multiprocessing.Pool实现一个并行因子计算框架：输入为因子函数列表和股票数据，输出为每个因子对所有股票的计算结果。要求：(1)支持超时控制；(2)异常处理（某个因子计算失败不影响其他因子）。\nImplement a parallel factor computation framework using multiprocessing.Pool. Input: list of factor functions + stock data. Output: results per factor. Requirements: (1) timeout control; (2) error isolation."
+  options: []
+  answer: ""
+  explanation: "核心实现：使用Pool.apply_async提交每个因子计算任务，通过get(timeout=)控制超时，try-except捕获异常。关键点：(1)因子函数需要是可pickle的顶层函数；(2)每个因子独立提交，异常不影响其他因子；(3)结果收集为{factor_name: result}字典。"
+  code_snippet: |
+    from multiprocessing import Pool
+    from typing import Callable, Dict, Any
+    import pandas as pd
+
+    def parallel_factor_compute(
+        factor_funcs: Dict[str, Callable],
+        stock_data: pd.DataFrame,
+        n_workers: int = 4,
+        timeout_seconds: int = 300,
+    ) -> Dict[str, Any]:
+        """
+        Parallel factor computation.
+
+        Args:
+            factor_funcs: {factor_name: factor_function}
+            stock_data: DataFrame with stock data
+            n_workers: number of parallel workers
+            timeout_seconds: per-factor timeout
+
+        Returns:
+            {factor_name: result_or_error}
+        """
+        # TODO: Implement
+        # Step 1: Create Pool with n_workers
+        # Step 2: Submit each factor function with apply_async
+        # Step 3: Collect results with timeout and error handling
+        pass
+  code_language: "python"
+  hints:
+    - "apply_async + get(timeout=) 实现超时控制"
+    - "每个因子用try-except包裹，捕获TimeoutError和Exception"
+  rubric: "Pool创建和任务提交(2分)；超时控制(1分)；异常隔离(1分)；结果收集(1分)"
+  time_limit_seconds: 360
+
+- id: QD_PYAD_155
+  category: advanced_python
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在Python中使用__slots__优化因子数据类时，主要节省的是？\nWhen using __slots__ to optimize factor data classes in Python, what is primarily saved?"
+  options:
+    - "A. 内存——每个实例不再需要__dict__ / Memory — no __dict__ per instance"
+    - "B. CPU计算时间 / CPU computation time"
+    - "C. 磁盘空间 / Disk space"
+    - "D. 网络带宽 / Network bandwidth"
+  answer: "A"
+  explanation: "Python默认使用__dict__(字典)存储实例属性，每个dict占用约200-300字节。__slots__声明属性列表后，Python使用更紧凑的固定结构存储属性，省去dict开销。当创建大量小对象(如每只股票的因子记录)时，内存节省显著(可达40-50%)。副作用：不能动态添加属性。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_PYAD_156
+  category: advanced_python
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在量化系统中使用Python的concurrent.futures.ProcessPoolExecutor相比直接使用multiprocessing.Pool的优势是？\nWhat is the advantage of concurrent.futures.ProcessPoolExecutor over multiprocessing.Pool in quant systems?"
+  options:
+    - "A. 统一的Future接口，支持as_completed()回调和异常传播 / Unified Future interface with as_completed() and exception propagation"
+    - "B. 没有GIL限制 / No GIL limitation"
+    - "C. 更快的进程创建速度 / Faster process creation"
+    - "D. 自动GPU加速 / Automatic GPU acceleration"
+  answer: "A"
+  explanation: "ProcessPoolExecutor的优势：(1)统一的Future接口——submit()返回Future对象，可用as_completed()按完成顺序处理结果；(2)异常自动传播到调用者；(3)与ThreadPoolExecutor接口一致，便于切换并行策略；(4)支持context manager(with语句)自动清理。底层仍使用multiprocessing，GIL行为相同。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_PYAD_157
+  category: advanced_python
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "使用Numba的@jit装饰器加速Python数值计算时，以下哪种情况会导致回退到Python模式（性能无提升）？\nWhen using Numba @jit, which situation causes fallback to Python mode (no speedup)?"
+  options:
+    - "A. 函数中使用了Pandas DataFrame操作 / Using Pandas DataFrame operations in the function"
+    - "B. 函数只使用NumPy数组和基本运算 / Using only NumPy arrays and basic operations"
+    - "C. 函数参数是float64数组 / Function arguments are float64 arrays"
+    - "D. 函数包含for循环 / Function contains for loops"
+  answer: "A"
+  explanation: "Numba @jit(nopython=True)将Python代码编译为机器码，但只支持NumPy数组和基本Python类型。Pandas DataFrame/Series不被Numba支持，会导致：(1)nopython=True模式编译失败；(2)nopython=False(默认)回退到object mode，几乎无性能提升。解决方案：将DataFrame转为NumPy数组后传入Numba函数。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_PYAD_158
+  category: advanced_python
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在Python中实现高性能因子计算时，以下关于内存映射文件(mmap)的说法哪个是正确的？\nWhich statement about memory-mapped files (mmap) for high-performance factor computation in Python is correct?"
+  options:
+    - "A. mmap允许像访问数组一样访问磁盘文件，OS自动管理page cache / mmap allows array-like file access with OS-managed page caching"
+    - "B. mmap将整个文件加载到RAM / mmap loads the entire file into RAM"
+    - "C. mmap不支持并发读取 / mmap doesn't support concurrent reads"
+    - "D. mmap比read()慢 / mmap is slower than read()"
+  answer: "A"
+  explanation: "mmap(内存映射)将文件映射到虚拟地址空间：(1)按需加载(lazy loading)——只有访问的page才从磁盘读入内存；(2)OS自动管理page cache，热数据保留在内存；(3)支持多进程共享同一映射(MAP_SHARED)；(4)对大文件特别有效——不需要一次加载全部数据。np.memmap基于此实现大数组的外存访问。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_PYAD_159
+  category: advanced_python
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在使用Python开发低延迟交易系统时，以下哪种GC(垃圾回收)优化策略最有效？\nWhen developing low-latency trading in Python, which GC optimization is most effective?"
+  options:
+    - "A. 在关键交易路径前禁用GC(gc.disable())，在空闲时手动触发 / Disable GC before critical path, manually trigger during idle"
+    - "B. 增大GC阈值使其更少运行 / Increase GC threshold"
+    - "C. 完全禁用GC永不运行 / Completely disable GC forever"
+    - "D. 使用更多内存减少GC压力 / Use more memory to reduce GC pressure"
+  answer: "A"
+  explanation: "Python GC的mark-and-sweep阶段会导致不可预测的暂停(STW pause)。在交易系统的关键路径(信号计算→下单)中：(1)gc.disable()禁用自动GC；(2)在非关键时间窗口(如非交易时段)gc.collect()手动回收；(3)预分配对象池减少分配/回收。完全禁用会导致循环引用内存泄漏。增大阈值只是推迟问题。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: QD_PYAD_160
+  category: advanced_python
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在Python中使用dataclasses和Pydantic定义因子数据模型，Pydantic的核心优势是？\nWhen defining factor data models, what is Pydantic's core advantage over dataclasses?"
+  options:
+    - "A. 运行时数据验证和类型强制转换 / Runtime data validation and type coercion"
+    - "B. 更快的实例化速度 / Faster instantiation"
+    - "C. 更少的内存占用 / Less memory usage"
+    - "D. 不需要类型注解 / No type annotations needed"
+  answer: "A"
+  explanation: "Pydantic的核心价值：(1)运行时类型检查和验证(dataclasses只是声明不验证)；(2)自动类型转换(如字符串'3.14'→float 3.14)；(3)丰富的验证器(Field(ge=0), @validator)；(4)JSON序列化/反序列化。在因子系统中用于验证API输入、配置文件、因子参数等。代价是实例化稍慢。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_PYAD_161
+  category: advanced_python
+  difficulty: senior
+  type: code
+  points: 5
+  question: "实现一个Python装饰器@factor_cache，用于缓存因子计算结果。要求：(1)基于日期+因子名称作为cache key；(2)支持TTL过期；(3)线程安全；(4)支持LRU淘汰策略。\nImplement a @factor_cache decorator that caches factor computation results. Requirements: (1) cache key = date + factor name; (2) TTL expiration; (3) thread-safe; (4) LRU eviction."
+  options: []
+  answer: ""
+  explanation: "实现要点：(1)使用collections.OrderedDict实现LRU；(2)threading.Lock保证线程安全；(3)每个缓存条目记录过期时间，get时检查是否过期；(4)装饰器提取函数名和日期参数作为key。"
+  code_snippet: |
+    import threading
+    import time
+    from collections import OrderedDict
+    from functools import wraps
+    from typing import Callable
+
+    def factor_cache(ttl_seconds: int = 3600, max_size: int = 1000):
+        """
+        Decorator for caching factor computation results.
+
+        Args:
+            ttl_seconds: time-to-live for cache entries
+            max_size: maximum number of cached entries (LRU eviction)
+
+        Usage:
+            @factor_cache(ttl_seconds=3600, max_size=500)
+            def compute_momentum(date: str, stock_data: pd.DataFrame) -> pd.Series:
+                ...
+        """
+        # TODO: Implement
+        # Step 1: Create thread-safe OrderedDict cache
+        # Step 2: Wrapper checks cache, returns if hit and not expired
+        # Step 3: On miss, compute, store with timestamp, evict if over max_size
+        pass
+  code_language: "python"
+  hints:
+    - "OrderedDict.move_to_end()实现LRU"
+    - "每个条目存储(value, expire_time)元组"
+  rubric: "LRU淘汰(2分)；TTL过期(1分)；线程安全(1分)；装饰器正确(1分)"
+  time_limit_seconds: 360
+
+- id: QD_PYAD_162
+  category: advanced_python
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在Python中使用C扩展(ctypes/cffi/pybind11)加速关键路径时，以下哪种方案在开发效率和性能之间平衡最好？\nWhen using C extensions to accelerate Python hot paths, which approach best balances development efficiency and performance?"
+  options:
+    - "A. pybind11——C++11语法绑定Python，编译时类型检查 / pybind11 — C++11 bindings, compile-time type checking"
+    - "B. ctypes——运行时加载动态库 / ctypes — runtime dynamic library loading"
+    - "C. 手写Python C API扩展 / Hand-written Python C API extensions"
+    - "D. SWIG——自动生成包装代码 / SWIG — auto-generated wrapper code"
+  answer: "A"
+  explanation: "pybind11的优势：(1)头文件库，无需额外依赖；(2)利用C++11模板自动处理Python-C++类型转换；(3)支持NumPy数组零拷贝传递；(4)编译时类型检查比ctypes运行时更安全；(5)代码简洁(比手写C API少80%代码)。在量化系统中常用于将因子计算核心逻辑用C++实现并通过pybind11暴露给Python。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+# ============================================================================
+# ADVANCED C++ (13 questions)
+# ============================================================================
+
+- id: QD_CPP_163
+  category: advanced_cpp
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "C++20的concepts特性在量化系统中的主要用途是？\nWhat is the primary use of C++20 concepts in quant systems?"
+  options:
+    - "A. 对模板参数施加编译时约束，提供更清晰的错误信息 / Constrain template parameters at compile time with clearer error messages"
+    - "B. 运行时类型检查 / Runtime type checking"
+    - "C. 替代虚函数 / Replace virtual functions"
+    - "D. 垃圾回收 / Garbage collection"
+  answer: "A"
+  explanation: "C++20 concepts允许声明模板参数必须满足的要求(如arithmetic、sortable)。在量化系统中：(1)约束数值类型模板(如因子计算模板只接受浮点类型)；(2)模板参数不满足concept时编译器给出清晰错误(而非传统模板的冗长错误)。这是编译时特性，不涉及运行时和垃圾回收。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_CPP_164
+  category: advanced_cpp
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "C++20 coroutines在量化交易系统中最适合的应用场景是？\nWhat is the best application of C++20 coroutines in quant trading systems?"
+  options:
+    - "A. 异步IO——非阻塞地等待网络数据(行情/订单回报) / Async IO — non-blocking wait for network data"
+    - "B. 替代所有循环 / Replace all loops"
+    - "C. 加速数学运算 / Speed up math operations"
+    - "D. 内存管理 / Memory management"
+  answer: "A"
+  explanation: "C++20 coroutines(co_await/co_yield/co_return)支持协作式异步编程：(1)非阻塞等待行情数据(co_await market_data_stream.next())；(2)异步处理订单回报；(3)生成器模式(co_yield)产生因子信号序列。相比传统回调(callback hell)，协程代码更直观。不适合替代循环或加速纯计算。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_CPP_165
+  category: advanced_cpp
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "C++20 ranges库在处理因子数据管道时的优势是？\nWhat is the advantage of C++20 ranges for factor data pipelines?"
+  options:
+    - "A. 支持懒惰求值(lazy evaluation)的链式数据变换 / Supports lazy evaluation with chained data transformations"
+    - "B. 自动并行化 / Automatic parallelization"
+    - "C. 自动内存管理 / Automatic memory management"
+    - "D. 运行时反射 / Runtime reflection"
+  answer: "A"
+  explanation: "C++20 ranges支持views(懒惰求值)和actions(即时求值)的管道操作：data | filter(valid) | transform(normalize) | take(100)。在因子计算中：(1)链式变换不创建中间容器(内存效率)；(2)代码比嵌套for循环更声明式易读；(3)views只在迭代时计算(懒惰求值)。不会自动并行(需要配合std::execution)。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_CPP_166
+  category: advanced_cpp
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在C++中实现无锁(lock-free)队列用于交易信号传递时，关键的原子操作是？\nWhen implementing a lock-free queue for trade signal passing in C++, what is the key atomic operation?"
+  options:
+    - "A. compare_exchange_weak/strong (CAS操作) / CAS operations"
+    - "B. std::mutex::lock() / mutex lock"
+    - "C. volatile关键字 / volatile keyword"
+    - "D. std::atomic::store() alone / atomic store alone"
+  answer: "A"
+  explanation: "Lock-free数据结构的核心是CAS(Compare-And-Swap)：(1)compare_exchange_weak尝试原子地将值从expected改为desired；(2)失败则返回false，调用者重试(spin)；(3)无锁队列的enqueue/dequeue通过CAS操作head/tail指针实现。mutex是有锁；volatile不保证原子性；单独的store不能实现条件更新。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_CPP_167
+  category: advanced_cpp
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在C++低延迟交易系统中，以下关于memory ordering的说法哪个是正确的？\nIn a C++ low-latency trading system, which statement about memory ordering is correct?"
+  options:
+    - "A. std::memory_order_relaxed提供最低开销但不保证跨线程可见性顺序 / relaxed has lowest overhead but no cross-thread visibility ordering"
+    - "B. 所有atomic操作默认是relaxed / All atomics default to relaxed"
+    - "C. memory_order_seq_cst没有性能开销 / seq_cst has no performance overhead"
+    - "D. memory ordering只影响单线程 / Memory ordering only affects single-threaded code"
+  answer: "A"
+  explanation: "C++ memory ordering从弱到强：relaxed(无排序保证，最快)→acquire/release(单向屏障)→seq_cst(全序，最慢)。在交易系统中：(1)统计计数器用relaxed(偶尔不精确可以接受)；(2)生产者-消费者用acquire/release(保证数据可见)；(3)默认是seq_cst(最安全但最慢)。正确使用memory ordering可减少30%的原子操作开销。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: QD_CPP_168
+  category: advanced_cpp
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在C++中使用std::variant替代传统union+enum来表示不同类型的交易消息，主要优势是？\nWhat is the main advantage of std::variant over union+enum for representing different trade message types in C++?"
+  options:
+    - "A. 类型安全——编译器强制处理所有可能的类型 / Type-safe — compiler enforces handling all possible types"
+    - "B. 更少的内存占用 / Less memory usage"
+    - "C. 运行速度更快 / Faster runtime speed"
+    - "D. 支持虚函数 / Supports virtual functions"
+  answer: "A"
+  explanation: "std::variant<OrderMsg, FillMsg, CancelMsg>相比union的优势：(1)类型安全——std::visit配合visitor模式，编译器确保处理所有类型；(2)不需要手动管理type tag；(3)支持非POD类型(有构造/析构函数的类)；(4)访问错误类型时抛std::bad_variant_access而非UB。性能与union基本相同(均为max(sizeof(types))。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_CPP_169
+  category: advanced_cpp
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在C++模板元编程中，SFINAE(Substitution Failure Is Not An Error)在量化库中的典型应用是？\nWhat is the typical application of SFINAE in quantitative C++ libraries?"
+  options:
+    - "A. 根据数据类型在编译期选择不同的算法实现 / Select different algorithm implementations at compile time based on data types"
+    - "B. 运行时错误处理 / Runtime error handling"
+    - "C. 内存分配 / Memory allocation"
+    - "D. 日志输出 / Log output"
+  answer: "A"
+  explanation: "SFINAE允许在模板实例化失败时不报错而是尝试其他重载。量化库应用：(1)为float/double选择不同精度的数学函数；(2)检测类型是否有特定成员函数(如has_price())；(3)对SIMD类型启用向量化计算路径。C++20的concepts是SFINAE的更优雅替代，但现有代码库中SFINAE仍然普遍。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_CPP_170
+  category: advanced_cpp
+  difficulty: expert
+  type: code
+  points: 5
+  question: "实现一个C++的编译时因子表达式引擎：使用Expression Template技术实现因子的四则运算组合，要求：(1)不产生中间临时数组；(2)编译时类型安全；(3)支持lazy evaluation。请实现核心模板类。\nImplement a C++ compile-time factor expression engine using Expression Templates: (1) no intermediate arrays; (2) compile-time type safety; (3) lazy evaluation."
+  options: []
+  answer: ""
+  explanation: "Expression Template关键：(1)每个运算返回一个包含操作数引用的表达式对象(而非结果数组)；(2)最终赋值时才遍历求值(lazy)；(3)编译器内联展开消除虚函数和间接调用。这是Eigen/Blaze等高性能线性代数库的核心技术。"
+  code_snippet: |
+    #include <vector>
+    #include <cstddef>
+
+    // Base expression template
+    template<typename E>
+    struct FactorExpr {
+        double operator[](size_t i) const {
+            return static_cast<const E&>(*this)[i];
+        }
+        size_t size() const {
+            return static_cast<const E&>(*this).size();
+        }
+    };
+
+    // Concrete factor data
+    class Factor : public FactorExpr<Factor> {
+        std::vector<double> data_;
+    public:
+        // TODO: Implement constructor, operator[], size()
+        // TODO: Implement template assignment from expressions
+    };
+
+    // TODO: Implement AddExpr, MulExpr expression templates
+    // TODO: Implement operator+, operator* for FactorExpr
+  code_language: "cpp"
+  hints:
+    - "每个表达式类存储操作数的const引用"
+    - "operator[]递归求值到叶节点"
+  rubric: "表达式模板基类(1分)；运算符重载(1分)；懒求值(1分)；无临时数组(1分)；类型安全(1分)"
+  time_limit_seconds: 480
+
+- id: QD_CPP_171
+  category: advanced_cpp
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在C++17/20中，std::optional在量化代码中的最佳用途是？\nWhat is the best use of std::optional in quantitative C++ code?"
+  options:
+    - "A. 表示可能缺失的因子值(替代NaN或magic number) / Represent possibly missing factor values (replacing NaN or magic numbers)"
+    - "B. 替代智能指针 / Replace smart pointers"
+    - "C. 替代异常处理 / Replace exception handling"
+    - "D. 实现多态 / Implement polymorphism"
+  answer: "A"
+  explanation: "std::optional<double>比NaN更好地表达'值可能不存在'的语义：(1)类型系统强制调用者处理缺失情况(has_value()/value_or())；(2)比NaN更明确——NaN有时是计算错误而非缺失；(3)比magic number(-999)更安全——不会被意外当作有效值参与计算。在因子计算中，停牌股票的因子值用optional表示最佳。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_CPP_172
+  category: advanced_cpp
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在C++低延迟交易系统中，使用自定义内存分配器(allocator)的主要目的是？\nWhat is the main purpose of custom memory allocators in C++ low-latency trading systems?"
+  options:
+    - "A. 避免系统malloc/free的锁竞争和不确定延迟 / Avoid lock contention and non-deterministic latency of system malloc/free"
+    - "B. 增加可用内存总量 / Increase total available memory"
+    - "C. 自动垃圾回收 / Automatic garbage collection"
+    - "D. 减少编译时间 / Reduce compilation time"
+  answer: "A"
+  explanation: "系统malloc/free的问题：(1)多线程下有锁竞争；(2)内存碎片导致不确定的分配时间；(3)频繁syscall(brk/mmap)有开销。自定义分配器：(1)预分配大块内存池(pool allocator)；(2)无锁分配(per-thread arena)；(3)确定性的O(1)分配时间。在HFT中常用tcmalloc/jemalloc或自定义arena allocator。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_CPP_173
+  category: advanced_cpp
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在C++中使用SIMD指令(如AVX2/AVX-512)加速因子计算时，以下哪个关键要素最影响性能？\nWhen using SIMD (AVX2/AVX-512) to accelerate factor computation in C++, which key element most impacts performance?"
+  options:
+    - "A. 数据对齐(alignment)——确保数据按SIMD寄存器宽度对齐 / Data alignment — align data to SIMD register width"
+    - "B. 使用更多的条件分支 / Using more conditional branches"
+    - "C. 使用STL容器 / Using STL containers"
+    - "D. 增加函数调用深度 / Increasing function call depth"
+  answer: "A"
+  explanation: "SIMD性能要素：(1)数据对齐——AVX2需要32字节对齐，AVX-512需要64字节对齐，未对齐加载(vmovdqu)比对齐加载(vmovdqa)慢；(2)连续内存布局(SoA优于AoS)；(3)避免分支(SIMD不擅长)改用blend/mask；(4)避免数据依赖链。alignas(32)或_mm_malloc()实现对齐。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: QD_CPP_174
+  category: advanced_cpp
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "C++中move语义在量化系统中最能体现价值的场景是？\nWhere does C++ move semantics provide the most value in quant systems?"
+  options:
+    - "A. 大型容器(如vector<double>)的函数返回和容器插入 / Returning large containers from functions and container insertion"
+    - "B. 基本类型(int, double)的赋值 / Assigning primitive types"
+    - "C. 全局变量的初始化 / Initializing global variables"
+    - "D. 编译时常量计算 / Compile-time constant computation"
+  answer: "A"
+  explanation: "Move语义避免了大对象的深拷贝：(1)函数返回vector<double>(含百万元素)时，move只交换内部指针(O(1))而非拷贝所有元素(O(N))；(2)容器push_back临时对象时用move而非copy；(3)std::unique_ptr只能move不能copy(所有权转移)。对基本类型无意义(大小与指针相同)。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_CPP_175
+  category: advanced_cpp
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "C++17的structured bindings在解析量化数据时的典型用法是？\nWhat is the typical use of C++17 structured bindings when parsing quant data?"
+  options:
+    - "A. auto [price, volume, timestamp] = parse_tick(data); 直接解构 / Direct destructuring of parsed results"
+    - "B. 替代所有变量声明 / Replace all variable declarations"
+    - "C. 动态类型推导 / Dynamic type inference"
+    - "D. 异常处理 / Exception handling"
+  answer: "A"
+  explanation: "Structured bindings允许将tuple/struct/array的成员直接绑定到命名变量：auto [price, vol, ts] = parse_tick(data)。在量化代码中：(1)解析行情数据返回的tuple；(2)遍历map时auto [key, value]；(3)函数返回多值时auto [success, result]。代码更简洁易读。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+# ============================================================================
+# DATABASE INTERNALS (13 questions)
+# ============================================================================
+
+- id: QD_DB_176
+  category: database_internals
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化系统中存储因子数据时，列式存储(column store)相比行式存储(row store)的核心优势是？\nWhat is the core advantage of column stores over row stores for factor data storage in quant systems?"
+  options:
+    - "A. 分析查询只读取需要的列，IO效率高；且同列数据压缩率更高 / Analytic queries read only needed columns; same-column data compresses better"
+    - "B. 单行插入更快 / Faster single-row inserts"
+    - "C. 事务支持更好 / Better transaction support"
+    - "D. 适合OLTP场景 / Suitable for OLTP"
+  answer: "A"
+  explanation: "列式存储(ClickHouse, Parquet, Arrow)优势：(1)查询SELECT price, volume FROM ticks只读取price和volume两列，不读无关列(行存读取整行)；(2)同一列数据类型相同，压缩率高(10-100倍)；(3)向量化执行(SIMD)在列数据上更高效。缺点是单行插入/更新需要操作多个列文件。因子数据是典型的分析场景(读多写少)。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_DB_177
+  category: database_internals
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "B-Tree和LSM-Tree在量化数据存储中的选择，以下哪个说法是正确的？\nWhich statement about B-Tree vs LSM-Tree for quant data storage is correct?"
+  options:
+    - "A. LSM-Tree写入快(顺序写)但读取可能需要合并多层；B-Tree读取快但随机写入有开销 / LSM-Tree: fast sequential writes but reads may merge layers; B-Tree: fast reads but random write overhead"
+    - "B. B-Tree写入总是比LSM-Tree快 / B-Tree always has faster writes"
+    - "C. LSM-Tree不支持范围查询 / LSM-Tree doesn't support range queries"
+    - "D. 两者性能完全相同 / Both have identical performance"
+  answer: "A"
+  explanation: "LSM-Tree(RocksDB, LevelDB)：写入先到内存(memtable)再顺序刷盘(SSTable)，写放大但写速度极快。读时可能需要查多层SSTable(通过bloom filter优化)。B-Tree(PostgreSQL, MySQL InnoDB)：原地更新，读路径短(O(logN))，但随机写需要多次磁盘寻道。行情写入密集用LSM-Tree；因子查询密集用B-Tree。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_DB_178
+  category: database_internals
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在使用ClickHouse存储A股日频因子数据时，以下哪种表引擎和排序键设计最优？\nWhen storing A-share daily factor data in ClickHouse, which table engine and sorting key design is optimal?"
+  options:
+    - "A. MergeTree引擎，ORDER BY (date, stock_code) / MergeTree engine, ORDER BY (date, stock_code)"
+    - "B. Memory引擎 / Memory engine"
+    - "C. Log引擎 / Log engine"
+    - "D. MergeTree引擎，不设排序键 / MergeTree without sorting key"
+  answer: "A"
+  explanation: "ClickHouse MergeTree引擎+合理排序键：(1)ORDER BY (date, stock_code)按日期和股票排序——横截面查询(某天所有股票)和时间序列查询(某只股票历史)都高效；(2)date在前支持日期范围分区裁剪(PARTITION BY toYYYYMM(date))；(3)数据按排序键聚集存储，范围查询IO最小化。Memory引擎不持久化；Log不支持索引。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_DB_179
+  category: database_internals
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "时序数据库(TimescaleDB/InfluxDB)在存储tick数据时相比通用关系数据库的关键优化是？\nWhat is the key optimization of time-series databases (TimescaleDB/InfluxDB) over general RDBMS for tick data?"
+  options:
+    - "A. 基于时间的自动分区(chunking)+时间序列压缩算法 / Time-based auto-partitioning + time-series compression"
+    - "B. 更强的ACID事务 / Stronger ACID transactions"
+    - "C. 更灵活的JOIN操作 / More flexible JOIN operations"
+    - "D. 更好的全文搜索 / Better full-text search"
+  answer: "A"
+  explanation: "时序数据库优化：(1)自动按时间分区(chunk)——查询时只扫描相关时间段；(2)时序压缩算法(delta-of-delta, XOR浮点压缩)——利用相邻数据点的时间局部性；(3)自动降采样(downsampling)——旧数据按需压缩(如分钟→日)；(4)高效的时间范围查询和聚合。通用RDBMS缺少这些针对时序特点的优化。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_DB_180
+  category: database_internals
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Parquet文件格式在因子数据存储中的核心特征是？\nWhat is the core feature of the Parquet file format for factor data storage?"
+  options:
+    - "A. 列式存储+行组(row group)分块+丰富的元数据(min/max/null count) / Columnar storage + row group chunking + rich metadata"
+    - "B. 文本格式易于人工阅读 / Text format easy to read"
+    - "C. 支持流式追加写入 / Supports streaming append writes"
+    - "D. 自带SQL查询引擎 / Built-in SQL query engine"
+  answer: "A"
+  explanation: "Apache Parquet特点：(1)列式存储——每列独立存储和压缩；(2)Row Group——将数据分成块(通常128MB)，支持并行读取；(3)丰富的元数据——每个Row Group每列记录min/max值，查询时可跳过不相关的Row Group(谓词下推)；(4)支持多种压缩(Snappy/ZSTD)。Parquet是因子数据离线存储的事实标准。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_DB_181
+  category: database_internals
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在设计因子数据库的索引策略时，以下关于二级索引(secondary index)的说法哪个是正确的？\nWhen designing index strategy for a factor database, which statement about secondary indexes is correct?"
+  options:
+    - "A. 二级索引加速了非主键列的查询但增加了写入开销和存储空间 / Secondary indexes speed up non-PK queries but add write overhead and storage"
+    - "B. 二级索引不占用额外存储 / Secondary indexes use no extra storage"
+    - "C. 所有列都应该建立索引 / All columns should be indexed"
+    - "D. 二级索引不影响写入性能 / Secondary indexes don't affect write performance"
+  answer: "A"
+  explanation: "二级索引trade-off：(1)读优化——非主键查询(如WHERE factor_name='momentum')可通过索引直接定位，避免全表扫描；(2)写开销——每次INSERT/UPDATE需要同时更新索引，写放大；(3)存储开销——索引本身占用空间。因子数据库应根据查询模式建索引：日期和股票代码建索引，因子值不建(因为通常做范围扫描)。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_DB_182
+  category: database_internals
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在高并发的因子查询场景中，MVCC(Multi-Version Concurrency Control)的作用是？\nIn high-concurrency factor query scenarios, what is the role of MVCC?"
+  options:
+    - "A. 读写互不阻塞——读操作看到快照版本，写操作创建新版本 / Reads don't block writes — reads see snapshot versions, writes create new versions"
+    - "B. 加速单线程查询 / Speed up single-threaded queries"
+    - "C. 减少磁盘使用 / Reduce disk usage"
+    - "D. 替代索引 / Replace indexes"
+  answer: "A"
+  explanation: "MVCC(PostgreSQL/MySQL InnoDB)：(1)每行数据有多个版本(带版本号或时间戳)；(2)读操作看到事务开始时的快照(一致性读)，不被写操作阻塞；(3)写操作创建新版本而非原地修改(copy-on-write)。在因子系统中：研究员的长时间查询不会阻塞实时因子写入，反之亦然。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_DB_183
+  category: database_internals
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Apache Arrow在量化数据处理中的主要价值是？\nWhat is the primary value of Apache Arrow in quant data processing?"
+  options:
+    - "A. 标准化的内存列式格式，实现零拷贝跨语言数据共享 / Standardized in-memory columnar format for zero-copy cross-language data sharing"
+    - "B. 磁盘存储格式 / Disk storage format"
+    - "C. 网络传输协议 / Network transport protocol"
+    - "D. 数据库查询引擎 / Database query engine"
+  answer: "A"
+  explanation: "Apache Arrow定义了标准的内存列式数据格式：(1)Python/R/Java/C++可直接共享内存数据，无需序列化/反序列化(零拷贝)；(2)列式布局支持SIMD向量化操作；(3)Pandas 2.0底层使用Arrow替代NumPy，性能提升显著；(4)Arrow Flight实现高性能网络传输。在量化系统中连接不同语言组件时价值巨大。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_DB_184
+  category: database_internals
+  difficulty: senior
+  type: open_ended
+  points: 5
+  question: "设计一个因子数据存储方案，需要支持：(1)4000只股票×500个因子×10年日频数据的高效查询；(2)横截面查询(某天所有股票某个因子)和时间序列查询(某只股票某因子历史)都要快；(3)每日增量更新。请描述存储架构和索引策略。\nDesign a factor data storage solution supporting: (1) 4000 stocks x 500 factors x 10 years daily data; (2) fast cross-sectional and time-series queries; (3) daily incremental updates."
+  options: []
+  answer: ""
+  explanation: "推荐方案：(1)存储格式：Parquet on S3/HDFS，按date分区，每个分区文件内列为(stock_code, factor_1, factor_2, ...)；(2)查询引擎：DuckDB/ClickHouse，支持谓词下推和列裁剪；(3)双重排序——主排序(date, stock)支持横截面，物化视图(stock, date)支持时间序列；(4)热数据(近期)在Redis/ClickHouse，冷数据在Parquet/S3；(5)增量更新：每日新增分区，定期合并小文件(compaction)。数据量估算：4000×500×252×10≈50亿行，Parquet压缩后约500GB。"
+  code_snippet: ""
+  code_language: ""
+  hints:
+    - "考虑热数据和冷数据的分层存储"
+    - "横截面和时间序列查询的索引需求不同"
+  rubric: "存储格式选择(1分)；分区策略(1分)；索引/排序设计(1分)；增量更新(1分)；热冷分层(1分)"
+  time_limit_seconds: 480
+
+- id: QD_DB_185
+  category: database_internals
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在数据库中使用Bloom Filter加速因子数据查询的原理是？\nWhat is the principle of using Bloom Filters to accelerate factor data queries in databases?"
+  options:
+    - "A. 快速判断某个值是否可能存在于数据块中，避免不必要的磁盘读取 / Quickly determine if a value possibly exists in a data block, avoiding unnecessary disk reads"
+    - "B. 精确查找数据位置 / Precisely locate data position"
+    - "C. 压缩数据减少存储 / Compress data to reduce storage"
+    - "D. 加速排序操作 / Accelerate sorting"
+  answer: "A"
+  explanation: "Bloom Filter是概率数据结构：(1)可以快速回答'某值是否可能在集合中'——False Positive可能，False Negative不可能；(2)在LSM-Tree中每层SSTable配一个Bloom Filter，查询时先检查Filter——如果返回'不在'则跳过该SSTable，避免磁盘IO；(3)空间效率极高(每个元素约10bit)。ClickHouse和RocksDB广泛使用。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_DB_186
+  category: database_internals
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在设计支持高并发写入的因子实时数据库时，Write-Ahead Log(WAL)的关键作用是？\nIn designing a high-concurrency real-time factor database, what is the key role of Write-Ahead Log (WAL)?"
+  options:
+    - "A. 保证持久性(Durability)——先写WAL再修改数据，崩溃后通过WAL恢复 / Guarantee durability — write WAL before data, recover from WAL after crash"
+    - "B. 加速读查询 / Speed up read queries"
+    - "C. 减少磁盘空间 / Reduce disk space"
+    - "D. 替代索引 / Replace indexes"
+  answer: "A"
+  explanation: "WAL(Write-Ahead Logging)是数据库ACID中Durability的基础：(1)任何数据修改先写入WAL(顺序追加写，极快)；(2)WAL写入成功后才确认事务提交；(3)数据页的修改可以异步刷盘(checkpoint)；(4)崩溃恢复时重放WAL中已提交未刷盘的记录。这使得即使在崩溃瞬间也不丢失已确认的数据。PostgreSQL, MySQL InnoDB都使用WAL。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: QD_DB_187
+  category: database_internals
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "DuckDB作为嵌入式分析数据库在量化研究中的优势是？\nWhat is DuckDB's advantage as an embedded analytical database for quant research?"
+  options:
+    - "A. 进程内运行无需服务器，直接查询Parquet/CSV，OLAP性能优异 / In-process with no server, directly queries Parquet/CSV, excellent OLAP performance"
+    - "B. 支持高并发OLTP / High-concurrency OLTP support"
+    - "C. 分布式计算 / Distributed computing"
+    - "D. 实时流处理 / Real-time stream processing"
+  answer: "A"
+  explanation: "DuckDB的量化研究优势：(1)嵌入式(如SQLite)——pip install即用，无需部署服务器；(2)直接查询Parquet/CSV/Arrow(无需导入)；(3)列式执行引擎+向量化处理，OLAP查询比Pandas SQL快10-100倍；(4)支持窗口函数、CTE等分析SQL。非常适合研究员在Jupyter中快速分析因子数据。不适合高并发OLTP或分布式场景。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_DB_188
+  category: database_internals
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化系统中使用连接池(connection pool)管理数据库连接的主要目的是？\nWhat is the main purpose of connection pooling for database connections in quant systems?"
+  options:
+    - "A. 复用已建立的连接，避免频繁创建/销毁连接的开销 / Reuse established connections to avoid create/destroy overhead"
+    - "B. 增加数据库存储空间 / Increase database storage"
+    - "C. 加密数据传输 / Encrypt data transmission"
+    - "D. 备份数据 / Backup data"
+  answer: "A"
+  explanation: "数据库连接创建开销大(TCP握手+认证+会话初始化)。连接池：(1)预创建N个连接保持空闲；(2)请求到来时取一个空闲连接使用；(3)使用完毕归还池而非关闭；(4)连接健康检查和自动重连。在因子计算中，多个worker频繁查询数据库时，连接池可将连接创建时间从~50ms降到~0ms。常用库：SQLAlchemy Pool, HikariCP。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+# ============================================================================
+# NETWORK PROGRAMMING (12 questions)
+# ============================================================================
+
+- id: QD_NET_189
+  category: network_programming
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化交易系统的网络编程中，TCP的Nagle算法在低延迟场景下应该如何处理？\nHow should TCP's Nagle algorithm be handled in low-latency quant trading network programming?"
+  options:
+    - "A. 禁用(TCP_NODELAY)——避免小包被缓冲导致延迟 / Disable (TCP_NODELAY) — prevent small packet buffering latency"
+    - "B. 保持默认启用 / Keep default enabled"
+    - "C. 只在发送端禁用 / Disable only on sender"
+    - "D. Nagle算法不影响延迟 / Nagle doesn't affect latency"
+  answer: "A"
+  explanation: "Nagle算法将小包缓冲合并成大包发送(减少网络开销)，但引入延迟(等待凑够数据或上一个ACK返回)。在交易系统中每个订单消息都需要立即发送，应设置TCP_NODELAY禁用Nagle。注意同时禁用delayed ACK(TCP_QUICKACK)以避免接收端的额外延迟。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_NET_190
+  category: network_programming
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在Linux上优化行情数据接收的网络性能时，以下哪种技术能减少数据从内核到用户空间的拷贝次数？\nWhich technique reduces data copy counts from kernel to user space when receiving market data on Linux?"
+  options:
+    - "A. 使用mmap实现零拷贝——将内核接收缓冲区映射到用户空间 / mmap for zero-copy — map kernel receive buffer to user space"
+    - "B. 增大TCP接收缓冲区 / Increase TCP receive buffer"
+    - "C. 使用select()替代epoll() / Use select() instead of epoll()"
+    - "D. 减少网络带宽 / Reduce network bandwidth"
+  answer: "A"
+  explanation: "传统数据接收：网卡→内核缓冲区→(拷贝)→用户缓冲区，至少一次拷贝。零拷贝技术：(1)mmap将内核缓冲区映射到用户空间(AF_PACKET + PACKET_RX_RING)；(2)io_uring的registered buffers减少拷贝；(3)DPDK完全绕过内核(kernel bypass)。增大缓冲区不减少拷贝次数。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_NET_191
+  category: network_programming
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化系统中使用epoll(Linux)处理多连接行情数据时，相比select的主要优势是？\nWhat is epoll's main advantage over select for handling multiple market data connections in Linux?"
+  options:
+    - "A. O(1)事件通知，不随连接数增长而退化 / O(1) event notification, doesn't degrade with connection count"
+    - "B. 跨平台支持更好 / Better cross-platform support"
+    - "C. 不需要文件描述符 / No file descriptors needed"
+    - "D. 自动负载均衡 / Automatic load balancing"
+  answer: "A"
+  explanation: "select/poll每次调用需要遍历所有fd检查状态(O(N))；epoll使用回调机制，只返回就绪的fd(O(1))。当同时接收数百个行情连接时，epoll性能远优于select。epoll还支持edge-triggered模式减少系统调用次数。缺点是Linux特有(macOS用kqueue, Windows用IOCP)。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_NET_192
+  category: network_programming
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在交易系统中使用UDP组播(multicast)接收交易所行情数据时，以下哪个问题最需要关注？\nWhen receiving exchange market data via UDP multicast in trading systems, which issue needs most attention?"
+  options:
+    - "A. 丢包处理——UDP不保证可靠传递，需要应用层实现丢包检测和重传请求 / Packet loss — UDP has no guaranteed delivery, application must detect and request retransmission"
+    - "B. TCP握手延迟 / TCP handshake latency"
+    - "C. SSL加密开销 / SSL encryption overhead"
+    - "D. HTTP头部大小 / HTTP header size"
+  answer: "A"
+  explanation: "UDP multicast的优势是低延迟和一对多传输，但不保证可靠性。行情数据丢包处理：(1)每个消息带序号，接收方检测序号跳跃(gap)；(2)发现gap后通过单独的TCP通道请求重传(retransmit request)；(3)维护消息缓冲区等待乱序包(out-of-order)；(4)超时未收到则标记数据缺失。各交易所(如上交所FAST协议)都有定义重传机制。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_NET_193
+  category: network_programming
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在超低延迟交易系统中，kernel bypass技术(如DPDK/Solarflare OpenOnload)的原理是？\nWhat is the principle of kernel bypass (DPDK/Solarflare OpenOnload) in ultra-low-latency trading?"
+  options:
+    - "A. 绕过操作系统内核网络协议栈，用户空间直接访问网卡 / Bypass OS kernel network stack, user-space directly accesses NIC"
+    - "B. 使用更快的网卡 / Using faster NICs"
+    - "C. 压缩网络数据 / Compressing network data"
+    - "D. 增加CPU核心数 / Adding CPU cores"
+  answer: "A"
+  explanation: "Kernel bypass将网络处理从内核态移到用户态：(1)DPDK：轮询模式驱动(PMD)直接从网卡队列读数据，绕过内核中断和协议栈；(2)Solarflare OpenOnload：用户态TCP/IP栈，兼容socket API；(3)消除了内核态-用户态切换(context switch)和数据拷贝的延迟。延迟可从~10μs(内核)降到~1μs(kernel bypass)。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: QD_NET_194
+  category: network_programming
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化系统中使用FIX协议(Financial Information eXchange)的主要特点是？\nWhat is the main feature of the FIX protocol in quant systems?"
+  options:
+    - "A. 金融行业标准的消息协议，基于tag=value格式的订单和行情通信 / Financial industry standard messaging protocol with tag=value format for orders and market data"
+    - "B. 仅用于加密通信 / Used only for encrypted communication"
+    - "C. 替代TCP/IP协议 / Replaces TCP/IP"
+    - "D. 仅用于Web界面 / Used only for web interfaces"
+  answer: "A"
+  explanation: "FIX(Financial Information eXchange)是金融行业标准协议：(1)基于tag=value的文本格式(如35=D表示新订单)；(2)覆盖订单生命周期(新建、确认、成交、撤单)；(3)session层保证消息顺序和恢复(sequence number + gap fill)；(4)全球经纪商和交易所广泛支持。常用的实现库：QuickFIX(C++/Python/Java)。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_NET_195
+  category: network_programming
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在Linux上调优TCP参数以降低交易系统网络延迟时，以下哪组参数调整最关键？\nWhen tuning Linux TCP parameters for lower trading system latency, which parameter group is most critical?"
+  options:
+    - "A. TCP_NODELAY + TCP_QUICKACK + SO_RCVBUF/SO_SNDBUF调优 / TCP_NODELAY + TCP_QUICKACK + buffer tuning"
+    - "B. 仅增大MTU / Only increase MTU"
+    - "C. 启用TCP BBR拥塞控制 / Enable TCP BBR congestion control"
+    - "D. 禁用TCP timestamps / Disable TCP timestamps"
+  answer: "A"
+  explanation: "低延迟TCP调优组合：(1)TCP_NODELAY禁用Nagle算法(立即发送小包)；(2)TCP_QUICKACK禁用延迟ACK(立即回复确认)；(3)调整SO_RCVBUF/SO_SNDBUF到合适大小(过小导致流控，过大浪费内存)；(4)还可考虑SO_BUSY_POLL(忙等待减少中断延迟)。BBR是带宽优化不是延迟优化；增大MTU对小包无效。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_NET_196
+  category: network_programming
+  difficulty: expert
+  type: open_ended
+  points: 5
+  question: "设计一个高性能行情分发系统，需要将交易所行情实时分发给100个内部策略进程。要求：(1)延迟<10μs(从收到行情到所有策略可见)；(2)不丢数据；(3)一个慢消费者不影响其他消费者。请描述架构方案。\nDesign a high-performance market data distribution system: distribute exchange data to 100 internal strategy processes. Requirements: (1) <10μs latency; (2) no data loss; (3) slow consumer doesn't affect others."
+  options: []
+  answer: ""
+  explanation: "推荐架构：(1)共享内存Ring Buffer——行情接收进程写入共享内存的无锁环形缓冲区，每个策略进程独立读取自己的read cursor；(2)无锁设计——单写者多读者无需锁，使用memory barrier保证可见性；(3)慢消费者保护——每个消费者有独立cursor，慢消费者不影响写入或其他读者；如果消费者落后太多(cursor被覆盖)则通知并跳过；(4)SPSC(单生产者单消费者)队列变体——每个策略一个独立的ring buffer拷贝(broadcast)。参考实现：Aeron, Disruptor pattern, LMAX Exchange。"
+  code_snippet: ""
+  code_language: ""
+  hints:
+    - "共享内存比IPC消息传递延迟低"
+    - "参考LMAX Disruptor的设计模式"
+  rubric: "共享内存架构(2分)；无锁设计(1分)；慢消费者隔离(1分)；延迟分析(1分)"
+  time_limit_seconds: 480
+
+- id: QD_NET_197
+  category: network_programming
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在使用WebSocket实时推送因子数据给前端展示时，以下哪个特性最关键？\nWhen using WebSocket to push real-time factor data to a frontend, which feature is most critical?"
+  options:
+    - "A. 全双工通信——服务器可以主动推送数据，无需客户端轮询 / Full-duplex — server can push data without client polling"
+    - "B. 比HTTP更安全 / More secure than HTTP"
+    - "C. 自动压缩 / Automatic compression"
+    - "D. 支持文件传输 / Supports file transfer"
+  answer: "A"
+  explanation: "WebSocket vs HTTP轮询：(1)全双工——建立连接后服务端和客户端可以随时互发消息；(2)低开销——只需一次握手(HTTP Upgrade)，之后没有HTTP头部开销；(3)实时性——服务端有新因子数据时立即推送，延迟比轮询低得多。在量化系统的前端监控面板中，因子值、持仓、PnL等实时数据适合WebSocket推送。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_NET_198
+  category: network_programming
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在交易系统中使用Protocol Buffers(protobuf)序列化消息相比JSON的主要优势是？\nWhat is the main advantage of Protocol Buffers over JSON for message serialization in trading systems?"
+  options:
+    - "A. 二进制格式更紧凑，序列化/反序列化速度更快 / Binary format is more compact, faster serialization/deserialization"
+    - "B. 人类可读性更好 / Better human readability"
+    - "C. 不需要schema定义 / No schema definition needed"
+    - "D. 浏览器原生支持 / Native browser support"
+  answer: "A"
+  explanation: "Protobuf vs JSON：(1)体积小3-10倍(二进制编码，字段用数字tag而非字符串key)；(2)序列化速度快5-10倍(不需要解析文本)；(3)schema(.proto文件)提供强类型和向后兼容性(新增字段不影响旧代码)。代价是不可读(需要schema解析)、不如JSON通用。在交易系统高频消息传递中，protobuf的性能优势显著。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: QD_NET_199
+  category: network_programming
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在设计跨机房(cross-datacenter)的量化系统通信时，以下哪个问题对延迟影响最大？\nWhen designing cross-datacenter communication for quant systems, which issue impacts latency most?"
+  options:
+    - "A. 物理距离导致的光速传播延迟(~5μs/km) / Speed-of-light propagation delay (~5μs/km)"
+    - "B. 数据压缩算法选择 / Data compression algorithm choice"
+    - "C. 编程语言选择 / Programming language choice"
+    - "D. 操作系统版本 / OS version"
+  answer: "A"
+  explanation: "跨机房延迟的根本限制是物理距离：光纤中光速约200km/ms（真空光速的2/3）。上海到北京(~1000km)的单程延迟约5ms，这是任何软件优化无法突破的物理极限。应对策略：(1)关键服务就近部署(交易服务在交易所同城)；(2)只传输必要数据减少带宽需求；(3)使用专线而非公网(减少路由跳数)。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: QD_NET_200
+  category: network_programming
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在Linux网络编程中，io_uring相比传统的epoll在量化系统中的优势是？\nWhat is the advantage of io_uring over epoll for quant systems on Linux?"
+  options:
+    - "A. 减少系统调用次数——通过submission/completion ring实现批量异步IO / Reduces syscall count — batch async IO via submission/completion rings"
+    - "B. io_uring只支持网络IO / io_uring only supports network IO"
+    - "C. io_uring不需要内核支持 / io_uring doesn't need kernel support"
+    - "D. io_uring替代了TCP协议 / io_uring replaces TCP protocol"
+  answer: "A"
+  explanation: "io_uring(Linux 5.1+)通过共享内存的ring buffer实现用户态和内核态的异步通信：(1)批量提交IO请求(一次syscall提交多个)减少系统调用开销；(2)完成通知通过completion ring获取(无需额外syscall)；(3)支持网络IO+文件IO+定时器的统一异步模型；(4)支持submission queue polling(SQP)模式实现零syscall。在高频交易中可将IO延迟再降低20-30%。"
+  code_snippet: ""
+  code_language: ""
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90

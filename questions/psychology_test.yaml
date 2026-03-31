@@ -1,0 +1,1533 @@
+# =============================================================================
+# Psychology Test Question Bank for Quantitative Finance Roles
+# =============================================================================
+# Target roles: Quant Developer, Quant Researcher, Trader, Portfolio Manager
+# Total questions: 150
+# Categories:
+#   - stress_tolerance (30)
+#   - risk_appetite (25)
+#   - decision_making (25)
+#   - emotional_regulation (25)
+#   - cognitive_flexibility (25)
+#   - team_collaboration (20)
+#
+# Question types: likert_scale, scenario, multiple_choice
+# Bilingual: Chinese + English
+# Reverse-scored items: ~30% of likert items (scoring_direction: reverse)
+# Social desirability detection items included
+# =============================================================================
+
+metadata:
+  version: "1.0.0"
+  total_questions: 150
+  language: "zh-CN / en"
+  assessment_framework: "Big Five adapted for quantitative finance"
+  scoring_model: "dimensional"
+  estimated_completion_minutes: 45
+  categories:
+    stress_tolerance: 30
+    risk_appetite: 25
+    decision_making: 25
+    emotional_regulation: 25
+    cognitive_flexibility: 25
+    team_collaboration: 20
+
+questions:
+
+  # ===========================================================================
+  # STRESS TOLERANCE (30 questions)
+  # ===========================================================================
+
+  - id: PSY_STRESS_001
+    category: stress_tolerance
+    type: likert_scale
+    question: "在面对紧迫的截止日期时，我能够保持冷静和专注。/ When facing tight deadlines, I can remain calm and focused."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "直接评估在时间压力下维持认知功能的能力，这是量化交易中应对实时市场波动的核心素质。/ Directly assesses the ability to maintain cognitive function under time pressure, a core trait for handling real-time market volatility in quantitative trading."
+
+  - id: PSY_STRESS_002
+    category: stress_tolerance
+    type: likert_scale
+    question: "当策略出现连续亏损时，我会感到极度焦虑，难以集中注意力。/ When a strategy experiences consecutive losses, I feel extremely anxious and have difficulty concentrating."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "反向计分题。评估面对连续回撤时的心理韧性，高焦虑水平可能导致过早止损或偏离策略。/ Reverse-scored. Assesses psychological resilience during consecutive drawdowns; high anxiety may lead to premature stop-losses or strategy deviation."
+
+  - id: PSY_STRESS_003
+    category: stress_tolerance
+    type: scenario
+    question: "你负责的因子策略在过去两周持续跑输基准1.5%，团队开始质疑你的模型。你会怎么做？/ Your factor strategy has underperformed the benchmark by 1.5% over the past two weeks, and the team is questioning your model. What would you do?"
+    options:
+      - "A. 立即暂停策略，全面重新回测 / Immediately pause the strategy and conduct a full re-backtest"
+      - "B. 分析是否属于正常回撤范围，同时向团队展示历史类似情况 / Analyze whether this falls within normal drawdown range while showing the team historical parallels"
+      - "C. 坚持运行策略，认为短期波动不代表模型失效 / Continue running the strategy, believing short-term fluctuation doesn't indicate model failure"
+      - "D. 在承受压力的同时悄悄调整参数以改善短期表现 / Quietly adjust parameters to improve short-term performance while under pressure"
+    scoring: {"A": 2, "B": 4, "C": 3, "D": 1}
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "B为最优，体现了在压力下保持分析性思维并有效沟通的能力。D最差，因为在压力下偷改参数属于过度拟合，且缺乏透明度。/ B is optimal, demonstrating analytical thinking under pressure with effective communication. D is worst as quietly tweaking parameters under stress constitutes overfitting and lacks transparency."
+
+  - id: PSY_STRESS_004
+    category: stress_tolerance
+    type: likert_scale
+    question: "高压环境反而能激发我的最佳表现。/ High-pressure environments actually bring out my best performance."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "评估候选人是否属于'压力驱动型'人格，这在交易和紧急策略修复场景中尤为重要。/ Assesses whether the candidate has a 'pressure-driven' personality, particularly important in trading and urgent strategy repair scenarios."
+
+  - id: PSY_STRESS_005
+    category: stress_tolerance
+    type: likert_scale
+    question: "我从未在工作中感到过压力。/ I have never felt stressed at work."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: social_desirability_check
+    dimension: "社会期望性检测 Social Desirability Detection"
+    explanation: "社会期望性检测题。几乎所有人都经历过工作压力，选'非常同意'的候选人可能在粉饰回答。/ Social desirability check. Nearly everyone experiences work stress; candidates selecting 'Strongly Agree' may be embellishing their responses."
+
+  - id: PSY_STRESS_006
+    category: stress_tolerance
+    type: scenario
+    question: "凌晨3点，你的实盘策略突然出现异常大额亏损，监控系统报警。你的第一反应是？/ At 3 AM, your live strategy suddenly shows abnormally large losses and the monitoring system triggers an alert. Your first reaction is?"
+    options:
+      - "A. 恐慌，立即手动平掉所有仓位 / Panic and immediately manually close all positions"
+      - "B. 先检查是否为数据源错误或系统故障，再决定下一步 / First check whether it's a data feed error or system malfunction before deciding next steps"
+      - "C. 按照预设的风控流程执行，同时通知相关负责人 / Execute pre-set risk control procedures while notifying relevant stakeholders"
+      - "D. 继续睡觉，等白天再处理 / Go back to sleep and handle it during the day"
+    scoring: {"A": 2, "B": 3, "C": 4, "D": 1}
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "C最优，体现了在极端压力下遵循流程的纪律性。B也不错但缺少通知团队的环节。A体现恐慌反应，D体现忽视风险。/ C is optimal, showing discipline in following procedures under extreme pressure. B is good but lacks the team notification step. A shows panic response, D shows risk neglect."
+
+  - id: PSY_STRESS_007
+    category: stress_tolerance
+    type: likert_scale
+    question: "面对不确定性时，我的睡眠质量会明显下降。/ My sleep quality noticeably deteriorates when facing uncertainty."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "反向计分。评估不确定性对生理状态的影响程度。量化金融从业者需要在持续不确定性中维持良好的身心状态。/ Reverse-scored. Assesses the impact of uncertainty on physiological state. Quant finance professionals need to maintain good physical and mental health amid continuous uncertainty."
+
+  - id: PSY_STRESS_008
+    category: stress_tolerance
+    type: likert_scale
+    question: "我能够在多个项目同时推进时有效地管理优先级。/ I can effectively manage priorities when multiple projects are progressing simultaneously."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "评估多任务压力下的优先级管理能力。量化团队常需同时维护多个策略、处理研究任务和应对生产问题。/ Assesses priority management under multi-task pressure. Quant teams often need to maintain multiple strategies, handle research tasks, and respond to production issues simultaneously."
+
+  - id: PSY_STRESS_009
+    category: stress_tolerance
+    type: scenario
+    question: "年度业绩评估前一个月，你的策略突然回撤超过历史最大回撤。PM告诉你如果月底前不能恢复，可能会削减你的策略资金。你会？/ One month before the annual performance review, your strategy suddenly draws down beyond its historical maximum. The PM tells you that if it doesn't recover by month-end, your strategy allocation may be cut. What would you do?"
+    options:
+      - "A. 加大杠杆试图快速回本 / Increase leverage to try to recover quickly"
+      - "B. 严格遵守风控纪律，接受可能的资金削减，同时准备详细的分析报告 / Strictly follow risk control discipline, accept the possible allocation cut, and prepare a detailed analysis report"
+      - "C. 立即开始开发新策略作为备选 / Immediately start developing a new strategy as backup"
+      - "D. 微调模型参数让近期表现看起来好一些 / Fine-tune model parameters to make recent performance look better"
+    scoring: {"A": 1, "B": 4, "C": 2, "D": 1}
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "B最优，体现了在职业压力下坚持纪律和诚信。A和D都是压力下的不当行为（加杠杆赌博/数据操纵）。C虽非最差，但可能分散注意力。/ B is optimal, showing discipline and integrity under career pressure. A and D are inappropriate responses under pressure (leverage gambling/data manipulation). C is not the worst but may scatter attention."
+
+  - id: PSY_STRESS_010
+    category: stress_tolerance
+    type: likert_scale
+    question: "当市场出现极端波动（如闪崩）时，我能保持客观的判断力。/ When the market experiences extreme volatility (such as a flash crash), I can maintain objective judgment."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "评估在黑天鹅事件中的认知清晰度。如2015年A股股灾、2020年原油负价格等极端市场条件下，保持客观判断至关重要。/ Assesses cognitive clarity during black swan events. Maintaining objective judgment is critical under extreme market conditions like the 2015 A-share crash or 2020 negative oil prices."
+
+  - id: PSY_STRESS_011
+    category: stress_tolerance
+    type: likert_scale
+    question: "同事的负面情绪很容易影响到我的工作状态。/ Colleagues' negative emotions easily affect my work state."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "反向计分。评估情绪隔离能力。在交易团队中，一个人的焦虑可能传染给整个团队，影响集体决策质量。/ Reverse-scored. Assesses emotional insulation ability. In trading teams, one person's anxiety can spread to the entire team, affecting collective decision-making quality."
+
+  - id: PSY_STRESS_012
+    category: stress_tolerance
+    type: likert_scale
+    question: "我可以在收到批评后迅速恢复并继续高效工作。/ I can quickly recover and continue working efficiently after receiving criticism."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "评估从负面反馈中恢复的速度。量化研究中，模型被质疑和推翻是常态，快速恢复能力是生产力的保障。/ Assesses recovery speed from negative feedback. In quant research, having models questioned and overturned is the norm; quick recovery ability ensures productivity."
+
+  - id: PSY_STRESS_013
+    category: stress_tolerance
+    type: scenario
+    question: "你发现一个同事的策略代码有严重bug可能导致重大亏损，但该同事正处于极度紧张的个人评估期。你会怎么做？/ You discover a serious bug in a colleague's strategy code that could cause major losses, but the colleague is going through an extremely stressful personal review period. What would you do?"
+    options:
+      - "A. 等评估结束后再告诉他 / Wait until the review period is over to tell them"
+      - "B. 直接向PM报告，让PM来处理 / Report directly to the PM and let them handle it"
+      - "C. 私下告诉同事并帮助修复，同时确保风控部门知情 / Tell the colleague privately and help fix it, while ensuring the risk control department is informed"
+      - "D. 自己悄悄修复bug，不告诉任何人 / Quietly fix the bug yourself without telling anyone"
+    scoring: {"A": 1, "B": 3, "C": 4, "D": 2}
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "C最优，平衡了人际关怀和风险管理责任。此题同时测试压力情境下的沟通能力和职业判断力。/ C is optimal, balancing interpersonal care with risk management responsibility. This question also tests communication ability and professional judgment under pressure."
+
+  - id: PSY_STRESS_014
+    category: stress_tolerance
+    type: likert_scale
+    question: "长时间的高强度工作后，我仍然能做出高质量的决策。/ After prolonged periods of high-intensity work, I can still make high-quality decisions."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "评估认知疲劳耐受度。策略上线期间或重要研究冲刺阶段，可能需要连续多日高强度工作。/ Assesses cognitive fatigue tolerance. During strategy launch periods or important research sprints, sustained high-intensity work over multiple days may be required."
+
+  - id: PSY_STRESS_015
+    category: stress_tolerance
+    type: likert_scale
+    question: "我经常因为工作中的挫折而失眠。/ I often lose sleep due to setbacks at work."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "反向计分。评估工作挫折对生理恢复的影响。持续失眠会导致判断力下降，形成恶性循环。/ Reverse-scored. Assesses the impact of work setbacks on physiological recovery. Persistent insomnia leads to impaired judgment, creating a vicious cycle."
+
+  - id: PSY_STRESS_016
+    category: stress_tolerance
+    type: likert_scale
+    question: "在压力下，我更倾向于系统性地分析问题而非凭直觉行动。/ Under pressure, I tend to analyze problems systematically rather than act on intuition."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "评估压力下是否能维持分析性思维方式。压力易触发System 1（快速直觉）而非System 2（慢速分析）思维。/ Assesses whether analytical thinking can be maintained under pressure. Pressure easily triggers System 1 (fast intuitive) rather than System 2 (slow analytical) thinking."
+
+  - id: PSY_STRESS_017
+    category: stress_tolerance
+    type: scenario
+    question: "在一次重要的策略评审会上，CIO当众质疑你的研究方法存在根本性缺陷。你会如何回应？/ During an important strategy review meeting, the CIO publicly questions your research methodology as having fundamental flaws. How would you respond?"
+    options:
+      - "A. 情绪激动地为自己辩护 / Emotionally defend yourself"
+      - "B. 沉默不语，会后私下找CIO讨论 / Stay silent and find the CIO privately after the meeting"
+      - "C. 冷静地请CIO具体说明问题所在，并当场讨论可能的改进方向 / Calmly ask the CIO to specify the issues and discuss possible improvements on the spot"
+      - "D. 立即承认所有问题并表示会重做 / Immediately acknowledge all issues and say you will redo everything"
+    scoring: {"A": 1, "B": 2, "C": 4, "D": 2}
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "C最优，展现了在公开挑战下保持冷静、理性回应的能力。A过度情绪化，B和D过于被动。/ C is optimal, demonstrating the ability to stay calm and respond rationally under public challenge. A is overly emotional, B and D are too passive."
+
+  - id: PSY_STRESS_018
+    category: stress_tolerance
+    type: likert_scale
+    question: "我善于将大的压力分解为可管理的小任务。/ I am good at breaking down large pressures into manageable small tasks."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "评估压力管理策略。将复杂问题分解的能力是应对多因子研究和系统开发中复杂性的关键技能。/ Assesses stress management strategy. The ability to decompose complex problems is a key skill for handling complexity in multi-factor research and system development."
+
+  - id: PSY_STRESS_019
+    category: stress_tolerance
+    type: likert_scale
+    question: "当我犯了一个代价高昂的错误时，我会陷入长时间的自我谴责。/ When I make a costly mistake, I fall into prolonged self-blame."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "反向计分。评估从错误中恢复的能力。长时间自责会消耗认知资源，阻碍从错误中学习和改进。/ Reverse-scored. Assesses ability to recover from mistakes. Prolonged self-blame consumes cognitive resources and hinders learning and improvement from errors."
+
+  - id: PSY_STRESS_020
+    category: stress_tolerance
+    type: likert_scale
+    question: "我能够有效地隔离工作压力和个人生活。/ I can effectively separate work stress from personal life."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "评估生活-工作边界管理能力。量化金融的高强度特性使得工作-生活平衡尤为重要，以维持长期可持续的高性能。/ Assesses life-work boundary management. The high-intensity nature of quantitative finance makes work-life balance especially important for sustainable long-term high performance."
+
+  - id: PSY_STRESS_021
+    category: stress_tolerance
+    type: scenario
+    question: "你同时面临三个紧急任务：一个生产bug需要立即修复，一个策略因子需要在今天提交，PM要求你在一小时内出一份分析报告。你会如何处理？/ You simultaneously face three urgent tasks: a production bug needs immediate fixing, a strategy factor needs to be submitted today, and the PM requires an analysis report within one hour. How would you handle this?"
+    options:
+      - "A. 感到不知所措，先处理最容易的任务 / Feel overwhelmed and tackle the easiest task first"
+      - "B. 按影响程度排优先级：先修复生产bug，再与PM沟通报告延期，最后完成因子提交 / Prioritize by impact: fix the production bug first, negotiate report deadline with PM, then complete factor submission"
+      - "C. 同时推进三个任务，频繁切换 / Push all three tasks simultaneously with frequent switching"
+      - "D. 先完成PM的报告，因为PM的要求最紧急 / Complete the PM's report first because the PM's request is most urgent"
+    scoring: {"A": 1, "B": 4, "C": 2, "D": 2}
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "B最优，展示了在多重压力下的优先级判断能力和沟通主动性。生产bug通常是最高优先级，与PM沟通体现了成熟的压力管理。/ B is optimal, showing priority judgment and communication initiative under multiple pressures. Production bugs are typically highest priority, and communicating with the PM reflects mature stress management."
+
+  - id: PSY_STRESS_022
+    category: stress_tolerance
+    type: likert_scale
+    question: "面对连续失败，我仍能保持对成功的信心。/ In the face of consecutive failures, I can still maintain confidence in eventual success."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "评估心理韧性和乐观主义。因子挖掘过程中，大量假设会被证伪，维持信心对持续创新至关重要。/ Assesses psychological resilience and optimism. In factor mining, many hypotheses will be falsified; maintaining confidence is critical for sustained innovation."
+
+  - id: PSY_STRESS_023
+    category: stress_tolerance
+    type: likert_scale
+    question: "当周围的人都很紧张时，我也会变得紧张。/ When people around me are tense, I also become tense."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "反向计分。评估情绪传染抵抗力。在市场恐慌时期，交易室的紧张氛围不应影响个人的理性判断。/ Reverse-scored. Assesses resistance to emotional contagion. During market panic periods, the tense atmosphere in the trading floor should not affect one's rational judgment."
+
+  - id: PSY_STRESS_024
+    category: stress_tolerance
+    type: likert_scale
+    question: "我能够将失败视为学习机会而非个人能力的否定。/ I can view failures as learning opportunities rather than denials of my personal ability."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "评估失败归因模式。成长型心态有助于在高压环境中持续学习和改进。/ Assesses failure attribution patterns. A growth mindset helps sustain learning and improvement in high-pressure environments."
+
+  - id: PSY_STRESS_025
+    category: stress_tolerance
+    type: likert_scale
+    question: "在工作中遇到困难时，我的第一反应是寻找解决方案而非抱怨。/ When encountering difficulties at work, my first reaction is to find solutions rather than complain."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "评估问题导向 vs. 情绪导向的应对方式。问题导向的应对方式在量化金融中更为有效。/ Assesses problem-oriented vs. emotion-oriented coping style. Problem-oriented coping is more effective in quantitative finance."
+
+  - id: PSY_STRESS_026
+    category: stress_tolerance
+    type: scenario
+    question: "你的模型在回测中表现优异，但上线第一周就大幅跑输。PM给你两周时间证明模型的有效性，否则将被下线。你的心态和行动是？/ Your model performed excellently in backtesting but significantly underperformed in the first week of live trading. The PM gives you two weeks to prove the model's validity, or it will be taken offline. What is your mindset and action?"
+    options:
+      - "A. 焦虑不安，反复检查代码但难以系统思考 / Anxious, repeatedly checking code but unable to think systematically"
+      - "B. 冷静制定诊断计划：检查数据对齐、滑点估计、市场环境变化等，逐一排除 / Calmly create a diagnostic plan: check data alignment, slippage estimation, market regime changes, etc., eliminating issues one by one"
+      - "C. 怀疑自己的能力，开始考虑是否适合这份工作 / Doubt your own abilities and start considering whether you're suited for the job"
+      - "D. 加入更多因子和参数来强制改善表现 / Add more factors and parameters to forcefully improve performance"
+    scoring: {"A": 2, "B": 4, "C": 1, "D": 1}
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "B最优，展示了在时间压力和职业风险下保持系统性思维的能力。D是过度拟合的典型表现，C体现过低的心理韧性。/ B is optimal, showing the ability to maintain systematic thinking under time pressure and career risk. D is a classic overfitting response, C shows low psychological resilience."
+
+  - id: PSY_STRESS_027
+    category: stress_tolerance
+    type: likert_scale
+    question: "我有明确的压力管理方法（如运动、冥想等）。/ I have clear stress management methods (such as exercise, meditation, etc.)."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "评估主动压力管理意识。拥有明确的压力管理策略是长期高绩效的重要保障。/ Assesses proactive stress management awareness. Having clear stress management strategies is an important safeguard for long-term high performance."
+
+  - id: PSY_STRESS_028
+    category: stress_tolerance
+    type: likert_scale
+    question: "当deadline临近但工作未完成时，我会变得急躁且容易出错。/ When a deadline approaches but work is unfinished, I become impatient and prone to errors."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "反向计分。评估时间压力下的错误率倾向。在量化系统开发中，急躁导致的代码错误可能造成严重的财务损失。/ Reverse-scored. Assesses error rate tendency under time pressure. In quantitative system development, errors caused by impatience can lead to severe financial losses."
+
+  - id: PSY_STRESS_029
+    category: stress_tolerance
+    type: likert_scale
+    question: "我能在重大决策面前保持足够的耐心。/ I can maintain sufficient patience when facing major decisions."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "评估决策耐心。仓促的策略决策可能导致次优结果，尤其在资金分配和风险预算决定中。/ Assesses decision-making patience. Hasty strategy decisions can lead to suboptimal outcomes, especially in capital allocation and risk budgeting decisions."
+
+  - id: PSY_STRESS_030
+    category: stress_tolerance
+    type: likert_scale
+    question: "即使面对很大的不确定性，我也能果断做出决定并承担后果。/ Even when facing great uncertainty, I can make decisions decisively and accept the consequences."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "压力耐受 Stress Tolerance"
+    explanation: "评估在不确定性中的决断力。量化交易中，信息永远不完美，需要在不确定性中果断行动。/ Assesses decisiveness amid uncertainty. In quantitative trading, information is never perfect; one must act decisively amid uncertainty."
+
+  # ===========================================================================
+  # RISK APPETITE (25 questions)
+  # ===========================================================================
+
+  - id: PSY_RISK_001
+    category: risk_appetite
+    type: scenario
+    question: "你管理的策略今天亏损了2%，而benchmark只跌了0.5%。你会怎么做？/ Your strategy lost 2% today while the benchmark only dropped 0.5%. What would you do?"
+    options:
+      - "A. 立即减仓以控制进一步亏损 / Immediately reduce positions to control further losses"
+      - "B. 分析alpha衰减原因和市场环境变化后决定 / Analyze alpha decay reasons and market environment changes before deciding"
+      - "C. 维持现有仓位，认为这是正常波动 / Maintain current positions, believing this is normal fluctuation"
+      - "D. 在确认信号仍然有效后适度加仓 / Moderately increase positions after confirming signals are still valid"
+    scoring: {"A": 2, "B": 4, "C": 3, "D": 2}
+    dimension: "风险偏好 Risk Appetite"
+    explanation: "B为最优，体现了风险管理的分析性方法。A可能过度反应，C可能忽视风险信号，D在当日亏损背景下加仓需要更充分的依据。/ B is optimal, showing an analytical approach to risk management. A may be overreacting, C may ignore risk signals, D requires stronger justification for adding positions on a losing day."
+
+  - id: PSY_RISK_002
+    category: risk_appetite
+    type: likert_scale
+    question: "我宁愿选择稳定但收益较低的策略，也不愿承受高波动性策略的压力。/ I would rather choose a stable but lower-return strategy than bear the stress of a high-volatility strategy."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "风险偏好 Risk Appetite"
+    explanation: "反向计分。评估风险-收益权衡偏好。过度风险规避在量化交易中可能限制alpha的捕获。注意：此处评估的是理性的风险承受倾向，非鲁莽。/ Reverse-scored. Assesses risk-return tradeoff preference. Excessive risk aversion in quant trading may limit alpha capture. Note: This assesses rational risk tolerance tendency, not recklessness."
+
+  - id: PSY_RISK_003
+    category: risk_appetite
+    type: likert_scale
+    question: "我认为承担经过计算的风险是获得超额收益的必要条件。/ I believe taking calculated risks is a necessary condition for achieving excess returns."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "风险偏好 Risk Appetite"
+    explanation: "评估对风险-收益关系的理性认知。理解并接受适度风险是量化策略的基础。/ Assesses rational understanding of the risk-return relationship. Understanding and accepting moderate risk is fundamental to quantitative strategies."
+
+  - id: PSY_RISK_004
+    category: risk_appetite
+    type: scenario
+    question: "一个新因子在回测中显示夏普比率2.5，但样本外测试仅有6个月数据且夏普0.8。你会建议？/ A new factor shows a Sharpe ratio of 2.5 in backtesting, but out-of-sample testing with only 6 months of data shows a Sharpe of 0.8. Would you recommend?"
+    options:
+      - "A. 立即分配全额资金上线 / Immediately allocate full capital and go live"
+      - "B. 用小仓位试跑，同时继续收集样本外数据 / Run with a small position while continuing to collect out-of-sample data"
+      - "C. 等待至少2年的样本外数据再做决定 / Wait for at least 2 years of out-of-sample data before deciding"
+      - "D. 放弃该因子，样本外表现差距太大 / Abandon the factor as the out-of-sample performance gap is too large"
+    scoring: {"A": 1, "B": 4, "C": 2, "D": 2}
+    dimension: "风险偏好 Risk Appetite"
+    explanation: "B最优，平衡了机会成本和风险控制。A过于激进（可能过拟合），C过于保守（可能错失机会），D过于绝对（6个月数据不足以完全否定）。/ B is optimal, balancing opportunity cost and risk control. A is too aggressive (possibly overfitting), C too conservative (may miss opportunity), D too absolute (6 months insufficient to fully reject)."
+
+  - id: PSY_RISK_005
+    category: risk_appetite
+    type: likert_scale
+    question: "我每次交易都不愿意承受超过资金1%的亏损。/ I am unwilling to bear a loss of more than 1% of capital on any single trade."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "风险偏好 Risk Appetite"
+    explanation: "反向计分。评估单笔风险容忍度。虽然风控很重要，但过度保守的止损设置可能导致策略频繁被止损出局。/ Reverse-scored. Assesses single-trade risk tolerance. While risk control is important, overly conservative stop-loss settings may cause strategies to be frequently stopped out."
+
+  - id: PSY_RISK_006
+    category: risk_appetite
+    type: likert_scale
+    question: "在不确定的市场环境中，我更倾向于等待确认信号而非率先行动。/ In uncertain market conditions, I tend to wait for confirmation signals rather than act first."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "风险偏好 Risk Appetite"
+    explanation: "反向计分。评估行动倾向。量化策略中，过度等待确认可能错过最佳入场时机，但这也需要与鲁莽行动区分。/ Reverse-scored. Assesses action tendency. In quant strategies, waiting too long for confirmation may miss optimal entry, but this must be distinguished from reckless action."
+
+  - id: PSY_RISK_007
+    category: risk_appetite
+    type: scenario
+    question: "PM提出一个大胆的策略想法，预期年化收益50%但最大回撤可能达30%。你的第一反应是？/ The PM proposes a bold strategy idea with an expected 50% annualized return but a potential maximum drawdown of 30%. Your first reaction is?"
+    options:
+      - "A. 兴奋，立即开始研究实现方案 / Excited, immediately start researching implementation"
+      - "B. 先量化风险-收益比和尾部风险，评估是否值得追求 / First quantify the risk-return ratio and tail risk to assess whether it's worth pursuing"
+      - "C. 认为风险太高，建议寻找更保守的替代方案 / Consider the risk too high and suggest more conservative alternatives"
+      - "D. 提议在有严格风控措施的前提下进行小规模实验 / Propose a small-scale experiment with strict risk control measures"
+    scoring: {"A": 2, "B": 4, "C": 2, "D": 3}
+    dimension: "风险偏好 Risk Appetite"
+    explanation: "B最优，体现了理性评估风险的能力。D也较好，展示了控制风险敞口的智慧。A过于冲动，C可能过度保守。/ B is optimal, showing rational risk assessment ability. D is also good, demonstrating wisdom in controlling risk exposure. A is too impulsive, C may be overly conservative."
+
+  - id: PSY_RISK_008
+    category: risk_appetite
+    type: likert_scale
+    question: "我愿意为了获得更高的长期回报而承受短期的大额亏损。/ I am willing to endure large short-term losses for higher long-term returns."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "风险偏好 Risk Appetite"
+    explanation: "评估时间偏好和损失承受力。真正的量化投资需要长期视角，但也要注意区分理性的长期主义和忽视风险。/ Assesses time preference and loss tolerance. True quantitative investing requires a long-term perspective, but one must distinguish between rational long-termism and risk neglect."
+
+  - id: PSY_RISK_009
+    category: risk_appetite
+    type: likert_scale
+    question: "我认为不投入任何有风险的项目是最明智的选择。/ I believe not investing in any risky projects is the wisest choice."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "风险偏好 Risk Appetite"
+    explanation: "反向计分。评估极端风险规避倾向。完全规避风险与量化投资的本质相矛盾。/ Reverse-scored. Assesses extreme risk aversion tendency. Complete risk avoidance contradicts the fundamental nature of quantitative investing."
+
+  - id: PSY_RISK_010
+    category: risk_appetite
+    type: scenario
+    question: "你的因子组合当前有80%的胜率但平均盈亏比只有1:1。另一个备选组合胜率只有40%但盈亏比是3:1。你会选择？/ Your factor portfolio currently has an 80% win rate but an average profit/loss ratio of only 1:1. An alternative portfolio has only a 40% win rate but a 3:1 profit/loss ratio. Which would you choose?"
+    options:
+      - "A. 选择80%胜率的组合，因为赢的感觉更好 / Choose the 80% win rate portfolio because winning feels better"
+      - "B. 选择40%胜率的组合，因为期望值更高 / Choose the 40% win rate portfolio because the expected value is higher"
+      - "C. 综合考虑夏普比率、最大回撤和资金曲线平滑度后选择 / Choose after comprehensively considering Sharpe ratio, max drawdown, and capital curve smoothness"
+      - "D. 两个都不选，继续寻找更好的选择 / Choose neither and continue looking for better options"
+    scoring: {"A": 1, "B": 3, "C": 4, "D": 2}
+    dimension: "风险偏好 Risk Appetite"
+    explanation: "C最优，体现了多维度风险评估能力。B也不错，显示了对期望值的正确理解。A受到心理偏差影响，D可能过于追求完美。/ C is optimal, showing multi-dimensional risk assessment. B is also good, showing correct understanding of expected value. A is influenced by psychological bias, D may be overly perfectionistic."
+
+  - id: PSY_RISK_011
+    category: risk_appetite
+    type: likert_scale
+    question: "当一个策略处于盈利状态时，我倾向于尽快锁定利润。/ When a strategy is profitable, I tend to lock in profits as soon as possible."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "风险偏好 Risk Appetite"
+    explanation: "反向计分。评估处置效应（disposition effect）倾向。过早锁定利润同时让亏损运行是典型的行为偏差。/ Reverse-scored. Assesses disposition effect tendency. Locking in profits too early while letting losses run is a classic behavioral bias."
+
+  - id: PSY_RISK_012
+    category: risk_appetite
+    type: likert_scale
+    question: "我能够接受一个策略在合理的回撤范围内运行，即使它暂时不赚钱。/ I can accept a strategy operating within a reasonable drawdown range, even if it is temporarily unprofitable."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "风险偏好 Risk Appetite"
+    explanation: "评估对策略运行波动的容忍度。理解策略的正常波动范围是成熟量化投资者的标志。/ Assesses tolerance for strategy operation volatility. Understanding a strategy's normal volatility range is a hallmark of a mature quantitative investor."
+
+  - id: PSY_RISK_013
+    category: risk_appetite
+    type: likert_scale
+    question: "我从来不会冒任何可能让我后悔的风险。/ I never take any risks that might make me regret it."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: social_desirability_check
+    dimension: "社会期望性检测 Social Desirability Detection"
+    explanation: "社会期望性检测题。极度回避后悔可能反映不切实际的自我描述或过度风险规避。/ Social desirability check. Extreme regret avoidance may reflect unrealistic self-description or excessive risk aversion."
+
+  - id: PSY_RISK_014
+    category: risk_appetite
+    type: scenario
+    question: "市场突然出现一个你认为被严重错误定价的机会，但你的策略容量已满。你会？/ The market suddenly presents an opportunity you believe is severely mispriced, but your strategy capacity is full. What would you do?"
+    options:
+      - "A. 忽略这个机会，严格遵守容量限制 / Ignore the opportunity and strictly follow capacity limits"
+      - "B. 适度减持现有持仓，为新机会腾出空间 / Moderately reduce existing holdings to make room for the new opportunity"
+      - "C. 向PM申请临时增加额度，提交详细的风险分析 / Apply to the PM for a temporary quota increase with a detailed risk analysis"
+      - "D. 直接超出限制建仓，事后再汇报 / Directly exceed limits to build the position and report afterward"
+    scoring: {"A": 2, "B": 3, "C": 4, "D": 1}
+    dimension: "风险偏好 Risk Appetite"
+    explanation: "C最优，在追求机会的同时遵守流程和风控。D最差，违反风控流程。B是可接受的折中方案。/ C is optimal, pursuing opportunity while following procedures and risk controls. D is worst, violating risk control procedures. B is an acceptable compromise."
+
+  - id: PSY_RISK_015
+    category: risk_appetite
+    type: likert_scale
+    question: "我认为黑天鹅事件无法预防，所以不需要特别为此准备。/ I believe black swan events cannot be prevented, so there's no need to specially prepare for them."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "风险偏好 Risk Appetite"
+    explanation: "反向计分。评估尾部风险意识。忽视黑天鹅事件是量化投资的致命弱点，如LTCM的崩溃。/ Reverse-scored. Assesses tail risk awareness. Ignoring black swan events is a fatal weakness in quantitative investing, as seen in LTCM's collapse."
+
+  - id: PSY_RISK_016
+    category: risk_appetite
+    type: likert_scale
+    question: "在做风险决策时，我会同时考虑最好和最坏的情况。/ When making risk decisions, I consider both the best and worst case scenarios."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "风险偏好 Risk Appetite"
+    explanation: "评估风险评估的全面性。只看上行空间或只看下行风险都不利于做出平衡的风险决策。/ Assesses comprehensiveness of risk assessment. Focusing only on upside potential or only on downside risk is detrimental to balanced risk decisions."
+
+  - id: PSY_RISK_017
+    category: risk_appetite
+    type: likert_scale
+    question: "我很享受在不确定的环境中寻找规律的过程。/ I enjoy the process of finding patterns in uncertain environments."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "风险偏好 Risk Appetite"
+    explanation: "评估对不确定性的内在动力。因子挖掘的本质就是在噪声中发现信号，需要对此过程的热情。/ Assesses intrinsic motivation for uncertainty. Factor mining is essentially finding signals in noise, requiring passion for the process."
+
+  - id: PSY_RISK_018
+    category: risk_appetite
+    type: scenario
+    question: "你有两个策略可以选择：策略A年化8%收益、最大回撤5%；策略B年化20%收益、最大回撤25%。在相同的资金约束下，你会如何分配？/ You have two strategies to choose from: Strategy A with 8% annualized return and 5% max drawdown; Strategy B with 20% annualized return and 25% max drawdown. With the same capital constraints, how would you allocate?"
+    options:
+      - "A. 全部分配给策略A / Allocate everything to Strategy A"
+      - "B. 70% A + 30% B / 70% A + 30% B"
+      - "C. 50% A + 50% B / 50% A + 50% B"
+      - "D. 根据两者的相关性、夏普比率和组合优化结果来决定 / Decide based on their correlation, Sharpe ratios, and portfolio optimization results"
+    scoring: {"A": 1, "B": 2, "C": 2, "D": 4}
+    dimension: "风险偏好 Risk Appetite"
+    explanation: "D最优，体现了量化思维——用数据驱动的方法做风险决策，而非拍脑袋。ABC都是基于直觉的简单分配。/ D is optimal, reflecting quantitative thinking—using data-driven methods for risk decisions rather than intuition. A, B, C are all intuition-based simple allocations."
+
+  - id: PSY_RISK_019
+    category: risk_appetite
+    type: likert_scale
+    question: "亏损让我感到的痛苦程度远大于同等盈利带来的快乐。/ The pain I feel from losses is far greater than the pleasure from equivalent gains."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "风险偏好 Risk Appetite"
+    explanation: "反向计分。直接测量损失厌恶程度。过高的损失厌恶可能导致不对称的风险决策，限制策略的长期表现。/ Reverse-scored. Directly measures loss aversion level. Excessive loss aversion may lead to asymmetric risk decisions, limiting long-term strategy performance."
+
+  - id: PSY_RISK_020
+    category: risk_appetite
+    type: likert_scale
+    question: "我会在做任何决定之前尽量收集所有可能的信息。/ I try to collect all possible information before making any decision."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "风险偏好 Risk Appetite"
+    explanation: "反向计分。评估分析瘫痪倾向。信息永远不完美，过度追求完美信息会错失交易时机。/ Reverse-scored. Assesses analysis paralysis tendency. Information is never perfect; pursuing perfect information excessively will miss trading opportunities."
+
+  - id: PSY_RISK_021
+    category: risk_appetite
+    type: likert_scale
+    question: "我更喜欢可预测的工作成果，而非高方差的结果。/ I prefer predictable work outcomes over high-variance results."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "风险偏好 Risk Appetite"
+    explanation: "反向计分。评估对结果波动性的偏好。量化金融本质上是高方差行业，需要对不确定性有一定的舒适度。/ Reverse-scored. Assesses preference for outcome volatility. Quantitative finance is inherently a high-variance industry, requiring some comfort with uncertainty."
+
+  - id: PSY_RISK_022
+    category: risk_appetite
+    type: scenario
+    question: "你发现了一个可能的市场微观结构套利机会，但如果判断错误可能损失较大。你的研究时间有限。你会？/ You discover a potential market microstructure arbitrage opportunity, but if your judgment is wrong, losses could be significant. Your research time is limited. What would you do?"
+    options:
+      - "A. 放弃，风险太大 / Give up, the risk is too great"
+      - "B. 快速建立简化模型估算风险-收益比，如果满足条件则用极小仓位试探 / Quickly build a simplified model to estimate risk-return ratio, then probe with minimal position if criteria are met"
+      - "C. 凭经验判断机会可靠性后全仓进入 / Enter with full position based on experience judgment of reliability"
+      - "D. 记录下来等有更多时间时再研究 / Record it and research when more time is available"
+    scoring: {"A": 1, "B": 4, "C": 1, "D": 2}
+    dimension: "风险偏好 Risk Appetite"
+    explanation: "B最优，在有限时间内快速量化评估并控制风险敞口。C过于鲁莽，A过于保守，D可能错失时效性机会。/ B is optimal, quickly quantifying assessment and controlling risk exposure within limited time. C is too reckless, A too conservative, D may miss time-sensitive opportunity."
+
+  - id: PSY_RISK_023
+    category: risk_appetite
+    type: likert_scale
+    question: "我认为适度的杠杆是提升策略收益的合理工具。/ I believe moderate leverage is a reasonable tool for enhancing strategy returns."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "风险偏好 Risk Appetite"
+    explanation: "评估对杠杆的理性态度。适度杠杆是量化策略中的标准工具，完全排斥或滥用杠杆都不理想。/ Assesses rational attitude toward leverage. Moderate leverage is a standard tool in quantitative strategies; completely rejecting or abusing leverage are both suboptimal."
+
+  - id: PSY_RISK_024
+    category: risk_appetite
+    type: likert_scale
+    question: "我倾向于在有高度把握时才采取行动。/ I tend to only take action when I have a high degree of certainty."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "风险偏好 Risk Appetite"
+    explanation: "反向计分。评估确定性需求程度。量化交易中，等待100%确定性往往意味着错过所有机会。/ Reverse-scored. Assesses degree of certainty need. In quantitative trading, waiting for 100% certainty usually means missing all opportunities."
+
+  - id: PSY_RISK_025
+    category: risk_appetite
+    type: likert_scale
+    question: "我相信只要风险被正确量化和管理，就应该大胆追求alpha。/ I believe that as long as risk is properly quantified and managed, one should boldly pursue alpha."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "风险偏好 Risk Appetite"
+    explanation: "评估对风险管理与收益追求平衡的理念。这是量化投资的核心哲学——不是规避风险，而是管理风险。/ Assesses the philosophy of balancing risk management with return pursuit. This is the core philosophy of quantitative investing—not avoiding risk, but managing it."
+
+  # ===========================================================================
+  # DECISION MAKING (25 questions)
+  # ===========================================================================
+
+  - id: PSY_DEC_001
+    category: decision_making
+    type: likert_scale
+    question: "做决定时，我更倾向于依赖数据分析而非直觉。/ When making decisions, I tend to rely on data analysis rather than intuition."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "决策风格 Decision Making Style"
+    explanation: "评估分析型 vs. 直觉型决策偏好。量化金融强调数据驱动决策，但也需要在数据不足时运用合理判断。/ Assesses analytical vs. intuitive decision preference. Quantitative finance emphasizes data-driven decisions, but also requires reasonable judgment when data is insufficient."
+
+  - id: PSY_DEC_002
+    category: decision_making
+    type: scenario
+    question: "你的因子模型给出了'买入'信号，但你的直觉告诉你市场即将下跌。你会？/ Your factor model gives a 'buy' signal, but your intuition tells you the market is about to drop. What would you do?"
+    options:
+      - "A. 完全遵循模型信号执行 / Completely follow the model signal and execute"
+      - "B. 完全相信直觉，不执行信号 / Completely trust intuition and skip the signal"
+      - "C. 检查直觉背后是否有模型未捕获的信息，如果有则调整；如果没有则执行 / Check if there's information behind the intuition that the model hasn't captured; adjust if yes, execute if no"
+      - "D. 执行一半仓位作为折中 / Execute half the position as a compromise"
+    scoring: {"A": 3, "B": 1, "C": 4, "D": 2}
+    dimension: "决策风格 Decision Making Style"
+    explanation: "C最优，体现了将直觉系统性化的能力——检查直觉是否包含模型遗漏的信息。A也可接受（纪律性），B最差（纯主观），D缺乏理性基础。/ C is optimal, showing ability to systematize intuition—checking if intuition contains information the model missed. A is acceptable (disciplined), B is worst (purely subjective), D lacks rational basis."
+
+  - id: PSY_DEC_003
+    category: decision_making
+    type: likert_scale
+    question: "我在做决定前会主动寻找反驳自己观点的证据。/ Before making a decision, I actively seek evidence that contradicts my own view."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "决策风格 Decision Making Style"
+    explanation: "评估确认偏差抵抗力。主动寻求反证是科学方法的核心，也是因子研究中避免虚假发现的关键。/ Assesses confirmation bias resistance. Actively seeking counter-evidence is core to the scientific method and key to avoiding false discoveries in factor research."
+
+  - id: PSY_DEC_004
+    category: decision_making
+    type: likert_scale
+    question: "当我做出一个决定后，如果新的证据表明我错了，我会迅速改变立场。/ When I make a decision, if new evidence shows I was wrong, I will quickly change my position."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "决策风格 Decision Making Style"
+    explanation: "评估贝叶斯更新能力。能够根据新证据更新信念是量化研究者的核心素质。/ Assesses Bayesian updating ability. The ability to update beliefs based on new evidence is a core quality of quantitative researchers."
+
+  - id: PSY_DEC_005
+    category: decision_making
+    type: likert_scale
+    question: "我总是能做出正确的决定。/ I always make the right decisions."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: social_desirability_check
+    dimension: "社会期望性检测 Social Desirability Detection"
+    explanation: "社会期望性检测题。没有人总是做出正确决定，强烈同意可能表示缺乏自我意识或粉饰回答。/ Social desirability check. No one always makes right decisions; strong agreement may indicate lack of self-awareness or embellished responses."
+
+  - id: PSY_DEC_006
+    category: decision_making
+    type: scenario
+    question: "你的研究发现一个新因子在统计上显著（p<0.01），但经济直觉上你找不到合理的解释。你会？/ Your research finds a new factor that is statistically significant (p<0.01), but you cannot find a reasonable economic explanation for it. What would you do?"
+    options:
+      - "A. 直接采纳，统计证据就是一切 / Adopt it directly; statistical evidence is everything"
+      - "B. 搁置该因子，没有经济解释的因子不可信 / Shelve the factor; factors without economic explanation are untrustworthy"
+      - "C. 进一步测试稳健性（不同时段、不同市场、多重假设校正），同时继续寻找可能的经济解释 / Further test robustness (different periods, markets, multiple hypothesis correction) while continuing to seek possible economic explanations"
+      - "D. 先小规模试用，看实际表现再决定 / Test on a small scale first and decide based on actual performance"
+    scoring: {"A": 1, "B": 2, "C": 4, "D": 3}
+    dimension: "决策风格 Decision Making Style"
+    explanation: "C最优，体现了严谨的科学方法论——统计显著性不等于经济意义，需要多角度验证。A忽视数据挖掘偏差的风险，B过于保守。/ C is optimal, showing rigorous scientific methodology—statistical significance doesn't equal economic significance; multi-angle verification is needed. A ignores data mining bias risk, B is too conservative."
+
+  - id: PSY_DEC_007
+    category: decision_making
+    type: likert_scale
+    question: "面对两个看似同样好的选择时，我会果断选择其一而非纠结不前。/ When facing two seemingly equally good options, I will decisively choose one rather than agonizing."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "决策风格 Decision Making Style"
+    explanation: "评估决策效率。Buridan's ass paradox在量化交易中的现实版本——过度纠结会错失机会。/ Assesses decision efficiency. The real-world version of Buridan's ass paradox in quantitative trading—excessive deliberation misses opportunities."
+
+  - id: PSY_DEC_008
+    category: decision_making
+    type: likert_scale
+    question: "我很难区分重要和不重要的信息。/ I have difficulty distinguishing important from unimportant information."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "决策风格 Decision Making Style"
+    explanation: "反向计分。评估信息过滤能力。在信息爆炸的金融市场中，信号-噪声比极低，过滤噪声的能力至关重要。/ Reverse-scored. Assesses information filtering ability. In information-flooded financial markets with extremely low signal-to-noise ratio, noise filtering ability is critical."
+
+  - id: PSY_DEC_009
+    category: decision_making
+    type: scenario
+    question: "团队讨论一个策略方向时，3个资深研究员支持A方案，但你通过数据分析得出B方案更优。你会？/ When the team discusses a strategy direction, 3 senior researchers support Plan A, but your data analysis suggests Plan B is superior. What would you do?"
+    options:
+      - "A. 服从多数意见选择A / Defer to the majority and choose A"
+      - "B. 展示你的数据分析结果并说服团队考虑B / Present your data analysis and convince the team to consider B"
+      - "C. 私下继续研究B方案，不在会上提出 / Continue researching Plan B privately without raising it in the meeting"
+      - "D. 建议同时运行A和B的小规模测试进行对比 / Suggest running small-scale tests of both A and B for comparison"
+    scoring: {"A": 1, "B": 3, "C": 1, "D": 4}
+    dimension: "决策风格 Decision Making Style"
+    explanation: "D最优，用数据说话而非权威说话。B也很好，体现了独立思考的勇气。A是从众效应，C虽保留独立思考但缺乏沟通勇气。/ D is optimal, letting data speak rather than authority. B is also good, showing courage for independent thinking. A shows conformity effect, C preserves independent thinking but lacks communication courage."
+
+  - id: PSY_DEC_010
+    category: decision_making
+    type: likert_scale
+    question: "我意识到自己的认知偏差并主动采取措施去减少它们的影响。/ I am aware of my cognitive biases and actively take measures to reduce their influence."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "决策风格 Decision Making Style"
+    explanation: "评估元认知能力。对锚定效应、确认偏差、近因效应等的意识是减少投资决策错误的前提。/ Assesses metacognitive ability. Awareness of anchoring, confirmation bias, recency bias, etc. is a prerequisite for reducing investment decision errors."
+
+  - id: PSY_DEC_011
+    category: decision_making
+    type: likert_scale
+    question: "做完决定后，我常常会反复怀疑自己的选择。/ After making a decision, I often repeatedly doubt my choice."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "决策风格 Decision Making Style"
+    explanation: "反向计分。评估决策后悔倾向。适度反思是好的，但反复自我怀疑会消耗精力并影响后续决策。/ Reverse-scored. Assesses post-decision regret tendency. Moderate reflection is good, but repeated self-doubt drains energy and affects subsequent decisions."
+
+  - id: PSY_DEC_012
+    category: decision_making
+    type: likert_scale
+    question: "我善于区分相关性和因果性。/ I am good at distinguishing correlation from causation."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "决策风格 Decision Making Style"
+    explanation: "评估统计思维能力。混淆相关性与因果性是因子研究中最常见也是最危险的错误之一。/ Assesses statistical thinking ability. Confusing correlation with causation is one of the most common and dangerous errors in factor research."
+
+  - id: PSY_DEC_013
+    category: decision_making
+    type: scenario
+    question: "你有一个策略的优化结果显示在特定参数下表现最佳，但该参数附近区域表现差异很大（参数敏感性高）。你会？/ Your strategy optimization results show best performance at specific parameters, but performance varies greatly in the surrounding parameter region (high parameter sensitivity). What would you do?"
+    options:
+      - "A. 使用最优参数，因为它表现最好 / Use the optimal parameter because it performs best"
+      - "B. 选择一个表现稍差但参数更稳健的区域 / Choose a region with slightly worse performance but more robust parameters"
+      - "C. 使用集成方法，在参数空间中取加权平均 / Use an ensemble method, taking weighted averages across parameter space"
+      - "D. 认为参数敏感性高意味着模型有问题，重新设计 / Believe high parameter sensitivity means the model is flawed, redesign it"
+    scoring: {"A": 1, "B": 3, "C": 4, "D": 3}
+    dimension: "决策风格 Decision Making Style"
+    explanation: "C最优，体现了先进的模型稳健性处理方法。B和D也合理。A最差，追求峰值参数是过拟合的典型表现。/ C is optimal, showing advanced model robustness handling. B and D are also reasonable. A is worst; pursuing peak parameters is a classic overfitting behavior."
+
+  - id: PSY_DEC_014
+    category: decision_making
+    type: likert_scale
+    question: "我在决策前会考虑该决定的二阶效应（间接后果）。/ Before making a decision, I consider the second-order effects (indirect consequences) of that decision."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "决策风格 Decision Making Style"
+    explanation: "评估系统思维深度。例如：增加杠杆不仅影响收益，还影响保证金要求、流动性需求、压力测试结果等。/ Assesses depth of systems thinking. For example: increasing leverage affects not only returns but also margin requirements, liquidity needs, stress test results, etc."
+
+  - id: PSY_DEC_015
+    category: decision_making
+    type: likert_scale
+    question: "我倾向于先行动再完善，而不是等到一切完美才开始。/ I tend to act first and refine later, rather than waiting until everything is perfect before starting."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "决策风格 Decision Making Style"
+    explanation: "评估行动偏向。在快速变化的市场中，追求完美可能导致错失机会；迭代改进的方法更为有效。/ Assesses action bias. In fast-changing markets, pursuing perfection may lead to missed opportunities; an iterative improvement approach is more effective."
+
+  - id: PSY_DEC_016
+    category: decision_making
+    type: likert_scale
+    question: "当结果不好时，我能够区分是决策过程有问题还是纯粹的运气不好。/ When outcomes are bad, I can distinguish whether the decision process was flawed or it was purely bad luck."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "决策风格 Decision Making Style"
+    explanation: "评估过程-结果分离能力。好的决策可能有坏的结果（因为随机性），区分这两者是量化思维的核心。/ Assesses process-outcome separation ability. Good decisions can have bad outcomes (due to randomness); distinguishing the two is core to quantitative thinking."
+
+  - id: PSY_DEC_017
+    category: decision_making
+    type: scenario
+    question: "你发现自己对某只股票有强烈的正面看法，可能是因为你个人经常使用该公司的产品。这会如何影响你的研究决策？/ You notice you have a strong positive view of a stock, possibly because you personally use the company's products frequently. How would this affect your research decisions?"
+    options:
+      - "A. 不影响，我能保持客观 / No effect, I can remain objective"
+      - "B. 意识到这个偏差后，我会刻意回避研究这只股票 / After recognizing this bias, I would deliberately avoid researching this stock"
+      - "C. 承认偏差存在，在分析中增加反方论证的权重来补偿 / Acknowledge the bias exists and compensate by increasing the weight of counter-arguments in analysis"
+      - "D. 寻求没有该偏差的同事来独立验证我的分析 / Seek a colleague without this bias to independently verify my analysis"
+    scoring: {"A": 1, "B": 2, "C": 3, "D": 4}
+    dimension: "决策风格 Decision Making Style"
+    explanation: "D最优，利用团队来对冲个人偏差。C也好，展示了主动补偿偏差的意识。A过于自信，B过度反应。/ D is optimal, using the team to hedge personal bias. C is also good, showing proactive bias compensation awareness. A is overconfident, B is an overreaction."
+
+  - id: PSY_DEC_018
+    category: decision_making
+    type: likert_scale
+    question: "我能够在信息不完整的情况下做出'足够好'的决策。/ I can make 'good enough' decisions when information is incomplete."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "决策风格 Decision Making Style"
+    explanation: "评估满意决策(satisficing)能力。Herbert Simon的有限理性理论在交易实践中高度相关——完美是好的敌人。/ Assesses satisficing ability. Herbert Simon's bounded rationality theory is highly relevant in trading practice—perfect is the enemy of good."
+
+  - id: PSY_DEC_019
+    category: decision_making
+    type: likert_scale
+    question: "我会定期回顾过去的决策来评估其质量和改进空间。/ I regularly review past decisions to assess their quality and room for improvement."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "决策风格 Decision Making Style"
+    explanation: "评估决策反思习惯。如交易日志、策略复盘等实践，是持续改进决策质量的基础。/ Assesses decision reflection habits. Practices like trading journals and strategy postmortems are the foundation for continuously improving decision quality."
+
+  - id: PSY_DEC_020
+    category: decision_making
+    type: likert_scale
+    question: "我的决策很少受到沉没成本的影响。/ My decisions are rarely influenced by sunk costs."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "决策风格 Decision Making Style"
+    explanation: "评估沉没成本偏差抵抗力。在因子研究中，花了大量时间开发的因子如果表现不好应该果断放弃。/ Assesses sunk cost bias resistance. In factor research, factors that perform poorly should be decisively abandoned despite significant development time invested."
+
+  - id: PSY_DEC_021
+    category: decision_making
+    type: scenario
+    question: "你连续三次用相同的框架分析市场但预测都是错的。你会？/ You have used the same framework to analyze the market three times in a row but your predictions were all wrong. What would you do?"
+    options:
+      - "A. 继续使用同一框架，相信长期会均值回归 / Continue using the same framework, believing it will mean-revert over time"
+      - "B. 立即放弃该框架，寻找全新的方法 / Immediately abandon the framework and look for an entirely new approach"
+      - "C. 分析三次错误是否有共同模式，更新框架假设并进行压力测试 / Analyze whether the three errors share a common pattern, update framework assumptions, and stress test"
+      - "D. 暂停交易，花时间深入研究市场结构是否发生了变化 / Pause trading and spend time deeply researching whether market structure has changed"
+    scoring: {"A": 1, "B": 2, "C": 4, "D": 3}
+    dimension: "决策风格 Decision Making Style"
+    explanation: "C最优，展示了基于证据迭代更新认知框架的能力。D也可接受。A忽视持续反馈，B过于极端。/ C is optimal, showing ability to iteratively update cognitive frameworks based on evidence. D is also acceptable. A ignores persistent feedback, B is too extreme."
+
+  - id: PSY_DEC_022
+    category: decision_making
+    type: likert_scale
+    question: "我习惯用概率的方式思考问题，而非非黑即白。/ I habitually think about problems in probabilistic terms rather than in black and white."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "决策风格 Decision Making Style"
+    explanation: "评估概率思维倾向。量化投资的核心是概率性思维，而非确定性思维。/ Assesses probabilistic thinking tendency. The core of quantitative investing is probabilistic thinking, not deterministic thinking."
+
+  - id: PSY_DEC_023
+    category: decision_making
+    type: likert_scale
+    question: "我能够快速识别问题的核心并忽略次要细节。/ I can quickly identify the core of a problem and ignore secondary details."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "决策风格 Decision Making Style"
+    explanation: "评估抽象和简化能力。在复杂的多因子环境中，能够抓住主要矛盾是高效决策的关键。/ Assesses abstraction and simplification ability. In complex multi-factor environments, grasping the main contradiction is key to efficient decision-making."
+
+  - id: PSY_DEC_024
+    category: decision_making
+    type: likert_scale
+    question: "我在重要决策之前会征询不同背景的人的意见。/ Before important decisions, I seek opinions from people of different backgrounds."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "决策风格 Decision Making Style"
+    explanation: "评估决策的多元视角意识。量化研究中，不同背景（统计学、物理学、计算机科学）的研究者能提供互补的视角。/ Assesses multi-perspective awareness in decisions. In quant research, researchers from different backgrounds (statistics, physics, CS) provide complementary perspectives."
+
+  - id: PSY_DEC_025
+    category: decision_making
+    type: likert_scale
+    question: "当我意识到自己的分析有缺陷时，我宁愿承认错误也不会继续维护错误的立场。/ When I realize my analysis is flawed, I would rather admit the mistake than continue defending an incorrect position."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "决策风格 Decision Making Style"
+    explanation: "评估知识诚实度。在量化研究中，维护错误立场比承认错误的代价大得多。/ Assesses intellectual honesty. In quantitative research, maintaining an incorrect position costs far more than admitting the mistake."
+
+  # ===========================================================================
+  # EMOTIONAL REGULATION (25 questions)
+  # ===========================================================================
+
+  - id: PSY_EMO_001
+    category: emotional_regulation
+    type: likert_scale
+    question: "盈利时我不会过度兴奋，亏损时我不会过度沮丧。/ I don't get overly excited when profitable or overly depressed when losing."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "情绪调节 Emotional Regulation"
+    explanation: "评估情绪稳定性/平坦性。情绪波动在交易中是最大的敌人之一，极端情绪导致偏离策略纪律。/ Assesses emotional stability/flatness. Emotional volatility is one of the biggest enemies in trading; extreme emotions lead to deviation from strategy discipline."
+
+  - id: PSY_EMO_002
+    category: emotional_regulation
+    type: likert_scale
+    question: "在经历一次大的交易亏损后，我能在短时间内恢复正常的分析能力。/ After experiencing a large trading loss, I can regain normal analytical ability within a short time."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "情绪调节 Emotional Regulation"
+    explanation: "评估从负面事件中的认知恢复速度。在日内交易或高频策略监控中，快速恢复至关重要。/ Assesses cognitive recovery speed from negative events. Quick recovery is crucial in intraday trading or high-frequency strategy monitoring."
+
+  - id: PSY_EMO_003
+    category: emotional_regulation
+    type: scenario
+    question: "你刚刚犯了一个严重的代码错误导致策略在开盘后执行了错误的交易，损失了50万。当你发现时，你的反应是？/ You just made a serious coding error that caused the strategy to execute incorrect trades after market open, losing 500,000. When you discover it, your reaction is?"
+    options:
+      - "A. 惊恐万分，双手发抖，脑子一片空白 / Terrified, hands shaking, mind goes blank"
+      - "B. 立即启动紧急处理流程：止损、通知PM、记录详情，然后进行事后分析 / Immediately initiate emergency procedures: stop loss, notify PM, document details, then conduct post-mortem"
+      - "C. 先自己默默尝试修复，看能不能挽回损失 / Quietly try to fix it yourself first to see if losses can be recovered"
+      - "D. 将错误归咎于代码审查流程，认为不完全是自己的责任 / Blame the code review process and believe it's not entirely your responsibility"
+    scoring: {"A": 1, "B": 4, "C": 2, "D": 1}
+    dimension: "情绪调节 Emotional Regulation"
+    explanation: "B最优，展示了在极端情绪冲击下仍能按照标准流程行动的能力。C虽非最差但隐藏问题有风险，D逃避责任。/ B is optimal, showing ability to follow standard procedures despite extreme emotional shock. C is not worst but hiding problems is risky, D evades responsibility."
+
+  - id: PSY_EMO_004
+    category: emotional_regulation
+    type: likert_scale
+    question: "连续获利后，我会变得过于自信并放松风控标准。/ After consecutive profits, I become overconfident and relax risk control standards."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "情绪调节 Emotional Regulation"
+    explanation: "反向计分。评估'热手谬误'和过度自信倾向。连续盈利后放松风控是爆仓的常见前奏。/ Reverse-scored. Assesses 'hot hand fallacy' and overconfidence tendency. Relaxing risk controls after consecutive profits is a common prelude to blowups."
+
+  - id: PSY_EMO_005
+    category: emotional_regulation
+    type: likert_scale
+    question: "我能意识到自己的情绪状态并在其影响决策前加以控制。/ I can be aware of my emotional state and control it before it affects my decisions."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "情绪调节 Emotional Regulation"
+    explanation: "评估情绪自觉和调节能力。情绪智力的核心——首先意识到情绪，然后管理情绪。/ Assesses emotional self-awareness and regulation ability. The core of emotional intelligence—first be aware of emotions, then manage them."
+
+  - id: PSY_EMO_006
+    category: emotional_regulation
+    type: likert_scale
+    question: "当同事取得比我更好的业绩时，我会感到嫉妒和不安。/ When colleagues achieve better performance than me, I feel jealous and uneasy."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "情绪调节 Emotional Regulation"
+    explanation: "反向计分。评估竞争性嫉妒管理。在量化团队中，嫉妒可能导致信息隐瞒和恶性竞争。/ Reverse-scored. Assesses competitive jealousy management. In quant teams, jealousy may lead to information hoarding and destructive competition."
+
+  - id: PSY_EMO_007
+    category: emotional_regulation
+    type: likert_scale
+    question: "我从不生气或感到沮丧。/ I never get angry or feel discouraged."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: social_desirability_check
+    dimension: "社会期望性检测 Social Desirability Detection"
+    explanation: "社会期望性检测题。每个人都会经历负面情绪，声称从不如此可能是不诚实的回答。/ Social desirability check. Everyone experiences negative emotions; claiming never to is likely a dishonest response."
+
+  - id: PSY_EMO_008
+    category: emotional_regulation
+    type: scenario
+    question: "你的策略在回测中是团队最好的，但实盘运行3个月后排名垫底。团队中有人开始私下议论你的能力。你如何管理自己的情绪？/ Your strategy was the team's best in backtesting, but ranks last after 3 months of live trading. Some in the team start talking about your ability behind your back. How do you manage your emotions?"
+    options:
+      - "A. 愤怒，准备在下次会议上反击那些议论你的人 / Angry, prepare to counter-attack those talking about you at the next meeting"
+      - "B. 焦虑且自我怀疑，开始质疑自己是否适合这个行业 / Anxious and self-doubting, start questioning whether you're suited for this industry"
+      - "C. 承认情绪存在但不被其驱动，专注于客观分析回测与实盘差异的原因 / Acknowledge the emotions exist but don't let them drive you; focus on objectively analyzing causes of backtest-live divergence"
+      - "D. 表面不在意但内心深受影响，工作效率明显下降 / Appear indifferent but deeply affected internally, with obvious decline in work efficiency"
+    scoring: {"A": 1, "B": 2, "C": 4, "D": 1}
+    dimension: "情绪调节 Emotional Regulation"
+    explanation: "C最优，展示了情绪接纳与行动分离的成熟管理方式。A是情绪驱动行为，B和D体现了不同形式的情绪失控。/ C is optimal, showing mature management of accepting emotions while separating them from actions. A is emotion-driven behavior, B and D show different forms of emotional dysregulation."
+
+  - id: PSY_EMO_009
+    category: emotional_regulation
+    type: likert_scale
+    question: "我能够理性地看待批评，将其视为改进的机会。/ I can view criticism rationally as an opportunity for improvement."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "情绪调节 Emotional Regulation"
+    explanation: "评估批评接收能力。在量化研究中，模型和策略经常受到质疑，能够建设性地接受批评是职业成长的关键。/ Assesses ability to receive criticism. In quant research, models and strategies are frequently challenged; constructively accepting criticism is key to career growth."
+
+  - id: PSY_EMO_010
+    category: emotional_regulation
+    type: likert_scale
+    question: "在策略表现好时，我会更谨慎而不是更放松。/ When the strategy performs well, I become more cautious rather than more relaxed."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "情绪调节 Emotional Regulation"
+    explanation: "评估反周期情绪管理。好的交易者在顺风时更加警惕，这与人类天性相反但对风控至关重要。/ Assesses counter-cyclical emotion management. Good traders become more vigilant during favorable conditions, contrary to human nature but critical for risk control."
+
+  - id: PSY_EMO_011
+    category: emotional_regulation
+    type: likert_scale
+    question: "一次重大失败会让我质疑自己的整体能力。/ A major failure makes me question my overall ability."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "情绪调节 Emotional Regulation"
+    explanation: "反向计分。评估自我效能感的稳定性。将单次失败泛化为整体能力否定是认知扭曲的表现。/ Reverse-scored. Assesses stability of self-efficacy. Generalizing a single failure to overall ability denial is a form of cognitive distortion."
+
+  - id: PSY_EMO_012
+    category: emotional_regulation
+    type: likert_scale
+    question: "我有成熟的方法来处理工作中的挫折感和愤怒情绪。/ I have mature methods for dealing with frustration and anger at work."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "情绪调节 Emotional Regulation"
+    explanation: "评估情绪调节策略的丰富性。拥有多种调节策略（如暂停、深呼吸、换个角度思考）的人在高压环境中表现更稳定。/ Assesses richness of emotion regulation strategies. People with multiple regulation strategies (pause, deep breathing, perspective shifting) perform more stably under high pressure."
+
+  - id: PSY_EMO_013
+    category: emotional_regulation
+    type: scenario
+    question: "你花了两个月开发的因子被证明是因为数据清洗的一个错误才产生了显著的alpha，实际上没有预测能力。你会？/ A factor you spent two months developing turns out to produce significant alpha only due to a data cleaning error—it actually has no predictive power. What would you do?"
+    options:
+      - "A. 极度沮丧，两周内无法投入新的研究 / Deeply depressed, unable to engage in new research for two weeks"
+      - "B. 感到失望但快速接受现实，记录教训并开始下一个研究方向 / Feel disappointed but quickly accept reality, document lessons and start the next research direction"
+      - "C. 试图寻找其他角度来挽救这个因子 / Try to find other angles to salvage this factor"
+      - "D. 归咎于数据质量问题，抱怨团队的数据基础设施 / Blame data quality issues and complain about the team's data infrastructure"
+    scoring: {"A": 1, "B": 4, "C": 2, "D": 1}
+    dimension: "情绪调节 Emotional Regulation"
+    explanation: "B最优，体现了快速从失望中恢复并转化为学习经验的能力。C有一定价值但可能是沉没成本驱动。D和A都是情绪失控的表现。/ B is optimal, showing quick recovery from disappointment and converting it to learning. C has some value but may be sunk-cost driven. D and A both show emotional dysregulation."
+
+  - id: PSY_EMO_014
+    category: emotional_regulation
+    type: likert_scale
+    question: "我会把策略的成功归功于团队，把失败归咎于自己。/ I attribute strategy successes to the team and failures to myself."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "情绪调节 Emotional Regulation"
+    explanation: "评估归因风格的成熟度。这种归因模式体现了谦逊和责任感，但需注意不应走向极端的自我苛责。/ Assesses maturity of attribution style. This attribution pattern reflects humility and accountability, though one should not go to the extreme of harsh self-criticism."
+
+  - id: PSY_EMO_015
+    category: emotional_regulation
+    type: likert_scale
+    question: "即使在极端市场条件下，我也能保持情绪的稳定。/ Even under extreme market conditions, I can maintain emotional stability."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "情绪调节 Emotional Regulation"
+    explanation: "评估极端条件下的情绪稳定性。2015年A股熔断、2020年美股四次熔断等极端事件是情绪管理的终极考验。/ Assesses emotional stability under extreme conditions. Events like the 2015 A-share circuit breaker and 2020 US market's four circuit breakers are ultimate tests of emotion management."
+
+  - id: PSY_EMO_016
+    category: emotional_regulation
+    type: likert_scale
+    question: "当我情绪低落时，我仍然能够执行日常的工作职责。/ When I'm feeling down, I can still carry out my daily work responsibilities."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "情绪调节 Emotional Regulation"
+    explanation: "评估情绪-行为分离能力。专业交易者需要在情绪波动时仍能执行纪律性操作。/ Assesses emotion-behavior separation ability. Professional traders need to maintain disciplined execution even during emotional fluctuations."
+
+  - id: PSY_EMO_017
+    category: emotional_regulation
+    type: likert_scale
+    question: "如果一个策略因为我的情绪化决策而亏损，我会难以原谅自己。/ If a strategy loses money due to my emotional decision-making, I will have difficulty forgiving myself."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "情绪调节 Emotional Regulation"
+    explanation: "反向计分。评估自我宽恕能力。无法自我宽恕会导致'报复性交易'等更多情绪化行为。/ Reverse-scored. Assesses self-forgiveness ability. Inability to self-forgive can lead to more emotional behaviors like 'revenge trading'."
+
+  - id: PSY_EMO_018
+    category: emotional_regulation
+    type: likert_scale
+    question: "我在与团队互动时能有效管理自己的挫败感。/ I can effectively manage my frustration when interacting with the team."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "情绪调节 Emotional Regulation"
+    explanation: "评估人际情境中的情绪管理。在团队环境中，个人挫败感的外溢会破坏团队氛围和合作效率。/ Assesses emotion management in interpersonal contexts. In team environments, spillover of personal frustration destroys team atmosphere and collaboration efficiency."
+
+  - id: PSY_EMO_019
+    category: emotional_regulation
+    type: scenario
+    question: "你和一位同事在因子选择上存在严重分歧。讨论变得越来越激烈，他开始人身攻击。你会如何处理？/ You and a colleague have serious disagreements on factor selection. The discussion becomes increasingly heated and they begin personal attacks. How would you handle it?"
+    options:
+      - "A. 以牙还牙地回击 / Counter-attack in kind"
+      - "B. 提议暂停讨论，冷静后用数据重新论证各自观点 / Suggest pausing the discussion and revisiting with data after cooling down"
+      - "C. 沉默退出讨论，内心愤怒但不表现 / Silently withdraw from the discussion, angry inside but not showing it"
+      - "D. 直接向上级报告他的不专业行为 / Directly report their unprofessional behavior to management"
+    scoring: {"A": 1, "B": 4, "C": 2, "D": 2}
+    dimension: "情绪调节 Emotional Regulation"
+    explanation: "B最优，展示了情绪去升级和将讨论重新引导到理性轨道的能力。A升级冲突，C压抑但不解决问题，D过于回避直接沟通。/ B is optimal, showing ability to de-escalate emotions and redirect discussion to rational grounds. A escalates conflict, C suppresses without resolving, D avoids direct communication."
+
+  - id: PSY_EMO_020
+    category: emotional_regulation
+    type: likert_scale
+    question: "我对自己的交易表现有不切实际的高期望。/ I have unrealistically high expectations for my trading performance."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "情绪调节 Emotional Regulation"
+    explanation: "反向计分。评估期望管理。不切实际的高期望导致持续的挫败感，而合理的期望管理是情绪稳定的基础。/ Reverse-scored. Assesses expectation management. Unrealistically high expectations lead to chronic frustration, while reasonable expectation management is the foundation of emotional stability."
+
+  - id: PSY_EMO_021
+    category: emotional_regulation
+    type: likert_scale
+    question: "我能够从他人的成功中获得正面启发而非负面情绪。/ I can draw positive inspiration rather than negative emotions from others' success."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "情绪调节 Emotional Regulation"
+    explanation: "评估社会比较中的情绪调节。在竞争激烈的量化团队中，能从他人成功中学习而非嫉妒的人更具适应性。/ Assesses emotion regulation in social comparison. In competitive quant teams, those who learn from others' success rather than being jealous are more adaptive."
+
+  - id: PSY_EMO_022
+    category: emotional_regulation
+    type: likert_scale
+    question: "市场出现对我不利的突发消息时，我的情绪反应通常比较温和。/ When unexpected news that is unfavorable to me hits the market, my emotional reaction is usually mild."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "情绪调节 Emotional Regulation"
+    explanation: "评估对突发事件的情绪反应强度。温和的初始情绪反应为理性分析争取了时间窗口。/ Assesses emotional reaction intensity to sudden events. A mild initial emotional reaction creates a time window for rational analysis."
+
+  - id: PSY_EMO_023
+    category: emotional_regulation
+    type: likert_scale
+    question: "我很难把工作中的负面情绪和个人生活分开。/ I find it hard to separate negative emotions from work and personal life."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "情绪调节 Emotional Regulation"
+    explanation: "反向计分。评估情绪边界管理。工作中的情绪如果溢出到生活中，会影响整体幸福感并最终反噬工作表现。/ Reverse-scored. Assesses emotional boundary management. If work emotions spill into personal life, overall well-being is affected and ultimately feeds back into work performance."
+
+  - id: PSY_EMO_024
+    category: emotional_regulation
+    type: likert_scale
+    question: "我能够接受'有时候没有做错什么也会亏钱'这个事实。/ I can accept the fact that 'sometimes you lose money without doing anything wrong.'"
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "情绪调节 Emotional Regulation"
+    explanation: "评估对随机性的情绪接纳。理解亏损不一定等于错误，是量化交易者情绪成熟的重要标志。/ Assesses emotional acceptance of randomness. Understanding that losses don't necessarily equal mistakes is an important sign of emotional maturity for quantitative traders."
+
+  - id: PSY_EMO_025
+    category: emotional_regulation
+    type: likert_scale
+    question: "我能在高度不确定的环境中保持内心的平静。/ I can maintain inner peace in a highly uncertain environment."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "情绪调节 Emotional Regulation"
+    explanation: "综合评估情绪调节能力的核心指标。内心平静是做出理性决策的前提条件。/ Comprehensive core indicator of emotional regulation ability. Inner peace is a prerequisite for making rational decisions."
+
+  # ===========================================================================
+  # COGNITIVE FLEXIBILITY (25 questions)
+  # ===========================================================================
+
+  - id: PSY_FLEX_001
+    category: cognitive_flexibility
+    type: likert_scale
+    question: "当一种方法不奏效时，我能快速切换到另一种方法。/ When one approach doesn't work, I can quickly switch to another."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "认知灵活性 Cognitive Flexibility"
+    explanation: "评估方法论灵活性。在因子研究中，一个方向不通时需要快速探索替代路径。/ Assesses methodological flexibility. In factor research, when one direction doesn't work, alternative paths must be quickly explored."
+
+  - id: PSY_FLEX_002
+    category: cognitive_flexibility
+    type: likert_scale
+    question: "我更喜欢遵循既定的流程和方法，不太愿意尝试新的方式。/ I prefer following established processes and methods and am reluctant to try new approaches."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "认知灵活性 Cognitive Flexibility"
+    explanation: "反向计分。评估对变化的开放程度。过度依赖既定流程在快速变化的量化金融环境中可能成为劣势。/ Reverse-scored. Assesses openness to change. Excessive reliance on established processes may become a disadvantage in the fast-changing quant finance environment."
+
+  - id: PSY_FLEX_003
+    category: cognitive_flexibility
+    type: scenario
+    question: "你一直使用传统的线性因子模型，但团队中有人提议采用深度学习方法。你对机器学习方法没有太多经验。你会？/ You've been using traditional linear factor models, but a team member proposes adopting deep learning methods. You don't have much experience with ML methods. What would you do?"
+    options:
+      - "A. 坚持线性模型，认为深度学习在金融中是过度拟合的工具 / Stick with linear models, believing deep learning is an overfitting tool in finance"
+      - "B. 开始学习深度学习基础，同时评估其在因子研究中的优缺点 / Start learning deep learning fundamentals while evaluating its pros and cons in factor research"
+      - "C. 完全转向深度学习，追随最新趋势 / Completely shift to deep learning, following the latest trend"
+      - "D. 提议设计一个公平的对比实验，让两种方法在相同条件下竞争 / Propose designing a fair comparison experiment where both methods compete under the same conditions"
+    scoring: {"A": 1, "B": 3, "C": 1, "D": 4}
+    dimension: "认知灵活性 Cognitive Flexibility"
+    explanation: "D最优，体现了开放心态和科学方法论。B也不错，展示了学习意愿。A和C都是极端——一个固执，一个盲从。/ D is optimal, showing open-mindedness and scientific methodology. B is also good, showing learning willingness. A and C are both extreme—one stubborn, one blindly following."
+
+  - id: PSY_FLEX_004
+    category: cognitive_flexibility
+    type: likert_scale
+    question: "我能从完全不同领域的知识中获取灵感来解决当前的问题。/ I can draw inspiration from knowledge in completely different fields to solve current problems."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "认知灵活性 Cognitive Flexibility"
+    explanation: "评估跨领域迁移能力。量化金融的许多突破来自物理学、信息论、生物学等领域的思维方式迁移。/ Assesses cross-domain transfer ability. Many breakthroughs in quant finance come from transferring thinking patterns from physics, information theory, biology, etc."
+
+  - id: PSY_FLEX_005
+    category: cognitive_flexibility
+    type: likert_scale
+    question: "当市场环境发生根本变化时，我能调整我的投资框架。/ When market conditions undergo fundamental changes, I can adjust my investment framework."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "认知灵活性 Cognitive Flexibility"
+    explanation: "评估市场适应性。市场制度变化（如从低波动到高波动regime）要求策略和思维框架的相应调整。/ Assesses market adaptability. Market regime changes (e.g., from low to high volatility regime) require corresponding adjustments in strategy and thinking frameworks."
+
+  - id: PSY_FLEX_006
+    category: cognitive_flexibility
+    type: likert_scale
+    question: "我发现很难改变已经形成的观点或判断。/ I find it difficult to change opinions or judgments I've already formed."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "认知灵活性 Cognitive Flexibility"
+    explanation: "反向计分。评估观点更新阻力。固守已形成的判断是锚定效应的表现，在因子研究中可能导致错失新发现。/ Reverse-scored. Assesses resistance to opinion updating. Clinging to formed judgments is a manifestation of anchoring effect, potentially causing missed discoveries in factor research."
+
+  - id: PSY_FLEX_007
+    category: cognitive_flexibility
+    type: scenario
+    question: "你的因子策略一直基于基本面数据，但最近你注意到另类数据（卫星图像、社交媒体情绪等）在行业中越来越流行。你会？/ Your factor strategies have always been based on fundamental data, but recently you've noticed alternative data (satellite imagery, social media sentiment, etc.) becoming increasingly popular in the industry. What would you do?"
+    options:
+      - "A. 忽略这些新数据源，坚持你擅长的基本面分析 / Ignore these new data sources and stick to your fundamental analysis strengths"
+      - "B. 投入大量时间全面学习所有另类数据类型 / Invest significant time to comprehensively learn all alternative data types"
+      - "C. 选择性地评估哪些另类数据最有可能增强你现有的因子框架 / Selectively evaluate which alternative data is most likely to enhance your existing factor framework"
+      - "D. 立即订阅多个另类数据提供商开始实验 / Immediately subscribe to multiple alternative data providers and start experimenting"
+    scoring: {"A": 1, "B": 2, "C": 4, "D": 2}
+    dimension: "认知灵活性 Cognitive Flexibility"
+    explanation: "C最优，体现了有目的性的灵活学习。B和D虽然积极但缺乏策略性。A过于封闭。/ C is optimal, showing purposeful flexible learning. B and D are active but lack strategic focus. A is too closed-minded."
+
+  - id: PSY_FLEX_008
+    category: cognitive_flexibility
+    type: likert_scale
+    question: "我享受挑战自己已有的假设和信念。/ I enjoy challenging my existing assumptions and beliefs."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "认知灵活性 Cognitive Flexibility"
+    explanation: "评估知识自我挑战倾向。科学方法的核心是不断质疑和检验假设。/ Assesses knowledge self-challenge tendency. The core of the scientific method is continuously questioning and testing hypotheses."
+
+  - id: PSY_FLEX_009
+    category: cognitive_flexibility
+    type: likert_scale
+    question: "我能够同时持有两个相互矛盾的观点并进行评估。/ I can hold two contradictory viewpoints simultaneously and evaluate them."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "认知灵活性 Cognitive Flexibility"
+    explanation: "评估认知复杂度。能够同时考虑牛市和熊市论点的人在构建更稳健的策略方面具有优势。/ Assesses cognitive complexity. Those who can simultaneously consider bull and bear arguments have an advantage in building more robust strategies."
+
+  - id: PSY_FLEX_010
+    category: cognitive_flexibility
+    type: likert_scale
+    question: "面对模糊不清的信息时，我感到不安和焦虑。/ I feel uneasy and anxious when facing ambiguous information."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "认知灵活性 Cognitive Flexibility"
+    explanation: "反向计分。评估模糊容忍度。金融数据天然充满噪声和不确定性，对模糊信息的不安会阻碍探索性研究。/ Reverse-scored. Assesses ambiguity tolerance. Financial data is naturally full of noise and uncertainty; discomfort with ambiguous information hinders exploratory research."
+
+  - id: PSY_FLEX_011
+    category: cognitive_flexibility
+    type: likert_scale
+    question: "我经常主动学习与当前工作不直接相关的新知识。/ I often proactively learn new knowledge that is not directly related to my current work."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "认知灵活性 Cognitive Flexibility"
+    explanation: "评估知识探索广度。跨领域学习是产生创新因子思路的重要来源。/ Assesses breadth of knowledge exploration. Cross-domain learning is an important source for generating innovative factor ideas."
+
+  - id: PSY_FLEX_012
+    category: cognitive_flexibility
+    type: scenario
+    question: "监管部门突然出台了一项新规则，使得你目前最盈利的因子策略不再可行。你会？/ Regulators suddenly introduce a new rule that makes your most profitable factor strategy no longer viable. What would you do?"
+    options:
+      - "A. 感到极度沮丧，认为这是不公平的 / Feel extremely frustrated, believing this is unfair"
+      - "B. 快速评估新规则的具体影响范围，寻找合规的替代方案或调整策略 / Quickly assess the specific scope of the new rule, look for compliant alternatives or adjust the strategy"
+      - "C. 尝试寻找规则的灰色地带来维持策略 / Try to find gray areas in the rules to maintain the strategy"
+      - "D. 等待看其他机构如何应对，然后跟随 / Wait to see how other institutions respond, then follow"
+    scoring: {"A": 1, "B": 4, "C": 1, "D": 2}
+    dimension: "认知灵活性 Cognitive Flexibility"
+    explanation: "B最优，展示了快速适应外部变化的能力。C有合规风险。D缺乏主动性。A纯情绪反应。/ B is optimal, showing ability to quickly adapt to external changes. C has compliance risks. D lacks initiative. A is a pure emotional response."
+
+  - id: PSY_FLEX_013
+    category: cognitive_flexibility
+    type: likert_scale
+    question: "我相信在量化金融领域，持续学习新工具和方法是必要的。/ I believe continuous learning of new tools and methods is necessary in quantitative finance."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "认知灵活性 Cognitive Flexibility"
+    explanation: "评估终身学习理念。量化金融技术栈快速演进（如从SAS到Python到Rust），不学习就被淘汰。/ Assesses lifelong learning philosophy. The quant finance tech stack evolves rapidly (e.g., from SAS to Python to Rust); not learning means being eliminated."
+
+  - id: PSY_FLEX_014
+    category: cognitive_flexibility
+    type: likert_scale
+    question: "当我的分析结论与主流共识不同时，我不确定是应该坚持还是妥协。/ When my analysis conclusion differs from mainstream consensus, I'm unsure whether to persist or compromise."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "认知灵活性 Cognitive Flexibility"
+    explanation: "反向计分。评估独立思考的信心。虽然应该倾听不同意见，但缺乏判断的不确定性反映了认知灵活性的不足。/ Reverse-scored. Assesses confidence in independent thinking. While one should listen to different opinions, lacking judgment-based certainty reflects insufficient cognitive flexibility."
+
+  - id: PSY_FLEX_015
+    category: cognitive_flexibility
+    type: likert_scale
+    question: "我能够快速适应新的编程语言或分析工具。/ I can quickly adapt to new programming languages or analytical tools."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "认知灵活性 Cognitive Flexibility"
+    explanation: "评估技术适应能力。从Python到C++/Rust的转换、新框架的采用等都需要快速的技术适应力。/ Assesses technical adaptability. Transitions from Python to C++/Rust, adoption of new frameworks, etc., all require rapid technical adaptability."
+
+  - id: PSY_FLEX_016
+    category: cognitive_flexibility
+    type: likert_scale
+    question: "我通常只关注一种解决问题的思路，很少考虑替代方案。/ I usually focus on only one problem-solving approach and rarely consider alternatives."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "认知灵活性 Cognitive Flexibility"
+    explanation: "反向计分。评估思维发散度。在因子挖掘中，对同一个经济现象从多角度构建因子的能力是创新的关键。/ Reverse-scored. Assesses thinking divergence. In factor mining, the ability to construct factors from multiple angles for the same economic phenomenon is key to innovation."
+
+  - id: PSY_FLEX_017
+    category: cognitive_flexibility
+    type: scenario
+    question: "你的PM要求你从量价因子转向事件驱动因子研究，这是你不熟悉的领域。你会？/ Your PM asks you to shift from price-volume factor research to event-driven factor research, a field you're unfamiliar with. What would you do?"
+    options:
+      - "A. 表示抗拒，认为应该发挥自己的专长 / Resist, believing you should leverage your expertise"
+      - "B. 接受挑战，制定系统的学习计划并设定里程碑 / Accept the challenge, create a systematic learning plan with milestones"
+      - "C. 被动地接受安排但内心不情愿 / Passively accept the assignment but feel reluctant inside"
+      - "D. 主动请求在转型期间获得导师指导或配对研究 / Proactively request mentorship or paired research during the transition"
+    scoring: {"A": 1, "B": 3, "C": 2, "D": 4}
+    dimension: "认知灵活性 Cognitive Flexibility"
+    explanation: "D最优，展示了主动学习和利用团队资源的灵活性。B也不错，有规划。A过于固执，C缺乏主动性。/ D is optimal, showing proactive learning and flexibility in leveraging team resources. B is also good, with planning. A is too rigid, C lacks initiative."
+
+  - id: PSY_FLEX_018
+    category: cognitive_flexibility
+    type: likert_scale
+    question: "我认为犯错是学习过程中不可避免且有价值的部分。/ I believe making mistakes is an unavoidable and valuable part of the learning process."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "认知灵活性 Cognitive Flexibility"
+    explanation: "评估对错误的态度。将错误视为学习资源的人更愿意尝试新方法，认知灵活性更高。/ Assesses attitude toward mistakes. Those who view mistakes as learning resources are more willing to try new methods and have higher cognitive flexibility."
+
+  - id: PSY_FLEX_019
+    category: cognitive_flexibility
+    type: likert_scale
+    question: "当面对完全未知的问题时，我感到兴奋而非恐惧。/ When facing a completely unknown problem, I feel excited rather than fearful."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "认知灵活性 Cognitive Flexibility"
+    explanation: "评估对未知的情感反应。对新问题的兴奋感是驱动创新和持续探索的内在动力。/ Assesses emotional response to the unknown. Excitement toward new problems is the intrinsic motivation driving innovation and continuous exploration."
+
+  - id: PSY_FLEX_020
+    category: cognitive_flexibility
+    type: likert_scale
+    question: "我认为'一直有效的方法'就是最好的方法，不需要改变。/ I believe 'a method that has always worked' is the best method and doesn't need to change."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "认知灵活性 Cognitive Flexibility"
+    explanation: "反向计分。评估方法论固化程度。过去有效不代表未来有效，市场的非平稳性要求方法论的持续更新。/ Reverse-scored. Assesses degree of methodological rigidity. Past effectiveness doesn't guarantee future effectiveness; market non-stationarity demands continuous methodological updates."
+
+  - id: PSY_FLEX_021
+    category: cognitive_flexibility
+    type: likert_scale
+    question: "我善于从看似失败的实验中提取有价值的信息。/ I am good at extracting valuable information from seemingly failed experiments."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "认知灵活性 Cognitive Flexibility"
+    explanation: "评估从失败中学习的能力。在因子挖掘中，'失败'的因子研究可能揭示市场结构的重要信息。/ Assesses ability to learn from failure. In factor mining, 'failed' factor research may reveal important information about market structure."
+
+  - id: PSY_FLEX_022
+    category: cognitive_flexibility
+    type: likert_scale
+    question: "我乐于接受与我不同思维方式的人合作。/ I am happy to collaborate with people who have different thinking styles from mine."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "认知灵活性 Cognitive Flexibility"
+    explanation: "评估思维多样性接纳度。量化团队通常由不同学科背景的人组成，认知多样性是团队创新的源泉。/ Assesses acceptance of thinking diversity. Quant teams usually comprise people from different disciplinary backgrounds; cognitive diversity is the source of team innovation."
+
+  - id: PSY_FLEX_023
+    category: cognitive_flexibility
+    type: likert_scale
+    question: "当权威人士的观点与数据不一致时，我更相信数据。/ When an authority's opinion is inconsistent with data, I trust the data more."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "认知灵活性 Cognitive Flexibility"
+    explanation: "评估证据-权威平衡。在数据驱动的量化世界中，数据应该优先于权威意见。/ Assesses evidence-authority balance. In the data-driven quantitative world, data should take priority over authority opinions."
+
+  - id: PSY_FLEX_024
+    category: cognitive_flexibility
+    type: likert_scale
+    question: "我能够迅速从一种市场观点切换到另一种对立的观点。/ I can quickly switch from one market view to an opposing view."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "认知灵活性 Cognitive Flexibility"
+    explanation: "评估认知切换速度。在市场快速变化时，能够迅速更新观点是保护资本的关键。/ Assesses cognitive switching speed. When markets change rapidly, quickly updating views is key to protecting capital."
+
+  - id: PSY_FLEX_025
+    category: cognitive_flexibility
+    type: likert_scale
+    question: "我宁愿在一个熟悉的领域做到极致，也不愿探索新的领域。/ I would rather excel in a familiar area than explore new fields."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "认知灵活性 Cognitive Flexibility"
+    explanation: "反向计分。评估探索 vs. 利用的偏好。虽然深度专注有价值，但在量化领域纯粹的'守旧'可能导致alpha衰减后无路可走。/ Reverse-scored. Assesses explore vs. exploit preference. While deep focus has value, pure 'conservatism' in quant may leave nowhere to go after alpha decay."
+
+  # ===========================================================================
+  # TEAM COLLABORATION (20 questions)
+  # ===========================================================================
+
+  - id: PSY_TEAM_001
+    category: team_collaboration
+    type: likert_scale
+    question: "我乐于与他人分享我的研究发现和交易思路。/ I am happy to share my research findings and trading ideas with others."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "团队协作 Team Collaboration"
+    explanation: "评估知识分享倾向。在量化团队中，信息共享促进集体智慧，但也需要在竞争环境中找到平衡。/ Assesses knowledge sharing tendency. In quant teams, information sharing promotes collective wisdom, but balance must be found in competitive environments."
+
+  - id: PSY_TEAM_002
+    category: team_collaboration
+    type: likert_scale
+    question: "我更喜欢独立完成工作，不太需要团队配合。/ I prefer to complete work independently and don't need much team collaboration."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "团队协作 Team Collaboration"
+    explanation: "反向计分。评估团队合作倾向。现代量化策略越来越复杂，单打独斗往往不如团队协作高效。/ Reverse-scored. Assesses teamwork tendency. Modern quantitative strategies are increasingly complex; working alone is often less efficient than team collaboration."
+
+  - id: PSY_TEAM_003
+    category: team_collaboration
+    type: scenario
+    question: "在团队代码审查中，你发现高级研究员的代码有一个逻辑错误。你会？/ During a team code review, you find a logical error in a senior researcher's code. What would you do?"
+    options:
+      - "A. 不说，怕得罪前辈 / Stay silent, afraid of offending a senior"
+      - "B. 以讨论和提问的方式指出该问题，给对方台阶 / Point out the issue through discussion and questions, giving them a way to save face"
+      - "C. 直接在代码审查中标记为bug / Directly mark it as a bug in the code review"
+      - "D. 私下告诉他 / Tell them privately"
+    scoring: {"A": 1, "B": 4, "C": 3, "D": 3}
+    dimension: "团队协作 Team Collaboration"
+    explanation: "B最优，平衡了直接性和社交智慧。C和D也可接受。A最差，因为代码质量不应因层级关系而妥协。/ B is optimal, balancing directness and social intelligence. C and D are also acceptable. A is worst, as code quality should not be compromised due to hierarchy."
+
+  - id: PSY_TEAM_004
+    category: team_collaboration
+    type: likert_scale
+    question: "我擅长向非技术背景的人解释复杂的量化概念。/ I am good at explaining complex quantitative concepts to people without technical backgrounds."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "团队协作 Team Collaboration"
+    explanation: "评估跨职能沟通能力。量化研究员需要向PM、销售、合规等非技术团队解释策略和风险。/ Assesses cross-functional communication ability. Quant researchers need to explain strategies and risks to non-technical teams like PM, sales, and compliance."
+
+  - id: PSY_TEAM_005
+    category: team_collaboration
+    type: likert_scale
+    question: "当团队做出我不同意的决定时，我仍然能全力支持执行。/ When the team makes a decision I disagree with, I can still fully support its execution."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "团队协作 Team Collaboration"
+    explanation: "评估'disagree and commit'能力。在充分表达意见后，尊重团队决定并全力执行是专业团队协作的标志。/ Assesses 'disagree and commit' ability. After fully expressing opinions, respecting the team decision and executing fully is a hallmark of professional teamwork."
+
+  - id: PSY_TEAM_006
+    category: team_collaboration
+    type: likert_scale
+    question: "我主动寻求他人的反馈来改进我的工作。/ I proactively seek feedback from others to improve my work."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "团队协作 Team Collaboration"
+    explanation: "评估反馈寻求倾向。主动请求代码审查、策略评估和研究讨论的人通常产出质量更高。/ Assesses feedback-seeking tendency. People who proactively request code reviews, strategy evaluations, and research discussions typically produce higher quality output."
+
+  - id: PSY_TEAM_007
+    category: team_collaboration
+    type: scenario
+    question: "你负责的部分代码延迟了，影响了整个团队项目的进度。你会？/ Your part of the code is delayed, affecting the entire team project's progress. What would you do?"
+    options:
+      - "A. 默默加班赶工，不让团队知道有延迟 / Quietly work overtime to catch up without letting the team know about the delay"
+      - "B. 尽早告知团队延迟情况，重新协调时间线和任务分配 / Inform the team about the delay early, re-coordinate the timeline and task allocation"
+      - "C. 交付一个不完善的版本以按时完成 / Deliver an imperfect version to meet the deadline"
+      - "D. 将延迟归咎于需求变更或依赖项 / Blame the delay on requirement changes or dependencies"
+    scoring: {"A": 2, "B": 4, "C": 2, "D": 1}
+    dimension: "团队协作 Team Collaboration"
+    explanation: "B最优，体现了透明沟通和团队协作意识。C可能引入技术债务。D缺乏责任感。A虽有责任心但缺乏沟通。/ B is optimal, showing transparent communication and team collaboration awareness. C may introduce technical debt. D lacks accountability. A shows responsibility but lacks communication."
+
+  - id: PSY_TEAM_008
+    category: team_collaboration
+    type: likert_scale
+    question: "我在给他人反馈时能够做到既直接又尊重。/ I can be both direct and respectful when giving feedback to others."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "团队协作 Team Collaboration"
+    explanation: "评估建设性反馈能力。在量化团队中，代码审查和策略讨论需要直接但不伤人的反馈方式。/ Assesses constructive feedback ability. In quant teams, code reviews and strategy discussions require direct yet non-hurtful feedback."
+
+  - id: PSY_TEAM_009
+    category: team_collaboration
+    type: likert_scale
+    question: "我从不和同事产生分歧。/ I never have disagreements with colleagues."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: social_desirability_check
+    dimension: "社会期望性检测 Social Desirability Detection"
+    explanation: "社会期望性检测题。在智力密集型团队中，分歧是正常且有建设性的。声称从无分歧可能是不诚实的回答。/ Social desirability check. In intellectually intensive teams, disagreements are normal and constructive. Claiming never to have disagreements may be dishonest."
+
+  - id: PSY_TEAM_010
+    category: team_collaboration
+    type: likert_scale
+    question: "当团队中出现冲突时，我会主动尝试调解。/ When conflicts arise in the team, I actively try to mediate."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "团队协作 Team Collaboration"
+    explanation: "评估冲突调解倾向。在高压量化环境中，能主动调解冲突的人对维护团队功能至关重要。/ Assesses conflict mediation tendency. In high-pressure quant environments, those who can proactively mediate conflicts are crucial for maintaining team function."
+
+  - id: PSY_TEAM_011
+    category: team_collaboration
+    type: likert_scale
+    question: "我认为帮助同事提高能力最终也会提升团队整体表现。/ I believe helping colleagues improve their skills ultimately enhances the team's overall performance."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "团队协作 Team Collaboration"
+    explanation: "评估团队发展意识。在因子团队中，知识传承和能力建设对长期竞争力至关重要。/ Assesses team development awareness. In factor teams, knowledge transfer and capability building are crucial for long-term competitiveness."
+
+  - id: PSY_TEAM_012
+    category: team_collaboration
+    type: scenario
+    question: "你和同事同时独立发现了一个类似的因子。在向PM汇报时，你会？/ You and a colleague independently discover a similar factor at the same time. When reporting to the PM, what would you do?"
+    options:
+      - "A. 赶在同事前面汇报，确保功劳归自己 / Report before your colleague to ensure the credit goes to you"
+      - "B. 建议合并两人的研究成果，共同署名呈现 / Suggest merging both research results and presenting with joint credit"
+      - "C. 让同事先报，自己不争功劳 / Let the colleague report first and not compete for credit"
+      - "D. 各自独立汇报，让PM决定谁的版本更好 / Each report independently, letting the PM decide whose version is better"
+    scoring: {"A": 1, "B": 4, "C": 2, "D": 3}
+    dimension: "团队协作 Team Collaboration"
+    explanation: "B最优，体现了团队优先的协作精神和资源整合能力。D也可接受。A过于自利。C虽然谦让但可能不利于最佳结果。/ B is optimal, showing team-first collaboration spirit and resource integration ability. D is also acceptable. A is too self-serving. C is modest but may not lead to the best outcome."
+
+  - id: PSY_TEAM_013
+    category: team_collaboration
+    type: likert_scale
+    question: "我会在团队讨论中积极贡献想法，即使它们可能不成熟。/ I actively contribute ideas in team discussions, even if they may not be fully formed."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "团队协作 Team Collaboration"
+    explanation: "评估心理安全感下的参与度。敢于提出不成熟想法的团队环境能激发更多创新。/ Assesses participation level under psychological safety. Team environments where people dare to propose immature ideas stimulate more innovation."
+
+  - id: PSY_TEAM_014
+    category: team_collaboration
+    type: likert_scale
+    question: "当有人对我的代码或研究提出质疑时，我的第一反应是defensive（防御性的）。/ When someone questions my code or research, my first reaction is defensive."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: reverse
+    dimension: "团队协作 Team Collaboration"
+    explanation: "反向计分。评估防御性反应倾向。防御性反应阻碍建设性讨论和代码质量的改进。/ Reverse-scored. Assesses defensive reaction tendency. Defensive reactions hinder constructive discussions and code quality improvement."
+
+  - id: PSY_TEAM_015
+    category: team_collaboration
+    type: likert_scale
+    question: "我认为在团队中承认'我不知道'是一种力量而非弱点。/ I believe admitting 'I don't know' in a team is a strength, not a weakness."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "团队协作 Team Collaboration"
+    explanation: "评估知识诚实度和心理安全感。在量化研究中，伪装理解可能导致严重的模型错误。/ Assesses intellectual honesty and psychological safety. In quant research, pretending to understand may lead to serious modeling errors."
+
+  - id: PSY_TEAM_016
+    category: team_collaboration
+    type: likert_scale
+    question: "我善于文档化自己的代码和研究过程，方便他人理解和接手。/ I am good at documenting my code and research processes to facilitate others' understanding and handover."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "团队协作 Team Collaboration"
+    explanation: "评估知识传递意识。良好的文档习惯降低了bus factor风险，提升团队的韧性。/ Assesses knowledge transfer awareness. Good documentation habits reduce bus factor risk and enhance team resilience."
+
+  - id: PSY_TEAM_017
+    category: team_collaboration
+    type: likert_scale
+    question: "我能有效地与远程/异地团队成员协作。/ I can effectively collaborate with remote/distributed team members."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "团队协作 Team Collaboration"
+    explanation: "评估远程协作能力。许多量化团队分布在全球多个办公室，远程协作是必备技能。/ Assesses remote collaboration ability. Many quant teams are distributed across multiple global offices; remote collaboration is an essential skill."
+
+  - id: PSY_TEAM_018
+    category: team_collaboration
+    type: likert_scale
+    question: "当团队需要有人承担额外的工作时，我通常会主动请缨。/ When the team needs someone to take on extra work, I usually volunteer."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "团队协作 Team Collaboration"
+    explanation: "评估主动承担责任的倾向。在人数有限的量化团队中，愿意承担额外工作的人对团队运转至关重要。/ Assesses tendency to proactively take responsibility. In small quant teams, those willing to take on extra work are critical to team operations."
+
+  - id: PSY_TEAM_019
+    category: team_collaboration
+    type: likert_scale
+    question: "我重视代码审查过程，无论是审查别人的代码还是被审查。/ I value the code review process, whether reviewing others' code or being reviewed."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "团队协作 Team Collaboration"
+    explanation: "评估代码质量文化的认同度。代码审查是量化系统质量保障的核心环节，也是团队知识共享的重要渠道。/ Assesses alignment with code quality culture. Code review is a core link in quant system quality assurance and an important channel for team knowledge sharing."
+
+  - id: PSY_TEAM_020
+    category: team_collaboration
+    type: likert_scale
+    question: "我认为团队的成功比个人表现更重要。/ I believe team success is more important than individual performance."
+    options: ["1. 非常不同意 Strongly Disagree", "2. 不同意 Disagree", "3. 中立 Neutral", "4. 同意 Agree", "5. 非常同意 Strongly Agree"]
+    scoring_direction: positive
+    dimension: "团队协作 Team Collaboration"
+    explanation: "评估集体 vs. 个人取向。在因子团队中，一个人的alpha可能来自另一个人构建的基础设施或数据管道。/ Assesses collective vs. individual orientation. In factor teams, one person's alpha may come from the infrastructure or data pipeline another person built."

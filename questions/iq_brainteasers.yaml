@@ -1,0 +1,167 @@
+# IQ / Brainteaser Question Bank
+# 10 questions - Jane Street style collaborative problem-solving
+# Difficulty distribution: 4 medium_high, 4 senior, 2 expert
+# Points: 3 each
+
+- id: IQ_001
+  category: iq_brainteaser
+  difficulty: medium_high
+  type: multiple_choice
+  points: 3
+  question: "概率谜题 / Probability Puzzle:\n你有两个孩子。已知至少有一个是女孩，而且那个女孩是在星期二出生的。两个孩子都是女孩的概率是多少？\nYou have two children. Given that at least one is a girl born on a Tuesday, what is the probability that both children are girls?"
+  options:
+    - "A. 1/3"
+    - "B. 1/2"
+    - "C. 13/27"
+    - "D. 1/7"
+  answer: "C"
+  explanation: "这是著名的 'Tuesday Boy' 问题。设每个孩子有14种等可能状态（7天 × 2性别）。两个孩子共有 14×14 = 196 种等可能组合。至少一个是'女孩且星期二出生'的组合数：总 - 无'女孩星期二' = 196 - 13×13 = 196 - 169 = 27。两个都是女孩且至少一个星期二出生：女孩有7种状态，两女孩 7×7=49 种，减去无星期二的 6×6=36 种 = 13 种。P = 13/27 ≈ 0.481。星期二的条件将概率从 1/3 拉向了 1/2。"
+  hints:
+    - "考虑每个孩子有14种等可能状态（7天 × 2性别）"
+    - "使用容斥原理计算'至少一个'的情况"
+  rubric: ""
+  time_limit_seconds: 600
+
+- id: IQ_002
+  category: iq_brainteaser
+  difficulty: medium_high
+  type: show_work
+  points: 3
+  question: "期望值问题 / Expected Value Problem:\n你和对手玩一个游戏。你掷一个公平的六面骰子，可以选择接受当前点数作为你的得分（单位：美元），或者重新掷一次（最多掷3次，第3次必须接受）。最优策略下你的期望收益是多少？\nYou play a game: roll a fair 6-sided die. You can accept the number as your score (in dollars) or re-roll. You get at most 3 rolls (must accept the 3rd). What is your expected payoff under optimal strategy?"
+  options: []
+  answer: ""
+  explanation: "从后往前分析（backward induction）。第3次掷骰：必须接受，E₃ = (1+2+3+4+5+6)/6 = 3.5。第2次掷骰：如果当前点数 > E₃ = 3.5 则接受（即 4,5,6 接受），否则重掷。E₂ = (1/6)(3.5+3.5+3.5+4+5+6) = (3*3.5+4+5+6)/6 = (10.5+15)/6 = 25.5/6 = 4.25。第1次掷骰：如果当前点数 > E₂ = 4.25 则接受（即 5,6 接受），否则重掷。E₁ = (1/6)(4.25+4.25+4.25+4.25+5+6) = (4*4.25+5+6)/6 = (17+11)/6 = 28/6 = 14/3 ≈ 4.667。"
+  hints:
+    - "使用 backward induction（逆向归纳法）"
+    - "在每一步，比较当前点数与重掷的期望值"
+  rubric: "满分要点：(1)正确使用逆向归纳 (2)正确计算每步期望值 (3)正确描述最优策略 (4)最终答案 14/3"
+  time_limit_seconds: 600
+
+- id: IQ_003
+  category: iq_brainteaser
+  difficulty: senior
+  type: show_work
+  points: 3
+  question: "称量问题 / Weighing Problem:\n你有12枚外观相同的硬币，其中有一枚是假币（可能偏重或偏轻）。你有一个天平秤（无砝码），最少需要几次称量才能找出假币并确定它是偏重还是偏轻？请描述完整的称量策略。\nYou have 12 coins identical in appearance. One is counterfeit (either heavier or lighter). Using a balance scale (no weights), what is the minimum number of weighings to identify the counterfeit and determine if it is heavier or lighter? Describe the complete strategy."
+  options: []
+  answer: ""
+  explanation: "最少需要 3 次称量。信息论下界：每次称量有3种结果（左重、平衡、右重），3次称量共 3³=27 种结果。需要区分的情况：12枚硬币 × 2种可能（偏重/偏轻）= 24 种，24 < 27 故理论上3次可行。策略：第1次：将硬币标记为1-12，左盘放1234，右盘放5678。(a)如果平衡：假币在9-12中。第2次放9,10,11 vs 1,2,3（已知真币）。如果平衡则12是假币，第3次用12 vs 1判断轻重。如果左重则9,10,11之一偏重，第3次9 vs 10判断。类似处理左轻情况。(b)如果左重：假币在1234（可能重）或5678（可能轻）中。第2次放1,2,5 vs 3,6,7。根据结果缩小范围，第3次确认。"
+  hints:
+    - "信息论角度：3次称量最多区分 3³ = 27 种情况"
+    - "关键技巧是在第2次称量时混合已知和未知硬币"
+  rubric: "满分要点：(1)正确回答3次 (2)信息论下界论证 (3)完整的分支策略 (4)覆盖所有情况"
+  time_limit_seconds: 900
+
+- id: IQ_004
+  category: iq_brainteaser
+  difficulty: medium_high
+  type: multiple_choice
+  points: 3
+  question: "帽子谜题 / Hat Puzzle:\n100个人排成一列（每人只能看到前面所有人的帽子）。每人头上随机放一顶红色或蓝色帽子。从最后一人开始，每人必须猜自己帽子的颜色（所有人都能听到之前的猜测）。最优策略下，最少能保证多少人猜对？\n100 people stand in a line (each can see all hats in front). Each gets a random red or blue hat. Starting from the back, each must guess their hat color (everyone hears all guesses). Under optimal strategy, what is the minimum number guaranteed to guess correctly?"
+  options:
+    - "A. 50"
+    - "B. 99"
+    - "C. 100"
+    - "D. 51"
+  answer: "B"
+  explanation: "最优策略：第100人（最后面）数前面99顶帽子中红色的数量。如果是奇数，他说'红色'；偶数说'蓝色'。这样他传递了一个 parity（奇偶性）信息。第99人能看到前面98顶帽子，结合第100人的奇偶信息和自己看到的帽子，可以准确推断自己的帽子颜色。以此类推，第2到第99人都能准确推断。只有第100人（最后面的人）有50%概率猜对。所以保证猜对99人。"
+  hints:
+    - "关键是如何让最后一个人的猜测传递最大信息"
+    - "考虑奇偶性（parity）"
+  rubric: ""
+  time_limit_seconds: 600
+
+- id: IQ_005
+  category: iq_brainteaser
+  difficulty: senior
+  type: show_work
+  points: 3
+  question: "博弈论 / Game Theory:\n两个玩家轮流从一堆石子中取走石子。每次可以取1到3颗。取走最后一颗石子的人获胜。如果初始有 n 颗石子，先手有必胜策略的条件是什么？如果 n = 100，先手是否必胜？\nTwo players alternate taking 1-3 stones from a pile. The player taking the last stone wins. For what values of n (initial stones) does the first player have a winning strategy? If n = 100, does the first player win?"
+  options: []
+  answer: ""
+  explanation: "分析：n=1,2,3：先手直接取完，先手必胜。n=4：无论先手取1,2,3颗，后手都能取完剩余，先手必败。n=5,6,7：先手取到剩4颗给对手，先手必胜。n=8：先手必败（无论取几颗，对手都能调整到剩4颗给先手）。规律：n ≡ 0 (mod 4) 时先手必败，否则先手必胜。策略：先手取 n mod 4 颗（如果 n mod 4 ≠ 0），之后每轮凑满4颗。n=100：100 mod 4 = 0，所以先手必败。无论先手取多少，后手都可以保持石子数为4的倍数。"
+  hints:
+    - "从小情况开始分析（n=1,2,3,4...）"
+    - "寻找必败态（P-position）的模式"
+  rubric: "满分要点：(1)正确识别 n mod 4 = 0 为必败态 (2)归纳证明 (3)正确判断 n=100 (4)描述完整策略"
+  time_limit_seconds: 600
+
+- id: IQ_006
+  category: iq_brainteaser
+  difficulty: senior
+  type: multiple_choice
+  points: 3
+  question: "逻辑推理 / Logic Puzzle:\nA 说：'B 在说谎。'\nB 说：'C 在说谎。'\nC 说：'A 和 B 都在说谎。'\n假设每个人要么总是说真话，要么总是说谎。谁在说谎？\nA says: 'B is lying.' B says: 'C is lying.' C says: 'Both A and B are lying.' Each person always tells the truth or always lies. Who is lying?"
+  options:
+    - "A. 只有 A 说谎 / Only A is lying"
+    - "B. 只有 B 说谎 / Only B is lying"
+    - "C. 只有 C 说谎 / Only C is lying"
+    - "D. A 和 C 说谎 / A and C are lying"
+  answer: "D"
+  explanation: "逐一假设。假设 A 说真话：则 B 说谎。B 说谎意味着 C 说真话。C 说真话意味着 A 和 B 都说谎——矛盾（因为 A 说真话）。假设 A 说谎：则 B 说真话。B 说真话意味着 C 说谎。C 说谎意味着'A和B都说谎'为假。'A和B都说谎'的否定是'A或B至少一个说真话'。B 说真话，满足。检验一致性：A 说谎 ✓，B 说真话（C说谎 ✓），C 说谎（A和B并非都说谎 ✓）。所以 A 和 C 说谎，B 说真话。"
+  hints:
+    - "逐一假设每个人说真话或说谎"
+    - "检查所有情况是否自洽"
+  rubric: ""
+  time_limit_seconds: 480
+
+- id: IQ_007
+  category: iq_brainteaser
+  difficulty: medium_high
+  type: show_work
+  points: 3
+  question: "概率与期望 / Probability and Expectation:\n一副标准52张扑克牌（不含大小王），你从上往下依次翻牌。在翻到第一张 Ace 之前，你已经翻了多少张牌？求翻到第一张 Ace 前翻过的牌的期望张数。\nFrom a standard 52-card deck, you flip cards one by one. What is the expected number of cards flipped before the first Ace appears?"
+  options: []
+  answer: ""
+  explanation: "方法：4张Ace将其余48张牌分成5组（Ace之前、两个Ace之间的3组、最后一张Ace之后）。由对称性，每组的期望大小相等，为 48/5 = 9.6 张。第一张Ace之前的牌的期望张数 = 48/5 = 9.6。\n\n另一种推导：设 X 为第一张 Ace 出现的位置（从1开始计数）。我们要求 E[X] - 1 = E[X-1]。将52张牌想象为4张Ace和48张非Ace随机排列。第一张Ace前的非Ace张数期望 = 48/5。所以答案是 48/5 = 9.6。"
+  hints:
+    - "利用对称性：4张Ace将48张牌分成5段"
+    - "每段的期望长度相等"
+  rubric: "满分要点：(1)正确使用对称性论证 (2)正确计算 48/5 (3)清晰的推理过程"
+  time_limit_seconds: 600
+
+- id: IQ_008
+  category: iq_brainteaser
+  difficulty: senior
+  type: show_work
+  points: 3
+  question: "动态规划/策略问题 / Dynamic Programming Strategy:\n你参加一个竞拍游戏。有一个未知数 X 均匀分布在 [0, 100] 上。你先观察到 X 的值，然后选择一个出价 B。如果 B ≥ X，你'赢得'该物品，你的收益为 (3/2)X - B；如果 B < X，你什么也得不到，收益为0。你应该如何设置出价 B 来最大化期望收益？\nAuction game: X ~ Uniform[0,100]. You observe X, then bid B. If B ≥ X, you win and your payoff = (3/2)X - B. If B < X, payoff = 0. How should you set B to maximize expected payoff?"
+  options: []
+  answer: ""
+  explanation: "分析：你观察到 X 后做决策。如果你出价 B = X（恰好等于），当你赢时收益 = (3/2)X - X = X/2 > 0（对所有 X > 0）。如果你出价 B > X，你一定赢，但多付了 B - X。如果 B < X，你不赢。\n\n关键：题目是你观察到 X 的值（确定值），而你的出价只需要 ≥ X 即可获胜。所以最优策略是：对任何 X > 0，出价 B = X（刚好够赢），收益 = X/2。对 X = 0，出价 B = 0，收益 = 0。\n\n期望收益 = E[X/2] = 50/2 = 25。\n\n但如果重新理解为'赢家的诅咒'版本（X 是你对物品的估值而非真实价值，真实价值是 2X/3），则策略不同。在标准理解下，最优出价 B* = X，期望收益 = 25。"
+  hints:
+    - "你可以观察到 X 的实现值后再决定出价"
+    - "只要 B ≥ X 就能赢，所以思考最小的够赢的出价"
+  rubric: "满分要点：(1)正确分析观察到X后的决策 (2)推导最优出价 (3)计算期望收益 (4)讨论边界情况"
+  time_limit_seconds: 600
+
+- id: IQ_009
+  category: iq_brainteaser
+  difficulty: expert
+  type: show_work
+  points: 3
+  question: "信封悖论变体 / Envelope Paradox Variant:\n桌上有两个信封，你知道一个信封里的钱是另一个的两倍，但不知道哪个多。你打开信封A发现里面有 $100。你可以选择换到信封B。传统分析说：B有50%概率是$200，50%概率是$50，所以换的期望值是$125 > $100，应该换。但这个推理有什么问题？请严格分析。\nTwo envelopes: one has double the other. You open envelope A and see $100. Should you switch? The naive analysis says E[B] = 0.5(200) + 0.5(50) = 125 > 100. What is wrong with this reasoning? Provide a rigorous analysis."
+  options: []
+  answer: ""
+  explanation: "悖论的核心问题：传统分析隐含了一个不合理的先验分布假设。严格分析：设较小金额为 S，较大金额为 2S。你看到 $100 后，存在两种情况：(1) S=50，你拿到了大的（100），B是小的（50）(2) S=100，你拿到了小的（100），B是大的（200）。\n\n关键：P(S=50|你看到100) 和 P(S=100|你看到100) 取决于 S 的先验分布 π(s)。\n\n用贝叶斯：P(S=100|see 100) ∝ π(100) * P(see 100|S=100) = π(100) * 1/2。P(S=50|see 100) ∝ π(50) * P(see 100|S=50) = π(50) * 1/2。\n\nE[B|see 100] = P(S=100|see 100)*200 + P(S=50|see 100)*50。\n\n只有当 π(100)/π(50) > 1/2 时才应该换。传统分析错误地假设了 P(case 1) = P(case 2) = 1/2（即 π(100) = π(50)），但没有验证这是否对所有观察值都成立——实际上不存在这样的均匀先验分布（在正实数上的均匀分布是improper的）。"
+  hints:
+    - "思考'50%概率是200，50%概率是50'这个假设从哪里来"
+    - "需要引入贝叶斯分析和先验分布"
+  rubric: "满分要点：(1)识别先验分布假设的问题 (2)贝叶斯分析框架 (3)证明对所有观察值都'应该换'的矛盾 (4)正确的条件期望计算"
+  time_limit_seconds: 900
+
+- id: IQ_010
+  category: iq_brainteaser
+  difficulty: expert
+  type: show_work
+  points: 3
+  question: "随机过程 / Stochastic Process:\n一只醉酒的蚂蚁在数轴上做随机游走，从位置0开始。每步等概率向左或向右移动1个单位。在位置 -3 和位置 +5 处各有一个陷阱。蚂蚁落入 +5 陷阱的概率是多少？到达某个陷阱之前，蚂蚁的期望步数是多少？\nA drunk ant does a random walk on the number line starting at 0. Each step moves ±1 with equal probability. Traps at -3 and +5. What is the probability the ant falls into the +5 trap? What is the expected number of steps before reaching either trap?"
+  options: []
+  answer: ""
+  explanation: "第一问（概率）：设 P(x) = 从位置 x 到达 +5 的概率。边界条件：P(-3)=0, P(5)=1。递推：P(x) = (1/2)P(x-1) + (1/2)P(x+1)。这是调和函数，解为线性：P(x) = (x+3)/(5+3) = (x+3)/8。从 x=0：P(0) = 3/8 = 0.375。\n\n第二问（期望步数）：设 E(x) = 从位置 x 到达边界的期望步数。边界：E(-3)=0, E(5)=0。递推：E(x) = 1 + (1/2)E(x-1) + (1/2)E(x+1)。改写：E(x+1) - 2E(x) + E(x-1) = -2。特解为二次函数 E_p(x) = -x²，通解 E(x) = -x² + Ax + B。代入边界：E(-3) = -9 - 3A + B = 0, E(5) = -25 + 5A + B = 0。解得：A = -2, B = -3。E(x) = -x² - 2x - 3... 验证 E(-3)=0 ✓ 但 E(0) 需要重新计算。\n\n修正：E(x) = ax² + bx + c 且 E(x+1)-2E(x)+E(x-1) = 2a = -2，所以 a = -1。E(x) = -x² + bx + c。E(-3) = -9-3b+c = 0, E(5) = -25+5b+c = 0。相减：-16+8b = 0, b = 2。c = 9+6 = 15。E(x) = -x²+2x+15。E(0) = 15 步。"
+  hints:
+    - "设 P(x) 为从位置 x 到达 +5 的概率，建立递推方程"
+    - "对称随机游走中，到达概率是线性函数"
+    - "期望步数满足二次递推"
+  rubric: "满分要点：(1)正确建立概率递推方程 (2)P(0)=3/8 (3)正确建立期望步数递推 (4)E(0)=15 (5)完整推导过程"
+  time_limit_seconds: 900

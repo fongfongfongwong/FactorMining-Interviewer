@@ -1,0 +1,1666 @@
+# Portfolio Manager (投资组合经理) Question Bank
+# 100 questions across 6 categories
+# Difficulty distribution: 40 medium_high, 40 senior, 20 expert
+# Type distribution: 70 multiple_choice, 20 open_ended, 10 show_work
+
+###############################################################################
+# CATEGORY 1: portfolio_construction (25 questions)
+###############################################################################
+
+- id: PM_PORT_001
+  category: portfolio_construction
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在 Mean-Variance Optimization 中，efficient frontier 上的每一个点代表什么？\nIn Mean-Variance Optimization, what does each point on the efficient frontier represent?"
+  options:
+    - "A. 给定风险水平下的最大预期收益组合 / The portfolio with maximum expected return for a given level of risk"
+    - "B. 给定收益水平下的最大风险组合 / The portfolio with maximum risk for a given return"
+    - "C. 所有资产等权重配置的组合 / An equal-weight allocation of all assets"
+    - "D. 全球最小方差组合 / The global minimum variance portfolio only"
+  answer: "A"
+  explanation: "Efficient frontier 上的每个点代表在给定风险（标准差）水平下能够获得的最高预期收益的投资组合，或等价地，在给定预期收益水平下风险最小的组合。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_PORT_002
+  category: portfolio_construction
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Black-Litterman 模型相比传统 MVO 的核心优势是什么？\nWhat is the core advantage of the Black-Litterman model over traditional MVO?"
+  options:
+    - "A. 不需要协方差矩阵 / It does not require a covariance matrix"
+    - "B. 将投资者观点与市场均衡收益相结合，生成更稳定的配置 / It combines investor views with market equilibrium returns for more stable allocations"
+    - "C. 能保证正的超额收益 / It guarantees positive excess returns"
+    - "D. 仅适用于股票市场 / It only applies to equity markets"
+  answer: "B"
+  explanation: "Black-Litterman 的核心创新是以 CAPM 均衡收益（implied equilibrium returns）为先验，再融合投资者主观观点（views），通过贝叶斯框架生成后验收益估计。这避免了 MVO 对输入参数极度敏感导致的极端权重问题。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_PORT_003
+  category: portfolio_construction
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Risk Parity 策略的核心思想是什么？\nWhat is the core idea behind a Risk Parity strategy?"
+  options:
+    - "A. 使每个资产的名义权重相等 / Equal nominal weight for each asset"
+    - "B. 使每个资产对组合总风险的贡献相等 / Equal risk contribution from each asset to total portfolio risk"
+    - "C. 最大化组合的 Sharpe Ratio / Maximize the portfolio Sharpe Ratio"
+    - "D. 最小化组合的最大回撤 / Minimize the portfolio maximum drawdown"
+  answer: "B"
+  explanation: "Risk Parity 的核心是使每个资产（或资产类别）对组合总风险的边际贡献（marginal contribution to risk）相等。这通常意味着低波动资产（如债券）获得更高权重，高波动资产（如股票）获得较低权重。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_PORT_004
+  category: portfolio_construction
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在构建 factor-based portfolio 时，以下哪种方法最能有效控制非目标因子的暴露？\nWhen constructing a factor-based portfolio, which method best controls unintended factor exposures?"
+  options:
+    - "A. 简单的因子排序分组（quintile sort）/ Simple factor quintile sorting"
+    - "B. 使用优化器加入因子暴露约束 / Using an optimizer with factor exposure constraints"
+    - "C. 等权重配置所有股票 / Equal-weighting all stocks"
+    - "D. 仅选择因子得分最高的10只股票 / Selecting only the top 10 stocks by factor score"
+  answer: "B"
+  explanation: "通过优化器可以在目标函数中最大化目标因子暴露的同时，对其他非目标因子（如市值、行业、波动率等）加入约束条件，确保组合在非目标维度上保持中性或受控。简单排序分组无法精确控制多维因子暴露。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_PORT_005
+  category: portfolio_construction
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "Active Share 衡量的是什么？当 Active Share = 20% 时意味着什么？\nWhat does Active Share measure? What does Active Share = 20% imply?"
+  options:
+    - "A. 组合与基准的跟踪误差为20% / The tracking error vs benchmark is 20%"
+    - "B. 组合中20%的持仓权重与基准不同 / 20% of portfolio weights differ from benchmark"
+    - "C. 组合超额收益为20% / Portfolio excess return is 20%"
+    - "D. 组合的换手率为20% / Portfolio turnover is 20%"
+  answer: "B"
+  explanation: "Active Share = (1/2) * Σ|w_p,i - w_b,i|，衡量组合持仓与基准之间权重差异的绝对值之和的一半。Active Share = 20% 表示组合与基准的持仓重合度很高（80%相同），属于 closet indexing。高 Active Share（>60%）通常意味着更积极的主动管理。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_PORT_006
+  category: portfolio_construction
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在组合再平衡中，calendar rebalancing 和 threshold rebalancing 的关键区别是什么？\nWhat is the key difference between calendar rebalancing and threshold rebalancing?"
+  options:
+    - "A. Calendar rebalancing 按固定时间间隔调整，threshold rebalancing 当偏离超过阈值时调整 / Calendar rebalances at fixed intervals; threshold rebalances when drift exceeds a threshold"
+    - "B. Calendar rebalancing 成本更低 / Calendar rebalancing has lower costs"
+    - "C. Threshold rebalancing 不需要交易 / Threshold rebalancing requires no trading"
+    - "D. 两者完全相同 / They are identical"
+  answer: "A"
+  explanation: "Calendar rebalancing 在固定时间点（如每月、每季度）将组合调回目标权重；Threshold rebalancing 则在任一资产权重偏离目标超过预设阈值时触发再平衡。后者更灵活但需要持续监控，前者实施简单但可能错过最优再平衡时机。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_PORT_007
+  category: portfolio_construction
+  difficulty: senior
+  type: open_ended
+  points: 1
+  question: "请解释 Smart Beta 策略与传统主动管理和纯被动指数投资的区别。举出两种常见的 Smart Beta 策略并说明其构建方法。\nExplain how Smart Beta strategies differ from traditional active management and pure passive indexing. Name two common Smart Beta strategies and describe their construction."
+  options: []
+  answer: ""
+  explanation: "Smart Beta 位于主动与被动管理之间：使用透明的、基于规则的方法（类似被动）来捕获特定因子溢价（类似主动）。常见策略包括：(1) Minimum Volatility — 优化构建低波动组合，目标是在保持市场暴露的同时降低组合波动率；(2) Quality — 根据 ROE、低杠杆、盈利稳定性等质量指标选股并加权。"
+  hints:
+    - "考虑 Smart Beta 的透明度和规则性"
+    - "考虑因子暴露的系统性获取方式"
+  rubric: "满分要点：(1)正确区分三者定位 (2)至少举出两种策略 (3)说明构建逻辑 (4)提及因子溢价概念"
+  time_limit_seconds: 300
+
+- id: PM_PORT_008
+  category: portfolio_construction
+  difficulty: expert
+  type: show_work
+  points: 1
+  question: "假设一个两资产组合，资产A预期收益10%，波动率15%，资产B预期收益6%，波动率8%，相关系数0.3。请推导全局最小方差组合（Global Minimum Variance Portfolio）的权重公式并计算具体权重。\nGiven a two-asset portfolio: Asset A has expected return 10%, volatility 15%; Asset B has expected return 6%, volatility 8%; correlation = 0.3. Derive the GMVP weight formula and compute the weights."
+  options: []
+  answer: ""
+  explanation: "GMVP 权重公式: w_A = (σ_B² - ρ*σ_A*σ_B) / (σ_A² + σ_B² - 2*ρ*σ_A*σ_B)。代入: w_A = (0.0064 - 0.3*0.15*0.08) / (0.0225 + 0.0064 - 2*0.3*0.15*0.08) = (0.0064 - 0.0036) / (0.0225 + 0.0064 - 0.0072) = 0.0028 / 0.0217 ≈ 0.129。所以 w_A ≈ 12.9%, w_B ≈ 87.1%。"
+  hints:
+    - "最小化 σ_p² = w²σ_A² + (1-w)²σ_B² + 2w(1-w)ρσ_Aσ_B"
+    - "对 w 求导并令导数为零"
+  rubric: "满分要点：(1)正确写出组合方差公式 (2)正确求导 (3)推导出权重公式 (4)代入数值计算正确"
+  time_limit_seconds: 480
+
+- id: PM_PORT_009
+  category: portfolio_construction
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "以下关于 benchmark tracking 的说法，哪个是正确的？\nWhich statement about benchmark tracking is correct?"
+  options:
+    - "A. Tracking Error 越大说明组合表现越好 / Higher Tracking Error means better performance"
+    - "B. Full replication 适用于成分股数量非常多的指数 / Full replication works best for indices with very many constituents"
+    - "C. Stratified sampling 通过匹配关键风险因子特征来近似复制指数 / Stratified sampling replicates the index by matching key risk factor characteristics"
+    - "D. Tracking Error 仅由交易成本决定 / Tracking Error is determined solely by transaction costs"
+  answer: "C"
+  explanation: "Stratified sampling（分层抽样）将指数按行业、市值、久期等维度分组，在每组中选择代表性证券，使组合在关键因子暴露上与指数匹配。这对成分股过多的指数（如 Russell 3000）特别有效。Full replication 在成分股较少时更合适。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_PORT_010
+  category: portfolio_construction
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在 Black-Litterman 模型中，τ (tau) 参数的作用是什么？\nIn the Black-Litterman model, what role does the parameter τ (tau) play?"
+  options:
+    - "A. 控制先验收益（equilibrium returns）的不确定性程度 / Controls the uncertainty of prior equilibrium returns"
+    - "B. 决定组合中的最大单一持仓权重 / Determines the maximum single-position weight"
+    - "C. 设定目标跟踪误差 / Sets the target tracking error"
+    - "D. 衡量投资者的风险厌恶程度 / Measures the investor's risk aversion"
+  answer: "A"
+  explanation: "τ 是一个标量参数，乘以协方差矩阵 Σ 来表示均衡收益估计的不确定性（即先验分布的方差 τΣ）。τ 越大，表示对均衡收益的信心越低，投资者观点在后验中的权重越大。通常 τ 取值在 0.01 到 0.05 之间。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_PORT_011
+  category: portfolio_construction
+  difficulty: expert
+  type: open_ended
+  points: 1
+  question: "请详细比较 Hierarchical Risk Parity (HRP) 和传统 Mean-Variance Optimization 的优劣。在什么市场环境下 HRP 更具优势？\nCompare Hierarchical Risk Parity (HRP) with traditional MVO in detail. Under what market conditions does HRP have an advantage?"
+  options: []
+  answer: ""
+  explanation: "HRP 优势：(1)不需要收益预测，仅依赖协方差矩阵 (2)无需矩阵求逆，避免了协方差矩阵奇异或不稳定的问题 (3)利用层次聚类捕捉资产间的树状结构关系 (4)生成更分散、更稳定的权重。劣势：(1)无法直接优化预期收益 (2)聚类结果依赖距离度量选择。在协方差矩阵估计噪声大（如样本量小、资产数多）、市场结构快速变化的环境下，HRP 的稳健性优势更明显。"
+  hints:
+    - "考虑矩阵求逆的数值稳定性问题"
+    - "考虑资产数量远大于样本量的情形"
+  rubric: "满分要点：(1)HRP三步流程（聚类、quasi-diagonalization、recursive bisection）(2)MVO的矩阵求逆问题 (3)具体市场场景 (4)各自局限性"
+  time_limit_seconds: 360
+
+- id: PM_PORT_012
+  category: portfolio_construction
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "以下哪种情况最可能导致 MVO 产出不合理的极端权重？\nWhich situation most likely causes MVO to produce unreasonable extreme weights?"
+  options:
+    - "A. 资产数量较少（如3个）/ A small number of assets (e.g., 3)"
+    - "B. 预期收益估计的微小误差 / Small errors in expected return estimates"
+    - "C. 使用日收益率代替月收益率 / Using daily returns instead of monthly returns"
+    - "D. 对所有资产施加等权约束 / Imposing equal-weight constraints on all assets"
+  answer: "B"
+  explanation: "MVO 对输入参数（尤其是预期收益）极度敏感，这被称为 'error maximization' 问题。预期收益估计中的微小偏差会被优化器放大，导致极端的多空头寸或集中持仓。这是 Black-Litterman、robust optimization 等方法试图解决的核心问题。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_PORT_013
+  category: portfolio_construction
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在构建行业中性的多因子组合时，以下哪种约束最关键？\nWhen constructing a sector-neutral multi-factor portfolio, which constraint is most critical?"
+  options:
+    - "A. 限制组合总权重之和为1 / Constraining total weights to sum to 1"
+    - "B. 限制每个行业的权重偏离基准不超过阈值 / Constraining each sector weight deviation from benchmark within a threshold"
+    - "C. 限制最大单一持仓不超过5% / Constraining maximum single-position to 5%"
+    - "D. 限制组合的总市值暴露 / Constraining total market-cap exposure"
+  answer: "B"
+  explanation: "行业中性（sector-neutral）的核心约束是使组合在每个行业上的权重与基准保持一致（或偏离在很小范围内）。这确保组合的超额收益来自股票选择（alpha）而非行业配置（sector bet），从而更纯粹地体现因子选股能力。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_PORT_014
+  category: portfolio_construction
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "以下关于组合再平衡的交易成本与收益权衡，哪个说法正确？\nRegarding the cost-benefit tradeoff of portfolio rebalancing, which statement is correct?"
+  options:
+    - "A. 再平衡频率越高，组合表现一定越好 / Higher rebalancing frequency always leads to better performance"
+    - "B. 再平衡可以利用均值回归效应，但过于频繁的再平衡会因交易成本侵蚀收益 / Rebalancing exploits mean reversion but excessive rebalancing erodes returns via transaction costs"
+    - "C. 不再平衡的组合长期一定跑赢再平衡的组合 / A never-rebalanced portfolio always outperforms a rebalanced one"
+    - "D. 再平衡仅影响收益，不影响风险 / Rebalancing only affects returns, not risk"
+  answer: "B"
+  explanation: "再平衡的收益来源之一是利用资产价格的均值回归（rebalancing premium），即卖高买低。但每次再平衡都产生交易成本（佣金、冲击成本、买卖价差），因此存在最优再平衡频率。学术研究（如 Kritzman 等）表明，最优频率取决于交易成本水平和资产波动特征。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_PORT_015
+  category: portfolio_construction
+  difficulty: expert
+  type: show_work
+  points: 1
+  question: "请推导 Risk Parity 组合中资产 i 的边际风险贡献（Marginal Contribution to Risk, MCTR）公式，并说明如何从 MCTR 推导出 Total Contribution to Risk (TCTR)。假设组合有 N 个资产。\nDerive the Marginal Contribution to Risk (MCTR) formula for asset i in a Risk Parity portfolio, and show how TCTR follows. Assume N assets."
+  options: []
+  answer: ""
+  explanation: "组合风险 σ_p = √(w'Σw)。MCTR_i = ∂σ_p/∂w_i = (Σw)_i / σ_p。TCTR_i = w_i * MCTR_i = w_i * (Σw)_i / σ_p。可验证 Σ TCTR_i = σ_p（Euler 分解定理）。Risk Parity 条件: TCTR_i = σ_p / N 对所有 i。"
+  hints:
+    - "从 σ_p² = w'Σw 开始，对 w_i 求偏导"
+    - "利用 Euler's theorem for homogeneous functions"
+  rubric: "满分要点：(1)正确推导MCTR (2)正确推导TCTR (3)验证Euler分解 (4)写出Risk Parity条件"
+  time_limit_seconds: 480
+
+- id: PM_PORT_016
+  category: portfolio_construction
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "以下哪种方法不是解决 MVO 中协方差矩阵估计噪声问题的有效方法？\nWhich method is NOT an effective solution for noisy covariance matrix estimation in MVO?"
+  options:
+    - "A. Ledoit-Wolf shrinkage estimator"
+    - "B. 使用因子模型降维（factor model covariance）/ Using factor model covariance for dimensionality reduction"
+    - "C. 增加更多历史数据（使用50年数据）/ Simply using more historical data (e.g., 50 years)"
+    - "D. Random Matrix Theory 去噪 / Random Matrix Theory denoising"
+  answer: "C"
+  explanation: "简单增加历史数据长度可能引入结构性变化（regime changes），导致估计偏差。有效方法包括：(1) Ledoit-Wolf shrinkage 向结构化目标收缩 (2) 因子模型降低自由参数数量 (3) RMT 识别并去除噪声特征值。这些方法在数学上都是对样本协方差矩阵的改进。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_PORT_017
+  category: portfolio_construction
+  difficulty: senior
+  type: open_ended
+  points: 1
+  question: "请描述在实际管理一个 ¥50亿 的 A股 multi-factor portfolio 时，从因子信号到最终交易执行的完整流程。\nDescribe the complete workflow from factor signals to final trade execution when managing a ¥5 billion A-share multi-factor portfolio."
+  options: []
+  answer: ""
+  explanation: "完整流程：(1)因子信号生成：更新因子值、截面标准化、合成综合得分 (2)Alpha预测：将因子得分转化为预期收益 (3)风险模型：估计协方差矩阵（Barra CNE6 等）(4)交易成本模型：估计市场冲击、佣金 (5)优化器：在约束条件下最大化 alpha - 风险惩罚 - 交易成本 (6)生成目标组合与当前组合的差额交易单 (7)交易前合规检查（持仓限制、涨跌停等）(8)算法交易执行（TWAP/VWAP）(9)交易后归因分析。"
+  hints:
+    - "考虑 A 股的 T+1 制度对交易的影响"
+    - "考虑组合规模对流动性的要求"
+  rubric: "满分要点：(1)完整流程覆盖 (2)提及风险模型和交易成本 (3)考虑A股特殊制度 (4)提及算法交易"
+  time_limit_seconds: 360
+
+- id: PM_PORT_018
+  category: portfolio_construction
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "关于 Minimum Variance Portfolio，以下哪个说法是错误的？\nWhich statement about the Minimum Variance Portfolio is INCORRECT?"
+  options:
+    - "A. 它不需要预期收益的输入 / It does not require expected return inputs"
+    - "B. 它位于 efficient frontier 的最左端 / It sits at the leftmost point of the efficient frontier"
+    - "C. 它一定能产生最高的 Sharpe Ratio / It always produces the highest Sharpe Ratio"
+    - "D. 实证中它往往能跑赢市值加权指数 / Empirically it often outperforms cap-weighted indices"
+  answer: "C"
+  explanation: "Minimum Variance Portfolio 最小化组合波动率，不需要预期收益输入。它位于 efficient frontier 最左端。但最高 Sharpe Ratio 的组合是 tangency portfolio（切点组合），不是 MVP。实证研究（如 Clarke, De Silva, Thorley 2006）表明 MVP 确实往往能跑赢市值加权指数，这与低波动异象（low-volatility anomaly）相关。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_PORT_019
+  category: portfolio_construction
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在使用 Robust Optimization 构建组合时，uncertainty set 的选择如何影响结果？\nIn Robust Optimization for portfolio construction, how does the choice of uncertainty set affect results?"
+  options:
+    - "A. Uncertainty set 越大，组合越集中 / Larger uncertainty set leads to more concentrated portfolio"
+    - "B. Uncertainty set 越大，组合越接近等权重 / Larger uncertainty set leads to portfolio closer to equal-weight"
+    - "C. Uncertainty set 的形状不影响结果 / The shape of the uncertainty set does not affect results"
+    - "D. Robust Optimization 总是优于传统 MVO / Robust Optimization always outperforms traditional MVO"
+  answer: "B"
+  explanation: "Robust Optimization 在参数估计的不确定性集合（uncertainty set）内优化最坏情况。Uncertainty set 越大，优化器越保守，倾向于更分散的配置（接近等权重或 1/N）。这实际上是正则化（regularization）的一种形式。Box、ellipsoidal 等不同形状的 uncertainty set 会产生不同的正则化效果。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_PORT_020
+  category: portfolio_construction
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "以下哪个不是 factor-based allocation 的常见维度？\nWhich is NOT a common dimension in factor-based allocation?"
+  options:
+    - "A. Value / 价值"
+    - "B. Momentum / 动量"
+    - "C. Alphabetical order of ticker / 股票代码字母顺序"
+    - "D. Quality / 质量"
+  answer: "C"
+  explanation: "常见的因子配置维度包括 Value（价值）、Momentum（动量）、Quality（质量）、Size（市值）、Low Volatility（低波动）等。股票代码的字母顺序没有任何经济意义，不是因子维度。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: PM_PORT_021
+  category: portfolio_construction
+  difficulty: expert
+  type: open_ended
+  points: 1
+  question: "讨论在 A 股市场中使用 Black-Litterman 模型的特殊挑战和适应性调整。包括但不限于：均衡收益的定义、市场结构差异、投资者行为特征。\nDiscuss the unique challenges and adaptations needed when applying the Black-Litterman model in the A-share market."
+  options: []
+  answer: ""
+  explanation: "关键挑战：(1)均衡收益定义：A股缺乏成熟的 CAPM 均衡假设，散户主导市场导致价格偏离均衡更大，可考虑用反向优化（reverse optimization）从当前市值权重反推隐含收益 (2)协方差估计：A股波动率更高、相关性结构不稳定、受政策冲击影响大 (3)View 的构建：A股信息效率较低，量化因子 view 和宏观政策 view 需要特殊处理 (4)约束适配：涨跌停、T+1、持仓限制等需要纳入优化约束 (5)时变性：A股市场 regime 切换频繁，模型参数需要动态调整。"
+  hints:
+    - "考虑 A 股市场的散户比例和定价效率"
+    - "考虑政策对市场结构的影响"
+  rubric: "满分要点：(1)均衡收益适配 (2)协方差估计挑战 (3)View构建方法 (4)A股特殊约束 (5)时变性考虑"
+  time_limit_seconds: 420
+
+- id: PM_PORT_022
+  category: portfolio_construction
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在组合构建中，turnover constraint 的主要目的是什么？\nWhat is the main purpose of a turnover constraint in portfolio construction?"
+  options:
+    - "A. 提高组合的预期收益 / Increase expected returns"
+    - "B. 控制交易成本和市场冲击 / Control transaction costs and market impact"
+    - "C. 降低组合的因子暴露 / Reduce factor exposure"
+    - "D. 满足监管的最低换手率要求 / Meet regulatory minimum turnover requirements"
+  answer: "B"
+  explanation: "Turnover constraint 限制每期的交易量（如单边换手率不超过20%），主要目的是控制交易成本（佣金、印花税）和市场冲击成本（大额交易对价格的影响）。对于管理规模较大的组合，这一约束尤为重要。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_PORT_023
+  category: portfolio_construction
+  difficulty: senior
+  type: show_work
+  points: 1
+  question: "一个组合包含3只股票，权重分别为 w = [0.4, 0.35, 0.25]，协方差矩阵 Σ = [[0.04, 0.006, 0.002], [0.006, 0.09, 0.009], [0.002, 0.009, 0.01]]。请计算组合的波动率和每只股票的风险贡献百分比。\nA portfolio has 3 stocks with weights w = [0.4, 0.35, 0.25] and covariance matrix Σ as above. Calculate the portfolio volatility and each stock's risk contribution percentage."
+  options: []
+  answer: ""
+  explanation: "σ_p² = w'Σw = 0.4²*0.04 + 0.35²*0.09 + 0.25²*0.01 + 2*0.4*0.35*0.006 + 2*0.4*0.25*0.002 + 2*0.35*0.25*0.009 = 0.0064 + 0.011025 + 0.000625 + 0.00168 + 0.0004 + 0.00158 = 0.02171。σ_p = 14.73%。MCTR_i = (Σw)_i/σ_p, TCTR_i = w_i * MCTR_i。Σw = [0.0195, 0.0362, 0.0059]。TCTR = [0.4*0.0195, 0.35*0.0362, 0.25*0.0059]/0.1473 = 贡献百分比约 [35.9%, 58.4%, 5.7%]。"
+  hints:
+    - "σ_p² = w'Σw 展开计算"
+    - "MCTR_i = (Σw)_i / σ_p"
+  rubric: "满分要点：(1)正确计算组合方差 (2)正确计算组合波动率 (3)正确计算每只股票MCTR (4)正确计算风险贡献百分比"
+  time_limit_seconds: 480
+
+- id: PM_PORT_024
+  category: portfolio_construction
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在 factor tilt portfolio 中，'tilt' 的含义是什么？\nIn a factor tilt portfolio, what does 'tilt' mean?"
+  options:
+    - "A. 在基准基础上系统性地增加对目标因子的暴露 / Systematically increasing exposure to a target factor relative to the benchmark"
+    - "B. 将组合完全集中在一个行业 / Fully concentrating the portfolio in one sector"
+    - "C. 每日轮换持仓 / Rotating holdings daily"
+    - "D. 对冲所有市场风险 / Hedging all market risk"
+  answer: "A"
+  explanation: "Factor tilt 是指在基准（如沪深300）的基础上，通过系统性地超配（overweight）具有目标因子特征的股票、低配（underweight）因子特征弱的股票，来增加组合对该因子的暴露。例如 value tilt 会超配低 P/B 股票，同时控制与基准的偏离度。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_PORT_025
+  category: portfolio_construction
+  difficulty: expert
+  type: open_ended
+  points: 1
+  question: "请设计一个完整的 A股 multi-factor portfolio 的优化框架。需包括：目标函数、约束条件、交易成本模型和风险模型的选择。\nDesign a complete optimization framework for an A-share multi-factor portfolio, including objective function, constraints, transaction cost model, and risk model choices."
+  options: []
+  answer: ""
+  explanation: "目标函数: max α'w - λ/2 * w'Σw - TC(w-w_0)，其中 α 是因子综合得分，λ 是风险厌恶系数，TC 是交易成本函数。约束条件：(1)Σw_i=1, w_i≥0（多头约束）(2)行业权重偏离：|w_sector - w_bench_sector| ≤ 3% (3)个股权重上限：w_i ≤ 2% (4)换手率约束：Σ|w_i-w_0_i| ≤ 40% (5)因子暴露：|β_size| ≤ 0.2 等。交易成本模型：线性成本（佣金+印花税 ≈ 15bps）+ 市场冲击（Almgren-Chriss 或简化平方根模型）。风险模型：Barra CNE6 或自建因子协方差模型。"
+  hints:
+    - "目标函数需要平衡alpha、风险和交易成本"
+    - "约束条件需要考虑A股市场的特殊规则"
+  rubric: "满分要点：(1)完整目标函数 (2)合理约束条件 (3)交易成本模型 (4)风险模型选择 (5)A股适配"
+  time_limit_seconds: 480
+
+###############################################################################
+# CATEGORY 2: risk_attribution (20 questions)
+###############################################################################
+
+- id: PM_RISK_001
+  category: risk_attribution
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在 Barra 多因子风险模型中，股票的风险被分解为哪些部分？\nIn the Barra multi-factor risk model, how is a stock's risk decomposed?"
+  options:
+    - "A. 系统性风险和非系统性风险（因子风险 + 特异性风险）/ Systematic risk and idiosyncratic risk (factor risk + specific risk)"
+    - "B. 上行风险和下行风险 / Upside risk and downside risk"
+    - "C. 短期风险和长期风险 / Short-term risk and long-term risk"
+    - "D. 流动性风险和信用风险 / Liquidity risk and credit risk"
+  answer: "A"
+  explanation: "Barra 模型将股票收益表示为：r_i = Σ(X_ik * f_k) + ε_i，其中 X_ik 是因子暴露，f_k 是因子收益，ε_i 是特异性收益。相应地，风险分解为因子风险（systematic）和特异性风险（idiosyncratic）。组合层面：σ²_p = X'_p * F * X_p + Δ_p，F 是因子协方差矩阵，Δ_p 是特异性方差。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_RISK_002
+  category: risk_attribution
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Brinson 业绩归因模型将超额收益分解为哪几个部分？\nThe Brinson attribution model decomposes excess return into which components?"
+  options:
+    - "A. Alpha 和 Beta / Alpha and Beta"
+    - "B. 配置效应、选择效应和交互效应 / Allocation effect, selection effect, and interaction effect"
+    - "C. 因子收益和残差收益 / Factor return and residual return"
+    - "D. 绝对收益和相对收益 / Absolute return and relative return"
+  answer: "B"
+  explanation: "Brinson-Fachler 模型：超额收益 = 配置效应（Allocation）+ 选择效应（Selection）+ 交互效应（Interaction）。Allocation = Σ(w_p,j - w_b,j)(r_b,j - r_b)；Selection = Σw_b,j(r_p,j - r_b,j)；Interaction = Σ(w_p,j - w_b,j)(r_p,j - r_b,j)。其中 j 代表资产分组（通常按行业）。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_RISK_003
+  category: risk_attribution
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在 factor exposure analysis 中，如果一个 value 策略组合对 momentum 因子有显著正暴露，这意味着什么？\nIn factor exposure analysis, if a value strategy portfolio has significant positive exposure to the momentum factor, what does this imply?"
+  options:
+    - "A. 策略运行正常 / The strategy is functioning normally"
+    - "B. 组合可能存在非预期的因子暴露，需要检查是否是偶然相关或策略设计缺陷 / The portfolio may have unintended factor exposure that needs investigation"
+    - "C. Momentum 和 Value 因子总是正相关 / Momentum and Value factors are always positively correlated"
+    - "D. 应该立即清仓 / The portfolio should be liquidated immediately"
+  answer: "B"
+  explanation: "Value 和 Momentum 因子在学术研究中通常呈负相关（value stocks tend to be recent losers）。如果 value 组合对 momentum 有显著正暴露，说明组合可能存在非预期的因子倾斜（unintended factor tilt），需要分析原因：可能是选股信号中隐含了动量信息，或者行业配置恰好与动量方向一致。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_RISK_004
+  category: risk_attribution
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Tracking Error 的定义是什么？\nWhat is the definition of Tracking Error?"
+  options:
+    - "A. 组合收益减去基准收益的平均值 / The average of portfolio return minus benchmark return"
+    - "B. 组合收益与基准收益之差的标准差 / The standard deviation of the difference between portfolio and benchmark returns"
+    - "C. 组合的最大回撤 / The maximum drawdown of the portfolio"
+    - "D. 组合的 Beta 值 / The Beta of the portfolio"
+  answer: "B"
+  explanation: "Tracking Error (TE) = std(r_p - r_b)，是组合超额收益（相对基准）的标准差。TE 衡量组合偏离基准的波动程度。例如，年化 TE = 2% 意味着组合收益相对基准的偏差在 68% 的时间内不超过 ±2%。Information Ratio = 超额收益均值 / TE。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_RISK_005
+  category: risk_attribution
+  difficulty: senior
+  type: open_ended
+  points: 1
+  question: "请解释 Risk Budgeting 的概念，并说明如何在实际投资组合管理中实施。给出一个具体的风险预算分配案例。\nExplain the concept of Risk Budgeting and how to implement it in practice. Provide a concrete example of risk budget allocation."
+  options: []
+  answer: ""
+  explanation: "Risk Budgeting 是将组合总风险按照投资决策维度（如资产类别、策略、因子等）进行预算分配。实施步骤：(1)确定总风险预算（如年化 TE ≤ 5%）(2)将风险预算分配给不同来源（如 Alpha 因子分配 3% TE、行业配置 1.5% TE、市值偏离 0.5% TE）(3)通过优化器约束各维度的风险贡献不超过预算 (4)动态监控实际风险消耗与预算的偏差。案例：¥10亿组合，总 TE 预算 4%，其中 value 因子 1.5%，momentum 因子 1.5%，quality 因子 0.7%，行业配置 0.3%。"
+  hints:
+    - "考虑不同来源的风险之间可能存在相关性"
+    - "考虑如何动态调整风险预算"
+  rubric: "满分要点：(1)清晰定义 (2)实施步骤 (3)具体数字案例 (4)动态监控机制"
+  time_limit_seconds: 360
+
+- id: PM_RISK_006
+  category: risk_attribution
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在 Barra CNE6 模型中，以下哪个不是标准的风格因子？\nWhich of the following is NOT a standard style factor in the Barra CNE6 model?"
+  options:
+    - "A. Beta"
+    - "B. Momentum"
+    - "C. Sentiment / 情绪"
+    - "D. Leverage / 杠杆"
+  answer: "C"
+  explanation: "Barra CNE6 的标准风格因子包括：Beta、Momentum、Size、Earnings Yield、Residual Volatility、Growth、Book-to-Price、Leverage、Liquidity、Non-linear Size 等。Sentiment（情绪）不是 Barra 标准因子，虽然在某些 alpha 模型中被使用。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_RISK_007
+  category: risk_attribution
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "以下关于 Marginal Contribution to Risk (MCTR) 的说法，哪个是正确的？\nWhich statement about Marginal Contribution to Risk (MCTR) is correct?"
+  options:
+    - "A. MCTR 衡量增加一单位资产权重对组合风险的影响 / MCTR measures the impact on portfolio risk of increasing an asset's weight by one unit"
+    - "B. MCTR 总是正数 / MCTR is always positive"
+    - "C. MCTR 不受协方差的影响 / MCTR is not affected by covariance"
+    - "D. MCTR 等于资产自身的波动率 / MCTR equals the asset's own volatility"
+  answer: "A"
+  explanation: "MCTR_i = ∂σ_p/∂w_i = (Σw)_i / σ_p，衡量资产 i 权重边际增加时对组合总风险的影响。MCTR 可以为负（当资产与组合的相关性为强负相关时），不等于资产自身波动率（还取决于与组合其他资产的协方差）。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_RISK_008
+  category: risk_attribution
+  difficulty: expert
+  type: show_work
+  points: 1
+  question: "使用 Brinson-Fachler 模型，计算以下组合的业绩归因。基准有两个行业：金融（权重40%，收益5%）和科技（权重60%，收益12%）。组合的配置：金融（权重50%，收益7%）和科技（权重50%，收益15%）。\nUsing the Brinson-Fachler model, compute the performance attribution. Benchmark: Finance (40%, 5%), Tech (60%, 12%). Portfolio: Finance (50%, 7%), Tech (50%, 15%)."
+  options: []
+  answer: ""
+  explanation: "基准总收益 = 0.4*5% + 0.6*12% = 9.2%。组合总收益 = 0.5*7% + 0.5*15% = 11%。超额收益 = 1.8%。Allocation: 金融 (0.5-0.4)*(5%-9.2%) = -0.42%, 科技 (0.5-0.6)*(12%-9.2%) = -0.28%, 合计 -0.70%。Selection: 金融 0.4*(7%-5%) = 0.80%, 科技 0.6*(15%-12%) = 1.80%, 合计 2.60%。Interaction: 金融 (0.5-0.4)*(7%-5%) = 0.20%, 科技 (0.5-0.6)*(15%-12%) = -0.30%, 合计 -0.10%。总计: -0.70% + 2.60% + (-0.10%) = 1.80% ✓"
+  hints:
+    - "先计算基准和组合的总收益"
+    - "Allocation = (w_p - w_b) * (r_b,sector - r_b,total)"
+  rubric: "满分要点：(1)正确计算总收益 (2)正确计算三个效应 (3)验证分解完整性 (4)给出经济学解释"
+  time_limit_seconds: 480
+
+- id: PM_RISK_009
+  category: risk_attribution
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "Risk Budgeting 中，如果某个策略的实际风险消耗持续超出预算，最佳的应对措施是什么？\nIn Risk Budgeting, if a strategy's actual risk consumption consistently exceeds its budget, what is the best response?"
+  options:
+    - "A. 立即关闭该策略 / Immediately shut down the strategy"
+    - "B. 降低该策略的仓位规模或调整约束参数 / Reduce the strategy's position size or adjust constraint parameters"
+    - "C. 增加该策略的风险预算 / Increase the strategy's risk budget"
+    - "D. 忽略，因为短期偏差是正常的 / Ignore it as short-term deviations are normal"
+  answer: "B"
+  explanation: "当策略风险持续超出预算时，首先应分析超标原因（市场波动率上升、因子暴露漂移等），然后通过降低仓位规模、收紧优化约束或增加风险模型的保守度来使实际风险回到预算范围内。不应贸然关闭策略（可能损失 alpha），也不应简单增加预算（破坏整体风险框架）。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_RISK_010
+  category: risk_attribution
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在因子风险归因中，如何区分 factor risk 和 specific risk 对组合 TE 的贡献？\nIn factor risk attribution, how do you distinguish factor risk vs specific risk contributions to portfolio TE?"
+  options:
+    - "A. Factor risk 由因子暴露和因子协方差决定，specific risk 由个股残差方差决定 / Factor risk is determined by factor exposures and factor covariance; specific risk by stock-level residual variance"
+    - "B. 两者无法区分 / They cannot be distinguished"
+    - "C. Factor risk 始终大于 specific risk / Factor risk is always larger than specific risk"
+    - "D. Specific risk 仅由交易成本造成 / Specific risk is caused only by transaction costs"
+  answer: "A"
+  explanation: "TE² = (X_p - X_b)' * F * (X_p - X_b) + Σ(w_p,i - w_b,i)² * σ²_ε,i。第一项是因子风险（由组合与基准的因子暴露差异和因子协方差矩阵决定），第二项是特异性风险（由个股残差方差和主动权重决定）。分散化良好的组合中，specific risk 通常较小。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_RISK_011
+  category: risk_attribution
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "以下哪个指标最能衡量投资经理的选股能力（security selection skill）？\nWhich metric best measures a manager's security selection skill?"
+  options:
+    - "A. Sharpe Ratio"
+    - "B. Information Ratio"
+    - "C. Brinson Selection Effect"
+    - "D. Maximum Drawdown"
+  answer: "C"
+  explanation: "Brinson Selection Effect = Σ w_b,j * (r_p,j - r_b,j) 直接衡量在每个行业（或分组）内，经理选择的股票相对于该行业基准的超额收益，是最直接的选股能力度量。Information Ratio 衡量整体主动管理能力（包含配置），Sharpe Ratio 衡量绝对风险调整后收益。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_RISK_012
+  category: risk_attribution
+  difficulty: senior
+  type: show_work
+  points: 1
+  question: "请解释为什么在 A 股市场中，Barra 模型的行业因子收益可能与国际市场有显著差异，以及这对风险管理有什么启示。\nExplain why Barra model industry factor returns may differ significantly between A-shares and international markets, and implications for risk management."
+  options: []
+  answer: ""
+  explanation: "差异原因：(1)行业结构不同：A股金融、白酒、新能源权重大，某些行业缺失或占比极小 (2)监管影响：行业政策（如教育双减、房地产三条红线）导致行业因子出现极端收益 (3)散户行为：主题炒作导致行业因子短期波动极大 (4)涨跌停制度：限制了极端行业收益的实现。启示：(1)不能直接套用海外 Barra 参数 (2)需要更频繁地更新因子协方差 (3)行业约束需要比海外更严格 (4)需要加入政策风险因子。"
+  hints:
+    - "考虑 A 股特有的监管政策对特定行业的影响"
+  rubric: "满分要点：(1)至少3个差异原因 (2)具体A股例子 (3)风险管理启示 (4)实操建议"
+  time_limit_seconds: 360
+
+- id: PM_RISK_013
+  category: risk_attribution
+  difficulty: expert
+  type: open_ended
+  points: 1
+  question: "请设计一个完整的 ex-ante 和 ex-post 风险监控体系，包括关键指标、预警阈值和应急处理流程。\nDesign a complete ex-ante and ex-post risk monitoring framework including key metrics, alert thresholds, and escalation procedures."
+  options: []
+  answer: ""
+  explanation: "Ex-ante 监控：(1)预测 TE（Barra 模型）< 目标 TE 的 90% (2)因子暴露：各因子 |exposure| < 预设限制 (3)行业偏离：每日计算 (4)集中度：HHI < 阈值 (5)流动性：平均日成交额覆盖持仓 >20 天。Ex-post 监控：(1)实现 TE 与预测 TE 的比率（bias statistic 在 0.6-1.4 之间）(2)日收益异常检测（z-score > 3 触发预警）(3)回撤监控（最大回撤 > 阈值升级处理）(4)因子归因异常。预警流程：绿（正常）→ 黄（超标但可控，通知PM）→ 橙（显著超标，降低仓位）→ 红（严重超标，冻结交易并上报）。"
+  hints:
+    - "区分 ex-ante（预测性）和 ex-post（实现值）指标"
+    - "设计分级预警体系"
+  rubric: "满分要点：(1)ex-ante指标完整 (2)ex-post指标完整 (3)预警阈值合理 (4)分级处理流程 (5)bias statistic概念"
+  time_limit_seconds: 420
+
+- id: PM_RISK_014
+  category: risk_attribution
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "组合的 Information Ratio = 0.8，年化 Tracking Error = 3%。该组合的年化超额收益（相对基准）是多少？\nIf a portfolio's Information Ratio = 0.8 and annualized Tracking Error = 3%, what is the annualized excess return?"
+  options:
+    - "A. 0.8%"
+    - "B. 2.4%"
+    - "C. 3.75%"
+    - "D. 3.8%"
+  answer: "B"
+  explanation: "Information Ratio = 年化超额收益 / 年化 Tracking Error。因此超额收益 = IR * TE = 0.8 * 3% = 2.4%。IR = 0.8 在量化投资中属于非常优秀的水平（通常 IR > 0.5 即被视为出色）。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: PM_RISK_015
+  category: risk_attribution
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在多期业绩归因中，Brinson 模型面临的主要问题是什么？如何解决？\nWhat is the main issue with the Brinson model in multi-period attribution? How is it resolved?"
+  options:
+    - "A. 多期分解不具有可加性，可使用几何链接法（geometric linking）解决 / Multi-period decomposition is not additive; solved by geometric linking methods"
+    - "B. 不需要任何调整 / No adjustment is needed"
+    - "C. 只能使用日频数据 / Can only use daily data"
+    - "D. 需要改用 CAPM 模型 / Must switch to CAPM model"
+  answer: "A"
+  explanation: "单期 Brinson 分解的各效应简单加总无法还原多期累积超额收益，因为收益是几何（乘法）累积的。解决方法包括：(1) Carino linking（对数调整）(2) Menchero method（将跨期交互分配到各效应中）(3) GRAP（几何归因）。这些方法确保多期归因结果精确分解。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_RISK_016
+  category: risk_attribution
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "以下哪种风险度量对尾部风险最敏感？\nWhich risk measure is most sensitive to tail risk?"
+  options:
+    - "A. 波动率 / Volatility (standard deviation)"
+    - "B. VaR (Value at Risk)"
+    - "C. CVaR / Expected Shortfall"
+    - "D. Tracking Error"
+  answer: "C"
+  explanation: "CVaR（Conditional VaR，又称 Expected Shortfall）衡量损失超过 VaR 阈值后的平均损失，对尾部风险最为敏感。波动率是对称度量，不区分尾部；VaR 只给出一个分位数的损失值，不关注超过该分位数后的损失程度；CVaR 则完整刻画了尾部损失分布。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_RISK_017
+  category: risk_attribution
+  difficulty: senior
+  type: show_work
+  points: 1
+  question: "一个组合相对基准的因子暴露为：Size = -0.3, Value = 0.5, Momentum = 0.2。因子收益分别为 Size = 2%, Value = -1%, Momentum = 3%。特异性收益为 0.5%。请计算组合的因子归因超额收益。\nA portfolio's factor exposures vs benchmark: Size=-0.3, Value=0.5, Momentum=0.2. Factor returns: Size=2%, Value=-1%, Momentum=3%. Specific return=0.5%. Calculate factor-attributed excess return."
+  options: []
+  answer: ""
+  explanation: "因子归因超额收益 = Σ(exposure_k * factor_return_k) + specific_return = (-0.3)*2% + 0.5*(-1%) + 0.2*3% + 0.5% = -0.6% + (-0.5%) + 0.6% + 0.5% = 0.0%。Size 贡献 -0.6%（小盘偏向在大盘跑赢时受损），Value 贡献 -0.5%，Momentum 贡献 +0.6%，特异性贡献 +0.5%。"
+  hints:
+    - "超额收益 = Σ(暴露 × 因子收益) + 特异性收益"
+  rubric: "满分要点：(1)正确计算每个因子贡献 (2)正确求和 (3)经济含义解释"
+  time_limit_seconds: 300
+
+- id: PM_RISK_018
+  category: risk_attribution
+  difficulty: expert
+  type: open_ended
+  points: 1
+  question: "请讨论 Barra 风险模型在极端市场环境（如2015年A股股灾、2020年疫情冲击）下的局限性，以及可能的改进方案。\nDiscuss the limitations of the Barra risk model during extreme market events (e.g., 2015 A-share crash, 2020 COVID shock) and potential improvements."
+  options: []
+  answer: ""
+  explanation: "局限性：(1)协方差估计滞后：基于历史窗口估计的因子协方差在 regime change 时严重低估风险 (2)因子结构不稳定：危机中因子间相关性急剧上升（correlation breakdown），正常市场的因子模型失效 (3)线性假设：非线性风险（如 gamma、跳跃风险）无法捕捉 (4)特异性风险假设：危机中特异性风险相关性上升，独立假设失效。改进方案：(1)短窗口 + 指数衰减加权 (2)regime-switching 模型 (3)stress testing overlay (4)DCC-GARCH 动态条件相关 (5)加入隐含波动率信息。"
+  hints:
+    - "考虑危机中相关性结构的变化"
+    - "考虑模型估计的时滞性"
+  rubric: "满分要点：(1)至少3个局限性 (2)具体市场案例 (3)至少3个改进方案 (4)理论和实践结合"
+  time_limit_seconds: 420
+
+- id: PM_RISK_019
+  category: risk_attribution
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Bias Statistic 的理想范围是多少？它衡量什么？\nWhat is the ideal range for the Bias Statistic? What does it measure?"
+  options:
+    - "A. 0 到 0.5，衡量组合的超额收益 / 0 to 0.5, measures excess return"
+    - "B. 0.6 到 1.4，衡量风险模型预测精度（predicted TE vs realized TE）/ 0.6 to 1.4, measures risk model prediction accuracy"
+    - "C. 大于 2.0，表示模型优秀 / Greater than 2.0 indicates excellent model"
+    - "D. -1 到 1，衡量因子暴露 / -1 to 1, measures factor exposure"
+  answer: "B"
+  explanation: "Bias Statistic = Realized TE / Predicted TE。理想范围是 0.6 到 1.4（或更严格的 0.8 到 1.2）。Bias > 1 表示风险模型低估了实际风险（under-predict），Bias < 1 表示高估了风险（over-predict）。这是评估风险模型准确性的关键指标。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_RISK_020
+  category: risk_attribution
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在 factor-based risk attribution 中，如果组合的 specific risk 占总风险的比例异常高，最可能的原因是什么？\nIn factor-based risk attribution, if specific risk accounts for an unusually high proportion of total risk, what is the most likely cause?"
+  options:
+    - "A. 组合持仓过于集中在少数个股 / The portfolio is overly concentrated in a few stocks"
+    - "B. 因子暴露过大 / Factor exposures are too large"
+    - "C. 基准选择错误 / Benchmark selection is wrong"
+    - "D. 数据频率太高 / Data frequency is too high"
+  answer: "A"
+  explanation: "Specific risk = Σ w²_i * σ²_ε,i，与个股权重的平方成正比。当组合高度集中在少数个股时，大权重使得个股特异性风险无法被充分分散。相反，持仓分散的组合（如持有200+股票）的 specific risk 通常很小。解决方案：增加持股数量或施加个股权重上限约束。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+###############################################################################
+# CATEGORY 3: alpha_factors (20 questions)
+###############################################################################
+
+- id: PM_ALPHA_001
+  category: alpha_factors
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Alpha Decay 指的是什么现象？\nWhat does Alpha Decay refer to?"
+  options:
+    - "A. 因子预测能力随时间衰减 / Factor predictive power decays over time after signal generation"
+    - "B. 组合的绝对收益下降 / Portfolio absolute returns decline"
+    - "C. 交易成本上升 / Transaction costs increase"
+    - "D. 市场波动率降低 / Market volatility decreases"
+  answer: "A"
+  explanation: "Alpha Decay 指因子信号产生后，其预测能力（alpha）随时间推移而衰减。快速衰减的因子（如短期反转）需要更频繁的交易来捕获，但也意味着更高的交易成本。慢速衰减的因子（如价值）允许较低换手率。Alpha decay profile 是设计持仓期和换手率的关键参考。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_ALPHA_002
+  category: alpha_factors
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "Factor Crowding 对量化策略的主要风险是什么？\nWhat is the main risk of Factor Crowding for quantitative strategies?"
+  options:
+    - "A. 提高因子收益 / Increases factor returns"
+    - "B. 当多个参与者持有相似头寸时，去杠杆或赎回导致因子的剧烈反转 / When many participants hold similar positions, deleveraging or redemptions cause sharp factor reversals"
+    - "C. 降低交易成本 / Reduces transaction costs"
+    - "D. 提高组合分散度 / Increases portfolio diversification"
+  answer: "B"
+  explanation: "Factor Crowding 发生在大量资金追逐同一因子信号时。风险包括：(1)因子估值被推到极端水平，未来收益空间压缩 (2)当部分参与者被迫去杠杆时，大量同方向平仓导致因子剧烈反转（如2007年8月的 quant crisis）(3)流动性枯竭加剧价格冲击。监测方法：short interest ratio、因子估值spread、pairwise correlation。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_ALPHA_003
+  category: alpha_factors
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "IC (Information Coefficient) 的定义是什么？IC = 0.05 算高还是低？\nWhat is the definition of IC? Is IC = 0.05 considered high or low?"
+  options:
+    - "A. IC 是因子值与下期收益的 Pearson 相关系数；0.05 在量化中已算可用信号 / IC is the Pearson correlation between factor values and next-period returns; 0.05 is a usable signal in quant"
+    - "B. IC 是因子值与下期收益的 Spearman rank 相关系数；0.05 非常低，无用 / IC is the Spearman rank correlation; 0.05 is very low and useless"
+    - "C. IC 是信息比率的缩写；0.05 极低 / IC is an abbreviation for Information Ratio; 0.05 is extremely low"
+    - "D. IC 是因子收益率；0.05 表示5%收益 / IC is the factor return; 0.05 means 5% return"
+  answer: "A"
+  explanation: "IC 通常指因子截面值与下期股票收益的相关系数（Pearson 或 Rank IC）。在量化投资中，单因子的 IC 通常很小。IC = 0.05 虽然看起来很小，但如果稳定（ICIR = IC均值/IC标准差 > 0.5），在大量股票上应用可以产生显著的组合 alpha。Grinold 的基本法则：IR ≈ IC * √N。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_ALPHA_004
+  category: alpha_factors
+  difficulty: senior
+  type: open_ended
+  points: 1
+  question: "请解释 IC-weighted signal combination 的方法，并讨论其相对于等权合成的优劣。\nExplain the IC-weighted signal combination method and discuss its pros and cons vs equal-weight combination."
+  options: []
+  answer: ""
+  explanation: "IC-weighted 方法：综合因子值 = Σ(IC_k / Σ|IC_k|) * z_k，其中 IC_k 是因子 k 的历史平均 IC（或衰减加权 IC），z_k 是标准化因子值。优势：(1)自适应调整权重，预测能力强的因子获得更高权重 (2)可以捕捉因子有效性的时变特征。劣势：(1)历史 IC 可能不代表未来 (2)过拟合风险（尤其短窗口 IC 估计）(3)IC 估计噪声大时权重不稳定。等权优势：简单、稳健、无需估计参数。实践中可考虑 shrinkage：IC-weighted 权重向等权收缩。"
+  hints:
+    - "考虑 IC 的稳定性和预测性"
+    - "考虑等权在样本外的稳健性"
+  rubric: "满分要点：(1)正确描述方法 (2)至少2个优势 (3)至少2个劣势 (4)与等权的比较 (5)实践建议"
+  time_limit_seconds: 360
+
+- id: PM_ALPHA_005
+  category: alpha_factors
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Cross-sectional alpha 和 time-series alpha 的关键区别是什么？\nWhat is the key difference between cross-sectional alpha and time-series alpha?"
+  options:
+    - "A. Cross-sectional 比较同一时点不同股票的因子值排序，time-series 预测单一资产收益的时间序列方向 / Cross-sectional compares factor ranks across stocks at the same time; time-series predicts directional movement of individual assets over time"
+    - "B. 两者完全相同 / They are identical"
+    - "C. Cross-sectional 只能用于债券 / Cross-sectional is only for bonds"
+    - "D. Time-series 不需要历史数据 / Time-series does not require historical data"
+  answer: "A"
+  explanation: "Cross-sectional alpha（截面 alpha）：在同一时间截面上，根据因子值对股票排序，做多高分股票、做空低分股票。相对收益策略。Time-series alpha（时序 alpha）：预测某资产未来收益的方向或幅度（如趋势跟踪），做多预期上涨、做空预期下跌。绝对收益策略。A股市场中，cross-sectional alpha 因子研究更为主流。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_ALPHA_006
+  category: alpha_factors
+  difficulty: expert
+  type: open_ended
+  points: 1
+  question: "请讨论 Factor Zoo Problem（因子动物园问题），包括其成因、对实际投资的影响，以及如何在你的投资流程中解决这个问题。\nDiscuss the Factor Zoo Problem: its causes, impact on real investing, and how you would address it in your investment process."
+  options: []
+  answer: ""
+  explanation: "成因：(1)数据挖掘和 p-hacking：数百篇论文发表了数百个'显著'因子 (2)Publication bias：不显著的结果无法发表 (3)多重检验问题：没有校正多重比较 (4)样本内过拟合。影响：(1)大部分因子在样本外无法复制 (2)投资者面对过多因子选择困难 (3)同质化策略导致 crowding。解决方案：(1)Harvey, Liu, Zhu (2016) 的更高 t-stat 阈值（t>3.0）(2)Hou, Xue, Zhang (2020) 的因子复制研究 (3)经济逻辑优先：只使用有明确经济解释的因子 (4)out-of-sample 和 out-of-universe 验证 (5)因子正交化处理多重共线性。"
+  hints:
+    - "考虑 Harvey 等人关于 t-statistic 阈值的研究"
+    - "考虑因子背后的经济逻辑"
+  rubric: "满分要点：(1)成因分析深入 (2)引用关键文献 (3)对投资的具体影响 (4)系统性解决方案 (5)实操流程"
+  time_limit_seconds: 420
+
+- id: PM_ALPHA_007
+  category: alpha_factors
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在因子研究中，为什么需要对因子值做截面标准化（cross-sectional standardization）？\nWhy is cross-sectional standardization of factor values necessary in factor research?"
+  options:
+    - "A. 使不同因子具有可比性，便于合成综合得分 / To make different factors comparable for composite score construction"
+    - "B. 提高因子的预测能力 / To improve factor predictive power"
+    - "C. 消除所有异常值 / To eliminate all outliers"
+    - "D. 满足监管要求 / To meet regulatory requirements"
+  answer: "A"
+  explanation: "不同因子的量纲和分布差异很大（如 P/E 可能是5-50，ROE 是0-0.3）。截面标准化（z-score = (x - mean) / std 或 rank 标准化）使所有因子值可比，权重具有统一含义。此外，标准化有助于控制异常值影响（通常配合 winsorize 在 ±3σ 或 ±5σ）。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_ALPHA_008
+  category: alpha_factors
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "Factor Timing（因子择时）的主要挑战是什么？\nWhat is the main challenge of Factor Timing?"
+  options:
+    - "A. 因子收益的可预测性低且不稳定，过拟合风险极高 / Factor return predictability is low and unstable, with very high overfitting risk"
+    - "B. 实施成本太低 / Implementation costs are too low"
+    - "C. 所有因子始终有效 / All factors always work"
+    - "D. 因子择时不需要历史数据 / Factor timing does not require historical data"
+  answer: "A"
+  explanation: "Factor Timing 试图预测哪些因子在未来表现好/差，但因子收益的信噪比极低。研究（如 Asness 2016 'My Top 10 Peeves'）表明：(1)因子择时信号的 IC 通常 < 0.02 (2)回测容易过拟合 (3)因子 regime 切换缺乏可靠先导指标。因此大多数量化机构偏向于因子多元化（diversified factor allocation）而非因子择时。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_ALPHA_009
+  category: alpha_factors
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "以下哪种方法最常用于检验因子的统计显著性？\nWhich method is most commonly used to test factor statistical significance?"
+  options:
+    - "A. 截面回归（Fama-MacBeth regression）/ Cross-sectional regression (Fama-MacBeth)"
+    - "B. 简单移动平均 / Simple moving average"
+    - "C. Monte Carlo 模拟 / Monte Carlo simulation"
+    - "D. 主成分分析 / Principal Component Analysis"
+  answer: "A"
+  explanation: "Fama-MacBeth 两步回归是因子检验的标准方法：(1)每期做截面回归 r_i = α + β*factor_i + ε_i，得到因子溢价 γ_t (2)对时间序列 {γ_t} 做 t 检验判断因子溢价是否显著异于零。此方法自然处理了截面相关性问题，是金融学术研究的黄金标准。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_ALPHA_010
+  category: alpha_factors
+  difficulty: senior
+  type: show_work
+  points: 1
+  question: "一个因子的 IC 均值为 0.04，IC 标准差为 0.08。投资组合覆盖 500 只股票。使用 Grinold 基本法则估算该组合的 Information Ratio。\nA factor has mean IC = 0.04 and IC standard deviation = 0.08. The portfolio covers 500 stocks. Use the Fundamental Law of Active Management to estimate the portfolio's IR."
+  options: []
+  answer: ""
+  explanation: "Grinold 基本法则：IR ≈ IC * √BR，其中 BR（breadth）是独立投注次数。如果每月调仓，且假设500只股票的投注相互独立，则 BR = 500。IR ≈ 0.04 * √500 ≈ 0.04 * 22.36 ≈ 0.89。ICIR = IC_mean / IC_std = 0.04/0.08 = 0.5。注意：实际中独立投注假设过于理想，因子间相关性、行业相关性会降低有效 BR。"
+  hints:
+    - "IR ≈ IC × √BR"
+    - "考虑 breadth 的实际含义"
+  rubric: "满分要点：(1)正确引用基本法则 (2)正确计算 (3)讨论假设的局限性 (4)计算 ICIR"
+  time_limit_seconds: 300
+
+- id: PM_ALPHA_011
+  category: alpha_factors
+  difficulty: expert
+  type: open_ended
+  points: 1
+  question: "请讨论使用 Machine Learning（如 XGBoost、Neural Networks）构建 Alpha 因子的优势、风险和最佳实践。\nDiscuss the advantages, risks, and best practices of using Machine Learning (e.g., XGBoost, Neural Networks) for Alpha factor construction."
+  options: []
+  answer: ""
+  explanation: "优势：(1)自动捕捉非线性关系和特征交互 (2)处理高维数据（如数百个原始特征）(3)可学习因子间的动态权重。风险：(1)过拟合是最大风险 — 金融数据信噪比极低 (2)Black box 缺乏可解释性 (3)非平稳性 — 训练期和实盘期分布漂移 (4)Look-ahead bias — 特征工程中容易泄露未来信息。最佳实践：(1)严格的时间序列交叉验证（purged k-fold）(2)特征重要性分析和 SHAP 解释 (3)集成方法降低方差 (4)简单模型优先（线性 > 树 > 深度学习）(5)实际 paper trading 验证 (6)控制换手率（ML 信号衰减快）。"
+  hints:
+    - "重点考虑过拟合风险"
+    - "考虑金融数据的低信噪比特性"
+  rubric: "满分要点：(1)至少3个优势 (2)至少3个风险 (3)过拟合控制方法 (4)交叉验证设计 (5)实操最佳实践"
+  time_limit_seconds: 420
+
+- id: PM_ALPHA_012
+  category: alpha_factors
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在因子合成中，使用 Rank IC 相比 Pearson IC 的主要优势是什么？\nWhat is the main advantage of using Rank IC over Pearson IC in factor evaluation?"
+  options:
+    - "A. Rank IC 不受异常值影响，对非线性单调关系也敏感 / Rank IC is robust to outliers and captures nonlinear monotonic relationships"
+    - "B. Rank IC 计算更快 / Rank IC is faster to compute"
+    - "C. Rank IC 总是比 Pearson IC 大 / Rank IC is always larger than Pearson IC"
+    - "D. Rank IC 不需要收益率数据 / Rank IC does not require return data"
+  answer: "A"
+  explanation: "Rank IC（Spearman 秩相关系数）基于排序而非原始值，因此：(1)不受极端异常值影响 (2)能捕捉单调非线性关系（如因子值翻倍时收益不翻倍但排序关系成立）(3)对因子值分布无要求。Pearson IC 在数据含有异常值或关系非线性时可能严重低估因子的实际预测能力。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_ALPHA_013
+  category: alpha_factors
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "以下关于 Alpha 因子衰减管理的策略，哪个最合理？\nWhich strategy for managing Alpha decay is most reasonable?"
+  options:
+    - "A. 所有因子使用相同的持仓期 / Use the same holding period for all factors"
+    - "B. 根据因子的 alpha decay profile 设计不同的信号更新频率和持仓期 / Design different signal update frequencies and holding periods based on each factor's alpha decay profile"
+    - "C. 忽略 alpha decay，因为它不影响收益 / Ignore alpha decay as it does not affect returns"
+    - "D. 仅使用衰减最慢的因子 / Only use the slowest-decaying factors"
+  answer: "B"
+  explanation: "不同因子的 alpha decay 速度差异很大：短期反转因子可能在1-5天内衰减到零，而价值因子的 alpha 可能持续数月。最佳实践是：(1)分析每个因子的 IC decay curve (2)快衰减因子配高频交易 (3)慢衰减因子配低频交易 (4)综合考虑因子衰减速度和交易成本确定最优换手率。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_ALPHA_014
+  category: alpha_factors
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "因子正交化（factor orthogonalization）的目的是什么？\nWhat is the purpose of factor orthogonalization?"
+  options:
+    - "A. 提高单个因子的预测能力 / Improve individual factor predictive power"
+    - "B. 去除因子之间的多重共线性，使每个因子的独立贡献更清晰 / Remove multicollinearity between factors so each factor's independent contribution is clearer"
+    - "C. 使因子值变为正态分布 / Make factor values normally distributed"
+    - "D. 降低交易成本 / Reduce transaction costs"
+  answer: "B"
+  explanation: "因子正交化（如 Gram-Schmidt、回归残差法）去除因子间的线性相关性。例如，Value 和 Quality 因子可能高度相关，正交化后可以清楚地看到每个因子的独立贡献。注意：正交化的顺序会影响结果（先正交的因子保留完整信息，后正交的因子仅保留残差信息）。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_ALPHA_015
+  category: alpha_factors
+  difficulty: senior
+  type: open_ended
+  points: 1
+  question: "请描述如何构建一个有效的因子回测框架，特别注意避免常见的 backtest bias。\nDescribe how to build an effective factor backtesting framework, paying special attention to avoiding common backtest biases."
+  options: []
+  answer: ""
+  explanation: "关键要素：(1)数据：使用 point-in-time 数据库避免 look-ahead bias（财报数据使用实际发布日期）(2)Universe：survivorship-bias-free 的股票池（包含退市股票）(3)时间：严格的 rolling window，训练集和测试集不重叠 (4)交易模拟：包含涨跌停排除、T+1 限制、市场冲击模型 (5)统计检验：多重检验校正（Bonferroni/BH）、样本外验证 (6)Bias 防范：避免 snooping bias（预先设定研究计划）、避免 backfill bias（新上市股票处理）(7)交易成本：realistic 的佣金、冲击成本、印花税假设。"
+  hints:
+    - "Point-in-time data 是避免 look-ahead bias 的关键"
+    - "考虑 A 股的涨跌停和 T+1 对回测的影响"
+  rubric: "满分要点：(1)至少列出5种bias (2)对应的解决方案 (3)A股特殊考虑 (4)统计检验方法 (5)实操框架设计"
+  time_limit_seconds: 360
+
+- id: PM_ALPHA_016
+  category: alpha_factors
+  difficulty: expert
+  type: show_work
+  points: 1
+  question: "假设有3个因子，IC均值分别为 [0.03, 0.05, 0.02]，IC协方差矩阵为 [[0.01, 0.002, 0.001], [0.002, 0.015, 0.003], [0.001, 0.003, 0.008]]。请推导最大化 ICIR 的最优因子合成权重。\nGiven 3 factors with IC means [0.03, 0.05, 0.02] and IC covariance matrix as above, derive the optimal factor combination weights that maximize ICIR."
+  options: []
+  answer: ""
+  explanation: "最大化 ICIR = μ'w / √(w'Σw) 等价于求解 w* = Σ⁻¹μ（然后归一化）。这与 Markowitz tangency portfolio 的解法相同。需要计算 IC 协方差矩阵的逆矩阵，然后乘以 IC 均值向量。结果归一化后得到最优权重。实际中，由于 IC 估计噪声大，通常对权重向等权方向做 shrinkage。"
+  hints:
+    - "类比 tangency portfolio 的推导"
+    - "w* ∝ Σ⁻¹μ"
+  rubric: "满分要点：(1)正确设定优化问题 (2)推导出w* = Σ⁻¹μ (3)讨论归一化 (4)讨论shrinkage的必要性"
+  time_limit_seconds: 480
+
+- id: PM_ALPHA_017
+  category: alpha_factors
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在 A 股市场中，以下哪个因子在2016年之后衰减最明显？\nIn the A-share market, which factor has shown the most significant decay since 2016?"
+  options:
+    - "A. 小市值因子（Size Factor）/ Small-cap factor"
+    - "B. 动量因子（Momentum Factor）"
+    - "C. 质量因子（Quality Factor）"
+    - "D. 低波动因子（Low Volatility Factor）"
+  answer: "A"
+  explanation: "A 股的小市值溢价在2016年之前极为显著（壳价值、炒小炒新），但随着注册制推进、退市制度完善、机构化率提升以及指数化投资的发展，小市值因子的超额收益大幅下降。这是 A 股因子研究中最经典的 regime change 案例。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_ALPHA_018
+  category: alpha_factors
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "使用 Purged K-Fold Cross-Validation 相比标准 K-Fold 的优势是什么？\nWhat is the advantage of Purged K-Fold Cross-Validation over standard K-Fold for financial data?"
+  options:
+    - "A. 计算速度更快 / Faster computation"
+    - "B. 通过在训练集和测试集之间加入 gap period，避免自相关导致的信息泄露 / By adding a gap period between train and test sets, it prevents information leakage caused by autocorrelation"
+    - "C. 不需要数据 / Does not require data"
+    - "D. 保证过拟合 / Guarantees overfitting"
+  answer: "B"
+  explanation: "金融时间序列存在自相关性，标准 K-Fold 中训练集和测试集相邻的观测值可能高度相关，导致交叉验证过于乐观。Purged K-Fold（de Prado, 2018）在训练集和测试集之间去除一个缓冲窗口（purge period），消除了自相关导致的信息泄露。此外还可结合 embargo period 进一步控制。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_ALPHA_019
+  category: alpha_factors
+  difficulty: expert
+  type: open_ended
+  points: 1
+  question: "请讨论如何设计一个完整的因子监控和生命周期管理系统，包括因子的入选、监控、衰退判断和退出标准。\nDesign a complete factor monitoring and lifecycle management system, including admission criteria, monitoring, decay detection, and exit standards."
+  options: []
+  answer: ""
+  explanation: "入选标准：(1)IC > 0.03 且 ICIR > 0.5 (2)经济逻辑清晰 (3)多市场/多时期 robustness check (4)与现有因子低相关。监控指标：(1)滚动 IC/ICIR (2)因子收益的 cumulative return (3)多空组合的 turnover (4)因子 crowding 指标。衰退判断：(1)滚动 12 月 ICIR < 0.3 (2)因子收益连续 6 月为负 (3)因子暴露与收益的关系非单调。退出标准：(1)ICIR 持续 18 月 < 0.2 (2)经济逻辑失效（如监管变化）(3)crowding 极端。分级处理：黄色预警（降权）→ 红色预警（暂停）→ 退出。"
+  hints:
+    - "考虑因子生命周期的不同阶段"
+    - "设定具体的量化阈值"
+  rubric: "满分要点：(1)入选标准完整 (2)监控指标合理 (3)衰退判断有量化标准 (4)退出机制明确 (5)分级处理"
+  time_limit_seconds: 420
+
+- id: PM_ALPHA_020
+  category: alpha_factors
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在构建 composite alpha signal 时，为什么通常先对单因子做 winsorize 处理？\nWhen constructing a composite alpha signal, why is winsorization typically applied to individual factors first?"
+  options:
+    - "A. 增加因子方差 / To increase factor variance"
+    - "B. 限制极端值对合成信号的过大影响，提高信号的稳健性 / To limit the outsized impact of extreme values on the composite signal and improve robustness"
+    - "C. 使因子值全部变为正数 / To make all factor values positive"
+    - "D. 减少计算量 / To reduce computational cost"
+  answer: "B"
+  explanation: "Winsorize（缩尾处理）将超出阈值（如 ±3σ 或 ±5σ）的极端值截断到阈值水平。目的是：(1)防止极端异常值主导合成信号 (2)降低因子对数据错误的敏感性 (3)使因子分布更接近正态，提高后续统计分析的可靠性。通常在标准化之前进行。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+###############################################################################
+# CATEGORY 4: macro_analysis (15 questions)
+###############################################################################
+
+- id: PM_MACRO_001
+  category: macro_analysis
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在宏观 regime 分析中，以下哪种框架最常用于将经济环境分为四个象限？\nIn macro regime analysis, which framework is most commonly used to divide the economic environment into four quadrants?"
+  options:
+    - "A. 美林投资时钟（Merrill Lynch Investment Clock）/ Merrill Lynch Investment Clock"
+    - "B. CAPM 模型 / CAPM Model"
+    - "C. Fama-French 三因子模型 / Fama-French Three-Factor Model"
+    - "D. Black-Scholes 模型 / Black-Scholes Model"
+  answer: "A"
+  explanation: "美林投资时钟（Investment Clock）以经济增长和通胀两个维度划分四个象限：(1)Recovery（经济↑通胀↓）:利好股票 (2)Overheating（经济↑通胀↑）:利好大宗商品 (3)Stagflation（经济↓通胀↑）:利好现金 (4)Deflation（经济↓通胀↓）:利好债券。虽然过于简化，但在中国市场仍有参考价值。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_MACRO_002
+  category: macro_analysis
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "当中国央行降息时，以下哪类因子通常最受益？\nWhen the PBOC cuts interest rates, which factor category typically benefits most?"
+  options:
+    - "A. Value / 价值因子"
+    - "B. Growth / 成长因子"
+    - "C. Low Volatility / 低波动因子"
+    - "D. Size / 市值因子"
+  answer: "B"
+  explanation: "降息降低折现率，对远期现金流占比大的成长股利好更大（long duration assets）。成长股的估值对利率变化更敏感，因为其价值主要来自未来的盈利增长。相比之下，价值股的现金流更近期，对利率变化的敏感度相对较低。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_MACRO_003
+  category: macro_analysis
+  difficulty: senior
+  type: open_ended
+  points: 1
+  question: "请分析 A 股市场中 Value 因子和 Growth 因子的轮动规律，以及哪些宏观指标可以作为切换信号。\nAnalyze the rotation pattern between Value and Growth factors in the A-share market and which macro indicators can serve as switching signals."
+  options: []
+  answer: ""
+  explanation: "A股中 Value/Growth 轮动的主要驱动因素：(1)利率周期：利率上行期 Value 占优（高贴现率打压 Growth 估值），利率下行期 Growth 占优 (2)信用周期：信用扩张期 Growth 受益（融资便利促进扩张），收缩期 Value 更稳健 (3)经济预期：经济复苏初期 Growth 领先，繁荣后期 Value 跑赢。关键信号：10Y 国债收益率变化率、社融增速、PMI、信用利差变化。注意：A股的 Value/Growth 轮动受政策影响更大（如2021年'共同富裕'影响 Growth 板块）。"
+  hints:
+    - "考虑利率对长久期资产的影响"
+    - "考虑 A 股特有的政策驱动因素"
+  rubric: "满分要点：(1)正确分析轮动逻辑 (2)至少列出3个宏观信号 (3)A股特殊性 (4)实操建议"
+  time_limit_seconds: 360
+
+- id: PM_MACRO_004
+  category: macro_analysis
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在行业轮动（sector rotation）研究中，以下哪个不是常用的宏观因子？\nIn sector rotation research, which is NOT a commonly used macro factor?"
+  options:
+    - "A. PMI 变化率 / PMI rate of change"
+    - "B. 信用利差变化 / Credit spread change"
+    - "C. 股票代码的首字母 / The first letter of stock tickers"
+    - "D. 期限利差变化 / Term spread change"
+  answer: "C"
+  explanation: "常用的行业轮动宏观因子包括：PMI（经济景气度）、信用利差（风险偏好）、期限利差（经济预期）、M2 增速（流动性）、PPI（通胀传导）等。股票代码首字母没有经济含义。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: PM_MACRO_005
+  category: macro_analysis
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "关于 A 股的 Momentum 因子，以下哪个观察在学术研究中得到了较一致的支持？\nRegarding the Momentum factor in A-shares, which observation has relatively consistent academic support?"
+  options:
+    - "A. A 股的中期动量（3-12个月）与美股一样显著 / Medium-term momentum (3-12 months) is as significant in A-shares as in the US"
+    - "B. A 股的短期反转（1个月）效应比动量效应更显著 / Short-term reversal (1 month) is more significant than momentum in A-shares"
+    - "C. A 股不存在任何动量或反转效应 / A-shares have no momentum or reversal effects"
+    - "D. A 股的长期反转（3-5年）效应最强 / Long-term reversal (3-5 years) is the strongest in A-shares"
+  answer: "B"
+  explanation: "A 股市场的一个显著特征是中期动量效应较弱甚至不存在（与美股不同），而短期反转效应（1周到1个月）非常显著。这与 A 股市场的散户主导、过度反应、涨跌停制度等特征有关。量化策略通常利用短期反转而非传统动量。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_MACRO_006
+  category: macro_analysis
+  difficulty: expert
+  type: open_ended
+  points: 1
+  question: "请详细分析中国 A 股市场结构的独特性，以及这些结构性特征如何影响量化策略的设计和实施。\nAnalyze the unique structural characteristics of the China A-share market and how they impact quantitative strategy design and implementation."
+  options: []
+  answer: ""
+  explanation: "A股结构性特征及影响：(1)散户占比高（交易量约60-70%）：过度反应、短期反转强、信息效率低→反转因子有效、动量弱 (2)涨跌停制度（±10%/±20%）：限制了极端收益的实现，影响回测和交易执行→需要在回测中排除涨跌停股 (3)T+1制度：当日买入不可卖出→限制了日内策略、增加了隔夜风险 (4)做空限制（融券难、成本高）：纯多头策略为主→因子多空不对称 (5)IPO和退市制度：新股溢价、壳价值→影响因子构建 (6)北向资金：机构化推动因子结构变化 (7)政策驱动：行业政策对因子影响大。"
+  hints:
+    - "系统性地思考每个结构特征对策略的具体影响"
+    - "考虑这些特征如何影响因子的构建和回测"
+  rubric: "满分要点：(1)至少5个结构特征 (2)每个特征对应的策略影响 (3)具体的策略调整建议 (4)演变趋势分析"
+  time_limit_seconds: 420
+
+- id: PM_MACRO_007
+  category: macro_analysis
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在分析跨资产相关性时，以下哪种现象在市场危机中最常见？\nWhen analyzing cross-asset correlations, which phenomenon is most common during market crises?"
+  options:
+    - "A. 相关性趋向于零 / Correlations tend toward zero"
+    - "B. 相关性急剧上升（趋向于1）/ Correlations spike sharply (toward 1)"
+    - "C. 相关性变为负值 / Correlations become negative"
+    - "D. 相关性保持不变 / Correlations remain unchanged"
+  answer: "B"
+  explanation: "市场危机中，'correlation goes to 1' 是经典现象。正常时期低相关的资产在恐慌性抛售中同时下跌，分散化收益消失。这对 Risk Parity 等依赖相关性假设的策略构成重大挑战。原因包括：流动性枯竭、去杠杆的传染效应、恐慌情绪的蔓延。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_MACRO_008
+  category: macro_analysis
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "关于 A 股市场的'核心资产'行情（2019-2021），以下哪个宏观驱动因素最为关键？\nRegarding the 'core asset' rally in A-shares (2019-2021), which macro driver was most critical?"
+  options:
+    - "A. 全球流动性宽松叠加外资持续流入 / Global monetary easing combined with sustained foreign capital inflows"
+    - "B. 大宗商品价格上涨 / Commodity price increases"
+    - "C. 人民币大幅贬值 / Significant RMB depreciation"
+    - "D. 经济快速增长超预期 / Rapid GDP growth exceeding expectations"
+  answer: "A"
+  explanation: "2019-2021年核心资产（茅指数）行情的核心驱动：(1)全球央行大放水（尤其2020年后）降低了折现率 (2)北向资金持续流入偏好高 ROE、大市值的白马股 (3)公募基金抱团加剧了正反馈 (4)经济恢复的确定性溢价。这一过程也体现了 A 股市场结构正在从散户主导向机构主导转型。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_MACRO_009
+  category: macro_analysis
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "以下哪个指标最能前瞻性地反映中国经济的信用环境？\nWhich indicator best provides a forward-looking view of China's credit environment?"
+  options:
+    - "A. GDP 增速 / GDP growth rate"
+    - "B. 社会融资规模增速 / Total Social Financing (TSF) growth rate"
+    - "C. CPI 同比 / CPI year-over-year"
+    - "D. 股票市场成交量 / Stock market trading volume"
+  answer: "B"
+  explanation: "社会融资规模（TSF）增速是中国特有的、最重要的信用环境领先指标。它涵盖了银行贷款、企业债券、信托贷款等多种融资渠道，能够反映实体经济获得资金的总量变化。TSF 增速通常领先经济增长 1-2 个季度，是量化宏观模型的核心输入之一。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_MACRO_010
+  category: macro_analysis
+  difficulty: senior
+  type: show_work
+  points: 1
+  question: "请讨论在量化投资组合中如何整合宏观观点。比较 top-down 和 bottom-up 两种方法的优劣。\nDiscuss how to integrate macro views into a quantitative portfolio. Compare top-down and bottom-up approaches."
+  options: []
+  answer: ""
+  explanation: "Top-down 方法：宏观信号 → 资产类别/行业配置 → 个股选择。优势：能捕捉系统性风险和机会，逻辑清晰。劣势：宏观预测准确率低，信号频率低。Bottom-up 方法：个股因子 → 组合构建 → 宏观约束。优势：信号丰富，alpha 来源多元。劣势：可能忽视系统性风险。整合方式：(1)Black-Litterman 融合宏观 view (2)因子择时层：根据宏观 regime 调整因子权重 (3)行业约束层：宏观信号控制行业偏离 (4)风险层：宏观 stress testing。"
+  hints:
+    - "考虑两种方法如何在同一个框架中结合"
+    - "考虑宏观信号的频率和量化因子的频率差异"
+  rubric: "满分要点：(1)正确描述两种方法 (2)各自优劣 (3)具体整合方案 (4)实操挑战"
+  time_limit_seconds: 360
+
+- id: PM_MACRO_011
+  category: macro_analysis
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在 Market Timing 研究中，以下哪个指标被认为对 A 股短期走势有一定预测能力？\nIn Market Timing research, which indicator is considered to have some predictive power for short-term A-share movements?"
+  options:
+    - "A. 融资融券余额变化 / Margin financing balance change"
+    - "B. 月球引力 / Lunar gravity"
+    - "C. 上一期 GDP 增速 / Previous quarter GDP growth"
+    - "D. 全球石油库存 / Global oil inventory"
+  answer: "A"
+  explanation: "融资融券余额反映了杠杆资金的方向和力度。融资余额快速上升通常伴随市场情绪过热，可能预示短期调整；融资余额下降则反映去杠杆过程。虽然 Market Timing 在学术上存在争议，但融资余额作为 A 股特有的情绪指标，在实务中有一定参考价值。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_MACRO_012
+  category: macro_analysis
+  difficulty: expert
+  type: show_work
+  points: 1
+  question: "假设你管理一个 ¥20亿的 A 股量化组合。当前宏观环境为：PMI 下滑至49.5（荣枯线以下），10Y 国债收益率从3.0%降至2.7%，社融增速回升至10.5%。请给出你的因子配置调整建议，并说明理由。\nYou manage a ¥2 billion A-share quant portfolio. Current macro: PMI=49.5, 10Y bond yield drops from 3.0% to 2.7%, TSF growth recovers to 10.5%. Recommend factor allocation adjustments with reasoning."
+  options: []
+  answer: ""
+  explanation: "宏观解读：PMI < 50 表示经济收缩，但社融回升预示政策宽松效果初现，利率下行确认货币宽松。处于'衰退后期/复苏初期'。建议：(1)增加 Growth 因子权重（利率下行利好成长股）(2)增加 Quality 因子权重（经济不确定性下质量溢价上升）(3)降低 Value 因子权重（经济下行期价值股基本面承压）(4)维持 Low Volatility 暴露（防御性需求）(5)行业层面：超配受益于政策宽松的行业（如科技、新能源），低配周期性行业 (6)风险控制：适度降低整体仓位或增加对冲比例。"
+  hints:
+    - "PMI < 50 意味着什么？社融回升意味着什么？"
+    - "利率下行对不同类型股票的影响差异"
+  rubric: "满分要点：(1)正确解读宏观数据 (2)因子调整有逻辑 (3)行业配置建议 (4)风险控制措施 (5)量化论证"
+  time_limit_seconds: 480
+
+- id: PM_MACRO_013
+  category: macro_analysis
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Style Factor 中的 Value 因子在以下哪种经济环境中通常表现最好？\nIn which economic environment does the Value style factor typically perform best?"
+  options:
+    - "A. 经济复苏和扩张期 / Economic recovery and expansion phase"
+    - "B. 经济深度衰退期 / Deep economic recession"
+    - "C. 低利率+低增长环境 / Low interest rate + low growth environment"
+    - "D. 通缩环境 / Deflationary environment"
+  answer: "A"
+  explanation: "Value 因子在经济复苏和扩张期通常表现最好，因为：(1)低估值股票多为周期股，经济复苏直接提升其盈利 (2)利率上行预期压缩 Growth 股的估值溢价 (3)风险偏好提升使投资者愿意持有基本面改善的价值股。相反，在低增长低利率环境中，Growth 因子往往跑赢 Value。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_MACRO_014
+  category: macro_analysis
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "北向资金（陆股通）的流入对 A 股因子结构有什么长期影响？\nWhat is the long-term impact of northbound capital (Stock Connect) inflows on A-share factor structure?"
+  options:
+    - "A. 无影响 / No impact"
+    - "B. 推动市场向基本面定价转变，增强 Quality 和 Value 因子的有效性 / Pushes the market toward fundamental pricing, enhancing the effectiveness of Quality and Value factors"
+    - "C. 增强小市值因子的有效性 / Enhances the effectiveness of the small-cap factor"
+    - "D. 增加市场的散户交易比例 / Increases the proportion of retail trading"
+  answer: "B"
+  explanation: "北向资金（主要是外资机构）偏好基本面优良、治理良好的大市值股票。长期流入导致：(1)Quality 因子（高 ROE、稳定盈利）更有效 (2)市场定价效率提升，壳价值和炒作溢价下降 (3)A 股与全球市场的联动性增强 (4)价值发现功能改善。这是 A 股机构化进程的重要驱动力。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_MACRO_015
+  category: macro_analysis
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "以下关于 A 股市场流动性的说法，哪个是正确的？\nWhich statement about A-share market liquidity is correct?"
+  options:
+    - "A. A 股的日均换手率远高于美股，尤其是小盘股 / A-share average daily turnover is much higher than US stocks, especially small caps"
+    - "B. A 股的流动性与美股完全一致 / A-share liquidity is identical to US stocks"
+    - "C. A 股只有大盘股有流动性 / Only large-cap A-shares have liquidity"
+    - "D. A 股不存在流动性溢价 / There is no liquidity premium in A-shares"
+  answer: "A"
+  explanation: "A 股市场的显著特征之一是极高的换手率：日均换手率通常为美股的3-5倍，小盘股换手率更高。这与散户主导的交易结构有关。高换手率意味着：(1)短期 alpha 信号更容易执行 (2)市场冲击成本在小盘股中仍然显著 (3)非流动性溢价（illiquidity premium）的结构与美股不同。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+###############################################################################
+# CATEGORY 5: team_management (10 questions)
+###############################################################################
+
+- id: PM_TEAM_001
+  category: team_management
+  difficulty: senior
+  type: open_ended
+  points: 1
+  question: "请描述你理想中的 research-to-portfolio pipeline：从研究员发现一个新因子到该因子被纳入实盘组合的完整流程和质量控制节点。\nDescribe your ideal research-to-portfolio pipeline: the complete process and quality control checkpoints from a researcher discovering a new factor to it being deployed in the live portfolio."
+  options: []
+  answer: ""
+  explanation: "完整流程：(1)因子提案：研究员提交因子报告（经济逻辑、初步回测、文献支持）(2)同行评审：其他研究员独立复现、挑战假设 (3)高级审查：PM 和风控评估因子与现有组合的互补性 (4)独立回测：独立团队用 out-of-sample 数据验证 (5)纸上交易（paper trading）：至少3-6个月模拟盘运行 (6)小规模实盘：以5-10%权重纳入实盘 (7)全面部署：表现达标后逐步提升权重。关键检查点：t-stat > 3.0、ICIR > 0.5、与现有因子相关性 < 0.3、paper trading 期间表现符合预期。"
+  hints:
+    - "考虑每个阶段的决策标准和否决权"
+    - "考虑防止回测过拟合的措施"
+  rubric: "满分要点：(1)完整流程 (2)每个阶段的质量标准 (3)防过拟合措施 (4)逐步部署策略 (5)否决机制"
+  time_limit_seconds: 360
+
+- id: PM_TEAM_002
+  category: team_management
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在量化投资团队的决策复盘中，以下哪种做法最有助于避免 hindsight bias（事后偏差）？\nIn a quant team's decision review process, which practice best helps avoid hindsight bias?"
+  options:
+    - "A. 仅在策略表现不佳时进行复盘 / Only conduct reviews when strategy underperforms"
+    - "B. 在做决策时预先记录决策理由和预期结果，复盘时对照实际结果评估决策过程而非仅看结果 / Pre-record decision rationale and expected outcomes; during review evaluate the process against actual results, not just outcomes"
+    - "C. 删除所有历史决策记录以避免偏见 / Delete all historical decision records to avoid bias"
+    - "D. 只让第三方进行复盘 / Only have third parties conduct reviews"
+  answer: "B"
+  explanation: "避免 hindsight bias 的关键是'事前记录、事后对照'：(1)在做决策时记录理由、假设、预期结果和风险评估（Investment Decision Log）(2)复盘时对照当时记录评估决策过程质量（而非仅看最终收益）(3)这避免了事后用已知结果来评判当时决策的合理性。好决策也可能有坏结果，坏决策也可能有好结果。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_TEAM_003
+  category: team_management
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化投资团队中，PM 和 Researcher 最关键的协作点是什么？\nWhat is the most critical collaboration point between PM and Researcher in a quant team?"
+  options:
+    - "A. Researcher 独立完成所有工作，PM 只看结果 / Researcher works independently, PM only sees results"
+    - "B. PM 清晰定义研究方向和约束，Researcher 在框架内自由探索，双方定期同步 / PM defines research direction and constraints; Researcher explores freely within the framework; regular sync-ups"
+    - "C. PM 对每个研究细节微观管理 / PM micromanages every research detail"
+    - "D. Researcher 直接做交易决策 / Researcher makes trading decisions directly"
+  answer: "B"
+  explanation: "最佳实践：PM 设定 research agenda（如需要什么类型的因子、组合约束、风险预算），Researcher 在此框架内独立探索方法论。定期（如每周）sync-up 确保方向一致。PM 不应微观管理（抑制创新），也不应完全放手（可能偏离投资目标）。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_TEAM_004
+  category: team_management
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在评估投资绩效时，以下哪种做法最能减少 outcome bias？\nWhen evaluating investment performance, which practice best reduces outcome bias?"
+  options:
+    - "A. 仅关注最终收益结果 / Only focus on final return outcomes"
+    - "B. 评估决策过程的质量，而非仅看结果 / Evaluate the quality of the decision process, not just outcomes"
+    - "C. 只在表现好时进行评估 / Only conduct evaluations when performance is good"
+    - "D. 每天更换策略 / Change strategies daily"
+  answer: "B"
+  explanation: "Outcome bias 是指根据结果好坏来评判决策质量。正确做法是评估'决策过程的质量'：(1)是否基于合理的分析框架？(2)是否考虑了已知风险？(3)决策时可获取的信息是否被充分利用？好决策也可能有坏结果（bad luck），坏决策也可能有好结果（good luck）。这是 Annie Duke 的'Thinking in Bets'的核心思想。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_TEAM_005
+  category: team_management
+  difficulty: senior
+  type: open_ended
+  points: 1
+  question: "当你的量化模型在连续3个月跑输基准时，你如何区分'模型失效'和'短期噪音'？请描述你的分析框架。\nWhen your quant model underperforms the benchmark for 3 consecutive months, how do you distinguish between 'model failure' and 'short-term noise'? Describe your analytical framework."
+  options: []
+  answer: ""
+  explanation: "分析框架：(1)统计分析：当前回撤是否在历史分布内？如果 -3σ 以外需高度警惕 (2)因子归因：哪些因子贡献了负收益？是因子层面失效还是特异性损失？(3)市场环境分析：是否处于极端 regime？类似环境历史上是否出现过？(4)因子有效性检验：当前 IC/ICIR 是否显著恶化？(5)Crowding 检查：策略是否过于拥挤？(6)模型诊断：输入数据有无问题？代码有无 bug？(7)同行比较：同类策略是否也在回撤？若是，更可能是系统性因素而非模型失效。决策矩阵：短期噪音→维持策略；因子衰退→调整权重；模型失效→暂停并调查。"
+  hints:
+    - "设计一个系统性的诊断流程"
+    - "考虑多个维度的证据"
+  rubric: "满分要点：(1)系统性分析框架 (2)至少5个维度的检查 (3)统计判断标准 (4)明确的决策逻辑"
+  time_limit_seconds: 360
+
+- id: PM_TEAM_006
+  category: team_management
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "量化投资团队的组织架构中，以下哪种设置最能促进创新同时保持纪律？\nIn a quant team's organizational structure, which setup best promotes innovation while maintaining discipline?"
+  options:
+    - "A. 所有人做相同的研究 / Everyone does the same research"
+    - "B. 分设 alpha research、risk、execution 和 infrastructure 专业化角色 / Specialized roles for alpha research, risk, execution, and infrastructure"
+    - "C. 仅有一名 PM 做所有工作 / Only one PM does everything"
+    - "D. 不需要任何结构 / No structure is needed"
+  answer: "B"
+  explanation: "专业化分工的量化团队通常包括：(1)Alpha Research：因子发现和信号研究 (2)Risk/Portfolio Construction：风险模型和优化器 (3)Execution：算法交易和执行优化 (4)Infrastructure/Data：数据管理和系统维护。这种结构允许每个团队在专业领域深入创新，同时通过标准化接口和流程保持整体纪律。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_TEAM_007
+  category: team_management
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "新入职的量化研究员在 onboarding 期间，以下哪项安排最有助于其快速产出有价值的研究？\nDuring onboarding of a new quant researcher, which arrangement best helps them produce valuable research quickly?"
+  options:
+    - "A. 立即分配独立研究课题，让他们自由探索 / Immediately assign an independent research topic for free exploration"
+    - "B. 先复现一个已知因子的完整研究流程，再逐步承担独立课题 / First replicate a known factor's full research pipeline, then gradually take on independent projects"
+    - "C. 仅安排阅读学术论文，不接触代码和数据 / Only assign academic paper reading, no access to code or data"
+    - "D. 直接参与实盘策略的调参工作 / Directly participate in tuning live strategy parameters"
+  answer: "B"
+  explanation: "最佳 onboarding 路径是'复现→改进→创新'：先复现已有因子理解团队的数据、工具和流程，再在此基础上做改进研究，最后才承担独立新课题。这样既能快速熟悉基础设施，又能降低早期错误风险。立即独立研究容易走弯路，仅读论文脱离实践，直接调参风险过高。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_TEAM_008
+  category: team_management
+  difficulty: expert
+  type: open_ended
+  points: 1
+  question: "在量化投资中，如何建立'challenge culture'（质疑文化）来提高团队的决策质量？请给出具体的机制设计。\nIn quantitative investing, how do you build a 'challenge culture' to improve team decision quality? Provide specific mechanism designs."
+  options: []
+  answer: ""
+  explanation: "机制设计：(1)Devil's Advocate 制度：每次重大决策必须指定一人系统性地反对，确保所有反面论证都被考虑 (2)Pre-mortem 分析：假设决策已失败，让团队成员分析失败原因 (3)Red Team / Blue Team 演练：独立团队尝试攻破策略的假设 (4)Anonymous Feedback：允许匿名提出质疑，降低层级压力 (5)Post-decision Review：定期复盘，奖励正确的质疑（即使最终决策没有改变）(6)Falsification Mindset：鼓励寻找否证而非确认偏差 (7)心理安全：PM 以身作则承认错误，创造安全的质疑环境。"
+  hints:
+    - "考虑如何降低质疑的心理成本"
+    - "考虑如何制度化质疑过程"
+  rubric: "满分要点：(1)至少4种具体机制 (2)降低质疑心理障碍的方法 (3)与决策流程的整合 (4)文化建设"
+  time_limit_seconds: 360
+
+- id: PM_TEAM_009
+  category: team_management
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "以下哪种做法最不利于量化投资团队的长期发展？\nWhich practice is least conducive to the long-term development of a quant investment team?"
+  options:
+    - "A. 鼓励研究员发表内部研究论文 / Encouraging researchers to write internal research papers"
+    - "B. 将所有知识集中在一个核心人物头脑中，不做文档化 / Concentrating all knowledge in one key person without documentation"
+    - "C. 定期进行技术分享和读书会 / Regular tech sharing and reading groups"
+    - "D. 建立标准化的回测框架和代码规范 / Building standardized backtesting frameworks and code standards"
+  answer: "B"
+  explanation: "知识集中在一个人（'key man risk'）是团队最大的风险。当该核心人物离职时，团队的核心知识和能力随之流失。正确做法包括：(1)所有策略逻辑文档化 (2)代码有完整注释和版本控制 (3)知识分享制度化 (4)培养多人了解核心系统。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_TEAM_010
+  category: team_management
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在设定研究员的 KPI 时，以下哪种方法最合理？\nWhen setting KPIs for researchers, which approach is most reasonable?"
+  options:
+    - "A. 仅以组合收益作为唯一 KPI / Using only portfolio returns as the sole KPI"
+    - "B. 综合评估研究质量（过程）、因子贡献（结果）、团队协作和知识分享 / Comprehensive evaluation of research quality (process), factor contribution (outcome), team collaboration, and knowledge sharing"
+    - "C. 以发表论文数量为唯一 KPI / Using number of published papers as the sole KPI"
+    - "D. 不设置任何 KPI / No KPIs at all"
+  answer: "B"
+  explanation: "好的 KPI 体系应包括：(1)过程指标：研究方法论的严谨性、代码质量、文档完整性 (2)结果指标：新因子的 IC/ICIR、纳入组合后的贡献 (3)协作指标：code review 参与度、知识分享频率 (4)创新指标：新方法探索、学术跟踪。仅看收益结果会鼓励冒险和过拟合，仅看过程会缺乏成果导向。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+###############################################################################
+# CATEGORY 6: compliance (10 questions)
+###############################################################################
+
+- id: PM_COMP_001
+  category: compliance
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "A 股市场的涨跌停板制度是怎样的？科创板有何不同？\nWhat are the price limit rules in the A-share market? How does the STAR Market differ?"
+  options:
+    - "A. 主板 ±10%，科创板和创业板 ±20% / Main board ±10%, STAR and ChiNext ±20%"
+    - "B. 所有板块均为 ±10% / All boards ±10%"
+    - "C. 主板 ±20%，科创板 ±10% / Main board ±20%, STAR ±10%"
+    - "D. A 股没有涨跌停限制 / A-shares have no price limits"
+  answer: "A"
+  explanation: "A 股涨跌停制度：主板（上交所、深交所）普通股 ±10%，ST 股 ±5%。科创板和创业板注册制改革后调整为 ±20%。新股上市前5个交易日不设涨跌停（科创板和创业板）。量化策略必须在交易和回测中正确处理涨跌停：涨停无法买入、跌停无法卖出。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: PM_COMP_002
+  category: compliance
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "T+1 交易制度对量化策略的最大影响是什么？\nWhat is the biggest impact of the T+1 settlement rule on quantitative strategies?"
+  options:
+    - "A. 没有任何影响 / No impact"
+    - "B. 当日买入的股票不能当日卖出，限制了日内交易和风险管理的灵活性 / Shares bought today cannot be sold the same day, limiting intraday trading and risk management flexibility"
+    - "C. 增加了交易成本 / Increases transaction costs"
+    - "D. 仅影响小盘股 / Only affects small-cap stocks"
+  answer: "B"
+  explanation: "T+1 制度意味着当日买入的股票次日才能卖出。影响：(1)日内策略受限（虽可通过持有底仓+日内 T+0 变相实现）(2)买入后当天无法止损（增加隔夜风险）(3)组合再平衡需要分两天完成（卖旧买新）(4)对快速衰减的 alpha 信号执行效率降低。量化策略需要将 T+1 约束纳入优化器和交易管理系统。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_COMP_003
+  category: compliance
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "根据中国证监会规定，公募基金的持仓集中度限制（'双十规定'）是什么？\nAccording to CSRC regulations, what are the concentration limits for mutual funds (the 'double-ten rule')?"
+  options:
+    - "A. 单只股票持仓不超过基金净值的10%，同一基金管理人旗下所有基金持有单只股票不超过该股票流通市值的10% / Single stock ≤ 10% of fund NAV; all funds under same manager ≤ 10% of stock's free-float market cap"
+    - "B. 单只股票不超过5% / Single stock ≤ 5%"
+    - "C. 前10大持仓不超过50% / Top 10 holdings ≤ 50%"
+    - "D. 没有集中度限制 / No concentration limits"
+  answer: "A"
+  explanation: "'双十规定'是中国公募基金的核心持仓限制：(1)一只基金持有某只股票的市值不超过基金净值的 10% (2)同一基金管理人管理的所有基金持有某只股票不超过该股票流通市值的 10%。量化策略在优化器中必须严格执行此约束，特别是管理多只产品时需要考虑联合约束。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_COMP_004
+  category: compliance
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在 A 股量化交易中，以下哪种行为可能被认定为操纵市场？\nIn A-share quantitative trading, which behavior might be deemed market manipulation?"
+  options:
+    - "A. 使用 VWAP 算法执行交易 / Using VWAP algorithm for trade execution"
+    - "B. 在多个账户之间频繁对倒交易以制造虚假成交量 / Frequent wash trading between multiple accounts to create false volume"
+    - "C. 按照投资组合模型调整持仓 / Adjusting positions according to portfolio model"
+    - "D. 使用限价单下单 / Using limit orders"
+  answer: "B"
+  explanation: "在多个关联账户之间进行对倒交易（wash trading）制造虚假成交量是明确的市场操纵行为，违反《证券法》。量化交易中需特别注意：(1)关联账户管理 (2)异常交易模式监控 (3)尾盘集中交易的合规性 (4)程序化交易的报备要求。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_COMP_005
+  category: compliance
+  difficulty: senior
+  type: open_ended
+  points: 1
+  question: "请描述你如何设计量化交易的合规前检查（pre-trade compliance）系统，确保每笔交易在执行前符合所有监管要求。\nDescribe how you would design a pre-trade compliance system for quantitative trading to ensure every trade meets all regulatory requirements before execution."
+  options: []
+  answer: ""
+  explanation: "Pre-trade Compliance 系统设计：(1)持仓限制检查：单只股票 ≤ 基金净值 10%（双十规定）(2)交易限制检查：涨跌停股票排除、ST 股票限制、停牌股票排除 (3)限制交易名单：内幕信息限制名单（restricted list）、关联方交易检查 (4)换手率检查：异常交易比率监控 (5)集中度检查：行业集中度、个股集中度 (6)流动性检查：交易量不超过日均成交量的一定比例（如20%）(7)合规规则引擎：每笔订单在提交到交易系统前自动通过规则引擎检查，不合规订单自动拦截 (8)审计日志：所有检查结果留痕 (9)实时告警：接近限制时提前预警。"
+  hints:
+    - "考虑从订单生成到执行的完整流程"
+    - "考虑自动化和人工审查的结合"
+  rubric: "满分要点：(1)检查维度完整 (2)自动化设计 (3)规则引擎概念 (4)审计和告警 (5)A股特殊规则覆盖"
+  time_limit_seconds: 360
+
+- id: PM_COMP_006
+  category: compliance
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "关于内幕交易（insider trading）的防范，以下哪项措施对量化团队最重要？\nRegarding insider trading prevention, which measure is most important for a quant team?"
+  options:
+    - "A. 建立信息隔离墙（Chinese Wall）和 restricted trading list / Establishing information barriers (Chinese Wall) and restricted trading list"
+    - "B. 禁止所有员工交易股票 / Prohibiting all employees from trading stocks"
+    - "C. 仅在收盘后交易 / Only trading after market close"
+    - "D. 不关注上市公司信息 / Not following any listed company information"
+  answer: "A"
+  explanation: "量化团队的内幕交易防范核心是：(1)Chinese Wall：与可能获取内幕信息的部门（如投行、研究所）物理和信息隔离 (2)Restricted List：当公司可能持有内幕信息时，将相关股票加入限制交易名单 (3)交易申报制度：员工个人交易预先申报 (4)培训和合规测试：定期进行内幕交易合规培训。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_COMP_007
+  category: compliance
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "中国对程序化交易（量化交易）的监管要求中，以下哪项是2023年以后的新要求？\nIn China's regulatory requirements for programmatic trading, which is a post-2023 requirement?"
+  options:
+    - "A. 程序化交易需要向交易所报备，异常交易行为需接受监控 / Programmatic trading must be reported to exchanges; abnormal trading behavior is monitored"
+    - "B. 不需要任何报备 / No reporting required"
+    - "C. 仅限人工交易 / Only manual trading allowed"
+    - "D. 量化基金不受监管 / Quant funds are unregulated"
+  answer: "A"
+  explanation: "2023年以来，中国证监会加强了对程序化交易的监管：(1)程序化交易投资者需要向交易所报备交易策略类型和账户信息 (2)高频交易需额外报告 (3)异常交易行为（如频繁撤单、尾盘大量交易）会被重点监控 (4)可能对高频交易征收额外费用。量化机构需要确保交易系统合规并做好相应报备。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_COMP_008
+  category: compliance
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "以下关于 A 股交易成本的描述，哪个最准确？\nWhich description of A-share transaction costs is most accurate?"
+  options:
+    - "A. 买卖双向均收取佣金和印花税 / Commission and stamp duty charged on both buy and sell"
+    - "B. 佣金双向收取，印花税仅在卖出时收取（卖出 0.05%）/ Commission charged both ways; stamp duty only on sell side (0.05% on sell)"
+    - "C. A 股没有交易成本 / A-shares have no transaction costs"
+    - "D. 仅收取印花税 / Only stamp duty is charged"
+  answer: "B"
+  explanation: "A 股交易成本结构：(1)佣金：买卖双向收取，机构通常在万分之2-3（0.02%-0.03%）(2)印花税：仅卖出时收取，税率0.05%（2023年8月降低）(3)其他：过户费、结算费等较小。对量化策略而言，高换手率的策略中交易成本是关键考量，印花税的单边特性也意味着卖出成本高于买入。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_COMP_009
+  category: compliance
+  difficulty: expert
+  type: open_ended
+  points: 1
+  question: "请讨论量化投资中的'公平交易'（fair dealing）原则，以及在管理多只产品时如何确保不同客户之间的公平性。\nDiscuss the 'fair dealing' principle in quantitative investing and how to ensure fairness among different clients when managing multiple products."
+  options: []
+  answer: ""
+  explanation: "公平交易原则要求：(1)交易分配公平：当多只产品需要执行相同交易时，使用 pro-rata 分配或轮换制度，不能优先某一产品 (2)IPO 和定增分配：按照事先确定的规则分配 (3)交叉交易限制：不同产品之间的交叉交易需要符合最佳价格原则 (4)同时交易：所有产品的交易信号应同时执行，不能有时间先后优势。实施机制：(1)自动化交易分配系统 (2)交易分配规则事先文档化并经合规审核 (3)定期审计分配结果的公平性 (4)异常偏差自动告警。对量化特别重要：因为量化可能管理大量同质产品，分配不当的影响面更广。"
+  hints:
+    - "考虑在同一时间点多只产品需要交易同一只股票的情况"
+    - "考虑如何用技术手段保证公平性"
+  rubric: "满分要点：(1)公平交易原则清晰 (2)交易分配机制 (3)技术实施方案 (4)审计和监控 (5)量化特殊考虑"
+  time_limit_seconds: 360
+
+- id: PM_COMP_010
+  category: compliance
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化投资的风险限制（risk limits）设置中，以下哪种做法最佳？\nWhich is the best practice for setting risk limits in quantitative investing?"
+  options:
+    - "A. 设置软限制和硬限制两级，软限制触发预警，硬限制触发强制减仓 / Set soft and hard limits: soft limits trigger alerts, hard limits trigger forced position reduction"
+    - "B. 仅设置硬限制 / Only set hard limits"
+    - "C. 不设置任何限制以保持灵活性 / No limits to maintain flexibility"
+    - "D. 所有限制由交易员自行决定 / All limits decided by traders"
+  answer: "A"
+  explanation: "两级风险限制体系：(1)软限制（soft limit）：接近阈值时触发预警，PM 和风控收到通知，评估是否需要调整（如 TE 达到目标的 80%）(2)硬限制（hard limit）：突破阈值时自动触发减仓或停止交易（如 TE 达到目标的 100%）。两级体系兼顾了灵活性和纪律性，避免了频繁触发硬限制的交易成本，同时确保风险不失控。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90

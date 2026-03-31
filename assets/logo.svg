@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 60">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0066FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00AAFF;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Icon -->
+  <rect x="2" y="8" width="44" height="44" rx="10" fill="url(#grad)"/>
+  <text x="24" y="40" font-family="Arial,sans-serif" font-size="22" font-weight="bold" fill="white" text-anchor="middle">AI</text>
+  <!-- Text -->
+  <text x="56" y="32" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="bold" fill="#1B2559">FLAB</text>
+  <text x="56" y="50" font-family="Arial,Helvetica,sans-serif" font-size="12" fill="#6B7280" letter-spacing="1.5">RESEARCH</text>
+</svg>

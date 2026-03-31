@@ -1,0 +1,1667 @@
+# Trading (交易) Track - Factor Mining Quantitative Team Interview
+# 100 Questions | Categories: microstructure, risk_management, mental_math, market_making, behavioral, pnl_analysis
+# Difficulty distribution: 40 medium_high, 40 senior, 20 expert
+# Type distribution: 70 multiple_choice, 20 open_ended, 10 show_work
+
+# ============================================================
+# MICROSTRUCTURE (20 questions)
+# ============================================================
+
+- id: TR_MICRO_001
+  category: microstructure
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在一个limit order book中，bid-ask spread的主要组成部分不包括以下哪项？\nIn a limit order book, which of the following is NOT a primary component of the bid-ask spread?"
+  options:
+    - "A. Adverse selection cost (逆向选择成本)"
+    - "B. Inventory holding cost (库存持有成本)"
+    - "C. Order processing cost (订单处理成本)"
+    - "D. Capital gains tax (资本利得税)"
+  answer: "D"
+  explanation: "Bid-ask spread的经典分解（Glosten-Milgrom, 1985; Stoll, 1989）包括三个部分：adverse selection cost（因信息不对称导致的成本）、inventory holding cost（做市商持有头寸的风险成本）和order processing cost（订单处理的固定成本）。Capital gains tax不是spread的组成部分。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_MICRO_002
+  category: microstructure
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "VPIN (Volume-Synchronized Probability of Informed Trading) 指标的核心思想是什么？\nWhat is the core idea behind the VPIN metric?"
+  options:
+    - "A. 通过成交量分桶来估计知情交易的概率 / Estimate probability of informed trading via volume bucketing"
+    - "B. 通过价格波动来估计市场冲击 / Estimate market impact via price volatility"
+    - "C. 通过订单簿深度来衡量流动性 / Measure liquidity via order book depth"
+    - "D. 通过换手率来预测价格趋势 / Predict price trends via turnover rate"
+  answer: "A"
+  explanation: "VPIN（Easley, Lopez de Prado, O'Hara, 2012）将交易量按固定大小分桶(volume bucket)，然后在每个桶中用bulk volume classification将成交量分为buy-initiated和sell-initiated，计算|V_buy - V_sell| / V_total作为知情交易概率的估计。它是PIN模型的非参数高频版本。"
+  hints:
+    - "考虑PIN模型的高频扩展"
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_MICRO_003
+  category: microstructure
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在Almgren-Chriss最优执行模型中，如果trader的risk aversion参数lambda增大，最优执行策略会如何变化？\nIn the Almgren-Chriss optimal execution model, how does the optimal strategy change when risk aversion lambda increases?"
+  options:
+    - "A. 执行速度加快，更接近立即执行 / Execution speeds up, approaching immediate execution"
+    - "B. 执行速度减慢，更接近TWAP / Execution slows down, approaching TWAP"
+    - "C. 对执行速度没有影响 / No effect on execution speed"
+    - "D. 执行变为随机策略 / Execution becomes a random strategy"
+  answer: "A"
+  explanation: "Almgren-Chriss模型在market impact cost和timing risk之间权衡。lambda越大意味着trader越厌恶风险（timing risk），因此会更快执行以减少价格不确定性带来的风险，策略更接近立即全部执行。当lambda趋近0时，策略趋近TWAP（线性执行）。最优轨迹为x(t) = X * sinh(kappa*(T-t)) / sinh(kappa*T)，其中kappa与lambda正相关。"
+  hints:
+    - "思考risk aversion如何影响timing risk vs market impact的权衡"
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_MICRO_004
+  category: microstructure
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "Order flow imbalance (OFI) 通常如何计算？\nHow is Order Flow Imbalance (OFI) typically computed?"
+  options:
+    - "A. OFI = delta(best_bid_volume) - delta(best_ask_volume)，考虑价格变化 / Considering price changes at best bid/ask"
+    - "B. OFI = total_buy_volume - total_sell_volume / OFI = total buy minus sell volume"
+    - "C. OFI = number_of_buy_orders - number_of_sell_orders / OFI = count of buy minus sell orders"
+    - "D. OFI = bid_price - ask_price / OFI = bid minus ask price"
+  answer: "A"
+  explanation: "Cont, Kukanov, Stoikov (2014) 定义的OFI考虑了best bid和best ask上的volume变化，同时需要区分价格是否发生变化。当best bid price上升时，新的bid volume全部计为正；当best bid price下降时，旧的bid volume全部计为负；价格不变时计算volume的增量。Ask侧类似但符号相反。这比简单的buy-sell volume差异更能捕捉微观结构信息。"
+  hints:
+    - "参考Cont, Kukanov, Stoikov (2014)的定义"
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_MICRO_005
+  category: microstructure
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "以下哪个指标最适合衡量大单交易对价格的永久性影响？\nWhich metric best captures the permanent price impact of a large order?"
+  options:
+    - "A. Realized spread (已实现价差)"
+    - "B. Kyle's lambda"
+    - "C. Roll's measure"
+    - "D. Amihud illiquidity ratio"
+  answer: "B"
+  explanation: "Kyle's lambda来自Kyle (1985)模型，衡量价格对order flow的敏感度：delta_p = lambda * delta_x + noise。lambda直接度量了单位净买入量对价格的永久性影响。Realized spread衡量的是交易成本，Roll's measure用价格自相关估计spread，Amihud ratio是日度流动性衡量。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_MICRO_006
+  category: microstructure
+  difficulty: expert
+  type: open_ended
+  points: 8
+  question: "请推导Glosten-Milgrom (1985) 模型中bid和ask价格的设定，并解释为什么adverse selection会导致bid-ask spread。假设资产真实价值V服从{V_H, V_L}二值分布，知情交易者占比为mu。\nDerive the bid and ask prices in the Glosten-Milgrom (1985) model and explain why adverse selection causes a bid-ask spread. Assume asset value V follows a binary distribution {V_H, V_L} with informed trader proportion mu."
+  options: []
+  answer: ""
+  explanation: "在GM模型中，做市商面对知情和不知情交易者。Ask价格设定为：A = E[V|buy order] = P(V=V_H|buy) * V_H + P(V=V_L|buy) * V_L。利用贝叶斯定理，P(V=V_H|buy) = [mu + (1-mu)*0.5]*P(V=V_H) / P(buy)（知情交易者在V=V_H时总是买，不知情者以0.5概率买）。类似地推导Bid。最终A > E[V] > B，spread来自于信息不对称：做市商知道部分交易对手拥有私有信息，因此要求补偿。"
+  hints:
+    - "从做市商零利润条件出发"
+    - "对buy order和sell order分别用贝叶斯公式"
+  rubric: "推导过程(3分)：正确写出贝叶斯公式和条件期望；经济直觉(3分)：解释adverse selection如何产生spread；完整性(2分)：讨论mu对spread的影响"
+  time_limit_seconds: 600
+
+- id: TR_MICRO_007
+  category: microstructure
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在LOB (Limit Order Book) 建模中，Hawkes process的主要优势是什么？\nWhat is the main advantage of using Hawkes processes in LOB modeling?"
+  options:
+    - "A. 能捕捉订单到达的自激发(self-exciting)特性 / Captures self-exciting nature of order arrivals"
+    - "B. 计算速度快于所有其他模型 / Faster computation than all other models"
+    - "C. 不需要参数估计 / No parameter estimation required"
+    - "D. 可以完美预测价格 / Can perfectly predict prices"
+  answer: "A"
+  explanation: "Hawkes process是一种自激发点过程，其中一个事件的发生会暂时增加后续事件发生的概率（intensity）。这很好地捕捉了金融市场中的order clustering现象：一笔大单到来后，往往会触发更多的跟随订单。Hawkes process的intensity为lambda(t) = mu + sum(alpha * exp(-beta*(t-t_i)))，其中求和遍历历史事件。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_MICRO_008
+  category: microstructure
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Tick data中，Lee-Ready算法用于什么目的？\nWhat is the Lee-Ready algorithm used for in tick data analysis?"
+  options:
+    - "A. 将交易分类为buyer-initiated或seller-initiated / Classify trades as buyer- or seller-initiated"
+    - "B. 估计隐含波动率 / Estimate implied volatility"
+    - "C. 计算最优下单量 / Calculate optimal order size"
+    - "D. 检测市场操纵 / Detect market manipulation"
+  answer: "A"
+  explanation: "Lee-Ready (1991)算法是交易方向分类的经典方法。它首先用quote rule：如果成交价高于mid-price则分类为buy，低于则分类为sell。当成交价等于mid-price时，使用tick rule：如果成交价高于上一笔成交价则为buy（uptick），低于则为sell（downtick）。该算法在高频数据分析中被广泛使用。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_MICRO_009
+  category: microstructure
+  difficulty: expert
+  type: open_ended
+  points: 8
+  question: "解释permanent vs temporary market impact的区别，并描述如何在实际交易数据中分离和估计这两个分量。给出一个具体的回归框架。\nExplain the difference between permanent and temporary market impact, and describe how to separate and estimate these two components from real trade data. Provide a specific regression framework."
+  options: []
+  answer: ""
+  explanation: "Permanent impact是交易对价格的长期信息性影响，反映了订单中包含的信息；temporary impact是由流动性需求造成的短暂价格偏离，会随时间回复。可用以下框架估计：(1) 定义r_k为第k笔交易后的价格变化；(2) 将r_k分解为 r_k = g(v_k)*sign_k + eta_k，其中g(v_k)是关于交易量的permanent impact函数；(3) 用交易后不同时间窗口的价格回复来分离temporary部分；(4) 常用幂律形式：permanent ~ sigma * (v/V)^delta，delta约0.5-0.6。"
+  hints:
+    - "考虑交易后不同时间窗口的价格行为"
+    - "permanent impact在信息被吸收后仍然存在"
+  rubric: "概念清晰度(3分)：准确区分permanent和temporary impact；回归框架(3分)：给出具体可操作的估计方法；实证认知(2分)：了解幂律关系和典型参数"
+  time_limit_seconds: 600
+
+- id: TR_MICRO_010
+  category: microstructure
+  difficulty: senior
+  type: open_ended
+  points: 5
+  question: "解释order book imbalance如何预测短期价格变动。给出OBI的具体计算方式，并讨论在A股市场中的适用性和局限性。\nExplain how order book imbalance predicts short-term price movements. Provide specific OBI calculation and discuss applicability and limitations in A-share markets."
+  options: []
+  answer: ""
+  explanation: "Order book imbalance (OBI)是短期价格变动的有效预测指标（Cont, Kukanov, Stoikov, 2014）。OBI = (V_bid - V_ask) / (V_bid + V_ask)，当OBI>0（bid侧深度更大）时，ask侧更容易被消耗，价格倾向于上涨。在A股市场中，这一现象也被广泛验证，但需要考虑：(1) 涨跌停时OBI信号失效；(2) A股散户比例高，order book噪音大；(3) 集合竞价时段OBI的计算方式不同。局限性：大单可能挂在远离best price的位置（hidden depth），cancel率高导致book depth不真实。"
+  hints:
+    - "考虑bid/ask volume的比率"
+    - "A股特有的市场微观结构特征"
+  rubric: "OBI计算(2分)；预测逻辑(1分)；A股特殊性(1分)；局限性(1分)"
+  time_limit_seconds: 300
+
+- id: TR_MICRO_011
+  category: microstructure
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "以下关于market order和limit order的描述，哪项是正确的？\nWhich statement about market orders and limit orders is correct?"
+  options:
+    - "A. Market order提供流动性，limit order消耗流动性 / Market orders provide liquidity, limit orders consume it"
+    - "B. Limit order提供流动性，market order消耗流动性 / Limit orders provide liquidity, market orders consume it"
+    - "C. 两者都提供流动性 / Both provide liquidity"
+    - "D. 两者都消耗流动性 / Both consume liquidity"
+  answer: "B"
+  explanation: "Limit order挂在order book上等待成交，为市场提供流动性（liquidity provision）；market order以当前最优价格立即成交，消耗order book上的流动性（liquidity consumption/taking）。这是市场微观结构中最基本的概念之一。Limit order面临adverse selection风险但可以获得spread，market order支付spread但保证立即执行。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 45
+
+- id: TR_MICRO_012
+  category: microstructure
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在高频交易中，latency arbitrage主要利用的是什么？\nIn HFT, what does latency arbitrage primarily exploit?"
+  options:
+    - "A. 不同交易所之间的价格更新延迟 / Price update delays between different exchanges"
+    - "B. 隔夜价格跳空 / Overnight price gaps"
+    - "C. 公司基本面变化 / Changes in company fundamentals"
+    - "D. 宏观经济数据发布 / Macroeconomic data releases"
+  answer: "A"
+  explanation: "Latency arbitrage（Budish, Cramton, Shim, 2015）利用不同交易所之间信息传播的微小时间差。当价格在一个交易所率先变动时，faster trader可以在其他交易所的价格更新之前利用stale quotes进行交易获利。这也是为什么co-location和低延迟基础设施在HFT中如此重要的原因。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_MICRO_013
+  category: microstructure
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "Roll (1984) 的spread估计方法基于以下哪个统计量？\nRoll's (1984) spread estimator is based on which statistic?"
+  options:
+    - "A. 价格变化的自协方差 / Autocovariance of price changes"
+    - "B. 成交量的均值 / Mean of trading volume"
+    - "C. 收益率的方差 / Variance of returns"
+    - "D. 订单到达率 / Order arrival rate"
+  answer: "A"
+  explanation: "Roll (1984) 观察到在纯spread模型下（无信息），连续价格变化之间存在负自协方差。具体地，如果observed price = true price + (s/2)*q_t（q_t为买卖方向），则Cov(delta_p_t, delta_p_{t-1}) = -(s/2)^2。因此spread的估计为s = 2*sqrt(-Cov)。当协方差为正时，该估计无法使用。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_MICRO_014
+  category: microstructure
+  difficulty: expert
+  type: show_work
+  points: 8
+  question: "一只股票当前mid-price为50元，bid-ask spread为0.04元。你需要在1小时内买入10万股（日均成交量为500万股）。假设temporary impact为 g(v) = 0.1 * sigma * (v/V)^0.6 元/股，permanent impact为 h(v) = 0.05 * sigma * (v/V)^0.5 元/股，其中sigma=0.02（日波动率），V=5,000,000股。比较以下两种策略的预期执行成本：(1) 一次性market order全部执行；(2) 分成10笔等量执行（均匀间隔）。\nA stock has mid-price 50, spread 0.04, and you need to buy 100,000 shares within 1 hour (ADV=5M shares). Compare execution costs of (1) single market order vs (2) 10 equal slices."
+  options: []
+  answer: "策略1（一次性执行）：v=100,000, v/V=0.02。Temporary impact = 0.1*0.02*(0.02)^0.6 = 0.002*0.02^0.6。0.02^0.6 ≈ 0.0776，所以temp = 0.000155元/股。Permanent impact = 0.05*0.02*(0.02)^0.5 = 0.001*0.1414 = 0.000141元/股。半个spread = 0.02元/股。总成本 ≈ (0.02 + 0.000155 + 0.000141) * 100,000 ≈ 2,030元。\n\n策略2（分10笔执行）：每笔v=10,000, v/V=0.002。Temp per slice = 0.1*0.02*(0.002)^0.6 = 0.002*0.002^0.6。0.002^0.6 ≈ 0.0191，temp = 0.0000382元/股。10笔的temp总和约0.000382元/股（temporary会消散）。Permanent impact叠加：每笔perm = 0.05*0.02*(0.002)^0.5 = 0.001*0.0447 = 0.0000447元/股，10笔叠加约0.000447元/股（简化计算）。半个spread = 0.02*10 = 0.02元/股（每笔都付）。总成本 ≈ (0.02 + 0.000382 + 0.000447) * 100,000 ≈ 2,083元。但分拆策略降低了timing risk。"
+  explanation: "本题考察market impact模型的实际应用和执行成本分析。关键点：(1) spread cost是固定的，每笔交易都要付；(2) temporary impact是凹函数，分拆可降低总temporary impact；(3) permanent impact会叠加；(4) 分拆还需考虑timing risk。实际中需要在impact cost和timing risk之间权衡，这正是Almgren-Chriss模型解决的问题。"
+  hints:
+    - "先分别计算每个成本分量"
+    - "注意temporary impact和permanent impact的不同叠加方式"
+  rubric: "计算过程(4分)：正确计算impact各分量；策略比较(2分)：合理比较两种策略；风险讨论(2分)：讨论timing risk等额外因素"
+  time_limit_seconds: 600
+
+- id: TR_MICRO_015
+  category: microstructure
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "Amihud illiquidity ratio的计算公式是什么？\nWhat is the formula for the Amihud illiquidity ratio?"
+  options:
+    - "A. ILLIQ = (1/D) * sum(|r_d| / volume_d) / Average of daily absolute return divided by dollar volume"
+    - "B. ILLIQ = std(returns) / mean(volume) / Standard deviation of returns over mean volume"
+    - "C. ILLIQ = spread / mid_price / Spread divided by mid-price"
+    - "D. ILLIQ = turnover / market_cap / Turnover divided by market cap"
+  answer: "A"
+  explanation: "Amihud (2002) illiquidity ratio = (1/D) * sum_{d=1}^{D} (|r_d| / DVOL_d)，其中r_d是日收益率，DVOL_d是日成交金额，D是交易日数。该指标衡量单位成交金额带来的价格变化，数值越大表示流动性越差。它的优点是只需要低频数据即可计算，被广泛用于学术研究中。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_MICRO_016
+  category: microstructure
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在A股市场中，以下哪个特征与美股市场有显著不同？\nWhich of the following features significantly differs between A-share and US equity markets?"
+  options:
+    - "A. A股有涨跌停限制，美股没有（主要交易所） / A-shares have price limits, US stocks generally do not"
+    - "B. A股使用连续撮合，美股使用做市商制度 / A-shares use continuous auction, US uses market makers only"
+    - "C. A股没有盘前交易，美股有 / A-shares have no pre-market, US does"
+    - "D. A股使用T+0结算，美股使用T+1结算 / A-shares use T+0 settlement, US uses T+1"
+  answer: "A"
+  explanation: "A股市场实行10%涨跌停限制（ST股为5%，科创板和创业板注册制为20%），这是与美股最显著的微观结构差异之一。B选项不准确，美股既有做市商也有限价订单簿，A股也有集合竞价和连续竞价；C选项不准确，A股也有集合竞价阶段；D选项不对，A股是T+1交易制度（当日买入次日才能卖出），美股是T+1结算但可以日内交易。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_MICRO_017
+  category: microstructure
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "Price impact的square-root law指的是什么？\nWhat does the square-root law of price impact refer to?"
+  options:
+    - "A. 价格影响与交易量的平方根成正比 / Price impact is proportional to the square root of trading volume"
+    - "B. 价格影响与时间的平方根成正比 / Price impact is proportional to square root of time"
+    - "C. Spread与波动率的平方根成正比 / Spread is proportional to square root of volatility"
+    - "D. 执行成本与持仓量的平方根成正比 / Execution cost is proportional to square root of position size"
+  answer: "A"
+  explanation: "大量实证研究（Bouchaud, 2009; Almgren et al., 2005; Torre, 1997）发现market impact遵循幂律关系：Impact ~ sigma * (Q/V)^delta，其中delta约为0.5（即平方根）。这意味着交易量翻倍，价格影响只增加约41%。这个规律在不同市场、不同时期、不同资产类别中都相当稳健，被认为是市场微观结构的'universal law'之一。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_MICRO_018
+  category: microstructure
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在Kyle (1985)模型的均衡中，以下哪项描述是正确的？\nIn the equilibrium of Kyle's (1985) model, which statement is correct?"
+  options:
+    - "A. 知情交易者提交的订单量与其信息优势（V-p_0）成线性关系，做市商定价规则也是线性的 / The informed trader's order is linear in information advantage, and market maker's pricing rule is also linear"
+    - "B. 知情交易者总是提交最大量的订单以最大化利润 / The informed trader always submits maximum volume"
+    - "C. 做市商可以完全区分知情和不知情订单 / The market maker can perfectly distinguish informed from uninformed orders"
+    - "D. 均衡spread为零因为竞争消除了利润 / Equilibrium spread is zero due to competition"
+  answer: "A"
+  explanation: "Kyle (1985)模型的核心结果是线性均衡：知情交易者的最优策略是x = beta*(V-p_0)，做市商的定价规则是p = p_0 + lambda*y（y=x+u是总订单流）。知情交易者不会全力交易（隐藏信息），做市商无法区分知情和噪音订单但通过lambda调节定价。beta = sigma_u/(2*lambda*sigma_V)，lambda = sigma_V/(2*sigma_u)。这产生了著名的结果：知情交易者获取一半的信息租金。"
+  hints:
+    - "思考知情交易者的最优行为：全力交易 vs 隐藏信息"
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: TR_MICRO_019
+  category: microstructure
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "以下哪种order type最容易遭受adverse selection？\nWhich order type is most susceptible to adverse selection?"
+  options:
+    - "A. Resting limit order (挂单)"
+    - "B. Market order (市价单)"
+    - "C. IOC (Immediate-or-Cancel) order"
+    - "D. Stop-loss order (止损单)"
+  answer: "A"
+  explanation: "Resting limit order（在order book上等待成交的限价单）最容易遭受adverse selection。因为当有新信息到达导致true value发生变化时，限价单可能以不利的价格被执行（被知情交易者'pick off'）。这也被称为'stale quote sniping'。Market order和IOC是主动发起的，交易者可以基于当前信息决策；stop-loss虽然也挂在book上，但其方向与adverse selection相反。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_MICRO_020
+  category: microstructure
+  difficulty: senior
+  type: open_ended
+  points: 5
+  question: "解释为什么在A股市场中，收盘集合竞价阶段（14:57-15:00）的成交量通常异常高，并讨论这对执行策略的影响。\nExplain why trading volume during A-share closing auction (14:57-15:00) is typically abnormally high, and discuss implications for execution strategies."
+  options: []
+  answer: ""
+  explanation: "收盘集合竞价成交量高的原因：(1) 指数基金和ETF需要按收盘价rebalance；(2) TWAP/VWAP算法将剩余量集中在尾盘；(3) 收盘价是结算价和NAV计算的基准；(4) 机构投资者倾向于减少tracking error。对执行策略的影响：可以利用closing auction的高流动性减少market impact；但也面临更高的adverse selection风险；需要考虑closing auction的价格发现效率。"
+  hints:
+    - "思考哪些参与者有收盘价的刚性需求"
+  rubric: "原因分析(2分)：至少给出3个合理原因；策略影响(2分)：讨论流动性利用和风险；实际认知(1分)：了解A股市场具体机制"
+  time_limit_seconds: 300
+
+# ============================================================
+# RISK MANAGEMENT (20 questions)
+# ============================================================
+
+- id: TR_RISK_001
+  category: risk_management
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "以下哪种VaR计算方法最能捕捉非正态分布的尾部风险？\nWhich VaR calculation method best captures tail risk from non-normal distributions?"
+  options:
+    - "A. Parametric VaR (assuming normal distribution)"
+    - "B. Historical simulation VaR"
+    - "C. Monte Carlo simulation VaR with fat-tailed distributions"
+    - "D. Delta-normal VaR"
+  answer: "C"
+  explanation: "Monte Carlo simulation VaR使用fat-tailed分布（如Student-t, 混合正态等）可以最好地捕捉尾部风险。Parametric VaR和Delta-normal VaR假设正态分布，会严重低估尾部风险。Historical simulation虽然不需要分布假设，但受限于历史样本，可能没有观察到极端事件。Monte Carlo可以模拟任意分布和复杂的相关结构。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_RISK_002
+  category: risk_management
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Expected Shortfall (CVaR) 相比VaR的主要优势是什么？\nWhat is the main advantage of Expected Shortfall (CVaR) over VaR?"
+  options:
+    - "A. ES是coherent risk measure，满足次可加性(sub-additivity) / ES is a coherent risk measure satisfying sub-additivity"
+    - "B. ES计算更简单 / ES is simpler to compute"
+    - "C. ES不需要分布假设 / ES requires no distributional assumptions"
+    - "D. ES总是小于VaR / ES is always smaller than VaR"
+  answer: "A"
+  explanation: "ES (Expected Shortfall, 也叫CVaR) 是coherent risk measure（Artzner et al., 1999），满足次可加性：ES(A+B) <= ES(A) + ES(B)。这意味着分散化不会增加风险，符合经济直觉。而VaR不满足次可加性——两个组合合并后的VaR可能超过各自VaR之和。ES定义为E[L | L > VaR_alpha]，即超过VaR阈值的平均损失，它考虑了尾部的形状而不仅仅是分位数。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_RISK_003
+  category: risk_management
+  difficulty: senior
+  type: show_work
+  points: 5
+  question: "一个portfolio持有100万元的股票A（beta=1.2, 日波动率=2%）和50万元的股票B（beta=0.8, 日波动率=3%）。假设两只股票的相关系数为0.6。计算该portfolio的95% 1-day parametric VaR。\nA portfolio holds 1M of stock A (beta=1.2, daily vol=2%) and 0.5M of stock B (beta=0.8, daily vol=3%). Correlation=0.6. Calculate 95% 1-day parametric VaR."
+  options: []
+  answer: "Portfolio variance: sigma_p^2 = w_A^2 * sigma_A^2 + w_B^2 * sigma_B^2 + 2*w_A*w_B*rho*sigma_A*sigma_B。w_A=1,000,000, w_B=500,000, sigma_A=0.02, sigma_B=0.03, rho=0.6。sigma_p^2 = (1M)^2*(0.02)^2 + (0.5M)^2*(0.03)^2 + 2*(1M)*(0.5M)*0.6*0.02*0.03 = 400 + 225 + 360 = 985 (单位：元^2*10^-6 → 即985*10^6*10^-6=985)。等等，让我重算：sigma_p^2(dollar) = (1,000,000*0.02)^2 + (500,000*0.03)^2 + 2*(1,000,000*0.02)*(500,000*0.03)*0.6 = 20,000^2 + 15,000^2 + 2*20,000*15,000*0.6 = 400,000,000 + 225,000,000 + 360,000,000 = 985,000,000。sigma_p = sqrt(985,000,000) = 31,385元。VaR_95% = 1.645 * 31,385 = 51,628元。"
+  explanation: "本题考察参数法VaR的计算。关键步骤：(1) 计算dollar-weighted的portfolio方差；(2) 使用正态分布的分位数（95%对应1.645）乘以portfolio标准差。注意beta信息在此题中未直接使用，因为我们直接给出了个股波动率和相关系数。beta在portfolio层面的市场风险分析中更相关。"
+  hints:
+    - "先计算portfolio的dollar variance"
+    - "95%对应正态分布的1.645倍标准差"
+  rubric: "公式正确(2分)；计算正确(2分)；单位和解释(1分)"
+  time_limit_seconds: 300
+
+- id: TR_RISK_004
+  category: risk_management
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "Kelly criterion建议的最优仓位比例f*的公式是什么（二元结果情况）？\nWhat is the Kelly criterion optimal fraction f* for a binary outcome?"
+  options:
+    - "A. f* = (bp - q) / b，其中b为赔率，p为胜率，q=1-p / where b=odds, p=win prob, q=1-p"
+    - "B. f* = p - q / f* = win prob minus loss prob"
+    - "C. f* = E[return] / Var[return]"
+    - "D. f* = Sharpe ratio / volatility"
+  answer: "A"
+  explanation: "Kelly criterion (Kelly, 1956)的经典公式为f* = (bp - q) / b，其中b是赢时的赔率（赢1元赔b元），p是胜率，q=1-p是败率。也可以写成f* = p - q/b = p - (1-p)/b。Kelly仓位最大化长期对数增长率。在实践中，通常使用half-Kelly或fractional Kelly来降低回撤风险，因为full Kelly的回撤可能非常大。对于连续分布，f* = mu/sigma^2（均值/方差）。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_RISK_005
+  category: risk_management
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "以下哪种stress testing方法基于实际发生过的市场事件？\nWhich stress testing approach is based on actual historical market events?"
+  options:
+    - "A. Historical scenario analysis (历史情景分析)"
+    - "B. Hypothetical scenario analysis (假设情景分析)"
+    - "C. Reverse stress testing (逆向压力测试)"
+    - "D. Sensitivity analysis (敏感性分析)"
+  answer: "A"
+  explanation: "Historical scenario analysis使用实际发生过的市场危机事件（如2008金融危机、2015 A股股灾、2020 COVID crash）作为压力情景，将当时的市场变动应用到当前portfolio。Hypothetical scenarios是假设的极端但未发生的情景；Reverse stress testing从损失阈值反推什么情景会导致该损失；Sensitivity analysis单独改变各风险因子。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_RISK_006
+  category: risk_management
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在Greeks hedging中，一个portfolio的Gamma为正且较大，这意味着什么？\nA portfolio has large positive Gamma. What does this imply?"
+  options:
+    - "A. Portfolio value是标的价格的凸函数，大幅波动时获利 / Portfolio value is convex in underlying price, profits from large moves"
+    - "B. Portfolio value随时间衰减很快 / Portfolio value decays quickly with time"
+    - "C. Portfolio对波动率变化不敏感 / Portfolio is insensitive to volatility changes"
+    - "D. Portfolio需要频繁rebalance才能保持delta neutral / Portfolio needs frequent rebalancing to stay delta neutral"
+  answer: "A"
+  explanation: "正的Gamma意味着portfolio value是标的价格的凸函数。无论价格上涨还是下跌，正Gamma都带来正收益（delta随价格上涨而增大，随价格下跌而减小）。但正Gamma通常需要支付theta（时间衰减）作为代价。D选项也部分正确（大Gamma确实需要频繁rebalance），但A选项是最直接的含义。正Gamma等价于'long convexity'或'long volatility'。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_RISK_007
+  category: risk_management
+  difficulty: expert
+  type: open_ended
+  points: 8
+  question: "设计一个quantitative trading fund的风险管理框架，包括：(1) 仓位层面的风险控制；(2) 策略层面的风险控制；(3) 组合层面的风险控制。每个层面至少列出3个具体的risk limit/metric，并解释触发条件和响应措施。\nDesign a risk management framework for a quantitative trading fund covering position-level, strategy-level, and portfolio-level risk controls. List at least 3 specific risk limits/metrics per level."
+  options: []
+  answer: ""
+  explanation: "参考答案要点：\n(1) 仓位层面：单股持仓上限（如NAV的5%）；个股止损线（如-3% intraday）；行业集中度限制；个股流动性筛选（日均成交额>X）。\n(2) 策略层面：策略最大回撤限制（如-10%停止交易）；策略Sharpe ratio监控（滚动3月<0.5需review）；策略间相关性监控（>0.7需减仓）；单策略杠杆上限。\n(3) 组合层面：总杠杆上限（如2x gross）；净敞口限制（如net exposure在-20%到+20%）；portfolio VaR/ES daily limit；beta exposure limit（如|beta|<0.3）；流动性覆盖比率（如portfolio可在5天内清仓80%）。触发措施：预警→监控频率提高→减仓→停止交易。"
+  hints:
+    - "从单笔交易到整个组合逐层思考"
+    - "每个risk limit都需要trigger和action"
+  rubric: "框架完整性(3分)：三个层面都有覆盖；具体性(3分)：给出了具体数值和metrics；操作性(2分)：有明确的触发条件和响应措施"
+  time_limit_seconds: 600
+
+- id: TR_RISK_008
+  category: risk_management
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Maximum drawdown的定义是什么？\nWhat is the definition of maximum drawdown?"
+  options:
+    - "A. 从任意历史高点到随后最低点的最大跌幅 / Maximum decline from any historical peak to subsequent trough"
+    - "B. 单日最大亏损 / Maximum single-day loss"
+    - "C. 年度最大累计亏损 / Maximum annual cumulative loss"
+    - "D. 低于均值的最大偏差 / Maximum deviation below the mean"
+  answer: "A"
+  explanation: "Maximum drawdown (MDD) = max_{t} (max_{s<=t} P(s) - P(t)) / max_{s<=t} P(s)。即在整个时间序列中，从任意历史高点（peak）到随后低点（trough）的最大百分比下跌幅度。MDD是衡量下行风险的重要指标，投资者和allocator通常非常关注这个指标。Calmar ratio = annualized return / max drawdown。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 45
+
+- id: TR_RISK_009
+  category: risk_management
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在使用杠杆的portfolio中，volatility targeting策略的核心思想是什么？\nWhat is the core idea of a volatility targeting strategy in a leveraged portfolio?"
+  options:
+    - "A. 根据实现波动率动态调整杠杆，维持目标波动率水平 / Dynamically adjust leverage based on realized vol to maintain target vol"
+    - "B. 始终保持最大杠杆 / Always maintain maximum leverage"
+    - "C. 在波动率高时增加杠杆 / Increase leverage when vol is high"
+    - "D. 仅在波动率低于阈值时交易 / Only trade when vol is below threshold"
+  answer: "A"
+  explanation: "Volatility targeting策略的核心是将portfolio的波动率维持在目标水平。当realized volatility低时，增加杠杆（因为risk per unit exposure低）；当realized volatility高时，降低杠杆。公式：leverage = target_vol / estimated_vol。这确保了portfolio在不同市场环境下承担大致相同的风险。Moreira and Muir (2017)发现这种策略可以提高risk-adjusted returns。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_RISK_010
+  category: risk_management
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "以下哪个不是VaR backtesting的常用方法？\nWhich is NOT a common VaR backtesting method?"
+  options:
+    - "A. Kupiec's POF test"
+    - "B. Christoffersen's conditional coverage test"
+    - "C. Augmented Dickey-Fuller test"
+    - "D. Basel traffic light approach"
+  answer: "C"
+  explanation: "Augmented Dickey-Fuller test是单位根检验，用于时间序列的平稳性检测，不是VaR backtesting方法。VaR backtesting的常用方法包括：(1) Kupiec's POF (Proportion of Failures) test：检验突破次数是否符合预期频率；(2) Christoffersen's test：检验突破的独立性和覆盖率；(3) Basel traffic light approach：基于突破次数划分绿/黄/红区。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_RISK_011
+  category: risk_management
+  difficulty: senior
+  type: show_work
+  points: 5
+  question: "一个策略年化收益18%，年化波动率12%，最大回撤15%，无风险利率3%。计算：(1) Sharpe ratio；(2) Calmar ratio；(3) 如果使用Kelly criterion，最优杠杆是多少？（假设收益正态分布）\nA strategy has 18% annual return, 12% annual vol, 15% max drawdown, risk-free rate 3%. Calculate Sharpe, Calmar, and Kelly optimal leverage."
+  options: []
+  answer: "(1) Sharpe ratio = (18% - 3%) / 12% = 15% / 12% = 1.25\n(2) Calmar ratio = 18% / 15% = 1.2\n(3) Kelly leverage (continuous): f* = (mu - r) / sigma^2 = 15% / (12%)^2 = 0.15 / 0.0144 = 10.42x。实际使用时通常取half-Kelly = 5.2x或更低。这个高杠杆数字说明在正态分布假设下Kelly对尾部风险考虑不足。"
+  explanation: "Sharpe ratio衡量单位风险的超额收益；Calmar ratio衡量收益与最大回撤的关系；Kelly criterion给出最大化对数增长率的杠杆。注意Kelly给出了非常高的杠杆（10x+），这是因为正态分布假设低估了尾部风险。实践中使用half-Kelly或更保守的杠杆。"
+  hints:
+    - "Kelly for continuous case: f* = excess_return / variance"
+  rubric: "Sharpe计算(1分)；Calmar计算(1分)；Kelly计算(2分)；实践讨论(1分)"
+  time_limit_seconds: 240
+
+- id: TR_RISK_012
+  category: risk_management
+  difficulty: medium_high
+  type: open_ended
+  points: 5
+  question: "解释多因子风险模型（如Barra）中factor risk和specific risk的分解方法。给出portfolio variance的矩阵公式，并讨论在实际portfolio construction中如何分别管理这两类风险。\nExplain factor risk vs specific risk decomposition in models like Barra. Give the matrix formula for portfolio variance and discuss how to manage each risk type in practice."
+  options: []
+  answer: ""
+  explanation: "在多因子风险模型中，portfolio variance = w'*B*F*B'*w + w'*D*w。第一项是factor risk（通过因子暴露矩阵B和因子协方差矩阵F），第二项是specific risk（对角矩阵D）。Factor risk管理：通过约束因子暴露（如market neutral, sector neutral）；Specific risk管理：通过分散化（持有更多股票降低idiosyncratic risk）。在实践中，量化策略通常持有100-500只股票以充分分散specific risk，同时通过优化约束控制factor exposure在目标范围内。"
+  hints:
+    - "写出portfolio variance的矩阵分解"
+  rubric: "公式正确(2分)；factor risk管理(1.5分)；specific risk管理(1.5分)"
+  time_limit_seconds: 300
+
+- id: TR_RISK_013
+  category: risk_management
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在计算Expected Shortfall时，关于其对尾部事件的敏感性，以下哪项描述是正确的？\nRegarding ES's sensitivity to tail events, which statement is correct?"
+  options:
+    - "A. ES对尾部分布的具体形状敏感，而VaR只依赖于分位数 / ES is sensitive to the shape of the tail distribution, while VaR depends only on the quantile"
+    - "B. ES和VaR对尾部事件同样敏感 / ES and VaR are equally sensitive to tail events"
+    - "C. VaR比ES对极端事件更敏感 / VaR is more sensitive to extreme events than ES"
+    - "D. ES不受极端outlier影响 / ES is unaffected by extreme outliers"
+  answer: "A"
+  explanation: "ES = E[L | L > VaR_alpha]是尾部损失的条件均值，因此它对尾部的整个形状（包括极端事件）都敏感。如果尾部分布从thin-tailed变为fat-tailed，即使VaR_alpha不变，ES也会显著增大。VaR只是一个分位数，不关心超过该分位数后损失有多大。这既是ES的优势（更全面衡量尾部风险），也是其挑战（对极端outlier敏感，估计的variance更大）。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_RISK_014
+  category: risk_management
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "Delta hedging中，对冲频率越高，以下哪项描述是正确的？\nWith more frequent delta hedging, which statement is true?"
+  options:
+    - "A. Hedging error减小但交易成本增加 / Hedging error decreases but transaction costs increase"
+    - "B. Hedging error和交易成本都减小 / Both hedging error and costs decrease"
+    - "C. Hedging error增大但交易成本减小 / Hedging error increases, costs decrease"
+    - "D. 两者都不受影响 / Neither is affected"
+  answer: "A"
+  explanation: "Delta hedging的频率存在trade-off：更频繁的rebalancing使portfolio更接近完美对冲（hedging error减小，趋近于连续对冲的理论极限），但每次rebalancing都会产生交易成本（bid-ask spread, market impact等）。最优对冲频率需要在hedging error和交易成本之间取得平衡。Leland (1985)和Whalley & Wilmott (1997)研究了含交易成本的最优对冲策略。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_RISK_015
+  category: risk_management
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在多因子portfolio中，以下哪种方法最适合控制因子暴露的偏离？\nWhich method is most suitable for controlling factor exposure deviations in a multi-factor portfolio?"
+  options:
+    - "A. 在组合优化中添加因子暴露约束 / Add factor exposure constraints in portfolio optimization"
+    - "B. 等权配置所有股票 / Equal-weight all stocks"
+    - "C. 仅持有市值最大的股票 / Only hold the largest cap stocks"
+    - "D. 每日全部重新建仓 / Completely rebuild positions daily"
+  answer: "A"
+  explanation: "在组合优化中，可以通过约束条件控制因子暴露。例如：|beta_market| < 0.1（市场中性），|exposure_industry| < 0.05（行业中性），|exposure_size| < 0.1等。这在mean-variance optimization框架中实现为线性约束：l <= B'*w <= u，其中B是因子暴露矩阵，l和u是上下限。这是量化投资中控制风险因子暴露的标准做法。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_RISK_016
+  category: risk_management
+  difficulty: senior
+  type: open_ended
+  points: 5
+  question: "解释为什么在市场危机时期，基于正常市场状态估计的VaR往往严重低估实际风险。提出至少两种改进方法。\nExplain why VaR estimated from normal market conditions often severely underestimates risk during crises. Propose at least two improvements."
+  options: []
+  answer: ""
+  explanation: "VaR在危机时失效的原因：(1) 波动率聚类(volatility clustering)：正常期估计的波动率远低于危机期；(2) 相关性跳变(correlation breakdown)：危机时资产相关性急剧上升（趋向1），分散化失效；(3) 尾部过薄(thin tails)：正态假设低估极端事件概率；(4) 流动性蒸发：正常的mark-to-market假设不再成立。改进方法：(1) GARCH/EWMA动态波动率模型；(2) 使用fat-tailed分布（t分布，EVT极值理论）；(3) 添加regime-switching模型捕捉市场状态转换；(4) 压力测试补充VaR；(5) DCC (Dynamic Conditional Correlation) 模型捕捉时变相关性。"
+  hints:
+    - "思考VaR的三个关键假设在危机时如何被打破"
+  rubric: "原因分析(2分)；改进方法(2分)；深度(1分)"
+  time_limit_seconds: 300
+
+- id: TR_RISK_017
+  category: risk_management
+  difficulty: medium_high
+  type: show_work
+  points: 5
+  question: "一个portfolio的VaR(95%, 1-day)为100万元。在正态分布假设下：(1) 计算VaR(99%, 1-day)；(2) 计算VaR(95%, 10-day)；(3) 计算ES(95%, 1-day)。展示计算过程。已知z(95%)=1.645, z(99%)=2.326, phi(z_{95%})=0.1031。\nPortfolio VaR(95%, 1-day)=1M. Under normality: (1) VaR(99%, 1-day); (2) VaR(95%, 10-day); (3) ES(95%, 1-day). Show work."
+  options: []
+  answer: "(1) sigma = VaR(95%)/z(95%) = 100/1.645 = 60.79万。VaR(99%, 1-day) = z(99%)*sigma = 2.326*60.79 = 141.4万。\n(2) VaR(95%, 10-day) = VaR(95%, 1-day) * sqrt(10) = 100 * 3.162 = 316.2万。（square root of time rule）\n(3) ES(95%, 1-day) = sigma * phi(z_{0.95}) / (1-0.95) = 60.79 * 0.1031 / 0.05 = 60.79 * 2.062 = 125.3万。其中phi是标准正态PDF。"
+  explanation: "本题考察VaR和ES的基本计算能力。关键公式：VaR scales with z-score for confidence level changes, with sqrt(T) for time horizon changes。ES under normality = sigma * phi(z_alpha) / alpha。"
+  hints:
+    - "先从VaR(95%)反推sigma"
+    - "ES under normality = sigma * phi(z) / (1-confidence)"
+  rubric: "VaR(99%)计算(1.5分)；VaR(10-day)计算(1.5分)；ES计算(2分)"
+  time_limit_seconds: 240
+
+- id: TR_RISK_018
+  category: risk_management
+  difficulty: expert
+  type: open_ended
+  points: 8
+  question: "描述如何构建一个实时的portfolio risk monitoring系统。包括：数据输入、风险计算引擎、预警机制和报告模块。特别讨论在A股市场环境下的特殊考虑。\nDescribe how to build a real-time portfolio risk monitoring system, including data inputs, risk calculation engine, alert mechanisms, and reporting. Discuss A-share specific considerations."
+  options: []
+  answer: ""
+  explanation: "系统架构：\n(1) 数据输入：实时行情（L1/L2 tick数据）、持仓信息、因子暴露数据、市场日历。\n(2) 计算引擎：实时PnL计算；滚动VaR/ES计算（EWMA或GARCH-based）；因子暴露实时监控；Greek计算（如有衍生品）；集中度指标。\n(3) 预警机制：分级预警（yellow/orange/red）；自动减仓触发器；集合竞价前风险检查。\n(4) 报告：实时dashboard；日终风险报告；异常交易报告。\nA股特殊考虑：涨跌停导致流动性突然消失、T+1制度限制日内风险对冲、集合竞价时段的风险暴露、融资融券的追保机制、停牌股票的风险处理。"
+  hints:
+    - "从数据流到决策的完整链路思考"
+    - "A股的T+1和涨跌停如何影响风险管理"
+  rubric: "架构完整性(3分)；技术细节(2分)；A股特殊考虑(2分)；实用性(1分)"
+  time_limit_seconds: 600
+
+- id: TR_RISK_019
+  category: risk_management
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在Monte Carlo VaR中，使用Cholesky decomposition的目的是什么？\nWhat is the purpose of Cholesky decomposition in Monte Carlo VaR?"
+  options:
+    - "A. 生成具有指定相关结构的随机数 / Generate random numbers with specified correlation structure"
+    - "B. 加速Monte Carlo模拟 / Speed up Monte Carlo simulation"
+    - "C. 减少方差 / Reduce variance"
+    - "D. 将非正态分布转换为正态分布 / Transform non-normal to normal distributions"
+  answer: "A"
+  explanation: "Cholesky decomposition将相关矩阵Sigma分解为L*L'（L为下三角矩阵）。然后用L乘以独立标准正态随机向量z得到具有目标相关结构的随机向量：x = L*z，其中Cov(x) = L*I*L' = Sigma。这是Monte Carlo simulation中生成相关资产价格路径的标准方法。注意Sigma必须是正定矩阵才能进行Cholesky分解。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_RISK_020
+  category: risk_management
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "以下哪个指标衡量portfolio在控制下行风险方面的效率？\nWhich metric measures a portfolio's efficiency in controlling downside risk?"
+  options:
+    - "A. Sortino ratio"
+    - "B. Treynor ratio"
+    - "C. Information ratio"
+    - "D. Jensen's alpha"
+  answer: "A"
+  explanation: "Sortino ratio = (R_p - R_f) / Downside_deviation。与Sharpe ratio不同，Sortino ratio只惩罚低于目标收益率（通常为无风险利率或0）的波动，不惩罚上行波动。这更符合投资者的真实偏好——投资者不厌恶正方向的波动。Treynor ratio用beta作为风险度量；Information ratio用tracking error；Jensen's alpha是绝对超额收益。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 45
+
+# ============================================================
+# MENTAL MATH (15 questions)
+# ============================================================
+
+- id: TR_MATH_001
+  category: mental_math
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "快速计算 Quick calculation: 37 x 43 = ?"
+  options:
+    - "A. 1,591"
+    - "B. 1,601"
+    - "C. 1,571"
+    - "D. 1,611"
+  answer: "A"
+  explanation: "37 x 43 = 37 x 40 + 37 x 3 = 1,480 + 111 = 1,591。另一种方法：(40-3)(40+3) = 1600 - 9 = 1,591。面试中常用的技巧是将乘法分解为接近整十数的计算。"
+  hints:
+    - "尝试分解为(40-3)(40+3)"
+  rubric: ""
+  time_limit_seconds: 30
+
+- id: TR_MATH_002
+  category: mental_math
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "一枚硬币连续抛3次，至少出现2次正面的概率是多少？\nA fair coin is flipped 3 times. What is the probability of at least 2 heads?"
+  options:
+    - "A. 1/2"
+    - "B. 3/8"
+    - "C. 1/4"
+    - "D. 5/8"
+  answer: "A"
+  explanation: "至少2次正面 = P(2次) + P(3次) = C(3,2)*(1/2)^3 + C(3,3)*(1/2)^3 = 3/8 + 1/8 = 4/8 = 1/2。也可以用对称性：由于P(>=2 heads) = P(>=2 tails) = P(<=1 heads)，而两者之和为1，所以P(>=2 heads) = 1/2。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 30
+
+- id: TR_MATH_003
+  category: mental_math
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "一只股票价格从100元跌到80元，再从80元涨回100元。总收益率是多少？\nA stock drops from 100 to 80, then rises back to 100. What is the total return?"
+  options:
+    - "A. 0%"
+    - "B. -20% + 25% = 5%"
+    - "C. 0%（价格回到原点）/ 0% (price returned to starting point)"
+    - "D. 以上都不对 / None of the above"
+  answer: "C"
+  explanation: "虽然下跌收益率为-20%而上涨收益率为+25%（80*1.25=100），但总收益率为(100-100)/100 = 0%。这里的关键是收益率不能简单相加（-20%+25%≠5%），因为计算基数不同。复合收益率为(1-0.2)*(1+0.25)-1 = 0.8*1.25-1 = 0。这是一道经典的面试陷阱题。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 20
+
+- id: TR_MATH_004
+  category: mental_math
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "一个at-the-money European call option（S=K=100, T=1年, sigma=20%, r=0%）的大概价格是多少？使用近似公式 C ≈ 0.4 * S * sigma * sqrt(T)。\nApproximate price of an ATM European call (S=K=100, T=1yr, sigma=20%, r=0%) using C ≈ 0.4 * S * sigma * sqrt(T)."
+  options:
+    - "A. 约8元 / Approximately 8"
+    - "B. 约12元 / Approximately 12"
+    - "C. 约4元 / Approximately 4"
+    - "D. 约16元 / Approximately 16"
+  answer: "A"
+  explanation: "使用ATM近似公式：C ≈ 0.4 * S * sigma * sqrt(T) = 0.4 * 100 * 0.20 * 1 = 8元。这个近似公式来自于BSM公式在ATM处的Taylor展开，精确值（BSM）约为7.97元。记住这个0.4倍（更精确的系数是sqrt(2*pi)/2 ≈ 0.3989）在面试中非常有用。"
+  hints:
+    - "ATM call ≈ 0.4 * S * sigma * sqrt(T) 是常用近似"
+  rubric: ""
+  time_limit_seconds: 30
+
+- id: TR_MATH_005
+  category: mental_math
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "一只债券的modified duration为5年，yield上升25bp。债券价格大约变化多少？\nA bond has modified duration of 5 years. Yield increases by 25bp. Approximate price change?"
+  options:
+    - "A. 下跌约1.25% / Drops approximately 1.25%"
+    - "B. 下跌约0.125% / Drops approximately 0.125%"
+    - "C. 下跌约5% / Drops approximately 5%"
+    - "D. 上涨约1.25% / Rises approximately 1.25%"
+  answer: "A"
+  explanation: "债券价格变化的一阶近似：delta_P/P ≈ -D_mod * delta_y = -5 * 0.0025 = -0.0125 = -1.25%。Modified duration是价格对收益率变化的一阶敏感度。25bp = 0.25% = 0.0025。这是固定收益面试中最基本的计算之一。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 20
+
+- id: TR_MATH_006
+  category: mental_math
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "快速估算 Quick estimate: e^0.05 ≈ ?"
+  options:
+    - "A. 1.0513"
+    - "B. 1.0500"
+    - "C. 1.0488"
+    - "D. 1.0526"
+  answer: "A"
+  explanation: "e^x ≈ 1 + x + x^2/2 + x^3/6。对于x=0.05：e^0.05 ≈ 1 + 0.05 + 0.0025/2 + 0.000125/6 = 1 + 0.05 + 0.00125 + 0.0000208 ≈ 1.05127。精确值为1.05127...。在面试中，记住对于小x，e^x ≈ 1 + x + x^2/2即可达到很好的精度。"
+  hints:
+    - "Taylor展开：e^x ≈ 1 + x + x^2/2"
+  rubric: ""
+  time_limit_seconds: 20
+
+- id: TR_MATH_007
+  category: mental_math
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "一个游戏：抛一枚公平硬币，正面赢3元，反面输2元。你的expected value是多少？你愿意花多少钱玩这个游戏？\nA game: flip a fair coin, heads win 3, tails lose 2. What is EV? How much would you pay to play?"
+  options:
+    - "A. EV = 0.5元，最多愿付0.5元 / EV = 0.5, pay at most 0.5"
+    - "B. EV = 1元，最多愿付1元 / EV = 1, pay at most 1"
+    - "C. EV = 0元，不愿付钱 / EV = 0, won't pay"
+    - "D. EV = 2.5元，最多愿付2.5元 / EV = 2.5, pay at most 2.5"
+  answer: "A"
+  explanation: "EV = 0.5 * 3 + 0.5 * (-2) = 1.5 - 1.0 = 0.5元。作为risk-neutral player，最多愿意支付0.5元来参与这个游戏（如果费用>EV，则期望亏损）。如果你是risk-averse，可能只愿意付更少。这是trading面试中最基本的EV计算题。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 20
+
+- id: TR_MATH_008
+  category: mental_math
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "Fermi估算：上海证券交易所一个交易日大约有多少笔交易？\nFermi estimation: How many trades occur on Shanghai Stock Exchange in one trading day?"
+  options:
+    - "A. 约1亿笔 / Approximately 100 million"
+    - "B. 约1000万笔 / Approximately 10 million"
+    - "C. 约10亿笔 / Approximately 1 billion"
+    - "D. 约100万笔 / Approximately 1 million"
+  answer: "A"
+  explanation: "估算思路：上交所约有2000只股票；每只股票平均每天约5万笔交易（活跃股更多，不活跃股更少）；2000 * 50,000 = 100,000,000 = 1亿笔。另一个角度：上交所日均成交额约3000-5000亿元，假设平均每笔交易3-5万元，则约1000-1500万笔。考虑到小额散户交易很多，实际笔数可能接近1亿。数量级约为10^7到10^8。"
+  hints:
+    - "从上市公司数量和每只股票平均交易笔数入手"
+  rubric: ""
+  time_limit_seconds: 45
+
+- id: TR_MATH_009
+  category: mental_math
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "快速计算 Quick calculation: 125 / 8 = ?"
+  options:
+    - "A. 15.625"
+    - "B. 15.5"
+    - "C. 16.125"
+    - "D. 14.625"
+  answer: "A"
+  explanation: "125 / 8：可以先算 125/8 = 1000/64 = 15.625。或者：8*15 = 120，余5，5/8 = 0.625，所以125/8 = 15.625。在交易中，快速的除法运算（特别是涉及常见数字如8, 16, 32）很重要。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 15
+
+- id: TR_MATH_010
+  category: mental_math
+  difficulty: senior
+  type: show_work
+  points: 5
+  question: "一个策略在100个交易日中有58天盈利，平均盈利日赚1.5万元，平均亏损日亏2万元。计算：(1) 总PnL；(2) Profit factor；(3) 日均PnL的t-statistic（假设日PnL标准差为4万元）。该策略在统计上显著吗？\n58 wins in 100 days, avg win=15K, avg loss=20K. Calculate: (1) Total PnL; (2) Profit factor; (3) t-stat of daily PnL (assume daily PnL std=40K). Is it statistically significant?"
+  options: []
+  answer: "Total PnL = 58*1.5万 - 42*2万 = 87万 - 84万 = 3万元。\nProfit Factor = 87/84 = 1.036。\n日均PnL = 3万/100 = 0.03万 = 300元。t-stat = (mean PnL)/(std/sqrt(n)) = 300/(40000/sqrt(100)) = 300/4000 = 0.075。t-stat=0.075远小于1.96（5%显著性水平），策略在统计上不显著。虽然PnL为正，但完全可能是随机噪音。"
+  explanation: "本题考察快速计算能力和统计思维。关键洞察：看似盈利的策略（3万元总利润），在考虑日PnL的波动性后，其t-statistic极低（0.075），远不显著。这提醒我们不能仅看总PnL，需要看risk-adjusted和统计显著的metrics。"
+  hints:
+    - "t-stat = mean / (std / sqrt(n))"
+  rubric: "PnL计算(1分)；Profit factor(1分)；t-stat计算(2分)；显著性判断(1分)"
+  time_limit_seconds: 180
+
+- id: TR_MATH_011
+  category: mental_math
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "一个put option的delta为-0.3。如果标的价格从100涨到102，期权价格大约变化多少？\nA put has delta = -0.3. If underlying moves from 100 to 102, approximate option price change?"
+  options:
+    - "A. 下跌约0.6元 / Drops approximately 0.6"
+    - "B. 上涨约0.6元 / Rises approximately 0.6"
+    - "C. 下跌约0.3元 / Drops approximately 0.3"
+    - "D. 上涨约0.3元 / Rises approximately 0.3"
+  answer: "A"
+  explanation: "Delta = dOption/dS。Put的delta为-0.3，标的上涨2元，期权价格变化 ≈ delta * dS = -0.3 * 2 = -0.6元（下跌0.6元）。Put option与标的价格反向变动，这是合理的。注意这是一阶近似，大幅变动时需要考虑gamma效应。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 15
+
+- id: TR_MATH_012
+  category: mental_math
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "快速估算 Quick estimate: sqrt(170) ≈ ?"
+  options:
+    - "A. 13.04"
+    - "B. 12.85"
+    - "C. 13.42"
+    - "D. 12.50"
+  answer: "A"
+  explanation: "13^2 = 169，所以sqrt(170) ≈ 13 + (170-169)/(2*13) = 13 + 1/26 ≈ 13.038。精确值为13.038...。使用线性近似：sqrt(a^2 + b) ≈ a + b/(2a)。这个技巧在面试中估算标准差等场景中非常有用。"
+  hints:
+    - "找最接近的完全平方数：13^2 = 169"
+  rubric: ""
+  time_limit_seconds: 20
+
+- id: TR_MATH_013
+  category: mental_math
+  difficulty: medium_high
+  type: show_work
+  points: 5
+  question: "你有60%的概率赢得一场赌注，每次赢得3元，输则损失2元。连续独立玩5次。计算：(1) 至少赢3次的概率；(2) 5次游戏的期望总收益；(3) 5次游戏总收益的标准差。展示计算过程。\nWin prob=60%, win 3, lose 2, play 5 times independently. Calculate: (1) P(at least 3 wins); (2) Expected total payoff over 5 games; (3) Std dev of total payoff. Show work."
+  options: []
+  answer: "(1) P(>=3) = P(3) + P(4) + P(5) = C(5,3)*0.6^3*0.4^2 + C(5,4)*0.6^4*0.4 + 0.6^5 = 10*0.216*0.16 + 5*0.1296*0.4 + 0.07776 = 0.3456 + 0.2592 + 0.07776 = 0.6826 ≈ 68.3%。\n(2) 每次EV = 0.6*3 + 0.4*(-2) = 1.8 - 0.8 = 1.0元。5次总EV = 5*1.0 = 5.0元。\n(3) 每次Var = E[X^2] - (E[X])^2。E[X^2] = 0.6*9 + 0.4*4 = 5.4 + 1.6 = 7.0。Var = 7.0 - 1.0 = 6.0。5次总Var = 5*6.0 = 30.0。Std = sqrt(30) ≈ 5.48元。"
+  explanation: "本题综合考察概率计算、期望值和方差。关键：(1) 二项分布概率计算；(2) 独立随机变量之和的期望 = 期望之和；(3) 独立随机变量之和的方差 = 方差之和。"
+  hints:
+    - "每次游戏的payoff是独立的"
+  rubric: "概率计算(2分)；期望值(1.5分)；标准差(1.5分)"
+  time_limit_seconds: 180
+
+- id: TR_MATH_014
+  category: mental_math
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "快速估算：一只年化波动率为30%的股票，其daily 1-sigma move大约是多少？（假设一年252个交易日）\nQuick estimate: A stock with 30% annual vol has approximately what daily 1-sigma move? (252 trading days/year)"
+  options:
+    - "A. 约1.89% / Approximately 1.89%"
+    - "B. 约1.20% / Approximately 1.20%"
+    - "C. 约2.50% / Approximately 2.50%"
+    - "D. 约0.12% / Approximately 0.12%"
+  answer: "A"
+  explanation: "Daily vol = Annual vol / sqrt(252) = 30% / sqrt(252)。sqrt(252) ≈ sqrt(256) = 16（近似）。所以daily vol ≈ 30%/16 = 1.875% ≈ 1.89%。更精确地，sqrt(252) = 15.875，30%/15.875 = 1.89%。记住sqrt(252) ≈ 16这个近似在trading面试中非常有用。"
+  hints:
+    - "sqrt(252) ≈ 16"
+  rubric: ""
+  time_limit_seconds: 20
+
+- id: TR_MATH_015
+  category: mental_math
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "一个portfolio价值1000万元，beta为1.3。如果市场今天下跌2%，portfolio预期损失多少？\nPortfolio value 10M, beta=1.3. If market drops 2% today, expected portfolio loss?"
+  options:
+    - "A. 26万元 / 260K"
+    - "B. 20万元 / 200K"
+    - "C. 13万元 / 130K"
+    - "D. 30万元 / 300K"
+  answer: "A"
+  explanation: "Portfolio expected return ≈ beta * market return = 1.3 * (-2%) = -2.6%。Expected loss = 1000万 * 2.6% = 26万元。这是CAPM的直接应用。Beta衡量portfolio对市场的敏感度，beta>1意味着portfolio比市场波动更大。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 15
+
+# ============================================================
+# MARKET MAKING (20 questions)
+# ============================================================
+
+- id: TR_MM_001
+  category: market_making
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在Avellaneda-Stoikov做市模型中，reservation price与mid-price的偏移方向取决于什么？\nIn the Avellaneda-Stoikov market-making model, what determines the direction of reservation price offset from mid-price?"
+  options:
+    - "A. 当前库存的大小和方向 / Current inventory size and direction"
+    - "B. 历史波动率 / Historical volatility"
+    - "C. 做市商的资本金 / Market maker's capital"
+    - "D. 订单到达率 / Order arrival rate"
+  answer: "A"
+  explanation: "Avellaneda-Stoikov (2008) 模型的reservation price为：r(s,q,t) = s - q*gamma*sigma^2*(T-t)，其中s是mid-price，q是库存，gamma是risk aversion，sigma是波动率，T-t是剩余时间。当q>0（多头库存）时，reservation price低于mid-price（做市商想卖出减少库存），反之亦然。库存管理是做市策略的核心。"
+  hints:
+    - "思考做市商在多头库存时希望做什么"
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_MM_002
+  category: market_making
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "做市商面临的两个主要风险是什么？\nWhat are the two primary risks faced by a market maker?"
+  options:
+    - "A. Inventory risk和adverse selection risk"
+    - "B. Credit risk和operational risk"
+    - "C. Inflation risk和currency risk"
+    - "D. Liquidity risk和interest rate risk"
+  answer: "A"
+  explanation: "做市商的两个核心风险：(1) Inventory risk - 持有头寸面临的价格波动风险，库存越大风险越大；(2) Adverse selection risk - 与知情交易者成交导致的损失，知情交易者总是在正确的方向上交易。做市商需要在提供流动性（赚取spread）和管理这两个风险之间取得平衡。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 45
+
+- id: TR_MM_003
+  category: market_making
+  difficulty: senior
+  type: open_ended
+  points: 8
+  question: "Market Making Game (Jane Street style): 我要卖给你一个mystery box，里面有一个数字X。X是从1到100均匀随机抽取的。你可以问我一个YES/NO问题来获取关于X的信息，然后你需要给出你的bid和ask（spread至少为5）。你的对手也在做同样的事情。问题是：'X是否大于50？' 我回答 'YES'。请给出你的bid/ask，并解释你的定价逻辑。\nMarket Making Game: I sell you a mystery box with number X drawn uniformly from 1-100. You ask one YES/NO question, then quote bid/ask (min spread=5). Your question: 'Is X > 50?' Answer: 'YES'. Give your bid/ask and explain."
+  options: []
+  answer: ""
+  explanation: "已知X > 50，X均匀分布在51-100上，E[X] = 75.5。作为做市商，bid/ask应该以75.5为中心。最小spread为5，所以基础报价为73/78。但需要考虑：(1) 对手可能有不同信息（他们问了不同问题）；(2) 如果对手的bid高于你的ask，他可能知道X较大；(3) 可以根据对手行为调整。一个合理的初始报价：73/78（spread=5，居中于75.5）。如果需要更保守：71/79（spread=8，留出adverse selection buffer）。竞争激烈时收窄到73/78。"
+  hints:
+    - "先计算条件期望E[X|X>50]"
+    - "考虑对手可能掌握的信息"
+  rubric: "期望值计算(2分)；合理的bid/ask(2分)；对手信息的考虑(2分)；动态调整策略(2分)"
+  time_limit_seconds: 300
+
+- id: TR_MM_004
+  category: market_making
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在做市中，'skewing the quotes'是什么意思？\nIn market making, what does 'skewing the quotes' mean?"
+  options:
+    - "A. 根据库存方向不对称地偏移bid和ask / Asymmetrically shifting bid and ask based on inventory direction"
+    - "B. 报出虚假的价格 / Quoting fake prices"
+    - "C. 在不同交易所报不同价格 / Quoting different prices on different exchanges"
+    - "D. 增加spread的宽度 / Widening the spread"
+  answer: "A"
+  explanation: "Quote skewing是做市商根据库存状况不对称调整报价的策略。例如，如果做市商持有多头库存（需要卖出减少库存），会降低ask价格（更aggressive地卖出）并降低bid价格（less aggressive地买入）。这通过不对称地调整bid和ask的价格来管理库存风险。在Avellaneda-Stoikov模型中，skew由inventory q和gamma*sigma^2*(T-t)决定。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_MM_005
+  category: market_making
+  difficulty: expert
+  type: show_work
+  points: 8
+  question: "Dice Market Making Game: 我有一枚公平的六面骰子。我掷了但你不知道结果。你需要对骰子的点数做市（给出bid和ask）。现在我告诉你：点数大于2。请更新你的报价。然后我又告诉你：点数是偶数。请再次更新你的报价。展示每步的计算过程。\nDice Game: I roll a fair die, hidden from you. Quote bid/ask. Info 1: result > 2. Update. Info 2: result is even. Update again. Show all work."
+  options: []
+  answer: "初始状态：E[X] = 3.5，spread可报3/4（围绕3.5）。\n\n信息1（X > 2）：可能值为{3,4,5,6}，等概率。E[X|X>2] = (3+4+5+6)/4 = 4.5。更新报价：4/5（围绕4.5，spread=1）。\n\n信息2（X是偶数 且 X>2）：可能值为{4,6}，等概率。E[X|X>2, X even] = (4+6)/2 = 5.0。更新报价：4.5/5.5（围绕5.0，spread=1），或更紧的5/5（极限情况）。实际中考虑adverse selection，保留一些spread：4/6或4.5/5.5。"
+  explanation: "本题考察贝叶斯更新和做市定价。关键：(1) 每次获得新信息后，更新后验分布并重新计算期望；(2) Spread的设定需要考虑剩余不确定性和adverse selection风险；(3) 信息越多，不确定性越小，spread可以越窄。"
+  hints:
+    - "每次更新条件期望"
+    - "Spread应反映剩余不确定性"
+  rubric: "贝叶斯更新(3分)：每步正确计算条件期望；报价合理性(3分)：spread反映不确定性；逻辑清晰(2分)"
+  time_limit_seconds: 300
+
+- id: TR_MM_006
+  category: market_making
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在optimal market making中，为什么做市商的最优spread通常大于零（即使没有交易成本）？\nIn optimal market making, why is the optimal spread typically positive even without transaction costs?"
+  options:
+    - "A. 因为adverse selection和inventory risk需要补偿 / Because adverse selection and inventory risk require compensation"
+    - "B. 因为监管要求最小spread / Because regulations require minimum spread"
+    - "C. 因为做市商有市场垄断权 / Because market makers have monopoly power"
+    - "D. 因为价格必须是离散的 / Because prices must be discrete"
+  answer: "A"
+  explanation: "即使没有交易成本，做市商的最优spread仍然为正，原因是：(1) Adverse selection - 部分交易对手拥有私有信息，做市商需要spread来补偿与知情交易者交易的损失；(2) Inventory risk - 持有头寸面临价格风险，spread补偿了这种风险。在Glosten-Milgrom模型中，spread纯粹由adverse selection驱动；在Avellaneda-Stoikov模型中，还包含inventory risk premium。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_MM_007
+  category: market_making
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在做市策略中，'penny jumping'（或front-running limit orders）指的是什么？\nIn market making, what is 'penny jumping'?"
+  options:
+    - "A. 在现有最优限价单前面以极小价差挂单以获得时间优先 / Placing orders slightly ahead of existing best limit orders"
+    - "B. 频繁小额交易以操纵价格 / Making frequent small trades to manipulate prices"
+    - "C. 将大单拆分为小单 / Splitting large orders into small ones"
+    - "D. 在收盘前快速下单 / Placing orders quickly before market close"
+  answer: "A"
+  explanation: "Penny jumping是指在order book上现有的best bid/ask前面以极小的价格改进（如1个tick）挂单，以获得价格优先权。例如，如果best bid为10.00，penny jumper会挂10.01的bid。这样可以在只承担微小额外风险的情况下获得execution priority。这种行为在HFT中很常见，也引发了关于市场公平性的讨论。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 45
+
+- id: TR_MM_008
+  category: market_making
+  difficulty: expert
+  type: open_ended
+  points: 8
+  question: "Card Game Market Making (Jane Street style): 从一副标准52张扑克牌中随机抽取5张。'产品'是5张牌点数之和（A=1, J=11, Q=12, K=13, 2-10按面值）。(1) 在没有任何信息时，给出你的bid/ask。(2) 现在你知道5张牌中有2张是K。更新报价。(3) 讨论最优spread应如何确定。\nCard Game: 5 cards drawn from standard 52-card deck. Product = sum of card values (A=1, J=11, Q=12, K=13). (1) Quote without info. (2) Update given 2 Kings. (3) Discuss optimal spread."
+  options: []
+  answer: ""
+  explanation: "(1) 无信息时：每张牌的期望值 = (1+2+...+13)*4/52 * 13/13 = (91/13) = 7。5张的期望总和 = 5*7 = 35。报价：33/37（spread=4）。\n(2) 已知2张K（值=13）：已确定26点。剩余3张从剩余48张（减去2张K，还有2张K和46张其他）中抽取。剩余牌的均值 = (91*4 - 13*2)/48 = (364-26)/48 = 338/48 = 7.042。3张期望 = 21.125。总期望 = 26 + 21.125 = 47.125。更新报价：45/49（spread=4）。\n(3) 最优spread取决于：剩余不确定性（方差）、对手信息优势、竞争强度。可以用剩余方差来校准。"
+  hints:
+    - "先算单张牌的期望值"
+    - "更新后注意从修改后的牌堆中计算"
+  rubric: "基础期望计算(2分)；条件更新(3分)；spread讨论(3分)"
+  time_limit_seconds: 480
+
+- id: TR_MM_009
+  category: market_making
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在Nash equilibrium中，两个做市商同时选择spread。如果做市商A收窄spread，做市商B的最优反应通常是什么？\nIn Nash equilibrium, two market makers choose spreads simultaneously. If A tightens spread, what is B's best response?"
+  options:
+    - "A. 也收窄spread以保持竞争力 / Also tighten spread to remain competitive"
+    - "B. 扩大spread以弥补流失的量 / Widen spread to compensate for lost volume"
+    - "C. 保持spread不变 / Keep spread unchanged"
+    - "D. 退出市场 / Exit the market"
+  answer: "A"
+  explanation: "在Bertrand-style竞争中，做市商竞争是通过价格（spread）进行的。如果A收窄spread，更多的order flow会流向A。B的最优反应通常是也收窄spread以保持竞争力。这类似于Bertrand价格竞争，均衡趋向于competitive spread（接近边际成本，即adverse selection cost + inventory cost）。但如果A的spread已经低于B的成本，B可能选择专注于不同的客户群或退出。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_MM_010
+  category: market_making
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "做市商的P&L主要由哪些部分组成？\nWhat are the main components of a market maker's P&L?"
+  options:
+    - "A. Spread收入 - Adverse selection损失 - Inventory holding cost / Spread income - adverse selection loss - inventory cost"
+    - "B. 仅spread收入 / Spread income only"
+    - "C. 资本利得 + 股息收入 / Capital gains + dividend income"
+    - "D. 手续费返还 / Commission rebates only"
+  answer: "A"
+  explanation: "做市商P&L = Spread capture（每笔成交赚取半个spread）- Adverse selection cost（与知情交易者交易的损失）- Inventory holding cost（持有头寸的风险成本/hedging成本）+ Rebates（交易所提供的maker rebate，如果有）。成功的做市商需要spread capture大于adverse selection和inventory cost之和。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 45
+
+- id: TR_MM_011
+  category: market_making
+  difficulty: senior
+  type: open_ended
+  points: 5
+  question: "解释flow toxicity的概念及其对做市策略的影响。描述至少3种度量toxicity的方法，并说明做市商应如何根据toxicity水平动态调整策略。\nExplain flow toxicity and its impact on market making. Describe at least 3 methods to measure toxicity and how market makers should dynamically adjust strategies based on toxicity levels."
+  options: []
+  answer: ""
+  explanation: "Flow toxicity指order flow中知情交易的比例。度量方法：(1) VPIN - 基于volume bucketing的知情交易概率估计；(2) Realized spread - 成交后一段时间的price impact，高realized spread说明high toxicity；(3) Price impact ratio - 短期impact vs长期impact的比率；(4) Adverse selection component of spread - 通过Huang-Stoll分解。做市商调整：toxicity高时扩大spread、减少挂单量、增加对冲频率；toxicity低时收窄spread、增加挂单量以获取更多flow。"
+  hints:
+    - "从信息不对称的角度思考"
+  rubric: "概念解释(1分)；度量方法(2分，至少3种)；策略调整(2分)"
+  time_limit_seconds: 300
+
+- id: TR_MM_012
+  category: market_making
+  difficulty: expert
+  type: show_work
+  points: 8
+  question: "Auction Game: 一个sealed-bid second-price auction（Vickrey auction）。你和另外2个竞标者竞拍一件商品，该商品对你的价值V服从[0,100]均匀分布（每人独立抽取）。在second-price auction中，(1) 你的最优竞标策略是什么？(2) 如果改为first-price auction，你的最优竞标策略是什么？(3) 在两种拍卖中，你的expected payment相同吗？\nVickrey auction with 3 bidders, values uniform on [0,100]. (1) Optimal bid in second-price? (2) Optimal bid in first-price? (3) Same expected payment?"
+  options: []
+  answer: "(1) Second-price auction：最优策略是truthful bidding，b(v) = v。因为在second-price中，出价不影响你支付的价格（支付第二高价），所以真实报价是弱占优策略。\n\n(2) First-price auction（3个bidders，uniform[0,100]）：最优竞标函数为 b(v) = v * (n-1)/n = v * 2/3。直觉：你需要在winning（出价高）和paying less（出价低）之间权衡。\n\n推导：对称均衡中，假设b(v) = alpha*v。如果你出价b，winning概率 = P(b > b(v_j), for all j) = P(v_j < b/alpha, for all j) = (b/alpha)^(n-1)。期望收益 = (v-b)*(b/alpha)^(n-1)。对b求导令其为0：(n-1)*(v-b)*b^(n-2)/alpha^(n-1) - b^(n-1)/alpha^(n-1) = 0。解得 b = v*(n-1)/n = 2v/3。\n\n(3) Revenue Equivalence Theorem：在对称独立私有价值模型中，两种拍卖的expected payment相同。E[payment|second-price, win] = E[second highest value | v wins] = v*(n-1)/(n+1)*something... 实际上，expected revenue per bidder在两种拍卖中相等，这是Revenue Equivalence Theorem的结论。"
+  explanation: "本题考察auction theory基础。关键结果：(1) Second-price auction中truthful bidding是占优策略；(2) First-price auction中最优bid是value的shading，b(v) = v*(n-1)/n；(3) Revenue Equivalence Theorem保证在标准假设下，两种拍卖产生相同的期望收入。"
+  hints:
+    - "Second-price auction中，你的出价不影响你支付的价格"
+    - "First-price中考虑对称均衡 b(v) = alpha*v"
+  rubric: "Second-price分析(2分)；First-price推导(3分)；Revenue equivalence(3分)"
+  time_limit_seconds: 600
+
+- id: TR_MM_013
+  category: market_making
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在maker-taker fee model中，以下哪项描述是正确的？\nIn the maker-taker fee model, which statement is correct?"
+  options:
+    - "A. 提供流动性的limit order获得rebate，消耗流动性的market order支付fee / Limit orders get rebates, market orders pay fees"
+    - "B. 所有订单支付相同费用 / All orders pay the same fee"
+    - "C. Market order获得rebate / Market orders get rebates"
+    - "D. 交易所不收取任何费用 / Exchanges charge no fees"
+  answer: "A"
+  explanation: "Maker-taker fee model是现代交易所的主流收费模式。'Maker'（提供流动性的limit order）获得rebate（如-0.2bp），激励流动性供给；'Taker'（消耗流动性的market order）支付fee（如+0.3bp），交易所的收入来自taker fee与maker rebate的差额。这种模式鼓励更多的limit order挂在book上，增加市场深度。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 45
+
+- id: TR_MM_014
+  category: market_making
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在Minimax策略中，一个做市商面对一个可能是知情或不知情的交易者。做市商应该如何设定spread？\nIn a minimax strategy, a market maker faces a possibly informed or uninformed trader. How should spread be set?"
+  options:
+    - "A. 设定spread使得最坏情况下的损失最小化 / Set spread to minimize worst-case loss"
+    - "B. 设定spread使得平均利润最大化 / Set spread to maximize average profit"
+    - "C. 设定最窄的spread / Set the tightest possible spread"
+    - "D. 设定最宽的spread / Set the widest possible spread"
+  answer: "A"
+  explanation: "Minimax策略是博弈论中的保守策略：做市商假设交易对手会选择对做市商最不利的策略（worst case），然后在这个假设下最优化自己的行动。这意味着spread设定要在'太窄（被知情交易者exploit）'和'太宽（失去不知情交易者的flow）'之间找到最优点，使得最坏情况下的损失最小。这比期望利润最大化更保守但更robust。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_MM_015
+  category: market_making
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在做市过程中，如果observed order flow显示大量aggressive buying（连续lift asks），做市商应该如何调整？\nIf observed order flow shows aggressive buying (continuously lifting asks), how should a market maker adjust?"
+  options:
+    - "A. 提高bid和ask价格，且提高ask更多 / Raise both bid and ask, with ask raised more"
+    - "B. 降低bid和ask价格 / Lower both bid and ask"
+    - "C. 只提高ask，保持bid不变 / Raise ask only, keep bid unchanged"
+    - "D. 保持价格不变，增加挂单量 / Keep prices unchanged, increase size"
+  answer: "A"
+  explanation: "大量aggressive buying可能表明：(1) 有知情交易者在买入（价格即将上涨）；(2) 做市商的ask被持续成交，库存变为短头寸。做市商应该：提高bid和ask以反映新的fair value信息（价格可能上涨），同时ask提高更多以减慢卖出速度（因为已经积累了短头寸），或者等效地说，通过skew将quotes向上偏移。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_MM_016
+  category: market_making
+  difficulty: senior
+  type: open_ended
+  points: 5
+  question: "描述一个完整的做市策略回测框架，包括：(1) 需要什么数据？(2) 如何模拟订单成交？(3) 主要的回测陷阱有哪些？\nDescribe a complete market-making strategy backtesting framework: (1) Data requirements? (2) Order fill simulation? (3) Main backtesting pitfalls?"
+  options: []
+  answer: ""
+  explanation: "(1) 数据：Level 2/Level 3 order book数据（包括每个价格级别的深度）；tick-level成交数据（价格、量、方向）；timestamps精确到微秒级。\n(2) 订单成交模拟：不能简单假设价格touch就成交（过于乐观）；需要模拟queue position（FIFO or pro-rata）；考虑self-impact（你的订单会影响book的形状）；模拟partial fills；考虑latency（从信号到执行的延迟）。\n(3) 回测陷阱：Look-ahead bias（使用未来信息）；Fill assumption bias（假设在bid/ask挂单总能成交）；忽略queue position（实际需要排队等待）；忽略market impact（大单影响价格）；过拟合参数；忽略异常情况（涨跌停、停牌）。"
+  hints:
+    - "做市回测中最大的坑是fill assumption"
+  rubric: "数据描述(1分)；成交模拟(2分)；陷阱识别(2分)"
+  time_limit_seconds: 300
+
+- id: TR_MM_017
+  category: market_making
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在Avellaneda-Stoikov模型中，最优ask spread delta^a和bid spread delta^b的closed-form solution涉及以下哪个关键函数？\nIn the Avellaneda-Stoikov model, the closed-form optimal spreads involve which key function?"
+  options:
+    - "A. 涉及gamma, sigma, kappa（订单到达率参数），以及Lambert W function或对数函数 / Involves gamma, sigma, kappa, and logarithmic/Lambert W functions"
+    - "B. 仅涉及线性函数 / Only linear functions"
+    - "C. 涉及Black-Scholes公式 / Involves the Black-Scholes formula"
+    - "D. 涉及Fourier变换 / Involves Fourier transforms"
+  answer: "A"
+  explanation: "Avellaneda-Stoikov模型中，假设订单到达率为lambda(delta) = A*exp(-k*delta)（delta为spread的一半），最优spread为：delta^{a,b} = (1/gamma)*ln(1 + gamma/k) ± q*gamma*sigma^2*(T-t)/2。第一项涉及对数函数，反映了spread与risk aversion和订单到达弹性的关系；第二项是库存skew项。其中gamma是risk aversion，k是订单到达率的价格弹性。"
+  hints:
+    - "假设订单到达率为指数衰减函数"
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: TR_MM_018
+  category: market_making
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在ETF做市中，以下哪项是ETF做市商相比于单只股票做市商的额外优势？\nWhat additional advantage do ETF market makers have over single-stock market makers?"
+  options:
+    - "A. 可以通过申赎机制(creation/redemption)对冲库存风险 / Can hedge inventory risk via creation/redemption mechanism"
+    - "B. ETF没有adverse selection风险 / ETFs have no adverse selection risk"
+    - "C. ETF spread总是为零 / ETF spreads are always zero"
+    - "D. ETF不受市场波动影响 / ETFs are unaffected by market volatility"
+  answer: "A"
+  explanation: "ETF做市商可以通过creation/redemption机制（申赎机制）管理库存。当做市商积累了过多的ETF多头，可以通过redemption将ETF份额换成底层一篮子股票，然后在股票市场卖出；反之亦然。此外，ETF价格与NAV的偏离也提供了无风险套利机会。这使得ETF做市相比单只股票做市有更好的库存管理工具。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_MM_019
+  category: market_making
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在做市博弈中，symmetric mixed strategy Nash equilibrium意味着什么？\nIn a market making game, what does a symmetric mixed strategy Nash equilibrium imply?"
+  options:
+    - "A. 所有做市商使用相同的随机化策略，没有人有单方面偏离的动机 / All market makers use identical randomized strategies with no unilateral deviation incentive"
+    - "B. 所有做市商报相同的价格 / All market makers quote the same price"
+    - "C. 做市商轮流提供最优报价 / Market makers take turns providing best quotes"
+    - "D. 只有一个做市商生存 / Only one market maker survives"
+  answer: "A"
+  explanation: "Symmetric mixed strategy Nash equilibrium中，所有做市商采用相同的概率分布来随机化自己的策略（如spread的选择），且在均衡点上，没有任何做市商可以通过单方面改变自己的策略来获得更高的期望收益。'Mixed'意味着做市商在多个spread水平上随机化，而不是确定性地选择一个spread。这在做市商数量有限且有adverse selection的博弈中是常见的均衡概念。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_MM_020
+  category: market_making
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "做市商在哪种市场条件下最盈利？\nUnder which market condition are market makers most profitable?"
+  options:
+    - "A. 高成交量、低波动率、低信息事件密度 / High volume, low volatility, low information event density"
+    - "B. 低成交量、高波动率 / Low volume, high volatility"
+    - "C. 市场崩盘期间 / During market crashes"
+    - "D. 单一方向趋势行情 / Strong trending markets"
+  answer: "A"
+  explanation: "做市商在以下条件下最盈利：(1) 高成交量 - 更多的spread capture机会；(2) 低波动率 - inventory risk较小；(3) 低信息事件密度 - adverse selection cost较低。高波动率和信息事件（如财报发布）增加adverse selection和inventory risk。单方向趋势对做市商不利（persistent direction = high adverse selection）。市场崩盘时流动性枯竭，做市商面临极高风险。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 45
+
+# ============================================================
+# BEHAVIORAL (15 questions)
+# ============================================================
+
+- id: TR_BEHAV_001
+  category: behavioral
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "根据Prospect Theory，以下哪种现象最好地解释了交易者倾向于过早获利了结但持有亏损头寸？\nAccording to Prospect Theory, which phenomenon best explains traders' tendency to realize gains early but hold losing positions?"
+  options:
+    - "A. Disposition effect (处置效应)"
+    - "B. Anchoring bias (锚定偏差)"
+    - "C. Confirmation bias (确认偏差)"
+    - "D. Availability bias (可得性偏差)"
+  answer: "A"
+  explanation: "Disposition effect（Shefrin and Statman, 1985）是指投资者倾向于卖出盈利的股票（realize gains）但持有亏损的股票（hold losers）。这由Prospect Theory的两个核心特征解释：(1) 收益区域的risk aversion - 有了利润后急于锁定；(2) 损失区域的risk seeking - 亏损时宁愿赌一把以期回本。加上reference point效应（以买入价为参照点），形成了这种不对称行为。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 45
+
+- id: TR_BEHAV_002
+  category: behavioral
+  difficulty: senior
+  type: open_ended
+  points: 5
+  question: "你是一个量化交易策略的PM，你的策略在连续3个月跑输benchmark后突然在第4个月大幅跑赢。投资者要求你解释。(1) 你如何分析这种表现模式？(2) 你如何向投资者传达？(3) 你会做出什么调整？\nYou are a quant PM. Your strategy underperformed for 3 months, then significantly outperformed in month 4. Investors ask you to explain. (1) How do you analyze? (2) How do you communicate? (3) What adjustments?"
+  options: []
+  answer: ""
+  explanation: "分析：(1) 检查alpha来源是否一致（因子暴露有无变化）；(2) 分析underperformance是否因暂时的factor rotation（如momentum reversal）；(3) 区分skill vs luck（t-stat of excess returns）；(4) 检查第4月的outperformance是否来自single bet。\n沟通：(1) 诚实透明，不归功于skill如果可能是均值回复；(2) 用数据展示策略的长期边际（Sharpe, IC）而非短期表现；(3) 解释量化策略的expected drawdown duration。\n调整：(1) 如果策略逻辑完好，不做恐慌性调整；(2) 检查是否有regime change需要适应；(3) 考虑是否需要加入regime detection。"
+  hints:
+    - "区分策略是否在结构性失效 vs 暂时性underperformance"
+  rubric: "分析深度(2分)；沟通能力(2分)；判断力(1分)"
+  time_limit_seconds: 360
+
+- id: TR_BEHAV_003
+  category: behavioral
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "一个交易者看到自己持有的股票出现了一条负面新闻，但他只关注了另一条支持持有的研报。这是哪种cognitive bias？\nA trader sees negative news about their stock but only focuses on a bullish research report. Which bias?"
+  options:
+    - "A. Confirmation bias (确认偏差)"
+    - "B. Overconfidence bias (过度自信)"
+    - "C. Hindsight bias (后见之明偏差)"
+    - "D. Survivorship bias (幸存者偏差)"
+  answer: "A"
+  explanation: "Confirmation bias是指人们倾向于寻找、解释和记忆符合自己已有信念的信息，同时忽视或低估与之矛盾的信息。在交易中，这特别危险，因为trader可能忽略关键的风险信号。克服方法：(1) 主动寻找反对观点（'steel man'对立面）；(2) pre-mortem分析（假设交易失败，找原因）；(3) 用系统化的决策清单减少主观判断。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 45
+
+- id: TR_BEHAV_004
+  category: behavioral
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "Optimal stopping problem (Secretary Problem)：面试100个候选人，依次面试不能回头。你的目标是选到最优秀的。经典策略是什么？\nOptimal stopping (Secretary Problem): Interview 100 candidates sequentially. Classic strategy?"
+  options:
+    - "A. 先面试约37个（100/e ≈ 37）不选，然后选择第一个超过前37个最优者的候选人 / Interview ~37 (100/e), then pick first one better than best of first 37"
+    - "B. 随机选一个 / Pick randomly"
+    - "C. 选第50个 / Pick the 50th"
+    - "D. 先面试10个然后选下一个比平均好的 / Interview 10, then pick next above-average"
+  answer: "A"
+  explanation: "经典的Secretary Problem最优策略（1/e stopping rule）：先拒绝前n/e ≈ 37个候选人（'exploration phase'），记录他们中的最高水平。然后在剩余候选人中选择第一个超过exploration phase最高水平的。这个策略选到最优候选人的概率约为1/e ≈ 36.8%，是所有策略中最高的。这个思想在trading中也有应用：观察期后设定阈值进行决策。"
+  hints:
+    - "关键数字：1/e ≈ 0.368"
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_BEHAV_005
+  category: behavioral
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在压力环境下，以下哪种做法最有助于保持交易决策质量？\nUnder stress, which practice best maintains trading decision quality?"
+  options:
+    - "A. 提前制定详细的交易计划和止损规则，压力下机械执行 / Pre-defined detailed trading plan and stop-loss rules, mechanically execute under stress"
+    - "B. 依赖直觉做快速决策 / Rely on intuition for fast decisions"
+    - "C. 加大仓位以快速翻本 / Increase position size to recover quickly"
+    - "D. 暂时关闭风控系统以获得更大灵活性 / Temporarily disable risk controls for flexibility"
+  answer: "A"
+  explanation: "在压力下，认知功能下降，情绪化决策增多。预先制定的rules-based系统可以在trader认知受损时提供'guardrails'。具体做法：(1) 事先写好trading plan（entry, exit, position size, stop-loss）；(2) 使用checklist逐项检查；(3) 设定hard limits（如单日最大亏损）；(4) 达到触发条件时强制停止交易。这是professional trading desk的标准实践。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 45
+
+- id: TR_BEHAV_006
+  category: behavioral
+  difficulty: expert
+  type: open_ended
+  points: 8
+  question: "设计一个实验来测试一个交易团队中的behavioral biases，并提出针对性的debiasing策略。至少涉及3种不同的bias。\nDesign an experiment to test behavioral biases in a trading team, and propose targeted debiasing strategies. Cover at least 3 different biases."
+  options: []
+  answer: ""
+  explanation: "实验设计：\n(1) Disposition Effect测试：给trader模拟portfolio，跟踪其sell decisions。统计sell winner vs sell loser的比例（PGR vs PLR）。Debiasing：实施mechanical trailing stops，消除人为决策。\n(2) Overconfidence测试：让trader对未来价格给出90% confidence interval，计算calibration（理论上90%应该落入区间，但overconfident traders通常只有60-70%）。Debiasing：定期review预测vs实际，建立feedback loop。\n(3) Anchoring测试：给trader random starting point（'昨天价格是X'），看是否影响fair value估计。Debiasing：使用多种独立估值方法，减少对单一参考点的依赖。\n(4) Status Quo Bias测试：观察trader是否不愿调整现有持仓（即使信号已改变）。Debiasing：定期'blank sheet' exercise，从零开始构建最优portfolio。"
+  hints:
+    - "每种bias需要可测量的metric"
+    - "debiasing应该是实际可操作的"
+  rubric: "实验设计(3分)：至少3种bias有合理测试方法；debiasing策略(3分)：具体可操作；理论基础(2分)：引用相关研究"
+  time_limit_seconds: 600
+
+- id: TR_BEHAV_007
+  category: behavioral
+  difficulty: medium_high
+  type: open_ended
+  points: 5
+  question: "解释gambler's fallacy和hot-hand fallacy的区别，并各举一个在量化交易中的具体例子。讨论如何用数据驱动的方法来避免这两种偏差。\nExplain the difference between gambler's fallacy and hot-hand fallacy. Give one example of each in quantitative trading. Discuss data-driven approaches to avoid both biases."
+  options: []
+  answer: ""
+  explanation: "Gambler's fallacy：认为连续出现某结果后，相反结果的概率增加（'该赢了'）。交易例子：连续亏损后加大仓位，相信一定会反弹。Hot-hand fallacy：认为连续成功后，成功概率增加（'手感热'）。交易例子：连续盈利后过度自信，加大杠杆。区别：一个预期反转，一个预期延续，但两者都是对随机性的误判。数据驱动的避免方法：(1) 计算策略收益的serial correlation（如果不显著则为独立）；(2) 用固定的position sizing rule（如固定比例或Kelly）；(3) 对策略进行regime detection而不是凭直觉判断。"
+  hints:
+    - "两种fallacy对'连续'的解读方向相反"
+  rubric: "区分清晰(2分)；交易例子(1.5分)；数据方法(1.5分)"
+  time_limit_seconds: 300
+
+- id: TR_BEHAV_008
+  category: behavioral
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在一个高压交易场景中，你持有一个大额亏损头寸，已经超过了预设的止损线。你的risk manager要求你立即平仓，但你认为市场即将反转。最佳行动是什么？\nYou hold a large losing position exceeding your stop-loss. Risk manager says cut. You believe a reversal is imminent. Best action?"
+  options:
+    - "A. 执行止损，遵守纪律。事后再评估你的市场判断是否正确 / Execute stop-loss, follow discipline. Evaluate your view post-hoc"
+    - "B. 要求risk manager给你更多时间 / Ask risk manager for more time"
+    - "C. 减半仓位作为妥协 / Cut half as a compromise"
+    - "D. 忽略risk manager，等待反转 / Ignore risk manager, wait for reversal"
+  answer: "A"
+  explanation: "正确答案是A：遵守预设的止损纪律。原因：(1) 止损规则是在无情绪时理性制定的，是'clear-headed self'的决策；(2) 持有亏损时的'反转信念'往往是loss aversion和wishful thinking驱动的；(3) 违反risk management规则即使偶尔成功，长期看是危险的先例；(4) 遵守纪律后可以重新评估——如果判断确实正确，可以以新的clean position重新入场。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_BEHAV_009
+  category: behavioral
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Prospect Theory中的value function有哪些关键特征？\nWhat are the key features of the value function in Prospect Theory?"
+  options:
+    - "A. 收益端凹（risk averse），损失端凸（risk seeking），损失的斜率更陡（loss aversion） / Concave for gains, convex for losses, steeper for losses"
+    - "B. 收益和损失端都是线性的 / Linear for both gains and losses"
+    - "C. 收益端凸，损失端凹 / Convex for gains, concave for losses"
+    - "D. 对称的S型曲线 / Symmetric S-curve"
+  answer: "A"
+  explanation: "Kahneman and Tversky (1979) 的value function v(x)有三个关键特征：(1) Reference dependence - 价值相对于参考点评估；(2) Diminishing sensitivity - 收益端凹（边际收益递减），损失端凸（边际损失递减）；(3) Loss aversion - 损失的心理权重约为收益的2-2.5倍（v'(-x) > v'(x) for x>0）。典型函数形式：v(x) = x^0.88 for x>=0, v(x) = -2.25*(-x)^0.88 for x<0。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 45
+
+- id: TR_BEHAV_010
+  category: behavioral
+  difficulty: senior
+  type: open_ended
+  points: 5
+  question: "作为一个量化trader，你需要在以下两个策略之间选择：策略A年化收益15%，最大回撤8%，Sharpe 2.0但容量只有5000万；策略B年化收益12%，最大回撤12%，Sharpe 1.5但容量5亿。分析你的决策过程，考虑认知偏差的影响。\nChoose between Strategy A (15% return, 8% MDD, Sharpe 2.0, 50M capacity) vs Strategy B (12% return, 12% MDD, Sharpe 1.5, 500M capacity). Analyze your decision process, considering cognitive biases."
+  options: []
+  answer: ""
+  explanation: "决策分析：\n(1) 定量比较：A在风险调整收益上更优（Sharpe 2.0 vs 1.5），但容量有限。B在绝对收益规模上更大（5亿*12%=6000万 vs 5000万*15%=750万）。\n(2) 认知偏差识别：选A可能受narrow framing影响（只看比率不看绝对金额）；选B可能受denominator neglect影响（被大AUM吸引）。\n(3) 合理框架：考虑总利润（容量*收益率）、策略组合价值、可扩展性、策略衰减风险。\n(4) 最优决策：可能两个都做——A做full capacity（750万利润），B做部分或全部（最多6000万利润）。关键是不要让任何单一指标主导决策。"
+  hints:
+    - "考虑绝对收益金额而不仅是比率"
+  rubric: "定量分析(2分)；偏差识别(2分)；综合判断(1分)"
+  time_limit_seconds: 360
+
+- id: TR_BEHAV_011
+  category: behavioral
+  difficulty: medium_high
+  type: open_ended
+  points: 5
+  question: "描述overconfidence bias在量化策略开发中的3种具体表现形式，并针对每种表现提出一个具体的数据驱动的debiasing方法。\nDescribe 3 specific manifestations of overconfidence bias in quant strategy development and propose a data-driven debiasing method for each."
+  options: []
+  answer: ""
+  explanation: "(1) 过度拟合：相信in-sample Sharpe可以out-of-sample复现。Debiasing：使用walk-forward analysis和cross-validation，比较IS和OOS Sharpe ratio的degradation ratio。(2) 参数过多：认为更多signal就是更好。Debiasing：用BIC/AIC惩罚模型复杂度，或用Deflated Sharpe Ratio（Bailey and Lopez de Prado）调整多重检验。(3) 低估tail risk：正态分布假设下对maximum drawdown过于乐观。Debiasing：用bootstrap simulation估计drawdown distribution的置信区间，或用fat-tailed分布做Monte Carlo。"
+  hints:
+    - "从策略开发的不同阶段找overconfidence的表现"
+  rubric: "表现描述(1.5分)；debiasing方法(2.5分)；数据驱动(1分)"
+  time_limit_seconds: 300
+
+- id: TR_BEHAV_012
+  category: behavioral
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在repeated game中，tit-for-tat策略的核心特征是什么？为什么它在做市博弈中有参考价值？\nWhat are the core features of tit-for-tat in repeated games? Why is it relevant to market making?"
+  options:
+    - "A. 初始合作，然后模仿对方上一轮策略。在做市中可用于维持competitive但non-destructive的定价 / Start cooperating, then mirror opponent's last move. Maintains competitive but non-destructive pricing"
+    - "B. 始终采取激进策略 / Always play aggressively"
+    - "C. 随机选择策略 / Random strategy selection"
+    - "D. 始终合作不管对方行为 / Always cooperate regardless"
+  answer: "A"
+  explanation: "Tit-for-tat (Axelrod, 1984)的核心特征：(1) Nice - 初始合作；(2) Retaliatory - 如果对方背叛则惩罚；(3) Forgiving - 对方回归合作后恢复合作；(4) Clear - 策略透明易理解。在做市博弈中，这意味着：初始报出competitive spread，如果竞争对手维持合理pricing则继续，如果对方恶性竞争（predatory pricing）则跟进但不升级。这在repeated market making game中是稳健策略。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_BEHAV_013
+  category: behavioral
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "为什么position sizing在交易心理学中如此重要？\nWhy is position sizing so critical in trading psychology?"
+  options:
+    - "A. 仓位过大会导致情绪化决策，即使策略正确也可能因恐惧而过早退出 / Oversized positions cause emotional decisions, leading to premature exits even with correct strategy"
+    - "B. 仓位大小与心理无关 / Position size is unrelated to psychology"
+    - "C. 仓位越大越好，显示信心 / Larger positions are always better, showing conviction"
+    - "D. 仓位大小只影响P&L，不影响决策 / Position size only affects P&L, not decisions"
+  answer: "A"
+  explanation: "Position sizing直接影响交易心理：(1) 仓位过大时，P&L波动超出心理承受范围，导致恐惧和anxiety；(2) 恐惧导致过早止损（即使方向正确）或无法执行计划；(3) 大亏损后的tilt心态可能导致报复性交易（revenge trading）。最佳仓位大小应让trader在最大预期亏损时仍能冷静执行策略。经验法则：如果一笔交易的浮亏让你晚上睡不着，仓位太大了。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 45
+
+- id: TR_BEHAV_014
+  category: behavioral
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "Sunk cost fallacy如何影响交易决策？最好的应对方法是什么？\nHow does sunk cost fallacy affect trading? What is the best countermeasure?"
+  options:
+    - "A. 因为已经投入了时间/金钱在一笔交易上而不愿止损。应对：每天做'blank sheet' exercise / Reluctance to cut losses due to invested time/money. Counter: daily blank-sheet exercise"
+    - "B. 只影响新手，有经验的trader免疫 / Only affects beginners"
+    - "C. 通过加仓来降低平均成本 / Averaging down to lower cost basis"
+    - "D. 与交易无关 / Not relevant to trading"
+  answer: "A"
+  explanation: "Sunk cost fallacy在交易中表现为：'我已经在这笔交易上亏了这么多，不能白亏'，导致不愿止损。'Blank sheet' exercise的方法：每天问自己'如果我现在没有任何仓位，面对当前信息，我会建仓吗？'如果答案是不会，就应该平仓。这把决策从'是否继续持有'（受sunk cost影响）转换为'是否从零开始建仓'（只关注forward-looking信息）。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_BEHAV_015
+  category: behavioral
+  difficulty: senior
+  type: open_ended
+  points: 5
+  question: "描述一个你曾经做出的错误决策（可以是交易、投资或生活中的），分析其中的认知偏差，以及你从中学到了什么。如果没有真实经历，构造一个合理的场景。\nDescribe a wrong decision you made (trading, investment, or life). Analyze the cognitive biases involved and what you learned. Construct a scenario if needed."
+  options: []
+  answer: ""
+  explanation: "这是一道开放性面试题，评估候选人的自我反思能力和对behavioral finance的理解。好的回答应该：(1) 诚实地描述一个具体的错误决策；(2) 精确识别涉及的认知偏差（如anchoring, overconfidence, disposition effect等）；(3) 描述具体的学习和改进措施；(4) 展示对自己思维模式的深刻认识。差的回答：(1) 不承认犯过错误；(2) 将错误归咎于外部因素；(3) 无法具体说明认知偏差。"
+  hints:
+    - "重点展示自我反思能力和具体改进"
+    - "不需要回答完美，真实性更重要"
+  rubric: "具体性(1分)：描述了具体场景；偏差分析(2分)：准确识别bias；反思深度(1分)：有具体学习；表达能力(1分)"
+  time_limit_seconds: 360
+
+# ============================================================
+# PNL ANALYSIS (10 questions)
+# ============================================================
+
+- id: TR_PNL_001
+  category: pnl_analysis
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "Implementation shortfall（执行缺口）的定义是什么？\nWhat is the definition of implementation shortfall?"
+  options:
+    - "A. 理想收益（paper portfolio）与实际收益之间的差异 / Difference between ideal return (paper portfolio) and actual return"
+    - "B. Bid-ask spread的大小 / Size of bid-ask spread"
+    - "C. 手续费总额 / Total commission amount"
+    - "D. 策略回测收益与实盘收益的差异 / Difference between backtest and live returns"
+  answer: "A"
+  explanation: "Implementation shortfall (Perold, 1988) = paper portfolio return - actual portfolio return。它分解为：(1) Delay cost（从决策到下单的延迟）；(2) Market impact cost（交易本身对价格的影响）；(3) Timing cost（执行期间的价格漂移）；(4) Opportunity cost（未能成交的部分损失的收益）。IS是最全面的执行质量衡量方式，因为它捕捉了从投资决策到最终执行的所有成本。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_PNL_002
+  category: pnl_analysis
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在Transaction Cost Analysis (TCA)中，VWAP slippage指的是什么？\nIn TCA, what does VWAP slippage refer to?"
+  options:
+    - "A. 实际成交均价与同期VWAP之间的差异 / Difference between actual execution price and VWAP over the same period"
+    - "B. VWAP与收盘价的差异 / Difference between VWAP and closing price"
+    - "C. 手续费占成交额的比例 / Commission as percentage of trade value"
+    - "D. 订单的fill rate / Order fill rate"
+  answer: "A"
+  explanation: "VWAP slippage = 实际成交均价 - 同期市场VWAP（买入为正，卖出取反）。它衡量了相对于市场参考价格的执行质量。VWAP slippage > 0表示执行劣于市场均价。VWAP benchmark的优点是考虑了成交量分布，缺点是可以被gaming（在VWAP低的时段增加交易量）。常用的其他benchmark还有arrival price, closing price, TWAP等。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_PNL_003
+  category: pnl_analysis
+  difficulty: senior
+  type: show_work
+  points: 5
+  question: "一个策略的PnL attribution如下：alpha PnL = +200万，market exposure PnL = -80万，industry exposure PnL = -30万，transaction costs = -40万，总PnL = +50万。(1) 计算策略的capture ratio（alpha capture）。(2) 如果市场下跌导致market exposure PnL为负，是否说明策略有问题？(3) 如何改进？\nPnL attribution: alpha=+2M, market=-800K, industry=-300K, txn costs=-400K, total=+500K. (1) Alpha capture ratio? (2) Is negative market PnL a problem? (3) Improvements?"
+  options: []
+  answer: "(1) Alpha capture ratio = Total PnL / Alpha PnL = 50万/200万 = 25%。或者另一种定义：(Total PnL + Transaction costs) / Alpha PnL = 90万/200万 = 45%（扣除交易成本前）。这意味着大部分alpha被非预期暴露和交易成本侵蚀了。\n\n(2) Market exposure PnL为-80万说明策略不是完全市场中性的，有net long或net short的暴露。如果策略目标是market neutral，则-80万是unintended exposure造成的损失，需要改进。如果策略允许方向性暴露，则可以接受。\n\n(3) 改进建议：(a) 加强市场中性约束（tighter beta control）；(b) 增加行业对冲（行业暴露导致-30万损失）；(c) 优化执行以降低交易成本（-40万可能过高）；(d) 提高rebalancing频率减少drift。"
+  explanation: "PnL attribution是量化交易中最重要的诊断工具之一。通过分解PnL来源，可以识别哪些收益来自alpha（预期的），哪些来自非预期暴露（factor exposure, sector exposure等），以及交易成本的影响。Alpha capture ratio衡量了从alpha信号到实际收益的转化效率。"
+  hints:
+    - "Alpha capture = 实际PnL / Alpha PnL"
+  rubric: "Capture ratio计算(2分)；市场暴露分析(1分)；改进建议(2分)"
+  time_limit_seconds: 360
+
+- id: TR_PNL_004
+  category: pnl_analysis
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "以下哪个不是常用的TCA execution quality metric？\nWhich is NOT a commonly used TCA execution quality metric?"
+  options:
+    - "A. Price Earnings ratio (P/E ratio)"
+    - "B. VWAP slippage"
+    - "C. Implementation shortfall"
+    - "D. Participation rate"
+  answer: "A"
+  explanation: "P/E ratio是估值指标，不是执行质量指标。常用的TCA metrics包括：(1) VWAP slippage - 相对于VWAP的执行偏差；(2) Implementation shortfall - 理想vs实际收益差异；(3) Participation rate - 成交量占市场成交量的比例；(4) Fill rate - 实际成交量占计划量的比例；(5) Arrival price slippage - 相对于决策时价格的偏差；(6) Market impact - 交易对价格的影响。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 45
+
+- id: TR_PNL_005
+  category: pnl_analysis
+  difficulty: expert
+  type: open_ended
+  points: 10
+  question: "设计一个完整的slippage分析框架，用于评估和改进一个A股量化多空策略的执行质量。包括：(1) 数据需求；(2) slippage的分解方法；(3) 归因分析；(4) 改进建议的优先级排序。\nDesign a complete slippage analysis framework for evaluating and improving execution quality of an A-share long-short quant strategy. Include data needs, decomposition, attribution, and prioritized improvements."
+  options: []
+  answer: ""
+  explanation: "完整框架：\n(1) 数据需求：订单管理系统(OMS)数据（order price, fill price, timestamps, quantity, direction）；L2行情数据；基准价格（decision price, VWAP, arrival price）；市场成交数据。\n(2) Slippage分解：Total slippage = Arrival price slippage = (Execution price - Decision price)。分解为：Delay cost（decision to order）+ Market impact（order to fill）+ Timing cost（price drift during execution）+ Spread cost（crossing the spread）。\n(3) 归因分析：按时间段（开盘/盘中/尾盘）、按单边方向（buy vs sell）、按股票特征（市值/流动性/波动率）、按订单大小（participation rate）、按市场状态（trending/ranging）。\n(4) 改进优先级：(a) 最大的slippage来源优先（通常是market impact和timing cost）；(b) 优化执行算法（TWAP/VWAP/IS minimizing）；(c) 降低latency（从决策到下单）；(d) 调整参与率（降低market impact）；(e) 考虑利用dark pool和集合竞价。"
+  hints:
+    - "从数据到分析到改进的完整链路"
+    - "A股特有：T+1限制、涨跌停、集合竞价"
+  rubric: "框架完整性(3分)；分解方法(3分)；归因分析(2分)；改进建议(2分)"
+  time_limit_seconds: 600
+
+- id: TR_PNL_006
+  category: pnl_analysis
+  difficulty: senior
+  type: open_ended
+  points: 5
+  question: "描述alpha decay analysis的完整方法论：(1) 如何计算不同holding period下的IC；(2) 如何从IC decay curve确定alpha的half-life；(3) 如何利用alpha half-life来优化rebalancing频率和交易成本预算。\nDescribe the complete methodology of alpha decay analysis: (1) IC at different holding periods; (2) determining alpha half-life from IC decay; (3) using half-life to optimize rebalancing frequency and cost budgeting."
+  options: []
+  answer: ""
+  explanation: "(1) 计算方法：在每个截面时间点，计算alpha信号与lag k天收益的rank IC（Spearman相关系数），k=1,2,5,10,20,40天。(2) Half-life确定：画出IC vs lag k的衰减曲线，找到IC降到初始值一半的lag值。如果IC(1)=0.05, IC(5)=0.025，则half-life约5天。也可以拟合指数衰减模型IC(k)=IC(0)*exp(-k/tau)。(3) 优化应用：rebalancing频率应与half-life匹配（half-life 5天则约每5天rebalance）；交易成本预算 = IC衰减导致的alpha损失应大于交易成本；短half-life的alpha允许更高的换手率和交易成本。"
+  hints:
+    - "IC的时间衰减模式直接决定最优持有期"
+  rubric: "IC计算(2分)；half-life确定(1.5分)；实践应用(1.5分)"
+  time_limit_seconds: 300
+
+- id: TR_PNL_007
+  category: pnl_analysis
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "一个策略的gross return是20%，net return是12%。Transaction costs主要包含哪些部分？\nA strategy has 20% gross return and 12% net return. What are the main components of transaction costs?"
+  options:
+    - "A. Commission + Spread cost + Market impact + Slippage / 佣金 + 价差成本 + 市场冲击 + 滑点"
+    - "B. 仅佣金 / Commission only"
+    - "C. 仅market impact / Market impact only"
+    - "D. 仅税费 / Taxes only"
+  answer: "A"
+  explanation: "Gross return到net return的差异（8%）由所有transaction costs组成：(1) Commission（佣金，A股约0.02-0.03%单边）；(2) Stamp tax（印花税，A股卖出0.05%）；(3) Spread cost（bid-ask spread的一半）；(4) Market impact（大单交易影响价格）；(5) Slippage（决策价与成交价的差异）。对于高换手率策略，market impact通常是最大的成本分量。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 45
+
+- id: TR_PNL_008
+  category: pnl_analysis
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在PnL attribution中，'interaction effect'指的是什么？\nIn PnL attribution, what is the 'interaction effect'?"
+  options:
+    - "A. 多个因子暴露变化同时发生导致的交叉项效应 / Cross-term effect from simultaneous changes in multiple factor exposures"
+    - "B. 不同策略之间的相关性 / Correlation between different strategies"
+    - "C. 市场波动对PnL的影响 / Market volatility's impact on PnL"
+    - "D. 交易频率对成本的影响 / Trading frequency's impact on costs"
+  answer: "A"
+  explanation: "在Brinson attribution或multi-factor PnL分解中，interaction effect是由于多个维度同时变化产生的交叉项。例如，在Brinson模型中：total effect = allocation effect + selection effect + interaction effect。Interaction effect = sum_i (w_p,i - w_b,i) * (r_p,i - r_b,i)，反映了'在超配的行业中选择了超额收益的股票'这种叠加效应。这个项在实际归因中经常被忽视但可能很大。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_PNL_009
+  category: pnl_analysis
+  difficulty: expert
+  type: show_work
+  points: 8
+  question: "一个量化策略在某一天的交易如下：上午10:00决定买入股票A，decision price=50.00元；分3笔执行：10:05以50.05成交3000股，10:15以50.12成交4000股，10:30以50.20成交3000股。当天A的VWAP=50.15元，收盘价=50.50元。计算：(1) Arrival price slippage；(2) VWAP slippage；(3) 将total slippage分解为timing cost和market impact。\nA strategy decides to buy stock A at 10:00 (decision price=50.00). 3 fills: 50.05/3K at 10:05, 50.12/4K at 10:15, 50.20/3K at 10:30. VWAP=50.15, close=50.50. Calculate arrival, VWAP slippage, and decompose."
+  options: []
+  answer: "加权平均成交价 = (50.05*3000 + 50.12*4000 + 50.20*3000) / 10000 = (150,150 + 200,480 + 150,600) / 10000 = 501,230 / 10000 = 50.123元。\n\n(1) Arrival price slippage = 加权成交价 - Decision price = 50.123 - 50.00 = 0.123元/股 = 0.246%。总slippage金额 = 0.123 * 10,000 = 1,230元。\n\n(2) VWAP slippage = 加权成交价 - VWAP = 50.123 - 50.15 = -0.027元/股。负值表示执行价格优于VWAP（成交均价低于市场VWAP），执行质量良好。\n\n(3) 分解（简化方法）：假设价格在执行期间线性上涨。Timing cost ≈ 执行期间的价格漂移对未执行部分的影响。Market impact ≈ 每笔成交价格vs当时市场价格的差异。精确分解需要执行期间的market mid-price数据，这里做近似：如果价格从50.00均匀涨到50.30（30分钟内），则timing cost = 无market impact时的成交均价 - decision price；market impact = 实际成交均价 - 无impact时的成交均价。"
+  explanation: "本题考察实际的TCA分析能力。关键点：(1) 正确计算加权平均成交价；(2) 理解不同benchmark的含义（arrival price vs VWAP）；(3) slippage分解需要同期市场价格数据，实际中需要用mid-price时间序列。"
+  hints:
+    - "先计算加权平均成交价"
+    - "注意VWAP slippage的正负含义"
+  rubric: "成交均价计算(2分)；Arrival slippage(2分)；VWAP slippage(2分)；分解(2分)"
+  time_limit_seconds: 360
+
+- id: TR_PNL_010
+  category: pnl_analysis
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在评估执行算法的质量时，以下哪个指标最适合衡量算法的'市场冲击最小化'能力？\nWhich metric best measures an execution algorithm's ability to minimize market impact?"
+  options:
+    - "A. Arrival price slippage减去同期市场趋势的估计 / Arrival price slippage minus estimated market trend"
+    - "B. Fill rate / 成交率"
+    - "C. 总执行时间 / Total execution time"
+    - "D. 订单拆分的均匀程度 / Uniformity of order splitting"
+  answer: "A"
+  explanation: "衡量market impact需要将价格变化中由交易引起的部分和市场本身趋势分离。方法：Estimated impact = Arrival slippage - Alpha (market trend estimate)。如果不去除market trend，在上涨市场中买入的slippage会被高估。常用方法包括：(1) T+30min的price reversion分析；(2) 使用market return作为benchmark；(3) 用matched non-traded stocks作为control group。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
