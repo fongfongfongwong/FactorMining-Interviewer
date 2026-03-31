@@ -12,7 +12,12 @@ MAX_TOKENS = 8192
 def get_client() -> anthropic.Anthropic:
     api_key = os.environ.get("ANTHROPIC_API_KEY")
     if not api_key:
-        st.error("❌ 未找到 ANTHROPIC_API_KEY 环境变量，请先设置后重启应用。")
+        try:
+            api_key = st.secrets.get("ANTHROPIC_API_KEY", None) if hasattr(st, "secrets") else None
+        except Exception:
+            pass
+    if not api_key:
+        st.error("❌ 未找到 ANTHROPIC_API_KEY，请在 Admin > 系统设置 中配置，或设置环境变量。")
         st.stop()
     return anthropic.Anthropic(api_key=api_key)
 
