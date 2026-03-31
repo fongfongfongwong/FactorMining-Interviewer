@@ -1665,3 +1665,1173 @@
   hints: []
   rubric: ""
   time_limit_seconds: 60
+
+# ============================================================
+# ADDITIONAL QUESTIONS TR_101 - TR_200 (100 questions)
+# Topics: crypto_market_making, options_strategies, execution_algorithms,
+#         hft_concepts, cross_asset_trading, regulatory, quant_portfolio, macro_trading
+# Difficulty: 40 medium_high, 40 senior, 20 expert
+# Type: 70 multiple_choice, 20 open_ended, 10 show_work
+# ============================================================
+
+# ============================================================
+# CRYPTO MARKET MAKING (13 questions)
+# ============================================================
+
+- id: TR_CRYPTO_101
+  category: crypto_market_making
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在加密货币做市中，与传统股票做市相比最大的风险差异是什么？\nIn crypto market making, what is the biggest risk difference compared to traditional equity market making?"
+  options:
+    - "A. 24/7全天候交易+极端波动性+对手方信用风险(交易所可能倒闭) / 24/7 trading + extreme volatility + counterparty risk (exchange may collapse)"
+    - "B. 监管更严格 / Stricter regulation"
+    - "C. 流动性总是更好 / Liquidity is always better"
+    - "D. 波动率更低 / Lower volatility"
+  answer: "A"
+  explanation: "加密做市的独特风险：(1)24/7交易——无法休息，需要全天候风控监控；(2)极端波动——BTC日波动率可达10%+（股票通常1-2%）；(3)对手方风险——交易所可能倒闭(如FTX)导致资产损失；(4)碎片化——需要在多个交易所同时做市；(5)操纵风险——监管不完善，wash trading和spoofing更常见。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_CRYPTO_102
+  category: crypto_market_making
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在加密货币做市中，funding rate（资金费率）对永续合约做市策略有什么影响？\nHow does the funding rate affect perpetual swap market making strategies in crypto?"
+  options:
+    - "A. Funding rate影响多空持仓成本——做市商需要将funding rate纳入报价和库存管理 / Funding rate affects long/short holding costs — market makers must factor it into quoting and inventory management"
+    - "B. Funding rate不影响做市 / Funding rate doesn't affect market making"
+    - "C. 做市商不需要关注funding rate / Market makers don't need to monitor funding rate"
+    - "D. Funding rate只影响散户 / Funding rate only affects retail traders"
+  answer: "A"
+  explanation: "永续合约的funding rate：(1)每8小时结算一次，多头向空头(或反向)支付费用，使合约价格锚定现货价格；(2)做市商影响：持有净多头(库存偏多)时如果funding rate为正(多头付费)则增加持仓成本，需要在bid/ask报价中反映；(3)策略：funding rate为极端正值时bias报价偏空头(减少多头持仓成本)，反之亦然；(4)funding rate套利是另一个做市商收入来源(现货多+永续空赚正funding)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_CRYPTO_103
+  category: crypto_market_making
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在多个加密货币交易所同时做市时，以下哪种风险管理策略最关键？\nWhen making markets on multiple crypto exchanges simultaneously, which risk management strategy is most critical?"
+  options:
+    - "A. 跨交易所的实时净头寸监控+各交易所的余额/提现额度管理 / Cross-exchange real-time net position monitoring + per-exchange balance/withdrawal management"
+    - "B. 只在一个交易所做市 / Only make markets on one exchange"
+    - "C. 忽略跨交易所风险 / Ignore cross-exchange risk"
+    - "D. 使用固定的spread不调整 / Use fixed spread without adjustment"
+  answer: "A"
+  explanation: "多交易所做市的风险管理：(1)实时汇总所有交易所的净头寸——即使单个交易所头寸中性，跨所可能有净敞口；(2)各交易所余额管理——确保有足够保证金，监控提现延迟；(3)对冲——一个交易所被吃单后在另一个交易所对冲；(4)交易所风险分散——不在单一交易所放过多资产。FTX倒闭事件证明了交易所风险管理的重要性。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_CRYPTO_104
+  category: crypto_market_making
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在加密货币市场中，MEV (Maximal Extractable Value) 对做市商的影响是什么？\nHow does MEV (Maximal Extractable Value) affect market makers in crypto?"
+  options:
+    - "A. 交易排序者(矿工/验证者)可以通过抢跑(front-running)和三明治攻击(sandwich attack)从做市商的交易中提取价值 / Block producers can extract value via front-running and sandwich attacks on market maker trades"
+    - "B. MEV只影响DeFi散户 / MEV only affects DeFi retail"
+    - "C. MEV不存在于CEX / MEV doesn't exist on CEX"
+    - "D. MEV增加了做市商收益 / MEV increases market maker profits"
+  answer: "A"
+  explanation: "MEV对做市商的威胁：(1)Front-running——看到做市商的大额交易后抢先交易获利；(2)Sandwich attack——在做市商的交易前后各插入一笔交易，夹击获利；(3)在DEX(如Uniswap)上做市时MEV风险更大(链上交易可见)；(4)对策：使用Flashbots等私有交易渠道(private mempool)、设置更大的滑点容忍度、使用MEV保护的DEX聚合器。CEX通常没有这种问题(交易所保证公平撮合)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: TR_CRYPTO_105
+  category: crypto_market_making
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在Uniswap V3等集中流动性AMM中做市与传统做市有何本质区别？\nHow does providing liquidity in Uniswap V3 concentrated liquidity AMMs differ fundamentally from traditional market making?"
+  options:
+    - "A. LP提供特定价格区间的流动性，承受无常损失(impermanent loss)而非传统的库存风险 / LPs provide liquidity in specific price ranges, bearing impermanent loss instead of traditional inventory risk"
+    - "B. 没有任何风险 / No risk at all"
+    - "C. 收益保证为正 / Returns guaranteed positive"
+    - "D. 不需要资金 / No capital needed"
+  answer: "A"
+  explanation: "Uniswap V3做市特点：(1)集中流动性——LP选择价格区间(如ETH: $1500-$2000)，在区间内提供流动性(类似限价单)；(2)无常损失(IL)——当价格移出区间，LP的资产被完全转换为一种代币(类似持有看跌/看涨期权被行权)；(3)区间越窄，手续费收入越高但IL风险越大；(4)需要主动管理——重新平衡区间(类似传统做市的重新报价)。本质上V3 LP头寸等价于卖出跨式期权(short straddle)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_CRYPTO_106
+  category: crypto_market_making
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在加密货币衍生品做市中，basis trading（基差交易）的核心逻辑是什么？\nWhat is the core logic of basis trading in crypto derivatives market making?"
+  options:
+    - "A. 利用期货/永续合约与现货之间的价差进行套利——买现货+卖期货锁定正基差收益 / Arbitrage between futures/perps and spot — buy spot + sell futures to lock positive basis"
+    - "B. 只做方向性交易 / Only directional trades"
+    - "C. 只在期货市场交易 / Only trade in futures"
+    - "D. 基差不存在套利机会 / No arbitrage opportunity in basis"
+  answer: "A"
+  explanation: "Crypto basis trading：(1)加密货币市场的基差(futures premium)通常为正且波动大(年化10-50%)——因为散户杠杆做多需求旺盛；(2)策略：现货买入BTC+期货卖空BTC，锁定正基差(carry)；(3)风险：交易所对手方风险(margin call at wrong exchange)、funding rate变化、极端行情下的基差扩大导致的margin压力；(4)这是加密做市商最稳定的收入来源之一，类似传统fixed income的carry策略。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: TR_CRYPTO_107
+  category: crypto_market_making
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在加密货币做市中，以下哪种订单簿特征与传统市场差异最大？\nWhich order book characteristic differs most between crypto and traditional markets?"
+  options:
+    - "A. 订单簿深度波动极大——可以在几秒内从深厚变为稀薄(flash crash) / Order book depth can change dramatically — from deep to thin in seconds (flash crash)"
+    - "B. 总是比传统市场更深 / Always deeper than traditional markets"
+    - "C. 价格精度更低 / Lower price precision"
+    - "D. 订单类型更少 / Fewer order types"
+  answer: "A"
+  explanation: "加密订单簿特点：(1)流动性波动极大——正常时主流币种(BTC/ETH)可能有数百万美元的depth，但恐慌时瞬间蒸发；(2)ghost liquidity——很多挂单是算法管理的(会在价格接近时撤单)，真实可执行深度远小于显示深度；(3)跨交易所碎片化——总流动性分散在几十个交易所；(4)Tick size标准不一——不同交易所的最小变动单位可能不同。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_CRYPTO_108
+  category: crypto_market_making
+  difficulty: senior
+  type: open_ended
+  points: 5
+  question: "请设计一个加密货币做市策略的风控框架，涵盖：(1)头寸限制；(2)亏损限制；(3)波动率自适应；(4)交易所风险管理。\nDesign a risk management framework for a crypto market making strategy covering: (1) position limits; (2) loss limits; (3) volatility adaptation; (4) exchange risk management."
+  options: []
+  answer: ""
+  explanation: "风控框架：(1)头寸限制——单币种最大净头寸(如BTC <50个)、Delta限制(所有币种合计美元Delta <$5M)、每个交易所的暴露上限(不超过总资产的20%)。(2)亏损限制——日内最大亏损(stop-loss: 日PnL <-$100K时暂停做市)、滚动7天最大回撤限制、单笔交易最大损失。(3)波动率自适应——实时监测RV，高波动时自动加宽spread(如spread = base_spread * vol_multiplier)、减小挂单量、缩短挂单刷新频率。(4)交易所风控——各所余额分散(单所不超过30%)、实时监控提现延迟、建立交易所健康度评分(API延迟、order book异常、社交媒体情绪)，评分低于阈值自动降低该所暴露。"
+  hints:
+    - "加密市场的7x24特性需要全自动化风控"
+    - "FTX事件是交易所风险管理的重要案例"
+  rubric: "头寸限制(1分)；亏损限制(1分)；波动率自适应(1分)；交易所风险(1分)；自动化(1分)"
+  time_limit_seconds: 360
+
+- id: TR_CRYPTO_109
+  category: crypto_market_making
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在加密货币市场中，跨交易所套利(cross-exchange arbitrage)面临的最大挑战是什么？\nWhat is the biggest challenge of cross-exchange arbitrage in crypto markets?"
+  options:
+    - "A. 资金划转延迟(充提币时间)+交易所的提现限制 / Fund transfer delays (deposit/withdrawal time) + exchange withdrawal limits"
+    - "B. 价差不存在 / No price differences exist"
+    - "C. 手续费太高 / Fees too high"
+    - "D. 网络速度不重要 / Network speed doesn't matter"
+  answer: "A"
+  explanation: "跨所套利挑战：(1)链上转账延迟——BTC需要~10分钟(1个确认)到1小时(6个确认)，ETH需要~2分钟；(2)交易所提现限制——可能每日有提现额度上限；(3)解决方案：在各交易所预先存放资金(pre-fund)，发现价差时同时在A所买入+B所卖出，再定期重新平衡各所余额；(4)这种模式需要更多资金但消除了转账延迟。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_CRYPTO_110
+  category: crypto_market_making
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "加密货币期权(如Deribit上的BTC期权)做市与传统期权做市的关键差异是什么？\nWhat is the key difference between crypto option market making (e.g., Deribit BTC options) and traditional option market making?"
+  options:
+    - "A. 标的资产波动率极高(BTC IV通常60-100%+)且波动率曲面形态变化剧烈 / Underlying volatility is extremely high (BTC IV typically 60-100%+) with rapidly changing vol surface"
+    - "B. 定价模型完全不同 / Pricing models are completely different"
+    - "C. 不需要做Delta对冲 / No delta hedging needed"
+    - "D. 流动性总是更好 / Liquidity is always better"
+  answer: "A"
+  explanation: "加密期权做市的差异：(1)高IV——BTC的implied vol通常60-100%+(传统股票20-30%)，Vega风险巨大；(2)Vol surface不稳定——skew和term structure在极端行情中剧烈变化；(3)流动性差——Deribit是唯一主要的加密期权交易所，depth有限；(4)Delta对冲困难——标的资产(BTC现货)的流动性在极端行情中可能枯竭；(5)24/7交易——时间衰减(theta)是连续的，没有'overnight'休息。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_CRYPTO_111
+  category: crypto_market_making
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在DeFi做市(如GMX、dYdX)中，以下关于'虚拟AMM'(vAMM)的说法哪个正确？\nWhich statement about virtual AMMs (vAMMs) in DeFi market making is correct?"
+  options:
+    - "A. vAMM使用虚拟流动性池定价(而非真实资产储备)，LP的损益与交易者盈亏零和 / vAMMs use virtual liquidity for pricing (no real asset reserves); LP P&L is zero-sum vs traders"
+    - "B. vAMM与传统AMM完全相同 / vAMMs are identical to traditional AMMs"
+    - "C. vAMM不需要LP / vAMMs don't need LPs"
+    - "D. vAMM不存在风险 / vAMMs have no risk"
+  answer: "A"
+  explanation: "vAMM(如GMX的GLP pool)：(1)LP提供stablecoin/ETH到池中作为交易者的对手方；(2)定价使用预言机(oracle)而非AMM曲线(减少价格操纵)；(3)LP的PnL = 交易者手续费收入 - 交易者盈利(零和结构)；(4)当交易者整体盈利时LP亏损(反之亦然)。这使LP本质上是在赌交易者会亏损——在crypto市场中历史上交易者整体是亏损的，因此LP总体盈利。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: TR_CRYPTO_112
+  category: crypto_market_making
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在加密货币做市系统中，API延迟管理最关键的因素是什么？\nWhat is the most critical factor in API latency management for crypto market making systems?"
+  options:
+    - "A. WebSocket连接的稳定性——使用多路连接冗余+断线自动重连 / WebSocket connection stability — multi-connection redundancy + auto-reconnect"
+    - "B. 使用REST API轮询 / Using REST API polling"
+    - "C. 每次交易都创建新连接 / Create new connection per trade"
+    - "D. 不监控API延迟 / Don't monitor API latency"
+  answer: "A"
+  explanation: "加密做市的API管理：(1)使用WebSocket而非REST——持久连接，延迟更低(避免HTTP开销)；(2)多路冗余——同时维护多个WebSocket连接到同一交易所，任一断开不影响服务；(3)自动重连——检测断线后毫秒级重连(心跳机制)；(4)延迟监控——记录每个请求的round-trip time(RTT)，异常增大时告警或暂停做市；(5)co-location——服务器与交易所API网关在同一数据中心。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_CRYPTO_113
+  category: crypto_market_making
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在加密做市中处理'fat finger'(误操作)事件的最佳防护机制是什么？\nWhat is the best defense mechanism against 'fat finger' events in crypto market making?"
+  options:
+    - "A. 多层价格检查——报价vs公允价偏差超过阈值则拒绝发单 / Multi-layer price checks — reject orders if quote vs fair price deviation exceeds threshold"
+    - "B. 不设任何限制 / No limits"
+    - "C. 事后审计即可 / Post-event audit is sufficient"
+    - "D. 只用市价单 / Only use market orders"
+  answer: "A"
+  explanation: "Fat finger防护多层机制：(1)Pre-trade检查——订单价格vs当前市场中间价的偏差不超过X%(如5%)，否则拒绝；(2)订单金额上限——单笔订单不超过最大金额；(3)速率限制——单位时间内的订单数量上限；(4)人工确认——超大金额订单需要额外确认；(5)Kill switch——紧急情况一键撤销所有订单。在加密市场中'fat finger'事件屡见不鲜(如有人以$0.01卖出BTC)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+# ============================================================
+# OPTIONS STRATEGIES (13 questions)
+# ============================================================
+
+- id: TR_OPT_114
+  category: options_strategies
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在波动率交易中，做多Gamma的策略意味着什么？\nWhat does a long Gamma strategy mean in volatility trading?"
+  options:
+    - "A. 从标的资产大幅波动中获利——价格大幅上涨或下跌都赚钱，代价是每天的时间衰减(theta) / Profit from large moves — make money on big up or down moves, pay daily theta decay"
+    - "B. 只在价格上涨时获利 / Only profit when price rises"
+    - "C. 没有任何成本 / No cost"
+    - "D. 只适用于看涨期权 / Only applies to call options"
+  answer: "A"
+  explanation: "Long Gamma策略(如买入straddle)：(1)Gamma>0意味着Delta随标的价格变动而变化——涨时Delta增大(越涨赚越多)，跌时Delta减小(越跌也赚越多)；(2)本质是做多已实现波动率(realized vol)vs做空隐含波动率(implied vol)；(3)盈利条件：实际波动率>隐含波动率(即市场走得比期权定价更剧烈)；(4)成本：每天流失Theta(时间价值衰减)。这是波动率交易的基础。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_OPT_115
+  category: options_strategies
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在管理期权组合的Greeks时，以下哪种对冲优先级最合理？\nWhen managing option portfolio Greeks, which hedging priority is most reasonable?"
+  options:
+    - "A. 先Delta中性→控制Gamma→管理Vega→监控Theta / Delta neutral first → Gamma control → Vega management → Theta monitoring"
+    - "B. 只对冲Theta / Only hedge Theta"
+    - "C. 不做任何对冲 / No hedging"
+    - "D. 只对冲Vega / Only hedge Vega"
+  answer: "A"
+  explanation: "Greeks对冲优先级：(1)Delta——最直接的方向性风险，用标的资产对冲(持续调整)；(2)Gamma——Delta对冲的频率和有效性取决于Gamma大小，大Gamma需要更频繁的Delta调整(隐含交易成本)；(3)Vega——波动率变化的风险，用其他期权(如不同到期日)对冲；(4)Theta——是Gamma的'支付'，通常不单独对冲而是作为P&L的一部分监控。在实际交易中，Delta对冲最频繁(可能每分钟)，Gamma/Vega对冲频率较低(每日)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: TR_OPT_116
+  category: options_strategies
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Iron Condor策略的盈亏特征是什么？\nWhat is the P&L profile of an Iron Condor strategy?"
+  options:
+    - "A. 标的在一个价格区间内时获得最大利润(收取权利金)，超出区间则亏损有限 / Max profit when underlying stays within a range (collect premium), limited loss outside"
+    - "B. 无限盈利潜力 / Unlimited profit potential"
+    - "C. 只在标的大涨时获利 / Only profits on large upside"
+    - "D. 没有亏损风险 / No loss risk"
+  answer: "A"
+  explanation: "Iron Condor = Bear Call Spread + Bull Put Spread：(1)卖出OTM call + 买入更远OTM call(限制上方亏损)；(2)卖出OTM put + 买入更远OTM put(限制下方亏损)；(3)最大利润=净收取的权利金(标的在两个卖出行权价之间)；(4)最大亏损=行权价之差-权利金(标的大幅超出任一方向)。这是做空波动率(short vol)的经典策略，适用于预期标的在区间震荡的场景。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_OPT_117
+  category: options_strategies
+  difficulty: senior
+  type: show_work
+  points: 5
+  question: "一个期权做市商持有以下头寸：long 100 ATM calls (Delta=0.50, Gamma=0.05, Vega=0.20, Theta=-0.03)。标的价格S=100。计算：(1)组合的总Greeks；(2)Delta对冲需要卖出多少股标的？(3)如果标的价格从100涨到102，估算P&L(使用Delta+Gamma近似)。\nAn option market maker holds: long 100 ATM calls (per-option Delta=0.50, Gamma=0.05, Vega=0.20, Theta=-0.03). S=100. Calculate: (1) total Greeks; (2) shares to sell for delta hedge; (3) estimated P&L if S moves from 100 to 102."
+  options: []
+  answer: "(1) 总Greeks(100份call)：Delta = 100 × 0.50 = 50；Gamma = 100 × 0.05 = 5；Vega = 100 × 0.20 = 20；Theta = 100 × (-0.03) = -3。\n\n(2) Delta对冲：需要卖出50股标的(Delta neutral: 50 - 50 = 0)。\n\n(3) P&L估算(ΔS = +2)：期权P&L ≈ Delta × ΔS + 0.5 × Gamma × ΔS² = 50 × 2 + 0.5 × 5 × 4 = 100 + 10 = 110。标的对冲P&L = -50 × 2 = -100(卖空50股，价格涨了2)。净P&L ≈ 110 - 100 = +10(这是Gamma收益：0.5 × Gamma × ΔS² = 0.5 × 5 × 4 = 10)。"
+  explanation: "这道题展示了期权做市的核心原理：(1)Delta对冲消除方向性风险；(2)对冲后的P&L由Gamma主导——大的价格变动带来正的Gamma PnL；(3)Theta是Gamma的'保险费'——每天损失3(一天后)。只要市场波动够大(realized vol > implied vol)，Gamma收益可以覆盖Theta损失。"
+  hints:
+    - "Delta对冲后的P&L主要来自Gamma"
+    - "P&L ≈ 0.5 × Gamma × ΔS²"
+  rubric: "总Greeks计算(1分)；对冲头寸(1分)；P&L公式(2分)；Gamma收益解释(1分)"
+  time_limit_seconds: 300
+
+- id: TR_OPT_118
+  category: options_strategies
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在波动率交易中，'variance swap'和'volatility swap'的关键区别是什么？\nWhat is the key difference between a variance swap and a volatility swap?"
+  options:
+    - "A. Variance swap的payoff是线性于方差(σ²)的，更容易用vanilla期权复制；Volatility swap是线性于波动率(σ)的，复制更困难 / Variance swap payoff is linear in variance (easier to replicate); vol swap is linear in volatility (harder to replicate)"
+    - "B. 两者完全相同 / They are identical"
+    - "C. Variance swap风险更小 / Variance swap has less risk"
+    - "D. Volatility swap更常见 / Volatility swap is more common"
+  answer: "A"
+  explanation: "Variance swap：payoff = N_var × (RV² - K²)，线性于已实现方差。可以通过静态复制(一系列不同行权价的vanilla期权)进行无模型定价(Carr-Madan)。Volatility swap：payoff = N_vol × (RV - K_vol)，线性于已实现波动率。由于σ = √(σ²)是凸函数，复制需要动态对冲，对模型依赖更强。因此variance swap在机构市场更流行(更容易对冲)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: TR_OPT_119
+  category: options_strategies
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在50ETF期权交易中，以下关于波动率微笑(volatility smile/skew)的说法哪个正确？\nWhich statement about volatility smile/skew in 50ETF options is correct?"
+  options:
+    - "A. OTM put的IV通常高于ATM——反映了市场对下跌风险的保护需求(put skew) / OTM put IV is typically higher than ATM — reflecting demand for downside protection"
+    - "B. 所有行权价的IV完全相同 / IV is the same across all strikes"
+    - "C. OTM call的IV总是最高 / OTM call IV is always highest"
+    - "D. Skew与市场情绪无关 / Skew is unrelated to market sentiment"
+  answer: "A"
+  explanation: "A股50ETF期权的skew特征：(1)负skew(put skew)——虚值put的IV高于虚值call和平值期权；(2)原因：投资者购买put做保护(保险需求)推高了put的IV；(3)恐慌指数(VIX)本质上是衡量这种skew的；(4)在极端下跌时skew会急剧加深(put IV飙升)；(5)做市商可以通过卖出高IV的put(风险溢价)获利，但需要管理尾部风险。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_OPT_120
+  category: options_strategies
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "Dispersion trading策略的核心逻辑是什么？\nWhat is the core logic of a dispersion trading strategy?"
+  options:
+    - "A. 做空指数波动率+做多成分股波动率——利用指数IV相对成分股IV的溢价(correlation premium) / Short index vol + long constituent vol — exploit index IV premium over constituent IVs"
+    - "B. 只做多指数期权 / Only long index options"
+    - "C. 只做空个股期权 / Only short single-stock options"
+    - "D. 买入所有期权 / Buy all options"
+  answer: "A"
+  explanation: "Dispersion trading：(1)核心：指数波动率 < Σ(权重 × 成分股波动率)×相关系数。实际中指数IV往往包含'correlation premium'(投资者倾向于购买指数put保护，推高指数IV)；(2)策略：卖出指数期权(做空指数vol)+买入成分股期权(做多个股vol)；(3)本质上做空correlation——赚钱条件是实际相关系数低于隐含相关系数；(4)风险：市场恐慌时相关性飙升至1(所有股票同跌)，策略会亏损。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: TR_OPT_121
+  category: options_strategies
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Pin risk（钉住风险）在期权做市中指的是什么？\nWhat does pin risk refer to in option market making?"
+  options:
+    - "A. 到期日时标的价格在行权价附近，做市商无法确定期权是否会被行权 / At expiry, underlying price near strike, market maker uncertain whether options will be exercised"
+    - "B. 期权价格被操纵 / Option price manipulation"
+    - "C. 系统故障风险 / System failure risk"
+    - "D. 利率风险 / Interest rate risk"
+  answer: "A"
+  explanation: "Pin risk：(1)到期日当标的价格恰好在某个行权价附近(如S=100.01, strike=100)时，做市商不确定counterparty是否会行权(客户可能exercise或不exercise)；(2)行权与否导致做市商overnight的Delta暴露不确定(可能+100或0)；(3)对冲困难——在最后几分钟很难精确Delta对冲；(4)策略：提前(到期前1-2天)减少near-ATM short option头寸。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_OPT_122
+  category: options_strategies
+  difficulty: expert
+  type: open_ended
+  points: 5
+  question: "请解释波动率曲面(volatility surface)的三个维度(strike, tenor, vol)，以及如何利用波动率曲面异常进行交易。列举至少3种波动率曲面交易策略。\nExplain the three dimensions of the volatility surface and how to trade vol surface anomalies. List at least 3 vol surface trading strategies."
+  options: []
+  answer: ""
+  explanation: "波动率曲面三维度：(1)Strike维度(smile/skew)——不同行权价的IV差异；(2)Tenor维度(term structure)——不同到期日的IV差异(正常为上升曲线)；(3)Vol Level——整体IV水平。交易策略：(1)Butterfly——在IV smile凸度(curvature)过高时卖出wings(高IV的OTM)买入ATM；(2)Calendar spread——当term structure陡峭时买入近月+卖出远月(赚θ差)；(3)Risk reversal——当skew过陡时卖出高IV的put+买入低IV的call(做空skew)；(4)Volatility cone——比较当前IV与历史IV分位数，IV处于极端高/低时做空/做多；(5)Cross-sectional vol arb——不同标的的vol关系偏离时配对交易。"
+  hints:
+    - "每种策略对应波动率曲面的不同维度"
+    - "注意区分做多和做空波动率的策略"
+  rubric: "三维度解释(1分)；至少3种策略(2分)；策略逻辑清晰(1分)；风险讨论(1分)"
+  time_limit_seconds: 360
+
+- id: TR_OPT_123
+  category: options_strategies
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在期权组合中，Charm (DdeltaDtime) 的实际意义是什么？\nWhat is the practical significance of Charm (DdeltaDtime) in option portfolios?"
+  options:
+    - "A. 随着时间流逝Delta会变化——OTM期权的Delta趋向0，ITM趋向±1，需要在非交易时间预测Delta变化 / Delta changes with time — OTM delta approaches 0, ITM approaches ±1; must predict delta changes overnight"
+    - "B. Charm不影响交易 / Charm doesn't affect trading"
+    - "C. Charm只影响Gamma / Charm only affects Gamma"
+    - "D. Charm是一阶希腊字母 / Charm is a first-order Greek"
+  answer: "A"
+  explanation: "Charm = ∂Delta/∂time是二阶希腊字母：(1)随着时间流逝(即使标的价格不变)，期权的Delta会变化——ITM期权Delta趋向1(call)或-1(put)，OTM趋向0；(2)在到期前最后几天这个效应最强(Gamma集中在ATM附近)；(3)实际意义：做市商需要在收盘前预测overnight的Delta变化，提前调整对冲——如果周五收盘后Delta会因Charm移动，需要在周五尾盘提前对冲。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_OPT_124
+  category: options_strategies
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Covered Call策略(持有标的+卖出call)适合什么样的市场观点？\nWhat market view is the Covered Call strategy best suited for?"
+  options:
+    - "A. 温和看涨或中性——预期标的小幅上涨或横盘，通过卖出call获取额外收入 / Mildly bullish or neutral — expect slight upside or sideways, earn extra income from selling calls"
+    - "B. 强烈看涨 / Strongly bullish"
+    - "C. 强烈看跌 / Strongly bearish"
+    - "D. 高波动 / High volatility expected"
+  answer: "A"
+  explanation: "Covered Call = Long Stock + Short Call：(1)如果标的涨到call的行权价之上，盈利被封顶(call被行权)，但获得了权利金作为补偿；(2)如果标的小幅下跌，权利金收入可以部分抵消亏损(cushion)；(3)最佳场景：标的在行权价附近(不涨不跌或小幅上涨)——保留全部权利金。不适合强烈看涨(错过大涨)或强烈看跌(只有少量cushion保护)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_OPT_125
+  category: options_strategies
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在管理大型期权portfolio时，Vanna (DdeltaDvol) 和 Volga (DvegaDvol) 为什么对做市商很重要？\nWhy are Vanna and Volga important for option market makers managing large portfolios?"
+  options:
+    - "A. 当波动率变化时Vanna导致Delta变化(需要重新对冲)，Volga导致Vega暴露变化(P&L非线性于vol) / Vanna: vol changes cause delta shifts (re-hedging needed); Volga: vega exposure changes with vol (non-linear vol P&L)"
+    - "B. 它们不重要 / They are not important"
+    - "C. 只影响ATM期权 / Only affect ATM options"
+    - "D. 只在到期日重要 / Only important at expiry"
+  answer: "A"
+  explanation: "二阶Greeks对大型期权book的风险管理至关重要：(1)Vanna(∂Δ/∂σ)：当IV上升时，OTM put的Delta(绝对值)增大——如果持有大量OTM put，IV上升会突然增加Delta暴露，需要额外对冲。(2)Volga(∂Vega/∂σ)：当IV变化时，Vega本身也在变——大Volga意味着P&L对vol变化是凸的(vol越高Vega越大→做多Volga在vol spike时额外获利)。这就是为什么OTM期权的定价需要Vanna-Volga调整(beyond Black-Scholes)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: TR_OPT_126
+  category: options_strategies
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在使用local volatility模型对A股期权定价时，Dupire公式的核心思想是什么？\nWhat is the core idea of Dupire's formula for local volatility in A-share option pricing?"
+  options:
+    - "A. 从市场观测的隐含波动率曲面唯一推导出一个时间和价格依赖的局部波动率函数σ(S,t) / Uniquely derive a local volatility function σ(S,t) from the observed implied vol surface"
+    - "B. 假设波动率是常数 / Assume volatility is constant"
+    - "C. 只适用于美式期权 / Only for American options"
+    - "D. 不需要市场数据 / Doesn't need market data"
+  answer: "A"
+  explanation: "Dupire (1994)：(1)给定市场上所有行权价和到期日的期权价格(即完整的IV surface)，可以唯一推导出σ_local(S,t)；(2)公式：σ²_local(K,T) = (∂C/∂T + rK∂C/∂K) / (0.5K²∂²C/∂K²)，其中C是call price；(3)local vol模型保证完美拟合当前市场上所有期权价格(无套利)；(4)缺陷：对未来波动率曲面的预测能力差(smile dynamics不对)——被stochastic vol模型(Heston, SABR)部分替代。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+# ============================================================
+# EXECUTION ALGORITHMS (12 questions)
+# ============================================================
+
+- id: TR_EXEC_127
+  category: execution_algorithms
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "TWAP (Time-Weighted Average Price) 算法的核心目标是什么？\nWhat is the core objective of the TWAP algorithm?"
+  options:
+    - "A. 在指定时间内均匀分拆订单执行，获得接近时间加权均价的成交价 / Split orders evenly over a specified time period to achieve a price close to the time-weighted average"
+    - "B. 最快速度完成订单 / Execute as fast as possible"
+    - "C. 获得最低价格 / Achieve the lowest price"
+    - "D. 只在收盘前执行 / Only execute before close"
+  answer: "A"
+  explanation: "TWAP算法：(1)将大单按时间均匀分成小单——如1000手分成10次，每5分钟执行100手；(2)目标价格基准：成交均价接近执行期间的时间加权平均市场价格；(3)优势：简单、透明、可预测；(4)劣势：不考虑市场波动和流动性变化——在流动性差的时段仍然执行固定量，可能增加市场冲击。适合流动性好、不紧急的订单。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_EXEC_128
+  category: execution_algorithms
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "VWAP (Volume-Weighted Average Price) 算法相比TWAP的关键改进是什么？\nWhat is the key improvement of VWAP over TWAP?"
+  options:
+    - "A. 按历史成交量分布调整执行节奏——在成交量高的时段执行更多 / Adjust execution pace by historical volume profile — execute more during high-volume periods"
+    - "B. 执行速度更快 / Faster execution"
+    - "C. 不需要历史数据 / No historical data needed"
+    - "D. 只用市价单 / Only uses market orders"
+  answer: "A"
+  explanation: "VWAP vs TWAP：(1)VWAP使用历史volume profile(如过去20天的分钟级成交量分布)预测当天每个时段的成交量比例；(2)在预计成交量高的时段(如开盘、收盘)执行更多(因为大量参与时对价格影响更小)；(3)目标：成交均价接近全天VWAP——这是最常用的execution benchmark；(4)局限：依赖历史volume profile的准确性——异常天(如重大新闻)实际volume分布可能偏离历史。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_EXEC_129
+  category: execution_algorithms
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "Implementation Shortfall (IS) 算法与VWAP的本质区别是什么？\nWhat is the fundamental difference between IS algorithm and VWAP?"
+  options:
+    - "A. IS以决策价格为基准，在timing risk和market impact之间动态权衡 / IS benchmarks against decision price, dynamically trades off timing risk vs market impact"
+    - "B. IS只用限价单 / IS only uses limit orders"
+    - "C. IS不考虑市场冲击 / IS ignores market impact"
+    - "D. IS与VWAP完全相同 / IS and VWAP are identical"
+  answer: "A"
+  explanation: "IS算法(Almgren-Chriss模型)：(1)基准是decision price(决策时的市场价格)，而非VWAP(全天均价)；(2)在timing risk(等待执行期间价格不利变化的风险)和market impact(快速执行推动价格的成本)之间优化；(3)对risk-averse的PM，IS倾向于更快执行(减少timing risk)；(4)使用实时市场数据动态调整执行速度(adaptive)。IS是对performance最有意义的benchmark——衡量从决策到完成执行的全部成本。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: TR_EXEC_130
+  category: execution_algorithms
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Iceberg Order（冰山订单）在算法交易中的作用是什么？\nWhat is the role of iceberg orders in algorithmic trading?"
+  options:
+    - "A. 只在订单簿中显示一小部分订单量(peak)，隐藏真实的大订单量(hidden)——减少信息泄露 / Display only a small peak in order book, hiding true large size — reduce information leakage"
+    - "B. 加快执行速度 / Speed up execution"
+    - "C. 获得更好的价格 / Get better prices"
+    - "D. 只在收盘前使用 / Only used before close"
+  answer: "A"
+  explanation: "Iceberg Order：(1)大订单分成displayed quantity(如100手)和hidden quantity(如900手)；(2)每次显示的部分被成交后自动补充下一个显示量；(3)信息隐藏——避免其他交易者看到大单后抢跑(front-running)或调整报价(adverse selection)；(4)大多数交易所原生支持iceberg order类型。但注意：高频交易者可以通过pattern detection识别冰山订单(如固定大小的反复成交)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_EXEC_131
+  category: execution_algorithms
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在使用机器学习优化执行算法时，以下哪种方法最有前景？\nWhich ML approach is most promising for optimizing execution algorithms?"
+  options:
+    - "A. 强化学习——Agent学习根据实时市场状态(流动性、波动率、剩余量)动态调整执行策略 / RL — agent learns to dynamically adjust execution based on real-time market state"
+    - "B. 简单线性回归 / Simple linear regression"
+    - "C. 聚类分析 / Clustering"
+    - "D. 规则引擎 / Rule engine"
+  answer: "A"
+  explanation: "RL优化执行：(1)State: 剩余未执行量、已用时间、当前spread/depth/volatility、recent fills；(2)Action: 当前时段的执行量和aggressiveness(限价/市价)；(3)Reward: -implementation_shortfall(负的执行偏差)；(4)优势：可以学习非线性的市场状态→最优执行策略的映射(如在流动性突然增加时加速执行)。JPMorgan的LOXM和Goldman的Atlas都使用RL优化执行。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: TR_EXEC_132
+  category: execution_algorithms
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "POV (Percentage of Volume) 算法的执行逻辑是什么？\nWhat is the execution logic of the POV algorithm?"
+  options:
+    - "A. 按照市场成交量的固定比例执行——如参与率20%意味着每成交100手中执行20手 / Execute at a fixed participation rate of market volume — e.g., 20% rate means execute 20 for every 100 traded"
+    - "B. 每次执行固定数量 / Execute fixed quantity each time"
+    - "C. 只在价格有利时执行 / Only execute at favorable prices"
+    - "D. 一次性全部执行 / Execute all at once"
+  answer: "A"
+  explanation: "POV算法：(1)设定参与率(如20%)——目标是占当前市场成交量的固定比例；(2)实时监控市场成交量，按比例调整自己的执行量；(3)市场成交活跃时执行多，清淡时执行少——自动适应流动性变化；(4)优势：market impact与市场成交量成比例(不会在流动性差时过度交易)；(5)风险：如果市场成交量很低，可能无法在时间内完成执行。参与率通常设在5-30%。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_EXEC_133
+  category: execution_algorithms
+  difficulty: senior
+  type: open_ended
+  points: 5
+  question: "请比较TWAP、VWAP、IS和POV四种执行算法的适用场景、优缺点，并说明在什么情况下应该选择哪种。\nCompare TWAP, VWAP, IS, and POV execution algorithms: applicable scenarios, pros/cons, and selection criteria."
+  options: []
+  answer: ""
+  explanation: "对比：(1)TWAP——适用：流动性好、无紧迫性、订单量小。优点：简单透明。缺点：不适应流动性变化。(2)VWAP——适用：以全天VWAP为benchmark(多数机构默认)。优点：跟踪市场成交节奏。缺点：依赖历史volume profile，信息泄露(可预测的执行模式)。(3)IS——适用：对alpha有信心、需要minimizing cost from decision。优点：动态权衡timing risk和impact。缺点：复杂度高、参数敏感。(4)POV——适用：大单执行、控制market participation rate。优点：自适应流动性。缺点：执行时间不确定。选择准则：urgency高→IS/aggressive VWAP；alpha signal强→IS(快速执行捕获alpha)；passive/benchmark→VWAP；大单/低流动性→POV。"
+  hints:
+    - "按urgency和alpha confidence两个维度来选择"
+    - "注意每种算法的benchmark不同"
+  rubric: "四种算法对比(2分)；适用场景(1分)；选择准则(1分)；实际考虑(1分)"
+  time_limit_seconds: 360
+
+- id: TR_EXEC_134
+  category: execution_algorithms
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Dark Pool(暗池)交易在执行算法中的作用是什么？\nWhat is the role of dark pools in execution algorithms?"
+  options:
+    - "A. 匿名匹配大单——不显示在公开订单簿中，减少信息泄露和市场冲击 / Anonymously match large orders — not displayed publicly, reducing information leakage and market impact"
+    - "B. 总是提供更好的价格 / Always provide better prices"
+    - "C. 替代所有公开市场 / Replace all public markets"
+    - "D. 只适合小订单 / Only for small orders"
+  answer: "A"
+  explanation: "Dark Pool的价值：(1)不透明——订单不在公开订单簿中显示，其他参与者看不到大单的存在；(2)中间价成交(midpoint matching)——买卖双方在bid-ask中间价成交，双方都比在公开市场获得更好的价格；(3)减少市场冲击——大单不会推动公开市场价格。Smart Order Router(SOR)通常将订单分配到多个venue(公开市场+暗池)以获得最优执行。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+# ============================================================
+# HFT CONCEPTS (12 questions)
+# ============================================================
+
+- id: TR_HFT_135
+  category: hft_concepts
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "高频交易(HFT)中，latency arbitrage指的是什么？\nWhat does latency arbitrage mean in HFT?"
+  options:
+    - "A. 利用不同交易所之间的信息传播延迟，在价格调整前抢先交易获利 / Exploit information propagation delays between exchanges, trading before price adjusts"
+    - "B. 长期持有股票 / Hold stocks long-term"
+    - "C. 使用低频策略 / Using low-frequency strategies"
+    - "D. 人工交易 / Manual trading"
+  answer: "A"
+  explanation: "Latency arbitrage：(1)当一个交易所的价格变化后，其他交易所的价格更新有延迟(毫秒级)；(2)HFT在更快的交易所观察到价格变化后，抢在慢交易所价格调整前交易(如在A所看到买单推高价格→在B所抢先买入)；(3)这本质上是一种'速度税'——慢的参与者系统性地被快的参与者占便宜；(4)监管争议：IEX通过增加350μs延迟(speed bump)来减少latency arbitrage。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_HFT_136
+  category: hft_concepts
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在HFT中，co-location的技术优势具体体现在哪里？\nWhat specific technical advantage does co-location provide in HFT?"
+  options:
+    - "A. 将服务器放在交易所机房内，网络延迟降至微秒级(<10μs)——比从外部连接快100-1000倍 / Place servers in exchange datacenter, reducing latency to microseconds — 100-1000x faster than external"
+    - "B. 更大的带宽 / More bandwidth"
+    - "C. 更便宜的服务器 / Cheaper servers"
+    - "D. 更好的编程语言 / Better programming languages"
+  answer: "A"
+  explanation: "Co-location优势：(1)物理距离最短——服务器到交易所撮合引擎只有几米的网线，延迟<10μs；(2)从城市外部连接(如从上海连到交易所)延迟可能1-10ms(1000-10000μs)——慢了100-1000倍；(3)co-lo内部的服务器之间也可以直连(cross-connect)——多交易所策略可在co-lo内完成，延迟极低；(4)交易所通常提供fair access——同一co-lo内所有客户的线缆长度相同。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_HFT_137
+  category: hft_concepts
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在HFT策略分类中，以下哪种策略属于被动型(passive)而非攻击型(aggressive)？\nWhich HFT strategy is classified as passive rather than aggressive?"
+  options:
+    - "A. 被动做市——在买卖两侧挂限价单提供流动性，赚取买卖价差 / Passive market making — post limit orders on both sides, earn bid-ask spread"
+    - "B. 动量点火(momentum ignition) / Momentum ignition"
+    - "C. Latency arbitrage / Latency arbitrage"
+    - "D. 幌骗(spoofing) / Spoofing"
+  answer: "A"
+  explanation: "HFT策略分类：(1)被动/提供流动性：做市(挂单赚spread)——社会价值正(提供流动性、缩小spread)；(2)攻击/消耗流动性：latency arb(利用速度抢跑)——社会价值有争议；(3)操纵型(违法)：spoofing(挂假单引诱对手后撤单)、layering(多层假单)——违法。被动做市是HFT中最常见且被监管认可的策略，但做市商面临adverse selection风险(被知情交易者'挑选')。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_HFT_138
+  category: hft_concepts
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在HFT系统中使用FPGA(Field-Programmable Gate Array)相比纯软件实现的核心优势是什么？\nWhat is the core advantage of FPGA over pure software in HFT systems?"
+  options:
+    - "A. 硬件级并行处理——网络数据包解析和交易逻辑在FPGA上可实现纳秒级延迟 / Hardware-level parallelism — packet parsing and trading logic achieve nanosecond latency on FPGA"
+    - "B. 编程更容易 / Easier programming"
+    - "C. 更便宜 / Cheaper"
+    - "D. 支持更多算法 / Supports more algorithms"
+  answer: "A"
+  explanation: "FPGA in HFT：(1)网络数据包在FPGA上硬件解析(无需OS和软件栈)——tick-to-trade延迟可低至100ns-1μs(软件通常10-100μs)；(2)确定性延迟——没有OS中断、GC暂停、cache miss等不确定因素；(3)并行处理——多个逻辑同时执行(而非CPU的顺序/流水线)。缺点：开发周期长(HDL比C++复杂)、灵活性低(改策略需要重新综合bitstream)、人才稀缺。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: TR_HFT_139
+  category: hft_concepts
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "以下关于做市商的'逆向选择'(adverse selection)风险的说法哪个正确？\nWhich statement about market maker adverse selection risk is correct?"
+  options:
+    - "A. 知情交易者倾向于在做市商的报价上成交，使做市商持续在不利方向上累积头寸 / Informed traders tend to trade against market maker quotes, causing unfavorable inventory accumulation"
+    - "B. 逆向选择只影响做空方 / Adverse selection only affects short sellers"
+    - "C. 做市商可以完全消除逆向选择 / Market makers can fully eliminate adverse selection"
+    - "D. 逆向选择与信息不对称无关 / Adverse selection is unrelated to information asymmetry"
+  answer: "A"
+  explanation: "Adverse selection(Glosten-Milgrom模型)：(1)知情交易者知道资产真实价值——他们只在做市商报价有利(低于真实价值时买入、高于时卖出)时交易；(2)不知情交易者(noise traders)随机交易；(3)做市商与知情交易者交易平均亏钱——需要从不知情交易者赚的spread来补偿。对策：(1)加宽spread(但会失去竞争力)；(2)检测知情交易流(如大单、特定时段)并调整报价。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_HFT_140
+  category: hft_concepts
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在A股市场中，以下哪种交易机制限制了HFT策略的应用？\nWhich A-share market mechanism limits HFT strategy application?"
+  options:
+    - "A. T+1交割制度——当天买入的股票次日才能卖出，限制了日内反转策略 / T+1 settlement — stocks bought today can only be sold tomorrow, limiting intraday reversal"
+    - "B. 电子化交易 / Electronic trading"
+    - "C. 集中竞价制度 / Central limit order book"
+    - "D. 连续竞价 / Continuous auction"
+  answer: "A"
+  explanation: "A股HFT限制因素：(1)T+1——无法日内买卖同一股票做日内反转(除非提前持有底仓)；(2)涨跌停板(10%/20%)——限制了极端价格波动和相关策略；(3)印花税+手续费——增加了高频交易成本；(4)缺乏做空机制——融券难、费用高。变通方案：(1)使用ETF(T+0套利)；(2)使用期货(T+0)；(3)底仓策略(先卖后买)；(4)可转债(T+0)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_HFT_141
+  category: hft_concepts
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在HFT中，tick-to-trade latency的定义是什么？\nWhat is the definition of tick-to-trade latency in HFT?"
+  options:
+    - "A. 从收到市场数据(tick)到发出交易指令的全部处理时间 / Total processing time from receiving market data to sending a trade order"
+    - "B. 交易所的撮合延迟 / Exchange matching latency"
+    - "C. 网络传输延迟 / Network propagation delay"
+    - "D. 订单确认时间 / Order confirmation time"
+  answer: "A"
+  explanation: "Tick-to-trade是衡量HFT系统性能的核心指标：(1)包括：数据包接收→解析→策略计算→风控检查→订单生成→发送；(2)不包括网络传输时间(那是网络延迟)和交易所处理时间；(3)顶级HFT系统：FPGA实现<1μs，优化的C++实现<10μs；(4)分解优化：数据解析(可FPGA硬件化)、策略计算(预计算+查表)、风控(硬编码简单规则)、订单发送(bypass kernel)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_HFT_142
+  category: hft_concepts
+  difficulty: expert
+  type: open_ended
+  points: 5
+  question: "请分析HFT做市商在Flash Crash(闪崩)事件中的角色和行为。具体讨论：(1)做市商为什么在闪崩中撤单？(2)这对市场稳定性有什么影响？(3)监管如何应对？\nAnalyze HFT market maker behavior during flash crashes: (1) why do they withdraw? (2) impact on market stability? (3) regulatory responses?"
+  options: []
+  answer: ""
+  explanation: "(1)撤单原因：做市商在极端波动中面临巨大的adverse selection风险(不确定价格方向→任何挂单都可能亏损)。其风控系统设计为在波动率超过阈值时自动撤出(kill switch)。这是理性行为——没有义务在极端行情中提供流动性。(2)市场影响：做市商同时撤出导致流动性瞬间蒸发→价格跳空→触发更多止损和margin call→进一步下跌(流动性螺旋)。2010年5月6日Flash Crash中E-mini S&P 500在5分钟内跌6%。(3)监管应对：(i)Circuit breakers(熔断机制)——个股涨跌幅触发暂停交易；(ii)Maker-taker rebate鼓励做市；(iii)Designated Market Maker义务——某些交易所要求指定做市商在极端行情中维持最低报价；(iv)A股的涨跌停板本身就是一种保护。"
+  hints:
+    - "做市商没有义务在极端行情中做市"
+    - "流动性螺旋是闪崩的核心机制"
+  rubric: "撤单原因(1分)；流动性影响(2分)；监管措施(1分)；A股对比(1分)"
+  time_limit_seconds: 360
+
+# ============================================================
+# CROSS-ASSET, REGULATORY, QUANT PM, MACRO (38 questions)
+# ============================================================
+
+- id: TR_CROSS_143
+  category: cross_asset_trading
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "股债相关性(stock-bond correlation)的变化对cross-asset策略有什么影响？\nHow does changing stock-bond correlation affect cross-asset strategies?"
+  options:
+    - "A. 正相关时传统60/40配置的分散化失效(股债同跌)；负相关时分散化有效 / Positive correlation breaks 60/40 diversification (stocks and bonds fall together); negative correlation provides diversification"
+    - "B. 相关性不变 / Correlation never changes"
+    - "C. 只影响债券 / Only affects bonds"
+    - "D. 不影响任何策略 / Doesn't affect any strategy"
+  answer: "A"
+  explanation: "股债相关性regime变化：(1)1997-2020年：负相关为主——股跌时债涨(避险需求)，60/40配置有效分散风险；(2)2022年后：通胀驱动下股债正相关——加息导致股票和债券同时下跌(duration+equity risk同向)；(3)影响：正相关时需要寻找其他分散化工具(商品、另类投资)；(4)cross-asset策略需要动态监测相关性regime并调整配置。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_CROSS_144
+  category: cross_asset_trading
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在跨资产统计套利中，pairs trading最常用的协整(cointegration)检验方法是什么？\nWhat is the most common cointegration test for pairs trading in cross-asset statistical arbitrage?"
+  options:
+    - "A. Engle-Granger两步法或Johansen检验 / Engle-Granger two-step or Johansen test"
+    - "B. t检验 / t-test"
+    - "C. 卡方检验 / Chi-squared test"
+    - "D. ANOVA / ANOVA"
+  answer: "A"
+  explanation: "Cointegration检验：(1)Engle-Granger两步法：对两个资产回归，检验残差是否平稳(ADF检验)——如果残差平稳则两资产协整；(2)Johansen检验：可以同时检验多个变量的协整关系，给出协整向量数量。在cross-asset pairs trading中：(1)找到协整的资产对(如A股ETF vs H股ETF)；(2)当spread偏离均衡时交易(均值回归)。注意：协整关系可能随时间变化(regime change)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_CROSS_145
+  category: cross_asset_trading
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在跨资产交易中，carry trade的基本逻辑是什么？\nWhat is the basic logic of carry trade in cross-asset trading?"
+  options:
+    - "A. 借入低利率资产/货币，投资于高利率资产/货币，赚取利差(carry) / Borrow low-yield assets/currencies, invest in high-yield ones, earn the spread"
+    - "B. 只做方向性交易 / Only directional trades"
+    - "C. 不需要借贷 / No borrowing needed"
+    - "D. Carry trade没有风险 / Carry trade has no risk"
+  answer: "A"
+  explanation: "Carry trade跨资产应用：(1)外汇——借日元(低利率)买澳元(高利率)赚利差；(2)固定收益——借短(低利率)投长(高利率)赚期限利差；(3)商品——在backwardation市场做多(正roll yield)；(4)股票——做多高股息股做空低股息股。风险：(1)汇率/价格变动可能吞噬carry(如日元升值)；(2)carry trade拥挤导致突然反转(如2008年去杠杆)；(3)尾部风险大(长期赚小钱，突然亏大钱)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_REG_146
+  category: regulatory
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "MiFID II(Markets in Financial Instruments Directive II)对量化交易的主要影响是什么？\nWhat is MiFID II's main impact on quantitative trading?"
+  options:
+    - "A. 要求算法交易者注册、测试算法、保存记录，并限制高频做市的撤单率 / Requires algo trader registration, algorithm testing, record-keeping, and limits HFT withdrawal rates"
+    - "B. 禁止所有算法交易 / Bans all algorithmic trading"
+    - "C. 只影响美国市场 / Only affects US markets"
+    - "D. 不涉及交易透明度 / Doesn't involve trading transparency"
+  answer: "A"
+  explanation: "MiFID II(2018年生效)对量化交易的影响：(1)算法交易者需向监管机构注册并获得许可；(2)算法必须经过测试(如back-testing和stress testing)才能上线；(3)保存所有算法交易的完整记录(audit trail)至少5年；(4)High-frequency algorithmic trading的定义和特殊要求(如order-to-trade ratio限制)；(5)交易前和交易后透明度要求。这是全球最全面的算法交易监管框架之一。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_REG_147
+  category: regulatory
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "Reg NMS (Regulation National Market System) 中的Order Protection Rule (Rule 611) 对交易执行有什么影响？\nHow does Reg NMS Rule 611 (Order Protection Rule) affect trade execution?"
+  options:
+    - "A. 禁止交易通过(trade-through)——不能在某交易所以劣于另一交易所最优价格的价格成交 / Prohibits trade-throughs — cannot execute at a price worse than the best price at another exchange"
+    - "B. 要求所有交易在同一交易所完成 / Requires all trades at the same exchange"
+    - "C. 禁止暗池交易 / Bans dark pool trading"
+    - "D. 固定所有交易所的手续费 / Fixes fees across all exchanges"
+  answer: "A"
+  explanation: "Reg NMS Rule 611：(1)当NYSE的best offer是$100.00而NASDAQ的best offer是$99.99时，不能在NYSE以$100.00成交(必须route到$99.99的NASDAQ)；(2)这促进了交易所之间的竞争(保护投资者获得最优价格)；(3)催生了Smart Order Router(SOR)——算法自动将订单路由到最优价格的venue；(4)副作用：增加了市场碎片化(订单分散在多个venue)和延迟(需要跨venue比较价格)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_REG_148
+  category: regulatory
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在A股市场中，以下哪种行为被明确禁止且可能触犯操纵市场相关法规？\nWhich behavior is explicitly prohibited and may constitute market manipulation in A-share markets?"
+  options:
+    - "A. 幌骗(spoofing)——大量挂单制造虚假供需然后撤单 / Spoofing — placing large orders to create false supply/demand then canceling"
+    - "B. 使用VWAP算法 / Using VWAP algorithm"
+    - "C. 在涨停板挂限价买单 / Placing limit buy at upper limit"
+    - "D. 分批执行大单 / Splitting large orders"
+  answer: "A"
+  explanation: "A股市场操纵行为禁止清单：(1)幌骗(spoofing/layering)——挂大量虚假订单影响其他投资者判断后撤单；(2)洗售(wash trading)——自买自卖制造虚假成交量；(3)尾盘操纵——在收盘前集中交易影响收盘价；(4)连续交易操纵——通过连续买卖推动价格。正常的算法交易(VWAP/TWAP/分批执行)是合法的。证监会近年来加强了对量化交易中可能存在的操纵行为的监管力度。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_QP_149
+  category: quant_portfolio
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在量化投资组合管理中，turnover constraint (换手率约束) 的主要目的是什么？\nWhat is the main purpose of a turnover constraint in quantitative portfolio management?"
+  options:
+    - "A. 控制交易成本——限制每期换手率，使净alpha(扣除交易成本后)最大化 / Control transaction costs — limit turnover to maximize net alpha after costs"
+    - "B. 增加交易频率 / Increase trading frequency"
+    - "C. 提高总收益 / Increase gross returns"
+    - "D. 减少持仓数量 / Reduce number of holdings"
+  answer: "A"
+  explanation: "Turnover约束的价值：(1)每次换仓产生交易成本(手续费+印花税+market impact)——过高换手率可能使交易成本吞噬alpha；(2)优化器中加入turnover ≤ X%(如单边20%)的约束；(3)Alpha decay faster的因子需要更高换手率；alpha decay slower的因子可以低换手率——匹配因子的半衰期和交易成本；(4)实际中常用quadratic transaction cost(cost ∝ turnover²)更精确建模。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_QP_150
+  category: quant_portfolio
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在因子投资组合中，'因子暴露预算'(factor exposure budget)的概念是什么？\nWhat is the concept of 'factor exposure budget' in factor portfolios?"
+  options:
+    - "A. 对组合在各个因子上的暴露(如beta、value、momentum)设置上下限约束 / Set upper and lower bounds on portfolio exposure to each factor"
+    - "B. 不限制任何因子暴露 / No limits on any factor exposure"
+    - "C. 只关注单一因子 / Focus on a single factor only"
+    - "D. 因子预算等于资金预算 / Factor budget equals capital budget"
+  answer: "A"
+  explanation: "因子暴露预算：(1)定义每个因子维度上允许的暴露范围(如market beta ∈ [0.95, 1.05]，industry deviation < 2%)；(2)在组合优化中作为约束条件——确保组合风险来源可控；(3)active risk budget：将TE(tracking error)分配到各因子——如60%TE来自alpha因子，40%来自行业偏离；(4)好处：PM清楚地知道组合的风险来源，风控可以监控是否超出预算。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_MACRO_151
+  category: macro_trading
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在宏观交易中，'risk-on / risk-off'（风险偏好/风险厌恶）状态切换的典型信号是什么？\nWhat are typical signals of 'risk-on / risk-off' regime switching in macro trading?"
+  options:
+    - "A. VIX上升+美元走强+黄金上涨+新兴市场资金流出 = risk-off信号 / VIX rising + USD strengthening + gold up + EM capital outflows = risk-off signal"
+    - "B. 股票上涨就是risk-on / Stock up means risk-on"
+    - "C. 只看GDP / Only look at GDP"
+    - "D. 宏观信号不存在 / Macro signals don't exist"
+  answer: "A"
+  explanation: "Risk-on/risk-off的综合判断：Risk-off信号组合：(1)VIX飙升(恐慌)；(2)美元走强(避险货币)；(3)黄金/国债上涨(安全资产)；(4)新兴市场资金流出；(5)信用利差扩大。Risk-on信号：VIX低、新兴市场流入、信用利差收窄、商品走强。量化方法：用PCA提取risk-on/off的第一主成分作为macro factor。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_MACRO_152
+  category: macro_trading
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在量化宏观策略中，趋势跟踪(trend following)策略的核心原理和主要挑战是什么？\nWhat is the core principle and main challenge of trend following in quant macro strategies?"
+  options:
+    - "A. 利用资产价格的序列相关性(持续上涨/下跌)——在各类资产上做多上涨趋势做空下跌趋势；挑战是震荡市的频繁止损(whipsaw) / Exploit serial correlation in prices — long uptrends, short downtrends; challenge is whipsaw losses in ranging markets"
+    - "B. 只做多不做空 / Long only, no shorting"
+    - "C. 不需要止损 / No stop loss needed"
+    - "D. 只适用于股票 / Only applies to stocks"
+  answer: "A"
+  explanation: "Trend following(如CTA策略)：(1)信号：移动平均线交叉、突破、动量指标等识别趋势方向；(2)多资产：在商品、外汇、债券、股指等各类资产上应用——分散化降低单一市场风险；(3)凸性(convexity)：在趋势市场中赚大钱(fat right tail)，在震荡市场中亏小钱(频繁小额止损)——类似做多期权；(4)挑战：震荡市(choppy market)会频繁产生假信号导致连续亏损(whipsaw)，考验策略的止损和仓位管理。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_MACRO_153
+  category: macro_trading
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在量化宏观策略中，'carry, momentum, value'三因子在不同资产类别上的应用，以下说法哪个正确？\nWhich statement about applying carry, momentum, and value factors across asset classes in macro strategies is correct?"
+  options:
+    - "A. 这三个因子在外汇、商品、固定收益和股指上都有经过验证的溢价，且跨资产分散化显著降低策略风险 / All three factors show documented premiums in FX, commodities, fixed income, and equity indices, with cross-asset diversification significantly reducing risk"
+    - "B. 这些因子只适用于股票 / These factors only apply to stocks"
+    - "C. 跨资产应用不增加分散化 / Cross-asset application adds no diversification"
+    - "D. 只有动量因子有学术支持 / Only momentum has academic support"
+  answer: "A"
+  explanation: "三因子跨资产应用(Asness, Moskowitz, Pedersen)：(1)Carry——外汇(利率差)、商品(roll yield)、债券(期限利差)、股指(股息率)；(2)Momentum——所有资产类别的12-1月价格趋势；(3)Value——外汇(PPP偏离)、商品(vs生产成本)、债券(实际利率vs历史)。跨资产分散化的好处：各资产类别的因子溢价相关性低(~0.1-0.3)，组合的Sharpe ratio显著高于单一资产。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: TR_CROSS_154
+  category: cross_asset_trading
+  difficulty: senior
+  type: open_ended
+  points: 5
+  question: "请设计一个跨资产的量化宏观策略框架，包括：(1)资产覆盖(至少4个资产类别)；(2)信号生成(至少2种因子)；(3)组合构建方法；(4)风险管理。\nDesign a cross-asset quant macro strategy framework: (1) asset coverage (4+ classes); (2) signal generation (2+ factors); (3) portfolio construction; (4) risk management."
+  options: []
+  answer: ""
+  explanation: "框架设计：(1)资产覆盖：股指(沪深300、S&P500、Nikkei、DAX)；债券(中国国债、US Treasury、Bund)；外汇(G10主要货币对)；商品(原油、黄金、铜、大豆)。(2)信号：Momentum(12M-1M price momentum)和Carry(利差/roll yield/股息率)。每个资产计算两个因子信号的z-score后加权平均。(3)组合构建：Volatility targeting——每个资产的仓位大小反比于其波动率(vol parity)，总组合目标波动率10%年化。(4)风险管理：Stop loss(单资产最大亏损2%时砍仓)；correlation monitoring(资产相关性突增时降杠杆)；drawdown control(总组合回撤超5%时减半仓位)。"
+  hints:
+    - "volatility targeting是宏观策略的标准仓位管理方法"
+    - "跨资产的分散化是关键"
+  rubric: "资产覆盖(1分)；信号设计(1分)；组合构建(1分)；风险管理(1分)；可行性(1分)"
+  time_limit_seconds: 420
+
+- id: TR_REG_155
+  category: regulatory
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在中国证监会对量化交易的最新监管要求中，以下哪项是核心关注点？\nWhat is the core regulatory focus of CSRC's latest requirements on quantitative trading?"
+  options:
+    - "A. 异常交易行为监控(如高频撤单、尾盘操纵)+策略报备+对市场影响评估 / Abnormal trading behavior monitoring (HFT withdrawal, close manipulation) + strategy filing + market impact assessment"
+    - "B. 禁止所有量化交易 / Ban all quantitative trading"
+    - "C. 只监管境外机构 / Only regulate foreign institutions"
+    - "D. 不涉及任何量化策略 / Doesn't involve any quant strategies"
+  answer: "A"
+  explanation: "中国证监会量化监管(2023-2024)：(1)量化私募策略报备——需要向交易所报备策略类型和大致逻辑；(2)异常交易行为监控——高频撤单率、集中度过高、尾盘大额交易等行为会被监控；(3)关注日内交易(DMA)策略的杠杆和市场影响；(4)要求评估策略对市场稳定性的影响。不是禁止量化，而是纳入监管框架确保市场公平和稳定。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_QP_156
+  category: quant_portfolio
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在多因子量化组合中，'alpha衰减'和'换手率'之间的关系是什么？\nWhat is the relationship between alpha decay and turnover in multi-factor quant portfolios?"
+  options:
+    - "A. Alpha衰减快的因子需要更高换手率才能捕获alpha，但高换手率增加交易成本——需要找到最优平衡点 / Faster alpha decay requires higher turnover to capture alpha, but higher turnover increases costs — need optimal balance"
+    - "B. 换手率越高alpha越高 / Higher turnover means higher alpha"
+    - "C. Alpha衰减与换手率无关 / Alpha decay is unrelated to turnover"
+    - "D. 低换手率总是更好 / Lower turnover is always better"
+  answer: "A"
+  explanation: "Alpha-turnover tradeoff：(1)因子信号的半衰期(half-life)决定了最优换手频率——如果alpha在5天后衰减到0，则需要每5天完全换仓；(2)但每次换仓产生交易成本(~20-50bps round-trip for A-shares)；(3)最优换手率使得net alpha(gross alpha - trading costs)最大化；(4)公式化：optimal turnover ≈ gross_alpha / (2 × cost_per_turnover)。高频alpha需要低成本执行才能盈利。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_HFT_157
+  category: hft_concepts
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化交易中，maker-taker fee model（做市者-吃单者费用模型）如何影响交易策略？\nHow does the maker-taker fee model affect trading strategies?"
+  options:
+    - "A. Maker(挂单方)获得交易所返佣，Taker(吃单方)支付手续费——激励被动挂单行为 / Maker receives rebate, Taker pays fee — incentivizes passive limit order posting"
+    - "B. Maker和Taker支付相同费用 / Maker and Taker pay the same"
+    - "C. 不影响策略选择 / Doesn't affect strategy choice"
+    - "D. 只影响散户 / Only affects retail"
+  answer: "A"
+  explanation: "Maker-Taker模式：(1)Maker(提供流动性——limit order)：获得rebate(如-0.02bps)，实际上被交易所付费；(2)Taker(消耗流动性——market order或aggressive limit)：支付fee(如+0.03bps)；(3)对策略的影响：做市策略倾向于被动挂单(赚rebate)；aggressive策略需要确保alpha > taker fee才能盈利；(4)有些交易所使用inverted model(maker付费taker获rebate)——吸引aggressive流。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_MACRO_158
+  category: macro_trading
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在宏观交易中，收益率曲线(yield curve)倒挂作为衰退预测信号的原理是什么？\nWhat is the principle behind yield curve inversion as a recession predictor in macro trading?"
+  options:
+    - "A. 短端利率高于长端反映市场预期央行将因经济衰退而降息——历史上每次衰退前都出现倒挂 / Short rates above long rates reflect market expectation of rate cuts due to recession — historically preceded every recession"
+    - "B. 倒挂总是错误信号 / Inversions are always false signals"
+    - "C. 只影响债券交易 / Only affects bond trading"
+    - "D. 与宏观经济无关 / Unrelated to macroeconomics"
+  answer: "A"
+  explanation: "收益率曲线倒挂(如10Y-2Y spread<0)：(1)正常曲线：长端>短端(期限溢价+经济增长预期)；(2)倒挂原因：央行加息推高短端+市场预期经济放缓推低长端(降息预期)；(3)预测力：美国自1950年以来每次衰退前都出现过10Y-2Y倒挂(lead time ~12-18个月)；(4)交易策略：倒挂出现后减少股票风险资产配置，增加防御性资产。注意：倒挂到衰退的lead time不稳定。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_QP_159
+  category: quant_portfolio
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在量化多空(long-short)组合中，Dollar Neutrality vs Beta Neutrality的区别和选择依据是什么？\nWhat is the difference between dollar neutrality and beta neutrality in quant long-short portfolios?"
+  options:
+    - "A. Dollar neutral: 多头和空头金额相等；Beta neutral: 组合市场beta=0，需要调整多空比例以对冲beta差异 / Dollar neutral: equal long/short notional; Beta neutral: portfolio market beta=0, adjust ratio to hedge beta differences"
+    - "B. 两者完全相同 / They are identical"
+    - "C. Dollar neutral更好 / Dollar neutral is always better"
+    - "D. Beta neutral不需要计算 / Beta neutral needs no calculation"
+  answer: "A"
+  explanation: "Dollar vs Beta neutral：(1)Dollar neutral(100多100空)——简单但如果多头组合beta=1.2而空头beta=0.8，净beta=0.4(仍有市场暴露)；(2)Beta neutral——调整多空比例使得Σ(w_long × β_long) = Σ(|w_short| × β_short)，净市场beta≈0；(3)选择依据：如果alpha来源与市场无关(如截面选股)，应选beta neutral以隔离市场风险；如果PM有市场观点，可以偏离beta neutral。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: TR_CROSS_160
+  category: cross_asset_trading
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在跨资产交易中，'risk parity within asset class'（资产类内风险平价）的含义是什么？\nWhat does 'risk parity within asset class' mean in cross-asset trading?"
+  options:
+    - "A. 在每个资产类别内部，使各子资产对类别风险的贡献相等 / Within each asset class, equalize each sub-asset's contribution to class risk"
+    - "B. 等权配置 / Equal weight allocation"
+    - "C. 最大化每个资产类别的收益 / Maximize return in each class"
+    - "D. 只投资一个资产 / Only invest in one asset"
+  answer: "A"
+  explanation: "多层风险平价：(1)第一层——跨资产类别(股票、债券、商品、另类)风险平价；(2)第二层——每个类别内部的风险平价，例如：在股票内部，各地区(美/欧/亚)对股票总风险的贡献相等；在商品内部，各品种(能源/金属/农产品)的风险贡献相等；(3)好处：避免风险集中在单一子资产(如美股占据了股票风险的80%)；(4)计算：marginal risk contribution = w_i × (∂σ_p/∂w_i) = w_i × (Σ_i / σ_p)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_MACRO_161
+  category: macro_trading
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在CTA(Commodity Trading Advisor)策略中，'crisis alpha'指的是什么？\nWhat does 'crisis alpha' refer to in CTA strategies?"
+  options:
+    - "A. 趋势跟踪策略在市场危机期间（如2008年金融危机）往往产生正收益——因为危机伴随强趋势 / Trend following strategies tend to generate positive returns during market crises — because crises accompany strong trends"
+    - "B. 只在危机中投资 / Only invest during crises"
+    - "C. 危机中所有策略都赚钱 / All strategies profit in crises"
+    - "D. CTA与危机无关 / CTA is unrelated to crises"
+  answer: "A"
+  explanation: "Crisis alpha(Kaminski, 2014)：(1)历史数据表明，趋势跟踪策略在重大市场危机中表现优异——2008年金融危机中managed futures指数上涨~14%；(2)原因：危机通常伴随持续的下跌趋势(趋势跟踪做空获利)和波动率上升(趋势策略在高波动中alpha更大)；(3)对冲价值：CTA的crisis alpha与传统资产(股票)的负相关使其成为优秀的尾部风险对冲工具；(4)但也有例外：V型反转中CTA表现差(如2020年3月急跌后快速反弹)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_QP_162
+  category: quant_portfolio
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化组合的再平衡(rebalancing)中，'calendar rebalancing'和'threshold rebalancing'各有什么优缺点？\nWhat are the pros and cons of calendar vs threshold rebalancing in quant portfolios?"
+  options:
+    - "A. Calendar: 固定时间间隔换仓(简单但可能错过信号衰减)；Threshold: 因子偏离阈值时换仓(响应快但交易成本不确定) / Calendar: fixed interval (simple but may miss signal decay); Threshold: rebalance on deviation (responsive but variable costs)"
+    - "B. 两者完全相同 / They are identical"
+    - "C. Calendar总是更好 / Calendar is always better"
+    - "D. Threshold不需要监控 / Threshold needs no monitoring"
+  answer: "A"
+  explanation: "再平衡方式比较：(1)Calendar(如月度/周度)——优点：简单可预测、交易成本可控；缺点：不适应因子信号变化，可能在信号已衰减后才换仓。(2)Threshold(如因子暴露偏离目标>1σ时触发)——优点：及时响应信号变化、减少不必要的换仓；缺点：换仓时机不确定、可能在波动期频繁触发(增加成本)。实际中常结合：周度calendar check + threshold trigger。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_EXEC_163
+  category: execution_algorithms
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在执行算法的TCA(Transaction Cost Analysis)中，以下哪种成本分解最全面？\nWhich cost decomposition is most comprehensive in execution TCA?"
+  options:
+    - "A. Total Cost = Commission + Spread Cost + Market Impact + Timing Cost + Opportunity Cost / Complete breakdown"
+    - "B. 只看手续费 / Only commission"
+    - "C. 只看滑点 / Only slippage"
+    - "D. 不做成本分析 / No cost analysis"
+  answer: "A"
+  explanation: "完整TCA成本分解：(1)Commission(手续费+印花税)——可精确计算；(2)Spread cost(买卖价差)——以中间价为基准的半价差成本；(3)Market impact(市场冲击)——大单推动价格的成本(temporary+permanent)；(4)Timing cost(时机成本)——从决策到完成执行期间的不利价格变化；(5)Opportunity cost(机会成本)——未能执行部分的alpha损失。对量化组合：通常market impact是最大的隐含成本(可占总成本50%+)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_MACRO_164
+  category: macro_trading
+  difficulty: expert
+  type: open_ended
+  points: 5
+  question: "请讨论量化宏观策略在以下三种宏观环境中的表现和调整：(1)高通胀+加息周期；(2)经济衰退+降息周期；(3)低利率+低波动。对于每种环境，说明哪些策略表现好/差以及如何调整。\nDiscuss quant macro strategy performance across three environments: (1) high inflation + rate hikes; (2) recession + rate cuts; (3) low rates + low vol."
+  options: []
+  answer: ""
+  explanation: "(1)高通胀+加息：表现好——商品趋势多(commodities rally)、做空债券(利率上升)、value factor(高通胀利好有形资产)。表现差——growth股票、carry(利差被压缩)、低波动策略(vol rising)。调整：增加商品配置、缩短固定收益duration、增加inflation protection(TIPS)。(2)衰退+降息：表现好——债券做多(利率下降)、defensive equity、趋势跟踪(做空股指)、黄金。表现差——cyclical stocks、high yield credit、新兴市场。调整：增加duration、增加quality/defensive因子、减少equity risk。(3)低利率+低波动：表现好——carry(低利率环境carry更珍贵)、risk parity(debt leverage)。表现差——趋势跟踪(缺乏趋势)、vol selling(premium too thin)。调整：适度加杠杆增强carry、寻找另类alpha源。"
+  hints:
+    - "每种环境中不同策略的表现截然不同"
+    - "关键是识别当前宏观regime并调整"
+  rubric: "各环境分析(2分)；策略表现判断(1分)；调整方案(1分)；风险考虑(1分)"
+  time_limit_seconds: 480
+
+- id: TR_QP_165
+  category: quant_portfolio
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化投资中，Tracking Error (TE) 的定义和在组合管理中的作用是什么？\nWhat is the definition and role of Tracking Error in portfolio management?"
+  options:
+    - "A. TE = std(R_portfolio - R_benchmark)，衡量组合收益与基准偏离的波动率，用于控制主动风险 / TE = std of active returns, measures portfolio deviation from benchmark volatility"
+    - "B. TE越大越好 / Higher TE is better"
+    - "C. TE与基准无关 / TE is unrelated to benchmark"
+    - "D. TE等于组合波动率 / TE equals portfolio volatility"
+  answer: "A"
+  explanation: "Tracking Error：(1)定义：主动收益(portfolio return - benchmark return)的标准差；(2)作用：量化PM偏离基准的'自由度'——TE=2%意味着约68%的时间内年度主动收益在±2%以内；(3)约束：指数增强型基金通常限制TE < 3-5%；纯alpha基金TE可能8-15%；(4)Information Ratio = Active Return / TE——衡量每单位TE创造的alpha。TE too low→alpha too small；TE too high→风险不可控。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: TR_CROSS_166
+  category: cross_asset_trading
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在使用ETF进行跨资产配置时，creation/redemption机制对ETF价格与NAV偏差的纠正作用是什么？\nHow does the ETF creation/redemption mechanism correct price-to-NAV deviations in cross-asset allocation?"
+  options:
+    - "A. 当ETF溢价时授权参与者(AP)创建新份额(卖ETF+买标的)赚取套利利润从而压低溢价 / When ETF trades at premium, APs create shares (sell ETF + buy underlying) to arbitrage and compress premium"
+    - "B. 交易所直接调整价格 / Exchange directly adjusts price"
+    - "C. 基金经理手动调整 / Fund manager manually adjusts"
+    - "D. 没有纠正机制 / No correction mechanism"
+  answer: "A"
+  explanation: "ETF套利机制：(1)ETF溢价(market price > NAV)时：AP在一级市场用标的资产basket申购(create)ETF份额→在二级市场卖出ETF——推低ETF价格+推高标的价格→溢价缩小；(2)ETF折价(market price < NAV)时：AP在二级市场买入ETF→在一级市场赎回(redeem)获得标的basket卖出——推高ETF价格+推低标的价格→折价缩小。这使得ETF价格紧密跟踪NAV。量化团队常参与ETF套利交易。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: TR_HFT_167
+  category: hft_concepts
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在高频数据分析中，Hawkes Process模型在订单流建模中的作用是什么？\nWhat is the role of Hawkes Process in order flow modeling for high-frequency analysis?"
+  options:
+    - "A. 模拟订单到达的自激发(self-exciting)特性——一个订单的到达增加后续订单到达的概率 / Model self-exciting arrival of orders — one order's arrival increases the probability of subsequent arrivals"
+    - "B. 假设订单均匀到达 / Assume uniform order arrivals"
+    - "C. 只用于日频数据 / Only for daily data"
+    - "D. 不考虑订单间的依赖性 / Ignores inter-order dependencies"
+  answer: "A"
+  explanation: "Hawkes Process在HFT中的应用：(1)订单到达不是泊松过程(不是独立的)——一个大单的到达通常引发后续的跟风订单(聚集效应/clustering)；(2)Hawkes process的强度函数λ(t) = μ + Σ φ(t-t_i)——每个历史事件t_i增加未来的到达率(self-exciting)；(3)应用：(a)预测短期订单流方向(买单聚集→价格可能上涨)；(b)估计market impact(订单冲击的衰减函数)；(c)做市策略中预测被吃单的概率。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: TR_QP_168
+  category: quant_portfolio
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在量化组合中使用Black-Litterman模型时，如何将因子信号转化为'views'？\nHow to convert factor signals into 'views' in the Black-Litterman model for quant portfolios?"
+  options:
+    - "A. 因子信号作为预期超额收益的view输入，信号强度决定view的置信度(Ω矩阵的对角元素) / Factor signals as expected excess return views, signal strength determines confidence (Ω matrix diagonal)"
+    - "B. 忽略因子信号 / Ignore factor signals"
+    - "C. 直接用因子值作为权重 / Use factor values directly as weights"
+    - "D. 只用市场均衡收益 / Only use equilibrium returns"
+  answer: "A"
+  explanation: "因子信号→BL views的转换：(1)View matrix P：定义哪些资产的收益关系(如'沪深300跑赢中证500')；(2)View vector Q：预期收益差异(来自因子合成信号)；(3)Omega Ω(不确定性矩阵)：信号IC高→Ω对角元素小(高置信度→后验更靠近view)；信号IC低→Ω大(低置信度→后验更靠近均衡)；(4)好处：将alpha信号和均衡收益融合，避免了纯MVO的极端权重问题。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120

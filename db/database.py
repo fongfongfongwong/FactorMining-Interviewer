@@ -324,8 +324,20 @@ def deactivate_user(user_id):
 
 # ── Invite Links ──
 
+def _generate_short_code():
+    """Generate a unique 4-digit invite code."""
+    import random
+    for _ in range(100):
+        code = str(random.randint(1000, 9999))
+        existing = get_invite_link(code)
+        if not existing:
+            return code
+    # Fallback to 6 digits if all 4-digit codes exhausted
+    return str(random.randint(100000, 999999))
+
+
 def create_invite_link(candidate_name="", candidate_email="", track=None, created_by=None, expires_hours=72):
-    token = str(uuid.uuid4())
+    token = _generate_short_code()
     expires_at = (datetime.utcnow() + timedelta(hours=expires_hours)).isoformat()
     with get_connection() as conn:
         cur = _execute(conn,
