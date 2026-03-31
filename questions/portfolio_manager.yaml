@@ -1664,3 +1664,1036 @@
   hints: []
   rubric: ""
   time_limit_seconds: 90
+
+###############################################################################
+# ADDITIONAL QUESTIONS PM_101 - PM_200 (100 questions)
+# Topics: esg_integration, multi_asset_allocation, tail_risk_hedging,
+#         factor_timing, liquidity_management, derivative_overlays,
+#         manager_selection, performance_fee_structures
+# Difficulty: 40 medium_high, 40 senior, 20 expert
+# Type: 70 multiple_choice, 20 open_ended, 10 show_work
+###############################################################################
+
+###############################################################################
+# ESG INTEGRATION (13 questions)
+###############################################################################
+
+- id: PM_ESG_101
+  category: esg_integration
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化投资组合中整合ESG因子时，以下哪种方法最常用？\nWhat is the most common approach to integrating ESG factors into quantitative portfolios?"
+  options:
+    - "A. 将ESG评分作为额外的alpha因子或约束条件纳入优化器 / Incorporate ESG scores as additional alpha factors or constraints in the optimizer"
+    - "B. 完全排除所有ESG评分低的公司 / Completely exclude all low-ESG-score companies"
+    - "C. 忽略ESG因素 / Ignore ESG factors"
+    - "D. 仅投资ESG评分最高的10家公司 / Only invest in top 10 ESG companies"
+  answer: "A"
+  explanation: "ESG整合方法从简单到复杂：(1)负面筛选(exclusion)——排除特定行业(如烟草、军工)，最简单但损失投资域；(2)ESG约束——在优化器中加入ESG得分下限约束(如组合加权ESG > benchmark ESG)；(3)ESG作为alpha因子——将ESG得分与其他因子(如value, momentum)一起纳入alpha模型；(4)ESG tilting——在基准权重基础上按ESG得分调整。方法(2)(3)最常用，兼顾ESG目标和投资回报。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_ESG_102
+  category: esg_integration
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在ESG投资中，'double materiality'（双重重要性）的概念是什么？\nWhat is the concept of 'double materiality' in ESG investing?"
+  options:
+    - "A. ESG因素既影响公司财务表现(financial materiality)，公司活动也影响环境和社会(impact materiality) / ESG factors affect company financials AND company activities affect environment/society"
+    - "B. 只考虑财务影响 / Only consider financial impact"
+    - "C. 只考虑环境影响 / Only consider environmental impact"
+    - "D. ESG不具有重要性 / ESG is not material"
+  answer: "A"
+  explanation: "双重重要性(EU CSRD/ESRS框架)：(1)Financial materiality(由外向内)——ESG风险如何影响公司的财务状况和估值(如气候风险导致资产减值)；(2)Impact materiality(由内向外)——公司活动如何影响环境和社会(如碳排放、劳工问题)。量化投资中：financial materiality更直接影响alpha；impact materiality满足ESG mandate和监管要求。两者都应纳入。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_ESG_103
+  category: esg_integration
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在构建ESG量化组合时，不同ESG数据供应商(MSCI, Sustainalytics, Bloomberg)评分差异大的主要原因是什么？\nWhat is the main reason for large ESG score differences across data providers?"
+  options:
+    - "A. 评估框架不同——各供应商对E/S/G的权重、子指标选择和计算方法不同 / Different frameworks — providers differ in E/S/G weights, sub-indicator selection, and methodology"
+    - "B. 数据来源完全不同 / Completely different data sources"
+    - "C. 随机误差 / Random error"
+    - "D. 供应商恶意操纵 / Provider manipulation"
+  answer: "A"
+  explanation: "ESG评分分歧(Berg, Kolbel, Rigobon, 2022)：(1)不同供应商间ESG评分相关性仅~0.5(vs信用评级~0.99)；(2)原因：权重分歧(MSCI偏重行业关键风险, Sustainalytics偏重全面评估)、指标选择(碳排放vs碳强度vs碳足迹)、测量方法(绝对值vs同行相对值)；(3)对量化投资的影响：不能简单依赖单一来源，应综合多源ESG数据或使用原始ESG数据自建评分。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_ESG_104
+  category: esg_integration
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "Carbon footprint（碳足迹）在投资组合碳排放管理中如何计算和使用？\nHow is carbon footprint calculated and used in portfolio carbon management?"
+  options:
+    - "A. 组合碳足迹 = Σ(w_i × Carbon_Intensity_i)，其中碳强度=碳排放量/收入；用于设定减排目标和基准对比 / Portfolio CF = Σ(w_i × Carbon_Intensity_i); used for reduction targets and benchmarking"
+    - "B. 只统计直接排放 / Only count direct emissions"
+    - "C. 碳足迹与投资无关 / Carbon footprint is irrelevant to investing"
+    - "D. 不需要量化碳排放 / No need to quantify emissions"
+  answer: "A"
+  explanation: "组合碳排放管理：(1)碳排放范围：Scope 1(直接排放)+Scope 2(外购电力排放)为基础，Scope 3(价值链排放)逐步纳入；(2)碳强度(WACI=Weighted Average Carbon Intensity)——组合加权平均碳排放/收入，可跨组合比较；(3)应用：设定比基准减排30%的目标→在优化器中约束组合WACI < 70%×benchmark WACI；(4)净零路径(Net Zero)：逐年降低碳足迹目标(如每年-7%对齐Paris Agreement)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_ESG_105
+  category: esg_integration
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "ESG momentum（ESG评分变化）作为投资因子的逻辑是什么？\nWhat is the investment logic of ESG momentum (ESG score changes) as a factor?"
+  options:
+    - "A. ESG评分正在改善的公司可能有未被市场充分定价的正面变化(如治理改善→盈利提升) / Companies with improving ESG scores may have underpriced positive changes"
+    - "B. ESG评分不会变化 / ESG scores don't change"
+    - "C. ESG差的公司总是表现更好 / Low ESG always outperforms"
+    - "D. 只关注绝对ESG水平 / Only focus on absolute ESG level"
+  answer: "A"
+  explanation: "ESG momentum的alpha逻辑：(1)ESG评分变化(ΔE, ΔS, ΔG)比绝对水平更有预测力——市场可能已定价高/低ESG(static)，但对改善/恶化(dynamic)反应滞后；(2)治理改善(G momentum)→管理效率提升→盈利改善→股价上涨(lead time 6-12个月)；(3)环境风险恶化(E deterioration)→未来可能面临罚款/监管→股价下跌。构建因子：使用ESG得分的12个月变化量做横截面z-score。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_ESG_106
+  category: esg_integration
+  difficulty: expert
+  type: open_ended
+  points: 5
+  question: "请设计一个ESG整合的量化投资组合方案，需要满足：(1)比沪深300基准的碳强度低30%；(2)ESG加权评分高于基准；(3)预期alpha不显著低于纯alpha组合；(4)行业中性。描述优化框架和约束条件。\nDesign an ESG-integrated quant portfolio: (1) 30% lower carbon intensity than CSI300; (2) higher weighted ESG score; (3) alpha not significantly reduced; (4) industry neutral."
+  options: []
+  answer: ""
+  explanation: "优化框架：Max α'w（alpha信号最大化）s.t.：(1)碳约束：Σ(w_i × CI_i) ≤ 0.7 × Σ(w_bench_i × CI_i)；(2)ESG约束：Σ(w_i × ESG_i) ≥ 1.1 × Σ(w_bench_i × ESG_i)；(3)行业中性：|Σw_i(sector_j) - Σw_bench_i(sector_j)| ≤ 2%；(4)跟踪误差：TE ≤ 5%；(5)个股权重：w_i ∈ [0, 2%]。Alpha模型保持不变(多因子合成信号)，ESG要求通过约束条件实现而非修改alpha。经验法则：碳-30%+ESG tilt约损失alpha的5-15%(取决于约束紧松)。定期(季度)更新ESG数据和碳排放数据。"
+  hints:
+    - "ESG通过约束而非alpha模型整合，损失更小"
+    - "碳排放数据通常滞后，需要用估算数据补充"
+  rubric: "优化目标(1分)；约束条件完整(2分)；Alpha影响评估(1分)；实施考虑(1分)"
+  time_limit_seconds: 420
+
+- id: PM_ESG_107
+  category: esg_integration
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在A股市场中，以下哪种ESG数据在中国的可得性和质量最好？\nWhich ESG data has the best availability and quality for A-share markets in China?"
+  options:
+    - "A. 治理(G)数据——公司治理信息在年报和交易所公告中有充分披露 / Governance data — well-disclosed in annual reports and exchange filings"
+    - "B. 碳排放数据 / Carbon emission data"
+    - "C. 社区影响数据 / Community impact data"
+    - "D. 供应链劳工数据 / Supply chain labor data"
+  answer: "A"
+  explanation: "A股ESG数据现状：(1)G(治理)——数据质量最高：股权结构、董事会组成、关联交易、独立董事等在年报中强制披露；(2)E(环境)——在逐步改善：中国2021年碳排放强制披露试点，但数据覆盖不完整，Scope 3几乎没有；(3)S(社会)——数据最弱：员工数据有限，供应链数据稀缺。建议：G因子优先使用，E因子用已有碳数据+估算模型，S因子参考第三方评级。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: PM_ESG_108
+  category: esg_integration
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "Greenwashing（漂绿）风险对ESG量化投资的影响是什么？\nHow does greenwashing risk affect ESG quantitative investing?"
+  options:
+    - "A. 公司可能美化ESG披露(如选择性报告有利指标)，导致ESG评分不反映真实情况，因子信号失真 / Companies may embellish ESG disclosures (e.g., selective reporting), causing ESG scores to not reflect reality"
+    - "B. 不影响量化投资 / Doesn't affect quantitative investing"
+    - "C. 只影响主动管理 / Only affects active management"
+    - "D. ESG数据不存在偏差 / ESG data has no bias"
+  answer: "A"
+  explanation: "Greenwashing对量化ESG的影响：(1)信号污染——公司策略性披露使ESG评分偏高，量化因子基于错误数据做出投资决策；(2)回测偏差——历史ESG数据可能被修正(data revision)，使回测结果不可靠；(3)应对：(a)使用多源数据交叉验证；(b)关注ESG争议事件(controversies)作为负面校准；(c)使用'revealed preference'——分析公司实际支出(如研发、环保投入)而非自我报告；(d)NLP分析年报的ESG话术vs实际行动的差异。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_ESG_109
+  category: esg_integration
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Climate VaR（气候风险价值）在投资组合风险管理中衡量的是什么？\nWhat does Climate VaR measure in portfolio risk management?"
+  options:
+    - "A. 在不同气候情景(如升温1.5℃/2℃/3℃)下投资组合可能承受的价值损失 / Potential portfolio value loss under different climate scenarios (1.5°C/2°C/3°C warming)"
+    - "B. 每日市场风险 / Daily market risk"
+    - "C. 信用风险 / Credit risk"
+    - "D. 流动性风险 / Liquidity risk"
+  answer: "A"
+  explanation: "Climate VaR(MSCI/Barrie+Hibbert模型)：(1)转型风险——碳税/监管加严对高碳行业的成本冲击(如升温2℃情景下碳价$100/吨→能源公司估值下降X%)；(2)物理风险——极端天气/海平面上升对资产的直接损害；(3)计算：在每个情景下估算每家公司的收入/成本变化→估值变化→汇总为组合级CVaR；(4)应用：向投资者披露气候风险(TCFD框架)、设定减碳路径、情景压力测试。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_ESG_110
+  category: esg_integration
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在ESG整合中，'best-in-class'（类最佳）方法的优势是什么？\nWhat is the advantage of the 'best-in-class' approach in ESG integration?"
+  options:
+    - "A. 在每个行业内选择ESG表现最好的公司，保持行业中性——不牺牲行业分散化 / Select best ESG performers within each industry, maintaining industry neutrality — no sacrifice of sector diversification"
+    - "B. 只投资一个行业 / Invest in one industry only"
+    - "C. 排除所有争议行业 / Exclude all controversial industries"
+    - "D. 等权配置所有公司 / Equal weight all companies"
+  answer: "A"
+  explanation: "Best-in-class vs Exclusion：(1)Exclusion(排除法)——直接排除低ESG行业(如化石能源)，结果：行业偏离大、tracking error高、可能错过转型中的好公司；(2)Best-in-class——在每个行业中选ESG最好的公司(包括能源行业中环保做得最好的)，结果：保持行业中性、TE可控、激励所有行业改善ESG。这是机构投资者最常用的方法，因为它兼顾了ESG目标和投资约束。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_ESG_111
+  category: esg_integration
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在使用自然语言处理(NLP)构建ESG因子时，以下哪种方法最有效？\nWhich NLP approach is most effective for building ESG factors?"
+  options:
+    - "A. 分析年报/CSR报告中的ESG相关话语与实际ESG表现的差距(say-do gap) / Analyze the gap between ESG discourse in reports and actual ESG performance"
+    - "B. 只统计ESG关键词数量 / Only count ESG keyword frequency"
+    - "C. 使用通用情感分析 / Use generic sentiment analysis"
+    - "D. 不使用NLP / Don't use NLP"
+  answer: "A"
+  explanation: "NLP ESG因子的前沿方法：(1)Say-Do Gap——用NLP分析公司ESG话语的积极程度(say)与实际ESG表现(do)的差距，差距大的公司可能在greenwashing→负面信号；(2)ESG事件检测——从新闻中实时检测ESG相关事件(如环保处罚、劳工纠纷)，比ESG评级更及时；(3)管理层语气——年报中ESG部分的用词变化(如从'致力于'变为'已实现')反映真实进展。简单关键词计数缺少语义理解。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_ESG_112
+  category: esg_integration
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "SFDR (Sustainable Finance Disclosure Regulation) 对量化基金的分类要求是什么？\nWhat does SFDR require in terms of fund classification for quantitative funds?"
+  options:
+    - "A. 基金必须分类为Article 6(无ESG整合)/8(推广ESG特征)/9(可持续投资目标)并相应披露 / Funds must be classified as Article 6/8/9 with corresponding disclosures"
+    - "B. 所有基金必须是Article 9 / All funds must be Article 9"
+    - "C. SFDR不适用于量化基金 / SFDR doesn't apply to quant funds"
+    - "D. 只需要年度报告 / Only annual reports needed"
+  answer: "A"
+  explanation: "SFDR(EU可持续金融披露法规)：(1)Article 6——考虑但不推广ESG，最低披露要求；(2)Article 8(浅绿)——推广ESG特征(如低碳、高ESG评分)，需要详细披露ESG整合方法和比例；(3)Article 9(深绿)——以可持续发展为投资目标，需要证明投资对环境/社会的积极影响。量化基金通常定位Article 8(通过ESG约束实现)或Article 6(纯alpha不整合ESG)。Article 9要求最高但可能吸引ESG mandate资金。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_ESG_113
+  category: esg_integration
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在ESG量化投资中，Stranded Assets（搁浅资产）风险主要影响哪些行业和投资？\nWhich sectors and investments are most affected by stranded asset risk in ESG quant investing?"
+  options:
+    - "A. 化石能源行业——在碳中和转型中，煤炭/石油储备可能因监管和需求变化而无法变现 / Fossil fuel sector — coal/oil reserves may become unmonetizable due to regulation and demand changes in carbon neutral transition"
+    - "B. 科技行业 / Technology sector"
+    - "C. 消费行业 / Consumer sector"
+    - "D. 医疗行业 / Healthcare sector"
+  answer: "A"
+  explanation: "Stranded assets(搁浅资产)：(1)定义：因环境法规、技术变革或市场变化而提前减值或无法使用的资产；(2)主要影响：化石能源(煤矿、油田储备因碳中和政策不能开采)、高碳制造(钢铁、水泥生产设施需要淘汰)；(3)量化影响：Carbon Tracker估计全球~80%的已知化石燃料储备可能成为搁浅资产；(4)投资组合应对：评估持仓公司的化石燃料储备暴露、计算Carbon Reserve Risk、在优化中约束高搁浅风险资产的权重。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+###############################################################################
+# MULTI-ASSET ALLOCATION (12 questions)
+###############################################################################
+
+- id: PM_MA_114
+  category: multi_asset_allocation
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在战略资产配置(SAA)和战术资产配置(TAA)中，以下哪个说法正确？\nWhich statement is correct about Strategic vs Tactical Asset Allocation?"
+  options:
+    - "A. SAA基于长期资本市场假设(10年+)，TAA基于中短期市场观点(1-12个月)偏离SAA / SAA based on long-term CMAs (10yr+); TAA deviates from SAA based on medium-term views (1-12 months)"
+    - "B. SAA和TAA完全相同 / SAA and TAA are identical"
+    - "C. TAA不需要风险预算 / TAA doesn't need risk budget"
+    - "D. SAA需要每天调整 / SAA needs daily adjustment"
+  answer: "A"
+  explanation: "SAA vs TAA：(1)SAA(战略)——基于长期预期(各资产类别的预期回报、风险、相关性)确定的基准配置(如60%股票/30%债券/10%另类)，每1-3年review一次；(2)TAA(战术)——基于当前市场条件偏离SAA(如看好股票则从60%增加到65%)，偏离幅度通常受限(如±5%)；(3)TAA贡献通常较小(年化50-100bps alpha)但需要较高的市场择时能力。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: PM_MA_115
+  category: multi_asset_allocation
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在多资产配置中使用Risk Budgeting（风险预算）时，以下哪种实现方式最常用？\nWhat is the most common implementation of Risk Budgeting in multi-asset allocation?"
+  options:
+    - "A. 设定每个资产类别对总组合风险的贡献比例(如股票贡献50%风险，债券25%，另类25%) / Set each asset class's contribution to total risk (e.g., equities 50%, bonds 25%, alternatives 25%)"
+    - "B. 等权配置 / Equal weight"
+    - "C. 最大化总风险 / Maximize total risk"
+    - "D. 不设限制 / No constraints"
+  answer: "A"
+  explanation: "Risk Budgeting实现：(1)定义：设定各资产类别的Risk Contribution(RC)目标——RC_i = w_i × (∂σ_p/∂w_i)；(2)求解：找到权重w使得各资产的RC比例符合预算(如RC_equity=50%×σ_p)；(3)特殊情况：所有RC相等→Risk Parity；(4)优势：以风险为'货币'进行配置(而非资金)——认识到不同资产类别风险贡献差异巨大(传统60/40中股票贡献~90%风险)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_MA_116
+  category: multi_asset_allocation
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在构建多资产配置的Capital Market Assumptions (CMAs)时，以下哪种方法用于估计预期收益？\nWhich method is used to estimate expected returns when building CMAs for multi-asset allocation?"
+  options:
+    - "A. 基于经济基本面的构建法(building block approach)——无风险利率+通胀预期+增长溢价+风险溢价 / Building block approach — risk-free rate + inflation + growth premium + risk premium"
+    - "B. 使用历史平均收益 / Use historical average returns"
+    - "C. 随机生成 / Random generation"
+    - "D. 只看过去一年 / Only look at last year"
+  answer: "A"
+  explanation: "CMA构建方法(各大资管公司如JPM/BlackRock/Vanguard的方法)：(1)Building Block：预期回报 = 无风险利率 + 通胀预期 + 实际增长率 + 各风险溢价(equity risk premium, credit premium, term premium)；(2)比纯历史平均更前瞻——考虑当前利率环境和经济展望；(3)典型10年期CMA：Global Equity 6-8%, Government Bond 2-4%, Credit 3-5%, Real Estate 5-7%；(4)不确定性：CMA的输出应包含置信区间而非点估计。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_MA_117
+  category: multi_asset_allocation
+  difficulty: senior
+  type: show_work
+  points: 5
+  question: "一个养老金组合当前配置为：股票60%、债券30%、另类10%。预期年化回报分别为8%、3%、6%，波动率分别为15%、5%、10%。股债相关性0.1，股另相关性0.3，债另相关性0.05。计算：(1)组合预期回报；(2)组合波动率(使用矩阵法)；(3)如果要求组合波动率不超过8%，如何调整配置？\nA pension portfolio: 60% equity (8% return, 15% vol), 30% bond (3%, 5%), 10% alternatives (6%, 10%). Correlations: stock-bond 0.1, stock-alt 0.3, bond-alt 0.05. Calculate: (1) portfolio return; (2) portfolio vol; (3) adjust to cap vol at 8%."
+  options: []
+  answer: "(1) 组合预期回报 = 0.6×8% + 0.3×3% + 0.1×6% = 4.8% + 0.9% + 0.6% = 6.3%。\n\n(2) 组合方差 = w'Σw = 0.6²×15² + 0.3²×5² + 0.1²×10² + 2×0.6×0.3×15×5×0.1 + 2×0.6×0.1×15×10×0.3 + 2×0.3×0.1×5×10×0.05 = 81 + 2.25 + 1 + 2.7 + 5.4 + 0.15 = 92.5。组合波动率 = √92.5 ≈ 9.62%。\n\n(3) 当前波动率9.62%>8%目标。需要降低股票权重(最大风险贡献者)：例如调整为50%股票、35%债券、15%另类。重新计算：0.5²×225 + 0.35²×25 + 0.15²×100 + 2×0.5×0.35×15×5×0.1 + 2×0.5×0.15×15×10×0.3 + 2×0.35×0.15×5×10×0.05 = 56.25 + 3.0625 + 2.25 + 2.625 + 6.75 + 0.2625 = 71.2 → σ ≈ 8.44%。需要进一步微调（如45/38/17）才能达到8%以下。"
+  explanation: "这道题测试多资产组合的风险计算和配置调整。关键：(1)正确使用协方差矩阵计算组合方差；(2)识别股票是最大的风险贡献者(~85%的组合风险)；(3)降低波动率最有效的方式是减少股票配置+增加低波动资产(债券)。"
+  hints:
+    - "组合方差 = w'Σw，展开为方差项+协方差交叉项"
+    - "股票通常是组合风险的最大来源"
+  rubric: "预期回报(1分)；方差计算(2分)；波动率(1分)；配置调整(1分)"
+  time_limit_seconds: 360
+
+- id: PM_MA_118
+  category: multi_asset_allocation
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在多资产配置中，Regime-Based Asset Allocation（基于市场状态的资产配置）的核心思想是什么？\nWhat is the core idea of Regime-Based Asset Allocation in multi-asset portfolios?"
+  options:
+    - "A. 使用隐马尔可夫模型(HMM)等方法识别市场状态(如增长/衰退/危机)，在不同状态下使用不同的配置策略 / Use HMM to identify market regimes (growth/recession/crisis), apply different allocations per regime"
+    - "B. 使用固定配置不变 / Use fixed allocation without change"
+    - "C. 随机切换配置 / Randomly switch allocation"
+    - "D. 只在危机时调整 / Only adjust during crises"
+  answer: "A"
+  explanation: "Regime-Based Allocation：(1)模型：用HMM对市场回报/波动率/相关性建模，识别2-4个regime(如低波动增长、高波动增长、衰退、危机)；(2)不同regime下的最优配置不同——增长期多股票、衰退期多债券、危机期多现金/黄金；(3)关键挑战：regime识别有延迟(regime已经变了但模型还没检测到)→在regime转换点会亏损；(4)改进：用概率加权(如当前处于增长regime的概率70%、衰退30%)做soft allocation而非hard switch。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_MA_119
+  category: multi_asset_allocation
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在多资产组合中加入另类投资(如私募股权、对冲基金、房地产)的主要好处是什么？\nWhat is the main benefit of adding alternatives (PE, hedge funds, real estate) to multi-asset portfolios?"
+  options:
+    - "A. 分散化——与传统股债的低相关性提供额外的风险分散，可能提高组合Sharpe比 / Diversification — low correlation with traditional assets provides additional risk reduction and may improve Sharpe ratio"
+    - "B. 流动性更好 / Better liquidity"
+    - "C. 透明度更高 / Higher transparency"
+    - "D. 成本更低 / Lower costs"
+  answer: "A"
+  explanation: "另类投资在多资产组合中的价值：(1)分散化——PE/RE与股票的相关性低于股票内部相关性(注意：某些另类的低相关性可能是因为估值频率低的'smoothing bias')；(2)风险溢价——流动性溢价(PE)、复杂性溢价(结构化产品)提供额外回报来源；(3)通胀对冲——RE和基础设施的现金流通常与通胀挂钩。挑战：流动性差(PE锁定期10年)、透明度低、费用高(2/20)、估值不频繁。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: PM_MA_120
+  category: multi_asset_allocation
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在多资产配置中，Resampled Efficient Frontier相比传统MVO的优势是什么？\nWhat is the advantage of Resampled Efficient Frontier over traditional MVO in multi-asset allocation?"
+  options:
+    - "A. 通过对输入参数进行蒙特卡洛模拟再平均，得到更稳定的配置权重 / Monte Carlo simulation of input parameters and averaging yields more stable allocation weights"
+    - "B. 不需要预期回报 / No expected returns needed"
+    - "C. 保证正收益 / Guarantees positive returns"
+    - "D. 只用历史数据 / Only uses historical data"
+  answer: "A"
+  explanation: "Resampled MVO (Michaud, 1998)：(1)从CMA的点估计出发，对预期回报和协方差矩阵进行蒙特卡洛采样(加入估计不确定性)；(2)对每组采样参数求解一个MVO→得到一组最优权重；(3)最终权重 = 所有采样MVO的平均权重；(4)效果：权重更稳定(不像传统MVO对输入微小变化敏感)、更分散(不会极端集中在少数资产)。代价：最优性有所损失(不是任何单一参数下的最优)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_MA_121
+  category: multi_asset_allocation
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在多资产组合中使用目标日期基金(Target Date Fund)的核心机制是什么？\nWhat is the core mechanism of Target Date Funds in multi-asset portfolios?"
+  options:
+    - "A. Glide Path——随着目标日期临近，自动从高风险资产(股票)向低风险资产(债券/现金)转换 / Glide path — automatically shift from risky (equities) to safer (bonds/cash) assets as target date approaches"
+    - "B. 固定配置不变 / Fixed allocation"
+    - "C. 全部投资股票 / All in equities"
+    - "D. 只投资债券 / Only bonds"
+  answer: "A"
+  explanation: "Target Date Fund：(1)Glide Path(下滑曲线)：距离退休30年→90%股票10%债券；距离退休10年→60%股票40%债券；退休后→30%股票70%债券+现金；(2)逻辑：年轻时人力资本(未来工资)类似债券→金融资产应配更多股票；年老时人力资本递减→金融资产转向保守；(3)量化实现：每年自动再平衡一次，按glide path调整目标配置。是美国401(k)的默认选项。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: PM_MA_122
+  category: multi_asset_allocation
+  difficulty: expert
+  type: open_ended
+  points: 5
+  question: "请为一个中国保险公司设计多资产配置方案，考虑：(1)资产负债匹配(ALM)需求；(2)监管对各类资产的配置上限；(3)当前低利率环境下的收益挑战；(4)推荐SAA和TAA框架。\nDesign a multi-asset allocation for a Chinese insurance company considering: (1) ALM needs; (2) regulatory caps; (3) low-rate yield challenges; (4) SAA and TAA framework."
+  options: []
+  answer: ""
+  explanation: "方案设计：(1)ALM：匹配保险负债的duration(寿险负债duration~15年)——主配长久期利率债(30年国债)+信用债(AA+以上)。(2)监管限制(偿二代)：权益类≤45%(其中股票≤30%、基金≤15%)；不动产≤30%；境外≤15%。(3)低利率应对：增加另类投资(基础设施债权计划、REITs收益4-6%)、适度配置权益(高股息策略)、使用利率衍生品(利率互换)管理duration gap。(4)SAA(10年视角)：利率债45%、信用债20%、权益15%、另类(不动产+基础设施)15%、现金5%。TAA(1年视角)：在SAA基础上根据利率周期(降息期增加duration、加息期减少)和权益估值(低估时增配)做±5%偏离。"
+  hints:
+    - "保险公司的核心约束是ALM和偿付能力"
+    - "监管限制决定了配置上限"
+  rubric: "ALM分析(1分)；监管约束(1分)；低利率应对(1分)；SAA/TAA设计(1分)；风险考虑(1分)"
+  time_limit_seconds: 480
+
+###############################################################################
+# TAIL RISK HEDGING (12 questions)
+###############################################################################
+
+- id: PM_TAIL_123
+  category: tail_risk_hedging
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在尾部风险对冲中，以下哪种工具最直接提供下行保护？\nWhich instrument provides the most direct downside protection in tail risk hedging?"
+  options:
+    - "A. 购买虚值看跌期权(OTM puts)——在市场大幅下跌时提供保险式的保护 / Buy OTM puts — provide insurance-like protection during large market drops"
+    - "B. 增加现金持有 / Increase cash holdings"
+    - "C. 购买看涨期权 / Buy call options"
+    - "D. 做多波动率ETF / Long volatility ETF"
+  answer: "A"
+  explanation: "尾部风险对冲工具比较：(1)OTM Put——最直接的保险(payoff在S跌破strike时生效)，成本是premium(类似保费)；(2)缺点：长期持有成本高(theta decay)、需要选择合适的strike和tenor；(3)优化：使用put spread(买近OTM put+卖远OTM put)降低成本但限制保护程度；(4)替代方案：VIX call options(波动率飙升时获利)、CDS(信用风险对冲)、managed futures(crisis alpha)。现金增加虽然降低风险但也降低收益。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: PM_TAIL_124
+  category: tail_risk_hedging
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在'risk budget meets tail risk'的框架下，以下哪种方法最有效地将尾部风险纳入组合优化？\nWhich method most effectively incorporates tail risk into portfolio optimization?"
+  options:
+    - "A. 使用CVaR(Conditional Value-at-Risk)替代方差作为风险度量 / Use CVaR instead of variance as the risk measure"
+    - "B. 使用标准差 / Use standard deviation"
+    - "C. 忽略尾部风险 / Ignore tail risk"
+    - "D. 只关注最大回撤 / Only focus on max drawdown"
+  answer: "A"
+  explanation: "CVaR(又称Expected Shortfall, ES)：(1)定义：给定置信水平α(如95%)，CVaR是损失超过VaR时的条件期望——即'在最差5%的情景下平均会亏多少'；(2)相比VaR的优势：CVaR是coherent risk measure(满足subadditivity——组合的CVaR ≤ 各资产CVaR之和)；(3)在优化中用CVaR替代方差：min CVaR s.t. return ≥ target——自动偏好低尾部风险的组合；(4)计算：可用scenario-based optimization(历史或模拟的收益率scenario)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_TAIL_125
+  category: tail_risk_hedging
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Tail Risk Parity策略的核心思想是什么？\nWhat is the core idea of Tail Risk Parity?"
+  options:
+    - "A. 使每个资产对组合尾部风险(CVaR)的贡献相等，而非对方差的贡献相等 / Equalize each asset's contribution to portfolio tail risk (CVaR), not variance"
+    - "B. 等权配置 / Equal weight"
+    - "C. 只关注正收益 / Only focus on positive returns"
+    - "D. 忽略尾部风险 / Ignore tail risk"
+  answer: "A"
+  explanation: "Tail Risk Parity vs Risk Parity：(1)传统Risk Parity以波动率(标准差)为风险度量——假设收益率正态分布；(2)Tail Risk Parity以CVaR为风险度量——考虑了肥尾(fat tail)和非对称性；(3)区别：某些资产(如credit)波动率低但尾部风险大(突然违约)——传统RP会超配credit, Tail RP会减配；(4)计算更复杂(CVaR不像方差那样有解析解)，通常需要scenario-based optimization。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_TAIL_126
+  category: tail_risk_hedging
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在使用Put Spread Collar策略对冲组合下行风险时，各组件的作用是什么？\nWhat is the role of each component in a Put Spread Collar strategy for downside hedging?"
+  options:
+    - "A. 买入OTM put(保护)+卖出更远OTM put(降低成本)+卖出OTM call(提供资金) / Buy OTM put (protection) + sell further OTM put (reduce cost) + sell OTM call (fund the hedge)"
+    - "B. 只买put / Only buy put"
+    - "C. 只卖call / Only sell call"
+    - "D. 买入所有期权 / Buy all options"
+  answer: "A"
+  explanation: "Put Spread Collar结构：(1)Buy 95% put——提供从95%到更低价格的保护(下行保险)；(2)Sell 85% put——限制了保护范围(85%以下不再保护)但收取premium降低成本；(3)Sell 110% call——放弃上行收益(110%以上)但收取premium进一步降低对冲成本。效果：(1)在85%-95%的下跌区间有完全保护；(2)超过-15%的极端下跌不受保护(需接受)；(3)上行被cap在+10%。净成本可能接近零(zero-cost collar)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_TAIL_127
+  category: tail_risk_hedging
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在对冲尾部风险时，dynamic hedging（动态对冲）和 static hedging（静态对冲）各有什么优缺点？\nWhat are the pros and cons of dynamic vs static hedging for tail risk?"
+  options:
+    - "A. Static: 一次性买入保护(如put)不调整，简单但成本固定；Dynamic: 根据市场条件持续调整对冲比例，灵活但执行复杂且在跳跃(gap)行情中可能失效 / Static: buy-and-hold protection, simple but fixed cost; Dynamic: continuously adjust hedge ratio, flexible but complex and may fail in gap markets"
+    - "B. 两者完全相同 / They are identical"
+    - "C. Dynamic总是更好 / Dynamic is always better"
+    - "D. Static不存在 / Static doesn't exist"
+  answer: "A"
+  explanation: "Static vs Dynamic hedging：(1)Static——买入put期权持有到期，保护确定(payoff在到期日实现)，成本=premium(已知)。缺点：premium可能很高(高波动时IV高)、保护期固定(到期后需续期)。(2)Dynamic——使用Delta对冲(如持有股票的Delta*(-1)的期货头寸并持续调整)。优点：灵活、不需要支付option premium。缺点：(a)需要连续调仓(交易成本)；(b)在gap(跳空)行情中无法及时调整(如overnight -10%)——这恰恰是尾部风险发生的场景。结论：对尾部风险static更可靠。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_TAIL_128
+  category: tail_risk_hedging
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "VIX期权作为尾部风险对冲工具的优势是什么？\nWhat is the advantage of VIX options as a tail risk hedging tool?"
+  options:
+    - "A. VIX与股市强负相关——市场暴跌时VIX飙升，VIX call的凸性(convexity)提供杠杆化保护 / VIX negatively correlates with stocks — VIX spikes during crashes, VIX call convexity provides leveraged protection"
+    - "B. VIX期权没有时间衰减 / VIX options have no time decay"
+    - "C. VIX与股市正相关 / VIX positively correlates with stocks"
+    - "D. VIX期权很便宜 / VIX options are cheap"
+  answer: "A"
+  explanation: "VIX作为尾部对冲：(1)强负相关——S&P500跌5%时VIX可能涨50-100%；(2)凸性——VIX call在VIX从15涨到50时盈利远超线性(因为VIX of VIX也在增加)；(3)资本效率——少量VIX call可以对冲大量股票组合(杠杆效果)；(4)挑战：VIX期权在正常时期持续亏损(负carry/theta)——需要持续投入对冲成本。研究表明每年配置组合价值的1-2%在VIX call上可以显著改善尾部表现。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_TAIL_129
+  category: tail_risk_hedging
+  difficulty: senior
+  type: open_ended
+  points: 5
+  question: "请设计一个量化投资组合的尾部风险管理方案，预算为组合价值的每年1%。包括：(1)对冲工具选择；(2)对冲比例和更新频率；(3)成本优化；(4)效果评估指标。\nDesign a tail risk management plan with 1% annual budget for a quant portfolio: (1) hedging instruments; (2) hedge ratio and update frequency; (3) cost optimization; (4) effectiveness metrics."
+  options: []
+  answer: ""
+  explanation: "方案设计：(1)工具组合——50%预算用于3个月到期的put spread(95-85%区间)每季度滚动；30%预算用于VIX call(30-day, strike~20)每月滚动；20%预算用于CTA/managed futures配置(天然crisis alpha)。(2)对冲比例——put spread覆盖组合的30-40%(notional)；VIX call配置组合的0.3%；CTA配置5%。根据VIX水平调整：VIX<15时增加期权配置(便宜)，VIX>30时减少(昂贵)。(3)成本优化——sell upside call(collar)部分资助put成本；在低IV时增加对冲(便宜)高IV时减少；使用亚式(Asian)或barrier期权降低premium。(4)评估指标——组合在-10%以上市场下跌中的表现(hedged vs unhedged)；年均对冲成本(target<1%)；组合MaxDD改善幅度；尾部收益分布改善(CVaR ratio)。"
+  hints:
+    - "不要将所有预算用于单一工具——分散化"
+    - "根据市场条件(VIX水平)动态调整是关键"
+  rubric: "工具选择(1分)；对冲比例(1分)；成本优化(1分)；评估指标(1分)；动态调整(1分)"
+  time_limit_seconds: 420
+
+###############################################################################
+# FACTOR TIMING (12 questions)
+###############################################################################
+
+- id: PM_FT_130
+  category: factor_timing
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Factor timing（因子择时）的核心挑战是什么？\nWhat is the core challenge of factor timing?"
+  options:
+    - "A. 因子收益的可预测性很低(R²<5%)，且择时错误的成本高于不择时 / Factor return predictability is very low (R²<5%), and timing errors cost more than not timing"
+    - "B. 因子收益完全可预测 / Factor returns are fully predictable"
+    - "C. 因子择时总是增加价值 / Factor timing always adds value"
+    - "D. 不需要任何信号 / No signals needed"
+  answer: "A"
+  explanation: "因子择时的挑战：(1)低可预测性——即使是最好的择时信号(如估值、动量、宏观指标)对因子收益的解释力也很低(R²通常<5%)；(2)不对称成本——错过因子表现好的月份(如value在均值回归时的大涨)比在差的月份减仓造成的损失更大；(3)交易成本——频繁调整因子权重增加换手率和交易成本；(4)Asness(2016)的研究表明大多数因子择时策略扣除交易成本后价值有限。保守建议：因子配置的85%为static(长期持有)，15%为timing。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_FT_131
+  category: factor_timing
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "以下哪种因子择时信号在学术研究中被认为有一定的预测力？\nWhich factor timing signal has shown some predictive power in academic research?"
+  options:
+    - "A. 因子估值价差(factor valuation spread)——当value factor的多空估值差距极大时，value因子未来表现更好 / Factor valuation spread — when value factor's long-short valuation gap is extreme, future value returns are higher"
+    - "B. 昨天的天气 / Yesterday's weather"
+    - "C. 随机数 / Random numbers"
+    - "D. CEO的星座 / CEO's zodiac sign"
+  answer: "A"
+  explanation: "因子估值价差择时(Asness et al., 2000; Arnott et al., 2016)：(1)当value factor的多空估值差距(long-short valuation spread)处于历史极端时，value因子未来1-3年的预期收益更高(均值回归)；(2)直觉：spread极端意味着value stocks被严重低估(或growth stocks严重高估)，回归空间更大；(3)其他有一定预测力的信号：宏观周期(expansion/recession影响size/value)、投资者情绪(高情绪时quality factor好)、波动率regime(低波动时momentum强)。(4)注意：这些信号的预测力有限且不稳定。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_FT_132
+  category: factor_timing
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在实施因子择时策略时，以下哪种方法可以降低择时错误的代价？\nWhich approach reduces the cost of timing errors in factor timing?"
+  options:
+    - "A. 渐进调整(gradual tilting)而非二元开关——根据择时信号强度小幅调整因子权重 / Gradual tilting rather than binary switching — adjust factor weights slightly based on signal strength"
+    - "B. 全仓进出 / All-in or all-out"
+    - "C. 使用杠杆放大择时信号 / Leverage timing signals"
+    - "D. 忽略择时信号直接交易 / Ignore signals and trade directly"
+  answer: "A"
+  explanation: "渐进调整(tilting)的优势：(1)信号不确定性大→小幅调整(如因子权重从25%调至20-30%)而非all-in/all-out(如0%或50%)；(2)保持分散化——即使某个因子的择时信号为负，仍保留最低配置(如10%)防止错过反弹；(3)平滑换手率——避免因子权重剧烈变化导致的高交易成本；(4)公式：w_factor = w_base + λ × timing_signal × w_base，λ∈[0,0.5]控制调整幅度。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_FT_133
+  category: factor_timing
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在多因子组合中使用动态因子配置时，以下哪种方法在样本外表现最稳健？\nIn dynamic multi-factor allocation, which method is most robust out-of-sample?"
+  options:
+    - "A. 基于因子拥挤度和估值价差的简单规则(如只在两者极端时调整)，比复杂ML模型更稳健 / Simple rules based on factor crowding and valuation spread (adjust only at extremes) are more robust than complex ML models"
+    - "B. 使用最复杂的深度学习模型 / Use the most complex deep learning model"
+    - "C. 完全不做因子择时 / No factor timing at all"
+    - "D. 依赖单一指标 / Rely on a single indicator"
+  answer: "A"
+  explanation: "简单规则的优势(样本外)：(1)复杂ML模型在因子择时中容易过拟合——因子收益的信噪比极低(R²<5%)，复杂模型会拟合噪声；(2)简单规则(如'当value spread > 2σ时增加10% value权重')更稳健——规则基于经济直觉而非数据挖掘；(3)Asness等人的研究表明：样本内表现最好的因子择时模型样本外往往最差(过拟合的典型表现)；(4)实际建议：80%静态配置 + 20%简单规则择时，这比100%复杂择时更好。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_FT_134
+  category: factor_timing
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "因子动量(factor momentum)是什么？它与传统的股票动量有何区别？\nWhat is factor momentum and how does it differ from traditional stock momentum?"
+  options:
+    - "A. 因子动量=近期表现好的因子未来继续表现好——是因子层面(而非个股层面)的趋势持续 / Factor momentum = recently outperforming factors continue to outperform — trend persistence at the factor level"
+    - "B. 与个股动量完全相同 / Identical to stock momentum"
+    - "C. 因子动量不存在 / Factor momentum doesn't exist"
+    - "D. 只适用于value因子 / Only applies to value factor"
+  answer: "A"
+  explanation: "因子动量(Arnott et al., 2019; Gupta & Kelly, 2019)：(1)过去1-12个月收益最高的因子在未来1-3个月继续跑赢(如近期momentum因子表现好→增配momentum)；(2)与个股动量的区别：因子动量在因子层面(size, value, momentum, quality)而非个股层面；(3)可能的解释：投资者对因子收益的反应不足(underreaction)→趋势持续；因子内的拥挤效应(crowding)推动动量；(4)应用：在因子择时中使用12-1个月的因子收益动量作为信号。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+###############################################################################
+# LIQUIDITY, DERIVATIVES, MANAGER SELECTION, PERFORMANCE FEES (26 questions)
+###############################################################################
+
+- id: PM_LIQ_135
+  category: liquidity_management
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化组合的流动性管理中，以下哪种指标最适合衡量组合的整体流动性？\nWhich metric best measures overall portfolio liquidity in quantitative portfolio management?"
+  options:
+    - "A. Days-to-Liquidate (DTL)——按正常日均交易量的一定比例完全清仓所需天数 / Days-to-Liquidate — days needed to fully liquidate at a fraction of ADV"
+    - "B. 股票数量 / Number of stocks"
+    - "C. 组合市值 / Portfolio market cap"
+    - "D. 持仓集中度 / Position concentration"
+  answer: "A"
+  explanation: "Days-to-Liquidate(DTL)：(1)计算：DTL_i = Position_i / (Participation_Rate × ADV_i)，组合DTL = max(DTL_i)或加权平均；(2)Participation Rate通常设为日均交易量的10-25%(超过25%市场冲击急剧增加)；(3)应用：限制组合DTL < N天(如5天)——确保在需要时可以及时清仓；(4)对A股：大市值股(沪深300成分)DTL通常<1天，小市值可能>10天。流动性管理在极端行情中尤为重要(流动性枯竭时ADV大幅缩小)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: PM_LIQ_136
+  category: liquidity_management
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在基金赎回压力管理中，liquidity cascade（流动性级联）风险是什么？\nWhat is liquidity cascade risk in fund redemption pressure management?"
+  options:
+    - "A. 赎回→被迫卖出流动性好的资产→组合流动性恶化→更多投资者赎回→恶性循环 / Redemptions → forced selling of liquid assets → portfolio liquidity deteriorates → more redemptions → vicious cycle"
+    - "B. 所有投资者同时买入 / All investors buy simultaneously"
+    - "C. 基金无法接受新申购 / Fund cannot accept new subscriptions"
+    - "D. 只影响债券基金 / Only affects bond funds"
+  answer: "A"
+  explanation: "流动性级联(liquidity spiral)：(1)大额赎回来临→基金经理先卖流动性好的资产(大盘股/利率债)满足赎回；(2)卖出后组合中流动性差的资产(小盘股/信用债)比例增大→组合整体流动性恶化；(3)剩余投资者看到组合流动性恶化→更多人赎回(first-mover advantage)→基金被迫折价卖出流动性差的资产→NAV下跌→更多赎回。对策：(1)维持最低现金水平(如5%);(2)赎回门槛(gating)；(3)swing pricing(赎回者承担市场冲击成本)；(4)按比例卖出(不cherry-pick流动性好的)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_LIQ_137
+  category: liquidity_management
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化组合优化中纳入流动性约束时，以下哪种方法最常用？\nWhich method is most common for incorporating liquidity constraints in quant portfolio optimization?"
+  options:
+    - "A. 限制每只股票的持仓不超过其ADV的一定比例(如5天ADV的X%) / Limit each stock's position to a fraction of its ADV (e.g., X% of 5-day ADV)"
+    - "B. 只投资ETF / Only invest in ETFs"
+    - "C. 不设流动性约束 / No liquidity constraint"
+    - "D. 所有股票等权 / Equal weight all stocks"
+  answer: "A"
+  explanation: "流动性约束实现：(1)个股层面：|w_i × Portfolio_Value| ≤ Participation_Rate × ADV_i × N_days（如不超过5天内以日均交易量25%参与率可清仓的金额）；(2)行业层面：不过度集中在单一行业(某些行业整体流动性差)；(3)组合层面：组合加权平均DTL ≤ target(如3天)；(4)优化中：将这些约束加入优化器——结果可能略微牺牲alpha(放弃了一些alpha高但流动性差的小盘股)但保证了可执行性。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: PM_DER_138
+  category: derivative_overlays
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在投资组合中使用衍生品overlay（叠加策略）的主要目的是什么？\nWhat is the main purpose of derivative overlays in portfolio management?"
+  options:
+    - "A. 在不改变底层持仓的情况下调整组合的风险敞口(如beta、duration、currency) / Adjust portfolio risk exposure (beta, duration, currency) without changing underlying holdings"
+    - "B. 增加总风险 / Increase total risk"
+    - "C. 替代所有现货投资 / Replace all spot investments"
+    - "D. 仅用于投机 / Only for speculation"
+  answer: "A"
+  explanation: "衍生品Overlay的应用：(1)Equity beta overlay——用股指期货调整组合的market beta(如从1.0调到0.8)而不卖出底层选股组合(保留选股alpha)；(2)Duration overlay——用利率期货/互换调整债券组合的duration；(3)Currency overlay——用外汇远期/期权对冲或调整外汇敞口；(4)优势：快速(期货建仓比卖出现货快)、成本低(不触发卖出现货的交易成本和税收)、灵活(可以临时性调整)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: PM_DER_139
+  category: derivative_overlays
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "使用股指期货做Portable Alpha策略的结构是什么？\nWhat is the structure of a Portable Alpha strategy using index futures?"
+  options:
+    - "A. 底层资产产生alpha(如选股组合)+股指期货提供beta(市场收益)——将alpha从一个资产类'搬运'到另一个 / Underlying generates alpha (e.g., stock picking) + index futures provide beta — 'port' alpha from one asset class to another"
+    - "B. 只用期货交易 / Only trade futures"
+    - "C. 不需要底层资产 / No underlying assets needed"
+    - "D. 只产生beta收益 / Only generates beta return"
+  answer: "A"
+  explanation: "Portable Alpha：(1)结构：投资alpha来源(如market-neutral选股策略,收益=alpha)+ 做多股指期货(收益=beta)；总收益 = alpha + beta；(2)例子：将选股alpha(年化5%)搬运到债券beta(年化3%)上→总收益8%；(3)执行：100M资金投入选股策略(delta neutral)+ 用margin买入100M名义的股指期货；(4)风险：alpha来源和beta来源的margin requirements叠加可能导致流动性压力；alpha来源与beta不完全独立(crisis中两者可能同时亏损)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_DER_140
+  category: derivative_overlays
+  difficulty: expert
+  type: show_work
+  points: 5
+  question: "一个股票组合当前beta为1.2，组合规模10亿元。PM希望临时将beta降至0.8（预期市场下跌）。沪深300期货面值每手约100万元，beta≈1.0。计算：(1)需要卖出多少手期货？(2)对冲后如果市场下跌5%，组合的预期表现是什么？(3)列举使用期货overlay的3个风险。\nPortfolio beta=1.2, size=1B CNY. PM wants to reduce beta to 0.8 temporarily. CSI300 futures: ~1M per contract, beta≈1.0. Calculate: (1) contracts to sell; (2) expected P&L if market drops 5%; (3) three risks of futures overlay."
+  options: []
+  answer: "(1) 需要对冲的beta = 1.2 - 0.8 = 0.4。对冲金额 = 0.4 × 10亿 = 4亿元。期货手数 = 4亿 / (100万 × 1.0) = 400手。卖出400手沪深300期货。\n\n(2) 市场下跌5%时：股票组合P&L = -5% × 1.2 × 10亿 = -6000万。期货对冲P&L = +5% × 1.0 × 400 × 100万 = +2000万。净P&L = -6000 + 2000 = -4000万 = -4%。验证：-4% = -5% × 0.8(调整后beta)。\n\n(3) 风险：(a)基差风险(basis risk)——期货价格与现货指数的偏离导致对冲不完美；(b)保证金风险(margin risk)——期货需要缴纳保证金，极端行情下可能追加保证金；(c)滚动风险(rollover risk)——期货到期需要滚动，新旧合约价差产生成本。"
+  explanation: "期货overlay是最常用的beta管理工具。关键：(1)手数计算=目标beta变化×组合规模/(期货面值×期货beta)；(2)验证对冲效果：调整后beta=原beta-对冲beta=1.2-0.4=0.8。"
+  hints:
+    - "手数 = (目标beta变化 × 组合规模) / 期货面值"
+    - "注意期货本身的beta(此处为1.0)"
+  rubric: "手数计算(2分)；P&L分析(1分)；三种风险(2分)"
+  time_limit_seconds: 300
+
+- id: PM_MS_141
+  category: manager_selection
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化基金的manager selection（管理人遴选）中，以下哪个定量指标最重要？\nWhich quantitative metric is most important in quantitative fund manager selection?"
+  options:
+    - "A. 经过多重假设检验调整后的长期(5年+)Information Ratio / Long-term (5yr+) Information Ratio adjusted for multiple hypothesis testing"
+    - "B. 最近一个月的收益率 / Last month's return"
+    - "C. 基金规模 / Fund size"
+    - "D. 管理费率 / Management fee"
+  answer: "A"
+  explanation: "Manager selection的定量评估：(1)IR(Information Ratio)是核心——衡量每单位active risk产生的alpha。需要长期(5年+)以减少运气成分；(2)Multiple testing adjustment——如果评估了20个manager，至少1个IR>1.5可能纯属运气→需要Bonferroni/BH校正；(3)其他重要指标：alpha衰减分析(alpha是否在递减)、max drawdown、因子暴露(是pure alpha还是beta disguised as alpha)、capacity analysis。短期收益率受运气影响大，不应作为主要标准。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: PM_MS_142
+  category: manager_selection
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在评估量化基金经理时，以下哪种分析最能区分'真alpha'和'伪alpha'(打扮成alpha的beta暴露)？\nWhich analysis best distinguishes 'true alpha' from 'disguised beta' when evaluating quant managers?"
+  options:
+    - "A. 多因子归因分析——将基金收益分解为已知因子暴露(beta)和残差收益(true alpha) / Multi-factor attribution — decompose returns into known factor exposures and residual alpha"
+    - "B. 看总收益排名 / Look at total return ranking"
+    - "C. 看基金经理的学历 / Look at manager's education"
+    - "D. 看基金名称 / Look at fund name"
+  answer: "A"
+  explanation: "True Alpha vs Disguised Beta：(1)很多'alpha'实际是已知因子的beta暴露(如small-cap long-only fund的excess return主要来自size factor beta)；(2)归因方法：R_fund = α + Σβ_i × F_i + ε，其中F_i是已知因子(market, size, value, momentum, quality, low vol等)；(3)α是控制所有已知因子后的残差收益——真正的alpha；(4)如果α不显著但β_size很大，说明该manager的超额收益来自size beta而非选股能力。Barra/Axioma风险模型是常用的归因工具。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_MS_143
+  category: manager_selection
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在FOF(Fund of Funds)组合管理中，以下哪种相关性管理策略最重要？\nWhich correlation management strategy is most important in FOF portfolio management?"
+  options:
+    - "A. 选择策略相关性低的基金组合——确保不同manager的alpha来源互不重叠 / Select funds with low strategy correlation — ensure different managers' alpha sources don't overlap"
+    - "B. 选择收益最高的基金 / Select highest-return funds"
+    - "C. 选择规模最大的基金 / Select largest funds"
+    - "D. 选择费率最低的基金 / Select lowest-fee funds"
+  answer: "A"
+  explanation: "FOF相关性管理：(1)高相关性的多个manager等于单一管理人的杠杆版本(没有分散化)——需要确保不同manager的alpha来源不同(如一个做动量，一个做价值，一个做统计套利)；(2)评估方法：(a)策略层面——不同投资风格/因子暴露；(b)收益层面——月度/周度收益相关矩阵；(c)持仓层面——overlap analysis(持仓重叠度)；(3)目标：FOF的alpha Sharpe ratio应高于任何单一manager(分散化premium)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: PM_PF_144
+  category: performance_fee_structures
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化基金的费用结构中，'2 and 20'指的是什么？\nWhat does '2 and 20' refer to in quantitative fund fee structures?"
+  options:
+    - "A. 2%的管理费(AUM的2%) + 20%的业绩报酬(超过基准部分的20%) / 2% management fee + 20% performance fee on returns exceeding benchmark"
+    - "B. 2%的赎回费+20%的申购费 / 2% redemption + 20% subscription fee"
+    - "C. 20%的管理费+2%的业绩报酬 / 20% management + 2% performance"
+    - "D. 固定2%年费 / Fixed 2% annual fee"
+  answer: "A"
+  explanation: "'2 and 20'是对冲基金/量化基金的传统费率结构：(1)2% management fee——基于AUM收取，无论业绩好坏；(2)20% performance fee——超过高水位(high water mark)或基准的部分收取20%。近年来趋势：(1)费率下降——很多quant fund已降至'1 and 10'或'0.5 and 15'；(2)分层费率——规模越大费率越低；(3)founder's share——早期投资者享受更低费率(如1/10)。费率对净回报影响巨大——2/20在年化15%的gross return上只留给投资者约10%的net return。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: PM_PF_145
+  category: performance_fee_structures
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "High Water Mark（高水位线）在业绩报酬计算中的作用是什么？\nWhat is the role of the High Water Mark in performance fee calculation?"
+  options:
+    - "A. 只有NAV超过历史最高值时才收取业绩报酬——保护投资者不为同一收益重复付费 / Performance fee only charged when NAV exceeds historical peak — protects investors from paying twice for the same gains"
+    - "B. 每月都收取业绩报酬 / Charge performance fee monthly regardless"
+    - "C. 不影响费用计算 / Doesn't affect fee calculation"
+    - "D. 只在亏损时收费 / Only charge on losses"
+  answer: "A"
+  explanation: "High Water Mark(HWM)机制：(1)记录基金NAV的历史最高值；(2)只有当前NAV超过HWM时，对超出部分收取performance fee；(3)例子：NAV从100涨到120(HWM=120, fee on 20)→跌到110(不收fee)→涨到125(HWM=125, fee only on 125-120=5)；(4)对管理人的影响：大亏损后需要先弥补亏损才能收取performance fee(可能导致管理人放弃→fund closure)；(5)变体：modified HWM(有重置期限，如3年内未恢复则重置)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_PF_146
+  category: performance_fee_structures
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在设计量化基金的incentive fee结构时，以下哪种结构最能对齐管理人和投资者的利益？\nWhich incentive fee structure best aligns manager and investor interests for quant funds?"
+  options:
+    - "A. Low management fee + performance fee with HWM + hurdle rate + clawback provision / 低管理费+HWM业绩报酬+业绩基准+回撤回拨条款"
+    - "B. 高管理费无业绩报酬 / High management fee, no performance fee"
+    - "C. 无管理费+高业绩报酬无HWM / No management fee + high performance fee without HWM"
+    - "D. 固定费率 / Flat fee"
+  answer: "A"
+  explanation: "最优激励结构：(1)Low management fee(0.5-1%)——减少管理人'不管业绩都收钱'的倾向，迫使管理人依赖performance fee；(2)HWM——不为同一收益重复付费；(3)Hurdle rate(如无风险利率+2%)——只有alpha(超过基准的部分)才提取performance fee，避免为beta收费；(4)Clawback——如果之前收取的performance fee在后续被回撤'抹平'，需要退还部分fee(如滚动3年)。这四个要素的组合最大程度对齐双方利益。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_DER_147
+  category: derivative_overlays
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在使用利率互换(Interest Rate Swap)管理债券组合duration时，payer swap和receiver swap分别适用于什么场景？\nWhen using interest rate swaps for duration management, when to use payer vs receiver swaps?"
+  options:
+    - "A. Payer swap(支付固定利率)缩短duration(利率上升时获利)；Receiver swap(收取固定利率)增加duration(利率下降时获利) / Payer swap shortens duration; Receiver swap extends duration"
+    - "B. 两者效果相同 / Both have the same effect"
+    - "C. Payer swap增加duration / Payer swap extends duration"
+    - "D. 利率互换不影响duration / IRS doesn't affect duration"
+  answer: "A"
+  explanation: "利率互换的duration效果：(1)Payer swap(pay fixed, receive floating)≈做空债券+做多现金——减小组合duration。PM预期利率上升时使用；(2)Receiver swap(receive fixed, pay floating)≈做多债券——增加组合duration。PM预期利率下降时使用；(3)优势vs直接买卖债券：不需要现金(notional exchange不实际发生)、执行成本低、不影响底层债券持仓；(4)DV01匹配：swap的DV01=目标DV01变化量→确定notional amount。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_LIQ_148
+  category: liquidity_management
+  difficulty: senior
+  type: open_ended
+  points: 5
+  question: "请设计一个量化基金的流动性风险管理框架，覆盖：(1)组合层面的流动性度量；(2)压力测试场景；(3)赎回管理机制；(4)流动性准备金策略。\nDesign a liquidity risk management framework for a quant fund: (1) portfolio-level liquidity metrics; (2) stress test scenarios; (3) redemption management; (4) liquidity reserves."
+  options: []
+  answer: ""
+  explanation: "流动性框架：(1)组合度量——DTL(Days-to-Liquidate, 目标<5天)、Liquidity Coverage Ratio(高流动性资产/预期赎回>1.5)、ADV Coverage(每个持仓<5日ADV的5%)。(2)压力测试——场景A：30天内赎回20%AUM(历史P75赎回水平)+市场下跌20%(流动性同时恶化)；场景B：单一大客户赎回(如占AUM 15%的机构客户)；场景C：市场流动性枯竭(ADV下降50%)。在每个场景下计算变现成本和可行性。(3)赎回管理——分级赎回(正常/预警/限制三级)；预警时通知管理层+增加现金；限制时启动gate(如每月赎回不超过NAV的25%)和side pocket(隔离流动性差的资产)。(4)准备金——现金+高流动性资产(如国债ETF)≥AUM的8-10%；预留credit line作为额外流动性缓冲。"
+  hints:
+    - "流动性在市场危机时会同时恶化"
+    - "压力测试需要考虑赎回和市场冲击同时发生"
+  rubric: "度量指标(1分)；压力测试(1分)；赎回管理(1分)；准备金(1分)；框架完整性(1分)"
+  time_limit_seconds: 420
+
+- id: PM_MS_149
+  category: manager_selection
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在进行quantitative due diligence（量化尽职调查）时，以下哪个分析维度最能发现潜在的风险？\nIn quantitative due diligence, which analysis dimension best uncovers hidden risks?"
+  options:
+    - "A. 回报分布分析——检查是否存在异常的尖峰(高频小盈利)和肥尾(偶尔大亏损)模式 / Return distribution analysis — check for anomalous patterns like frequent small gains and occasional large losses"
+    - "B. 只看平均回报 / Only look at average return"
+    - "C. 只看基金规模 / Only look at fund size"
+    - "D. 只看管理人简历 / Only look at manager CV"
+  answer: "A"
+  explanation: "收益分布分析揭示的隐含风险：(1)高频小盈利+偶尔大亏损(如每月+1%, 偶尔-15%)→可能在做空波动率/尾部风险(如Madoff式的欺诈)或承担了未对冲的tail risk；(2)过于平滑的收益(如month-to-month回报标准差异常低)→可能存在NAV操纵(如不按市值标记非流动性资产)；(3)收益与已知因子的相关性突然变化→策略可能drift或持仓质量下降；(4)最大回撤vs波动率的关系异常(回撤过大)→可能有杠杆或集中度问题。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_FT_150
+  category: factor_timing
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在因子投资组合中使用'因子拥挤度'(crowding)作为风险信号时，拥挤度高意味着什么？\nWhen using factor crowding as a risk signal in factor portfolios, what does high crowding mean?"
+  options:
+    - "A. 大量资金追逐同一因子→因子估值被推高→未来因子溢价可能压缩或急剧反转 / Large capital chases the same factor → valuations stretched → future premium may compress or reverse sharply"
+    - "B. 因子更有效 / Factor is more effective"
+    - "C. 应该增加该因子配置 / Should increase factor allocation"
+    - "D. 流动性更好 / Better liquidity"
+  answer: "A"
+  explanation: "因子拥挤的风险：(1)大量资金追逐同一因子→多头组过度买入(估值被推高)→alpha被提前消耗；(2)拥挤因子的反转特别剧烈——当市场情绪转变，所有持有者同时抛售(如2020年3月momentum crash)；(3)衡量拥挤度：(a)因子多空估值价差收窄；(b)因子内部成交量/持仓集中度增加；(c)空头做空成本(借券利率)上升；(4)对策：监控拥挤度，拥挤度高时减少该因子暴露或增加反转因子的配置。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_DER_151
+  category: derivative_overlays
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在使用期货进行cash equitization（现金等价化）时，目的和方法是什么？\nWhat is the purpose and method of cash equitization using futures?"
+  options:
+    - "A. 将组合中的闲置现金通过股指期货获得市场敞口——避免现金拖累(cash drag) / Use index futures to gain market exposure on idle cash — avoid cash drag"
+    - "B. 将所有资产转为现金 / Convert all assets to cash"
+    - "C. 增加现金持有 / Increase cash holdings"
+    - "D. 只用于紧急情况 / Only for emergencies"
+  answer: "A"
+  explanation: "Cash equitization：(1)问题：量化组合中通常有3-5%的现金(用于应对赎回/保证金/操作缓冲)——这部分现金不产生市场回报(cash drag)，导致组合underperform benchmark；(2)解决方案：用组合中的现金作为margin，买入等量名义值的股指期货——现金获得了市场收益+无风险利率(futures basis)；(3)效果：消除cash drag，组合fully invested；(4)成本：期货的basis cost(通常很小)和保证金占用。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_PF_152
+  category: performance_fee_structures
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在选择量化基金时，以下关于net return（净回报）和gross return（毛回报）的说法哪个最重要？\nWhen selecting quant funds, which statement about net vs gross return is most important?"
+  options:
+    - "A. 投资者应以净回报为决策依据——高毛回报但高费率的基金不一定比低毛回报低费率的好 / Investors should decide based on net returns — high gross/high fees may not beat low gross/low fees"
+    - "B. 毛回报更重要 / Gross return matters more"
+    - "C. 费率不影响回报 / Fees don't affect returns"
+    - "D. 只看绝对回报 / Only look at absolute return"
+  answer: "A"
+  explanation: "Net return的重要性：(1)举例：基金A毛回报15%，费率3%(2管理+1业绩)→净回报12%；基金B毛回报10%，费率1%→净回报9%。基金A净回报更高；(2)但如果基金A费率是5%(2管理+3业绩)→净回报10%=基金B——fee structure matters；(3)长期复利效应使费率差异放大——每年1%的费率差异在20年后累计损失投资的18%；(4)最佳实践：要求管理人提供扣除所有费用后的net-of-fee track record。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: PM_TAIL_153
+  category: tail_risk_hedging
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在量化投资中，'Black Swan Fund'（黑天鹅基金）的运作原理是什么？\nHow does a 'Black Swan Fund' operate in quantitative investing?"
+  options:
+    - "A. 持续买入廉价的深度虚值期权(deep OTM options)——在正常市场中持续小额亏损，但在极端事件中获得巨额收益 / Continuously buy cheap deep OTM options — small steady losses normally, but huge gains in extreme events"
+    - "B. 只做多股票 / Only long stocks"
+    - "C. 高频交易 / High-frequency trading"
+    - "D. 被动指数投资 / Passive index investing"
+  answer: "A"
+  explanation: "Black Swan Fund(如Universa Investments)：(1)核心持仓：大量deep OTM put options(如行权价为当前价格的60-70%)——premium极低(如总portfolio的0.5-2%/年)；(2)正常市场：每个月亏损权利金(theta decay)——年化亏损可能-10%到-20%；(3)极端事件(如2020年3月)：deep OTM put变成deep ITM→收益可能+1000%以上；(4)在多资产组合中的作用：配置5-10%在Black Swan基金→组合的最大回撤显著改善(尾部保护)而长期复合回报不受太大影响(因为保护收益补偿了正常时期的亏损)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_MA_154
+  category: multi_asset_allocation
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在构建全球多资产配置时，home bias（母国偏好）的主要弊端是什么？\nWhat is the main drawback of home bias in global multi-asset allocation?"
+  options:
+    - "A. 过度集中在本国资产降低了分散化效果——错过了全球化带来的风险调整后收益提升 / Overconcentration in domestic assets reduces diversification — misses risk-adjusted return improvement from global diversification"
+    - "B. 降低了交易成本 / Reduces transaction costs"
+    - "C. 提高了流动性 / Improves liquidity"
+    - "D. 不影响组合表现 / Doesn't affect portfolio performance"
+  answer: "A"
+  explanation: "Home bias的代价：(1)A股投资者如果只投资A股，错过了全球约60%的股票市值(美国~45%, 欧洲~15%, 日本~6%)；(2)国际分散化可以降低组合波动率(不同市场的经济周期不完全同步→低相关性)；(3)实证研究：加入国际资产后组合的efficient frontier向左上方移动(同等风险下更高回报)；(4)A股投资者的home bias尤其严重(资本管制、对海外市场不熟悉)。注意：需要管理外汇风险(否则外汇波动可能抵消分散化收益)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 90
+
+- id: PM_FT_155
+  category: factor_timing
+  difficulty: senior
+  type: open_ended
+  points: 5
+  question: "请设计一个基于宏观经济regime的因子配置策略。具体说明：(1)如何定义和识别宏观regime(至少3种)；(2)在每种regime下各因子(value, momentum, quality, low vol)的预期表现；(3)如何将regime信号转化为因子权重调整。\nDesign a macro-regime-based factor allocation strategy: (1) define/identify at least 3 regimes; (2) expected factor performance per regime; (3) how to translate regime signals into factor weight adjustments."
+  options: []
+  answer: ""
+  explanation: "策略设计：(1)Regime定义(3种)——Growth(GDP增速↑, PMI>50, 利率温和)；Recession(GDP增速↓, PMI<50, 利率下行)；Stagflation(GDP低迷+通胀高, PMI<50但CPI↑)。识别方法：HMM on [GDP growth, inflation, credit spread, yield curve slope]或规则法(PMI+CPI组合)。\n\n(2)各regime下因子表现——Growth：momentum(+强), quality(中), value(中), low vol(-)弱；Recession：quality(+强), low vol(+), value(-), momentum(-)反转；Stagflation：value(+较好/有形资产), quality(+), momentum(-), low vol(中)。\n\n(3)信号→权重：基础配置=各因子等权25%。根据regime概率做gradual tilt(不超过±10%)。如Growth概率80%→momentum从25%增至35%, low vol从25%降至15%。使用概率加权(而非hard switch)避免regime误判的损失。每月根据最新宏观数据更新regime概率。"
+  hints:
+    - "使用regime概率而非二元判断来调整权重"
+    - "注意regime转换点的交易成本"
+  rubric: "Regime定义(1分)；因子表现映射(2分)；权重调整方法(1分)；实施考虑(1分)"
+  time_limit_seconds: 420
+
+- id: PM_LIQ_156
+  category: liquidity_management
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "Swing Pricing机制在量化基金中的作用是什么？\nWhat is the role of Swing Pricing in quantitative funds?"
+  options:
+    - "A. 在净申购或净赎回时调整NAV，让交易成本由申赎方承担而非现有持有人 / Adjust NAV during net subscriptions/redemptions so transaction costs are borne by transacting investors, not existing holders"
+    - "B. 增加基金收益 / Increase fund returns"
+    - "C. 替代对冲策略 / Replace hedging strategies"
+    - "D. 降低管理费 / Reduce management fees"
+  answer: "A"
+  explanation: "Swing Pricing：(1)问题：大额赎回时基金需要卖出资产→产生交易成本(spread+impact)→NAV下降→剩余持有人承担了赎回者的交易成本(对留下来的人不公平)；(2)Swing Pricing解决方案：当净赎回超过阈值(如AUM的2%)时，将NAV向下调整(swing)一个swap factor(如0.5%)→赎回者按较低的NAV赎回，交易成本由赎回者自己承担；(3)对量化基金尤其重要——小市值策略的交易成本高、赎回冲击大。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: PM_MS_157
+  category: manager_selection
+  difficulty: medium_high
+  type: multiple_choice
+  points: 1
+  question: "在评估量化基金的operational due diligence（运营尽职调查）时，以下哪个风险最不容忽视？\nIn operational due diligence of quant funds, which risk is most critical?"
+  options:
+    - "A. 模型风险——策略代码bug、数据错误、过拟合、模型不适用于新market regime / Model risk — code bugs, data errors, overfitting, model inapplicability to new regimes"
+    - "B. 办公室装修 / Office decoration"
+    - "C. 基金经理的穿着 / Manager's attire"
+    - "D. 公司网站设计 / Company website design"
+  answer: "A"
+  explanation: "量化基金ODD的核心关注：(1)模型风险——代码bug(如off-by-one导致看错数据)、数据源错误(除权除息处理不当)、过拟合(回测performance不可复现)、regime break(模型假设不再成立)；(2)技术风险——系统宕机、灾备不足、网络安全；(3)操作风险——订单错误(fat finger)、对账不一致；(4)人员风险——关键人员离职(key man risk)。量化基金不同于传统基金——技术和模型风险是最大的运营风险来源。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 60
+
+- id: PM_DER_158
+  category: derivative_overlays
+  difficulty: expert
+  type: multiple_choice
+  points: 1
+  question: "在使用总收益互换(Total Return Swap, TRS)构建杠杆因子组合时，以下哪个风险最需要关注？\nWhen using Total Return Swaps to build leveraged factor portfolios, which risk needs most attention?"
+  options:
+    - "A. 对手方风险(counterparty risk)——TRS是OTC衍生品，对手方违约可能导致损失 / Counterparty risk — TRS is OTC, counterparty default can cause losses"
+    - "B. 汇率风险 / FX risk"
+    - "C. 通胀风险 / Inflation risk"
+    - "D. 利率风险 / Interest rate risk"
+  answer: "A"
+  explanation: "TRS构建杠杆组合的风险：(1)对手方风险——TRS是bilateral OTC合约，如果对手方(通常是银行)违约，基金可能损失已积累的收益(如2008年Bear Stearns)；缓解：使用CSA(Credit Support Annex)要求定期保证金交换(margin call)；(2)资金成本风险——TRS的融资利率(floating rate leg)可能上升增加成本；(3)杠杆放大——TRS提供2-3倍杠杆，亏损也被放大；(4)突然终止——对手方有权在市场极端时终止合约(force close)，可能在最差时点被迫平仓。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120
+
+- id: PM_PF_159
+  category: performance_fee_structures
+  difficulty: senior
+  type: open_ended
+  points: 5
+  question: "请分析量化基金费率结构从传统'2 and 20'向新模式转变的趋势，并设计一个对投资者和管理人都公平的费率结构。考虑：(1)管理费水平；(2)业绩报酬机制；(3)HWM和hurdle rate设计；(4)与策略容量和alpha衰减的关系。\nAnalyze the trend from '2 and 20' to new fee models and design a fair fee structure considering: (1) management fee; (2) performance fee; (3) HWM and hurdle; (4) relationship to capacity and alpha decay."
+  options: []
+  answer: ""
+  explanation: "趋势和设计：(1)管理费趋势：从2%→1%→0.5-0.75%，甚至更低(fixed cost coverage only)。设计：管理费=运营成本覆盖(约0.5%)+利润margin(约0.25%)=0.75%。(2)业绩报酬趋势：从20%→15%→分层。设计：超过hurdle rate的部分首先catch-up(管理人获50%直到20%分成比例)，之后按15%提取。(3)HWM+Hurdle：HWM永不重置(投资者保护)；Hurdle=3个月SHIBOR(反映资金机会成本)；水位上方的收益才算performance。(4)容量/衰减关系：设计capacity fee——AUM超过最优容量(如50亿)后费率自动降低(如管理费从0.75%降至0.5%)；同时当rolling 3年IR<0.5时自动降低performance fee比例(从15%到10%)——incentive与alpha delivery挂钩。"
+  hints:
+    - "好的费率结构应该激励管理人创造alpha而非扩大规模"
+    - "投资者关心net-of-fee return的可持续性"
+  rubric: "管理费设计(1分)；业绩报酬机制(1分)；HWM/hurdle(1分)；容量关系(1分)；公平性分析(1分)"
+  time_limit_seconds: 420
+
+- id: PM_TAIL_160
+  category: tail_risk_hedging
+  difficulty: senior
+  type: multiple_choice
+  points: 1
+  question: "在量化组合的drawdown control（回撤控制）中，以下哪种方法最为实用？\nWhich drawdown control method is most practical for quantitative portfolios?"
+  options:
+    - "A. CPPI (Constant Proportion Portfolio Insurance)——根据剩余缓冲(cushion=组合价值-floor)动态调整风险资产配置 / CPPI — dynamically adjust risky asset allocation based on remaining cushion"
+    - "B. 设置止损后永不再进入 / Set stop-loss and never re-enter"
+    - "C. 不做回撤控制 / No drawdown control"
+    - "D. 只在回撤时加仓 / Only add positions during drawdowns"
+  answer: "A"
+  explanation: "CPPI回撤控制：(1)设定floor(如不允许回撤超过10%→floor=0.9×initial NAV)；(2)cushion = 组合价值 - floor；(3)风险资产配置 = multiplier × cushion/组合价值(如multiplier=5)；(4)效果：组合下跌时cushion缩小→自动减少风险资产(derisking)；组合上涨时cushion增大→增加风险资产(re-risking)；(5)floor是动态的——可以用rolling max drawdown target；(6)挑战：在gap down(跳空下跌)时可能穿透floor(CPPI不是完美保险)。"
+  hints: []
+  rubric: ""
+  time_limit_seconds: 120

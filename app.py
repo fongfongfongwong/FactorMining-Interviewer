@@ -5,6 +5,14 @@ Stack: Streamlit + Claude API + PostgreSQL/SQLite + YAML Question Bank
 
 import os
 import streamlit as st
+
+# Bridge Streamlit Cloud secrets to env vars
+for key in ["ANTHROPIC_API_KEY", "SECRET_KEY", "DATABASE_URL"]:
+    if key not in os.environ:
+        val = st.secrets.get(key, None) if hasattr(st, "secrets") else None
+        if val:
+            os.environ[key] = val
+
 from db.database import init_db
 from services.auth import is_authenticated, get_current_role, logout, ensure_default_admin
 
