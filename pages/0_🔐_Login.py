@@ -1,5 +1,6 @@
 """登录页面 — Admin/Operator password login, Candidate invite link entry."""
 
+import sys
 import streamlit as st
 
 st.set_page_config(page_title="登录", page_icon="🔐", layout="centered")
@@ -78,12 +79,26 @@ with st.form("login_form"):
         if not username or not password:
             st.error("请输入用户名和密码")
         else:
-            user = login(username, password)
-            if user:
-                st.success("登录成功！")
-                st.rerun()
-            else:
-                st.error("用户名或密码错误")
+            try:
+                user = login(username, password)
+                if user:
+                    st.success("登录成功！")
+                    st.rerun()
+                else:
+                    st.error("用户名或密码错误")
+            except Exception as e:
+                st.error("登录异常: {}".format(str(e)))
 
 st.markdown("---")
 st.caption("默认管理员: admin / admin123 (请登录后立即修改密码)")
+
+# Debug info (remove in production)
+with st.expander("🔧 Debug Info"):
+    try:
+        from db.database import get_all_users, DB_PATH, USE_PG
+        users = get_all_users()
+        st.markdown("**DB**: {} ({})".format("PostgreSQL" if USE_PG else "SQLite", DB_PATH if not USE_PG else "remote"))
+        st.markdown("**Users**: {}".format([(u["username"], u["role"]) for u in users]))
+        st.markdown("**Python**: {}".format(sys.version))
+    except Exception as e:
+        st.error("Debug error: {}".format(str(e)))
