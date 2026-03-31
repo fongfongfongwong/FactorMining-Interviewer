@@ -307,7 +307,7 @@ def create_user(username, password_hash, role, display_name=""):
 
 def get_user_by_username(username):
     with get_connection() as conn:
-        cur = _execute(conn, "SELECT * FROM users WHERE username = ? AND is_active = ?", (username, True if USE_PG else 1))
+        cur = _execute(conn, "SELECT * FROM users WHERE username = ? AND is_active != 0", (username,))
         return _fetchone(cur)
 
 
